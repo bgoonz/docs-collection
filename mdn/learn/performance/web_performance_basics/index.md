@@ -1,26 +1,24 @@
---- title: Web performance resources slug: Learn/Performance/Web\_Performance\_Basics tags: - Best practices - Website performance ---
+--- title: Web performance resources slug: Learn/Performance/Web_Performance_Basics tags: - Best practices - Website performance ---
 
 {{draft}}
 
 There are many [reasons](https://developers.google.com/web/fundamentals/performance/why-performance-matters/) why your website should perform as well as possible.  
 Below is a quick review of best practices, tools, APIs with links to provide more information about each topic.
 
-Best practices
---------------
+## Best practices
 
--   Start with learning the [critical rendering path](/en-US/docs/Web/Performance/Critical_rendering_path) of the browser. Knowing this will help you understand how to improve the performance of the site.
--   Using *resource hints* such as [`rel=preconnect`](/en-US/docs/Web/HTML/Link_types/preconnect), [`rel=dns-prefetch`](/en-US/docs/Web/HTML/Link_types/dns-prefetch), [`rel=prefetch`](/en-US/docs/Web/HTML/Link_types/prefetch), [`rel=preload`](/en-US/docs/Web/HTML/Link_types/preload).
--   Keep the size of Javascript to a [minimum](https://medium.com/@addyosmani/the-cost-of-javascript-in-2018-7d8950fbb5d4). Only use as much Javascript as needed for the current page.
--   [CSS](/en-US/docs/Learn/Performance/CSS) performance factors
--   Use {{Glossary("HTTP\_2", "HTTP/2")}} on your server (or CDN).
--   Use a CDN for resources which can reduce load times significantly.
--   Compress your resources using [gzip](https://www.gnu.org/software/gzip/), [Brotli](https://github.com/google/brotli), and [Zopfli](https://github.com/google/zopfli).
--   Image optimization (use CSS animation, or SVG if possible).
--   Lazy loading parts of your application outside the viewport. If you do, have a backup plan for SEO (e.g render full page for bot traffic); for example, by using the {{htmlattrxref("loading", "img")}} attribute on the {{HTMLElement("img")}} element
--   It is also crucial to realize what is really important to your users. It might not be absolute timing, but [user perception](/en-US/docs/Learn/Performance/Perceived_performance).
+- Start with learning the [critical rendering path](/en-US/docs/Web/Performance/Critical_rendering_path) of the browser. Knowing this will help you understand how to improve the performance of the site.
+- Using *resource hints* such as [`rel=preconnect`](/en-US/docs/Web/HTML/Link_types/preconnect), [`rel=dns-prefetch`](/en-US/docs/Web/HTML/Link_types/dns-prefetch), [`rel=prefetch`](/en-US/docs/Web/HTML/Link_types/prefetch), [`rel=preload`](/en-US/docs/Web/HTML/Link_types/preload).
+- Keep the size of Javascript to a [minimum](https://medium.com/@addyosmani/the-cost-of-javascript-in-2018-7d8950fbb5d4). Only use as much Javascript as needed for the current page.
+- [CSS](/en-US/docs/Learn/Performance/CSS) performance factors
+- Use {{Glossary("HTTP\_2", "HTTP/2")}} on your server (or CDN).
+- Use a CDN for resources which can reduce load times significantly.
+- Compress your resources using [gzip](https://www.gnu.org/software/gzip/), [Brotli](https://github.com/google/brotli), and [Zopfli](https://github.com/google/zopfli).
+- Image optimization (use CSS animation, or SVG if possible).
+- Lazy loading parts of your application outside the viewport. If you do, have a backup plan for SEO (e.g render full page for bot traffic); for example, by using the {{htmlattrxref("loading", "img")}} attribute on the {{HTMLElement("img")}} element
+- It is also crucial to realize what is really important to your users. It might not be absolute timing, but [user perception](/en-US/docs/Learn/Performance/Perceived_performance).
 
-Quick Wins
-----------
+## Quick Wins
 
 ### CSS
 
@@ -51,27 +49,25 @@ Within @font-face use font-display: swap. By using font display swap the browser
 
 If possible avoid icon web fonts and use compressed SVGs. To further optimize inline your SVG data within HTML markup to avoid HTTP requests.
 
-Tools
------
+## Tools
 
--   Learn to use the [Firefox Dev Tools](/en-US/docs/Tools/Performance) to profile your site.
--   [PageSpeed Insights](https://developers.google.com/speed/docs/insights/v5/about) can analyze your page and give some general hints to improve performance.
--   [Lighthouse](https://developers.google.com/web/tools/lighthouse/) can give you a detailed breakdown of many aspects of your site including performance, SEO and accessibility. 
--   Test your page's speed using [WebPageTest.org](https://webpagetest.org/), where you can use different real device types and locations.
--   Try the [Chrome User Experience Report](https://developers.google.com/web/tools/chrome-user-experience-report) which quantifies real user metrics.
--   Define a [performance budget](/en-US/docs/Web/Performance/Performance_budgets).
+- Learn to use the [Firefox Dev Tools](/en-US/docs/Tools/Performance) to profile your site.
+- [PageSpeed Insights](https://developers.google.com/speed/docs/insights/v5/about) can analyze your page and give some general hints to improve performance.
+- [Lighthouse](https://developers.google.com/web/tools/lighthouse/) can give you a detailed breakdown of many aspects of your site including performance, SEO and accessibility.
+- Test your page's speed using [WebPageTest.org](https://webpagetest.org/), where you can use different real device types and locations.
+- Try the [Chrome User Experience Report](https://developers.google.com/web/tools/chrome-user-experience-report) which quantifies real user metrics.
+- Define a [performance budget](/en-US/docs/Web/Performance/Performance_budgets).
 
 ### APIs
 
--   Gather user metrics using <https://github.com/akamai/boomerang> 
--   Or directly gather with [window.performance.timing](/en-US/docs/Web/API/Window/performance) 
+- Gather user metrics using <https://github.com/akamai/boomerang>
+- Or directly gather with [window.performance.timing](/en-US/docs/Web/API/Window/performance)
 
 ### Things not to do (bad practices)
 
--     Download everything
--     Use uncompressed media files
+- Download everything
+- Use uncompressed media files
 
-See also
---------
+## See also
 
--   <https://github.com/filamentgroup/loadCSS>
+- <https://github.com/filamentgroup/loadCSS>

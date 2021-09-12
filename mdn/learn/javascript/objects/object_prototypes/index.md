@@ -1,4 +1,4 @@
---- title: Object prototypes slug: Learn/JavaScript/Objects/Object\_prototypes tags: - Article - Beginner - CodingScripting - Constructor - JavaScript - Learn - OOJS - OOP - Object - Prototype - Prototype Chaining - create() - l10n:priority ---
+--- title: Object prototypes slug: Learn/JavaScript/Objects/Object_prototypes tags: - Article - Beginner - CodingScripting - Constructor - JavaScript - Learn - OOJS - OOP - Object - Prototype - Prototype Chaining - create() - l10n:priority ---
 
 {{LearnSidebar}}
 
@@ -10,8 +10,7 @@ Prototypes are the mechanism by which JavaScript objects inherit features from o
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Understanding JavaScript functions, familiarity with JavaScript basics (see <a href="/en-US/docs/Learn/JavaScript/First_steps">First steps</a> and <a href="/en-US/docs/Learn/JavaScript/Building_blocks">Building blocks</a>), and OOJS basics (see <a href="/en-US/docs/Learn/JavaScript/Objects/Basics">Introduction to objects</a>).</td></tr><tr class="even"><td>Objective:</td><td>To understand JavaScript object prototypes, how prototype chains work, and how to add new methods onto the prototype property.</td></tr></tbody></table>
 
-A prototype-based language?
----------------------------
+## A prototype-based language?
 
 JavaScript is often described as a **prototype-based language** — to provide inheritance, objects can have a **`prototype` object**, which acts as a template object that it inherits methods and properties from.
 
@@ -27,8 +26,7 @@ If we were to create a new instance — `let fooInstance = new Foobar()` — `fo
 
 Let's look at an example to make this a bit clearer.
 
-Understanding prototype objects
--------------------------------
+## Understanding prototype objects
 
 Here we'll go back to the example in which we finished writing our `Person()` constructor — load the example in your browser. You can use our [oojs-class-further-exercises.html](https://mdn.github.io/learning-area/javascript/oojs/introduction/oojs-class-further-exercises.html) example (see also the [source code](https://github.com/mdn/learning-area/blob/master/javascript/oojs/introduction/oojs-class-further-exercises.html)), if you don't already have it from working through the last article.
 
@@ -64,10 +62,10 @@ What happens if you call a method on `person1`, which is actually defined on `Ob
 
 `valueOf()` returns the value of the object it is called on. In this case, what happens is:
 
--   The browser initially checks to see if the `person1` object has a `valueOf()` method available on it, as defined on its constructor, `Person()`, and it doesn't.
--   So the browser checks to see if the `person1`'s prototype object has a `valueOf()` method available on it. It doesn't, then the browser checks `person1`'s prototype object's prototype object, and it has. So the method is called, and all is good!
+- The browser initially checks to see if the `person1` object has a `valueOf()` method available on it, as defined on its constructor, `Person()`, and it doesn't.
+- So the browser checks to see if the `person1`'s prototype object has a `valueOf()` method available on it. It doesn't, then the browser checks `person1`'s prototype object's prototype object, and it has. So the method is called, and all is good!
 
-**Note**: We want to reiterate that the methods and properties are **not** copied from one object to another in the prototype chain. They are *accessed* by *walking up the chain* as described above.
+**Note**: We want to reiterate that the methods and properties are **not** copied from one object to another in the prototype chain. They are _accessed_ by _walking up the chain_ as described above.
 
 **Note**: The prototype chain is traversed only while retrieving properties. If properties are set or `delete`d directly on the object, the prototype chain is not traversed.
 
@@ -77,8 +75,7 @@ Most modern browsers, however, do offer property available called `__proto__` (t
 
 Since ECMAScript 2015, you can access an object's prototype object indirectly via `Object.getPrototypeOf(obj)`.
 
-The prototype property: Where inherited members are defined
------------------------------------------------------------
+## The prototype property: Where inherited members are defined
 
 So, where are the inherited properties and methods defined? If you look at the `Object` reference page, you'll see listed in the left hand side a large number of properties and methods — many more than the number of inherited members we saw available on the `person1` object. Some are inherited, and some aren't — why is this?
 
@@ -112,8 +109,7 @@ You'll see other examples of prototype chain inheritance all over JavaScript —
 
 **Important**: The `prototype` property is one of the most confusingly-named parts of JavaScript — you might think that it points to the prototype object of the current object, but it doesn't (that's an internal object that can be accessed by `__proto__`, remember?). `prototype` instead is a property containing an object on which you define members that you want to be inherited.
 
-Revisiting create()
--------------------
+## Revisiting create()
 
 Earlier on we showed how the `Object.create()` method can be used to create a new object instance.
 
@@ -127,8 +123,7 @@ Earlier on we showed how the `Object.create()` method can be used to create a ne
 
 This will return the `person1` object.
 
-The constructor property
-------------------------
+## The constructor property
 
 Every constructor function has a `prototype` property whose value is an object containing a `constructor` property. This `constructor` property points to the original constructor function.
 
@@ -163,10 +158,9 @@ Try this, for example:
 
     person1.constructor.name
 
-**Note**: The value of `constructor.name` can change (due to prototypical inheritance, binding, preprocessors, transpilers, etc.). Therefore, for more complex examples, you'll want to use the `instanceof` operator instead. 
+**Note**: The value of `constructor.name` can change (due to prototypical inheritance, binding, preprocessors, transpilers, etc.). Therefore, for more complex examples, you'll want to use the `instanceof` operator instead.
 
-Modifying prototypes
---------------------
+## Modifying prototypes
 
 Let's have a look at an example of modifying the `prototype` property of a constructor function — methods added to the prototype are then available on all object instances created from the constructor. At this point we'll finally add something to our `Person()` constructor's prototype.
 
@@ -182,7 +176,7 @@ Let's have a look at an example of modifying the `prototype` property of a const
 
 You should get an alert message displayed, featuring the person's name as defined inside the constructor. This is really useful, but what is even more useful is that the whole inheritance chain has updated dynamically, automatically making this new method available on all object instances derived from the constructor.
 
-Think about this for a moment. In our code we define the constructor, then we create an instance object from the constructor, *then* we add a new method to the constructor's prototype:
+Think about this for a moment. In our code we define the constructor, then we create an instance object from the constructor, _then_ we add a new method to the constructor's prototype:
 
     function Person(first, last, age, gender, interests) {
 
@@ -196,12 +190,12 @@ Think about this for a moment. In our code we define the constructor, then we cr
       alert(this.name.first + ' has left the building. Bye for now!');
     };
 
-But the `farewell()` method is *still* available on the `person1` object instance — its members have been automatically updated to include the newly defined `farewell()` method.
+But the `farewell()` method is _still_ available on the `person1` object instance — its members have been automatically updated to include the newly defined `farewell()` method.
 
-**Note**: Conversely, deleting properties defined on the constructor's prototype using the `delete` operator removes the respective properties from all other class instances too.  
-  
-In the above example, performing `delete person1.__proto__.farewell` or `delete Person.prototype.farewell` would remove the `farewell()` method from all `Person` instances.  
-  
+**Note**: Conversely, deleting properties defined on the constructor's prototype using the `delete` operator removes the respective properties from all other class instances too.
+
+In the above example, performing `delete person1.__proto__.farewell` or `delete Person.prototype.farewell` would remove the `farewell()` method from all `Person` instances.
+
 In order to mitigate this issue, you could use `Object.defineProperty()` instead.
 
 **Note**: If you are having trouble getting this example to work, have a look at our [oojs-class-prototype.html](https://github.com/mdn/learning-area/blob/master/javascript/oojs/advanced/oojs-class-prototype.html) example (see it [running live](https://mdn.github.io/learning-area/javascript/oojs/advanced/oojs-class-prototype.html) also).
@@ -236,15 +230,13 @@ In fact, a fairly common pattern for more object definitions is to define the pr
 
 This pattern can be seen in action in Piotr Zalewa's [school plan app](https://github.com/zalun/school-plan-app/blob/master/stage9/js/index.js) example.
 
-Test your skills!
------------------
+## Test your skills!
 
 You've reached the end of this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: Object-oriented JavaScript](/en-US/docs/Learn/JavaScript/Objects/Test_your_skills:_Object-oriented_JavaScript).
 
 Note that this set of tests relies on some of the knowledge taught in the next article, so you might want to read that first before you try them.
 
-Summary
--------
+## Summary
 
 This article has covered JavaScript object prototypes, including how prototype object chains allow objects to inherit features from one another, the prototype property and how it can be used to add methods to constructors, and other related topics.
 
@@ -252,13 +244,12 @@ In the next article we'll look at how you can implement inheritance of functiona
 
 {{PreviousMenuNext("Learn/JavaScript/Objects/Object-oriented\_JS", "Learn/JavaScript/Objects/Inheritance", "Learn/JavaScript/Objects")}}
 
-In this module
---------------
+## In this module
 
--   [Object basics](/en-US/docs/Learn/JavaScript/Objects/Basics)
--   [Object-oriented JavaScript for beginners](/en-US/docs/Learn/JavaScript/Objects/Object-oriented_JS)
--   [Object prototypes](/en-US/docs/Learn/JavaScript/Objects/Object_prototypes)
--   [Inheritance in JavaScript](/en-US/docs/Learn/JavaScript/Objects/Inheritance)
--   [Working with JSON data](/en-US/docs/Learn/JavaScript/Objects/JSON)
--   [Object building practice](/en-US/docs/Learn/JavaScript/Objects/Object_building_practice)
--   [Adding features to our bouncing balls demo](/en-US/docs/Learn/JavaScript/Objects/Adding_bouncing_balls_features)
+- [Object basics](/en-US/docs/Learn/JavaScript/Objects/Basics)
+- [Object-oriented JavaScript for beginners](/en-US/docs/Learn/JavaScript/Objects/Object-oriented_JS)
+- [Object prototypes](/en-US/docs/Learn/JavaScript/Objects/Object_prototypes)
+- [Inheritance in JavaScript](/en-US/docs/Learn/JavaScript/Objects/Inheritance)
+- [Working with JSON data](/en-US/docs/Learn/JavaScript/Objects/JSON)
+- [Object building practice](/en-US/docs/Learn/JavaScript/Objects/Object_building_practice)
+- [Adding features to our bouncing balls demo](/en-US/docs/Learn/JavaScript/Objects/Adding_bouncing_balls_features)

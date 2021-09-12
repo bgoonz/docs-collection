@@ -1,4 +1,4 @@
---- title: Implementing feature detection slug: Learn/Tools\_and\_testing/Cross\_browser\_testing/Feature\_detection tags: - Article - Beginner - CSS - CodingScripting - JavaScript - Learn - Modernizr - Testing - Tools - cross browser - feature detection ---
+--- title: Implementing feature detection slug: Learn/Tools_and_testing/Cross_browser_testing/Feature_detection tags: - Article - Beginner - CSS - CodingScripting - JavaScript - Learn - Modernizr - Testing - Tools - cross browser - feature detection ---
 
 {{LearnSidebar}}
 
@@ -8,10 +8,9 @@ Feature detection involves working out whether a browser supports a certain bloc
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Familiarity with the core <a href="/en-US/docs/Learn/HTML">HTML</a>, <a href="/en-US/docs/Learn/CSS">CSS</a>, and <a href="/en-US/docs/Learn/JavaScript">JavaScript</a> languages; an idea of the high-level <a href="/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Introduction">principles of cross-browser testing</a>.</td></tr><tr class="even"><td>Objective:</td><td>To understand what the concept of feature detection is, and be able to implement suitable solutions in CSS and JavaScript.</td></tr></tbody></table>
 
-The concept of feature detection
---------------------------------
+## The concept of feature detection
 
-The idea behind feature detection is that you can run a test to determine whether a feature is supported in the current browser, and then conditionally run code to provide an acceptable experience both in browsers that *do* support the feature, and browsers that *don't*. If you don't do this, browsers that don't support the features you are using in your code won't display your sites properly and will just fail, creating a bad user experience.
+The idea behind feature detection is that you can run a test to determine whether a feature is supported in the current browser, and then conditionally run code to provide an acceptable experience both in browsers that _do_ support the feature, and browsers that _don't_. If you don't do this, browsers that don't support the features you are using in your code won't display your sites properly and will just fail, creating a bad user experience.
 
 Let's recap and look at the example we touched on in our [Handling common JavaScript problems](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/JavaScript#feature_detection) — the [Geolocation API](/en-US/docs/Web/API/Geolocation_API) (which exposes available location data for the device the web browser is running on) has the main entry point for its use, a `geolocation` property available on the global [Navigator](/en-US/docs/Web/API/Navigator) object. Therefore, you can detect whether the browser supports geolocation or not by using something like the following:
 
@@ -27,14 +26,13 @@ It is probably better to use an established feature detection library however, r
 
 Before we move on, we'd like to say one thing upfront — don't confuse feature detection with **browser sniffing** (detecting what specific browser is accessing the site) — this is a terrible practice that should be discouraged at all costs. See [Using bad browser sniffing code](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/JavaScript#using_bad_browser_sniffing_code) for more details.
 
-Writing your own feature detection tests
-----------------------------------------
+## Writing your own feature detection tests
 
 In this section, we'll look at implementing your own feature detection tests, in both CSS and JavaScript.
 
 ### CSS
 
-You can write tests for CSS features by testing for the existence of *[element.style.property](/en-US/docs/Web/API/HTMLElement/style)* (e.g. `paragraph.style.transform`) in JavaScript.
+You can write tests for CSS features by testing for the existence of _[element.style.property](/en-US/docs/Web/API/HTMLElement/style)_ (e.g. `paragraph.style.transform`) in JavaScript.
 
 A classic example might be to test for [Flexbox](/en-US/docs/Learn/CSS/CSS_layout/Flexbox) support in a browser; for browsers that support the newest Flexbox spec, we could use a flexible and robust flex layout. For browsers that don't, we could use a floated layout that works OK, although it is slightly more brittle and hacky, and not as cool-looking.
 
@@ -129,20 +127,19 @@ We then use `matchMedia()` in the JavaScript several times, to only run Brick na
       deck.shuffleTo(1);
     }
 
-Using Modernizr to implement feature detection
-----------------------------------------------
+## Using Modernizr to implement feature detection
 
 It is possible to implement your own feature detection tests using techniques like the ones detailed above. You might as well use a dedicated feature detection library however, as it makes things much easier. The mother of all feature detection libraries is [Modernizr](https://modernizr.com/), and it can detect just about everything you'll ever need. Let's look at how to use it now.
 
 When you are experimenting with Modernizr you might as well use the development build, which includes every possible feature detection test. Download this now by:
 
 1.  Clicking on the [Development build](https://modernizr.com/download?do_not_use_in_production) link.
-2.  Clicking the big pink *Build* button on the page that comes up.
-3.  Clicking the top *Download* link in the dialog box that appears.
+2.  Clicking the big pink _Build_ button on the page that comes up.
+3.  Clicking the top _Download_ link in the dialog box that appears.
 
 Save it somewhere sensible, like the directory you've been creating your other examples for in this article.
 
-When you are using Modernizr in production, you can go to the [Download page](https://modernizr.com/download) you've already visited and click the plus buttons for only the features you need feature detects for. Then when you click the *Build* button, you'll download a custom build containing only those feature detects, making for a much smaller file size.
+When you are using Modernizr in production, you can go to the [Download page](https://modernizr.com/download) you've already visited and click the plus buttons for only the features you need feature detects for. Then when you click the _Build_ button, you'll download a custom build containing only those feature detects, making for a much smaller file size.
 
 ### CSS
 
@@ -168,9 +165,9 @@ At this point, try loading your page, and you'll get an idea of how Modernizr wo
 
 It now contains a large number of classes that indicate the support status of different technology features. As an example, if the browser didn't support flexbox at all, `<html>` would be given a class name of `no-flexbox`. If it did support modern flexbox, it would get a class name of `flexbox`. If you search through the class list, you'll also see others relating to flexbox, like:
 
--   `flexboxlegacy` for the old flexbox spec (2009).
--   `flexboxtweener` for 2011 in between syntax supported by IE10.
--   `flexwrap` for the {{cssxref("flex-wrap")}} property, which isn't present in some implementations.
+- `flexboxlegacy` for the old flexbox spec (2009).
+- `flexboxtweener` for 2011 in between syntax supported by IE10.
+- `flexwrap` for the {{cssxref("flex-wrap")}} property, which isn't present in some implementations.
 
 **Note**: You can find a list of what all the class names mean — see [Features detected by Modernizr](https://modernizr.com/docs#features).
 
@@ -230,7 +227,7 @@ Let's look at an example to show how you'd use those properties.
 
 1.  First of all, make a local copy of the `modernizr-js.html` example file.
 2.  Attach the Modernizr library to the HTML using a `<script>` element, as we have done in previous demos. Put it above the existing `<script>` element, which is attaching the Google Maps API to the page.
-3.  Next, fill in the `YOUR-API-KEY` placeholder text in the second `<script>` element (as it is now) with a valid Google Maps API key. To get a key, sign in to a Google account, go to the [Get a Key/Authentication](https://developers.google.com/maps/documentation/javascript/get-api-key) page, then click the blue *Get a Key* button and follow the instructions.
+3.  Next, fill in the `YOUR-API-KEY` placeholder text in the second `<script>` element (as it is now) with a valid Google Maps API key. To get a key, sign in to a Google account, go to the [Get a Key/Authentication](https://developers.google.com/maps/documentation/javascript/get-api-key) page, then click the blue _Get a Key_ button and follow the instructions.
 4.  Finally, add another `<script>` element at the bottom of the HTML body (just before the `</body>` tag), and put the following script inside the tags:
 
         if (Modernizr.geolocation) {
@@ -255,8 +252,7 @@ Let's look at an example to show how you'd use those properties.
 
 Try your example out! Here we use the `Modernizr.geolocation` test to check whether geolocation is supported by the current browser. If it is, we run some code that gets your device's current location, and plots it on a Google Map.
 
-Summary
--------
+## Summary
 
 This article covered feature detection in a reasonable amount of detail, going through the main concepts and showing you how to both implement your own feature detection tests and use the Modernizr library to implement tests more easily.
 
@@ -264,14 +260,13 @@ Next up, we'll start looking at automated testing.
 
 {{PreviousMenuNext("Learn/Tools\_and\_testing/Cross\_browser\_testing/Accessibility","Learn/Tools\_and\_testing/Cross\_browser\_testing/Automated\_testing", "Learn/Tools\_and\_testing/Cross\_browser\_testing")}}
 
-In this module
---------------
+## In this module
 
--   [Introduction to cross browser testing](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Introduction)
--   [Strategies for carrying out testing](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Testing_strategies)
--   [Handling common HTML and CSS problems](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/HTML_and_CSS)
--   [Handling common JavaScript problems](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/JavaScript)
--   [Handling common accessibility problems](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Accessibility)
--   [Implementing feature detection](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Feature_detection)
--   [Introduction to automated testing](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Automated_testing)
--   [Setting up your own test automation environment](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Your_own_automation_environment)
+- [Introduction to cross browser testing](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Introduction)
+- [Strategies for carrying out testing](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Testing_strategies)
+- [Handling common HTML and CSS problems](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/HTML_and_CSS)
+- [Handling common JavaScript problems](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/JavaScript)
+- [Handling common accessibility problems](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Accessibility)
+- [Implementing feature detection](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Feature_detection)
+- [Introduction to automated testing](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Automated_testing)
+- [Setting up your own test automation environment](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Your_own_automation_environment)

@@ -1,4 +1,4 @@
---- title: What went wrong? Troubleshooting JavaScript slug: Learn/JavaScript/First\_steps/What\_went\_wrong tags: - Article - Beginner - CodingScripting - Debugging - Developer Tools - Error - JavaScript - Learn - Tutorial - console.log - l10n:priority ---
+--- title: What went wrong? Troubleshooting JavaScript slug: Learn/JavaScript/First_steps/What_went_wrong tags: - Article - Beginner - CodingScripting - Debugging - Developer Tools - Error - JavaScript - Learn - Tutorial - console.log - l10n:priority ---
 
 {{LearnSidebar}}
 
@@ -8,18 +8,16 @@ When you built up the "Guess the number" game in the previous article, you may h
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, a basic understanding of HTML and CSS, an understanding of what JavaScript is.</td></tr><tr class="even"><td>Objective:</td><td>To gain the ability and confidence to start fixing problems in your own code.</td></tr></tbody></table>
 
-Types of error
---------------
+## Types of error
 
 Generally speaking, when you do something wrong in code, there are two main types of error that you'll come across:
 
--   **Syntax errors**: These are spelling errors in your code that actually cause the program not to run at all, or stop working part way through — you will usually be provided with some error messages too. These are usually okay to fix, as long as you are familiar with the right tools and know what the error messages mean!
--   **Logic errors**: These are errors where the syntax is actually correct but the code is not what you intended it to be, meaning that program runs successfully but gives incorrect results. These are often harder to fix than syntax errors, as there usually isn't an error message to direct you to the source of the error.
+- **Syntax errors**: These are spelling errors in your code that actually cause the program not to run at all, or stop working part way through — you will usually be provided with some error messages too. These are usually okay to fix, as long as you are familiar with the right tools and know what the error messages mean!
+- **Logic errors**: These are errors where the syntax is actually correct but the code is not what you intended it to be, meaning that program runs successfully but gives incorrect results. These are often harder to fix than syntax errors, as there usually isn't an error message to direct you to the source of the error.
 
-Okay, so it's not quite *that* simple — there are some other differentiators as you drill down deeper. But the above classifications will do at this early stage in your career. We'll look at both of these types going forward.
+Okay, so it's not quite _that_ simple — there are some other differentiators as you drill down deeper. But the above classifications will do at this early stage in your career. We'll look at both of these types going forward.
 
-An erroneous example
---------------------
+## An erroneous example
 
 To get started, let's return to our number guessing game — except this time we'll be exploring a version that has some deliberate errors introduced. Go to Github and make yourself a local copy of [number-game-errors.html](https://github.com/mdn/learning-area/blob/master/javascript/introduction-to-js-1/troubleshooting/number-game-errors.html) (see it [running live here](https://mdn.github.io/learning-area/javascript/introduction-to-js-1/troubleshooting/number-game-errors.html)).
 
@@ -30,23 +28,22 @@ To get started, let's return to our number guessing game — except this time we
 
 At this point, let's consult the developer console to see if it reports any syntax errors, then try to fix them. You'll learn how below.
 
-Fixing syntax errors
---------------------
+## Fixing syntax errors
 
 Earlier on in the course we got you to type some simple JavaScript commands into the [developer tools JavaScript console](/en-US/docs/Learn/Common_questions/What_are_browser_developer_tools) (if you can't remember how to open this in your browser, follow the previous link to find out how). What's even more useful is that the console gives you error messages whenever a syntax error exists inside the JavaScript being fed into the browser's JavaScript engine. Now let's go hunting.
 
 1.  Go to the tab that you've got `number-game-errors.html` open in, and open your JavaScript console. You should see an error message along the following lines: ![](not-a-function.png)
 2.  This is a pretty easy error to track down, and the browser gives you several useful bits of information to help you out (the screenshot above is from Firefox, but other browsers provide similar information). From left to right, we've got:
-    -   A red "x" to indicate that this is an error.
-    -   An error message to indicate what's gone wrong: "TypeError: guessSubmit.addeventListener is not a function"
-    -   A "Learn More" link that links through to an MDN page that explains what this error means in greater detail.
-    -   The name of the JavaScript file, which links through to the Debugger tab of the developer tools. If you follow this link, you'll see the exact line where the error is highlighted.
-    -   The line number where the error is, and the character number in that line where the error is first seen. In this case, we've got line 86, character number 3.
+    - A red "x" to indicate that this is an error.
+    - An error message to indicate what's gone wrong: "TypeError: guessSubmit.addeventListener is not a function"
+    - A "Learn More" link that links through to an MDN page that explains what this error means in greater detail.
+    - The name of the JavaScript file, which links through to the Debugger tab of the developer tools. If you follow this link, you'll see the exact line where the error is highlighted.
+    - The line number where the error is, and the character number in that line where the error is first seen. In this case, we've got line 86, character number 3.
 3.  If we look at line 86 in our code editor, we'll find this line:
 
         guessSubmit.addeventListener('click', checkGuess);
 
-4.  The error message says "guessSubmit.addeventListener is not a function", which means that the function we're calling is not recognized by the JavaScript interpreter. Often, this error message actually means that we've spelled something wrong. If you are not sure of the correct spelling of a piece of syntax, it is often good to look up the feature on MDN. The best way to do this currently is to search for "mdn *name-of-feature*" with your favorite search engine. Here's a shortcut to save you some time in this instance: `addEventListener()`.
+4.  The error message says "guessSubmit.addeventListener is not a function", which means that the function we're calling is not recognized by the JavaScript interpreter. Often, this error message actually means that we've spelled something wrong. If you are not sure of the correct spelling of a piece of syntax, it is often good to look up the feature on MDN. The best way to do this currently is to search for "mdn _name-of-feature_" with your favorite search engine. Here's a shortcut to save you some time in this instance: `addEventListener()`.
 5.  So, looking at this page, the error appears to be that we've spelled the function name wrong! Remember that JavaScript is case sensitive, so any slight difference in spelling or casing will cause an error. Changing `addeventListener` to `addEventListener` should fix this. Do this now.
 
 **Note**: See our [TypeError: "x" is not a function](/en-US/docs/Web/JavaScript/Reference/Errors/Not_a_function) reference page for more details about this error.
@@ -90,8 +87,7 @@ Earlier on in the course we got you to type some simple JavaScript commands into
 2.  At that point, the game fails again, and the same error is spat out that we got at the beginning — "TypeError: resetButton.addeventListener is not a function"! However, this time it's listed as coming from line 94.
 3.  Looking at line number 94, it is easy to see that we've made the same mistake here. We again just need to change `addeventListener` to `.addEventListener`. Do this now.
 
-A logic error
--------------
+## A logic error
 
 At this point, the game should play through fine, however after playing through a few times you'll undoubtedly notice that the "random" number you've got to guess is always 1. Definitely not quite how we want the game to play out!
 
@@ -131,8 +127,7 @@ Hence us wanting to add 1, to give us a random number between 1 and 100:
 
 Try updating both lines like this, then save and refresh — the game should now play like we are intending it to!
 
-Other common errors
--------------------
+## Other common errors
 
 There are other common errors you'll come across in your code. This section highlights most of them.
 
@@ -184,36 +179,33 @@ This has caused the browser to think that we are trying to pass the contents of 
 
 This is easy — it generally means that you've missed one of your curly braces from a function or conditional structure. We got this error by deleting one of the closing curly braces near the bottom of the `checkGuess()` function.
 
-### SyntaxError: expected expression, got '*string*' or SyntaxError: unterminated string literal
+### SyntaxError: expected expression, got '_string_' or SyntaxError: unterminated string literal
 
-These errors generally mean that you've left off a string value's opening or closing quote mark. In the first error above, *string* would be replaced with the unexpected character(s) that the browser found instead of a quote mark at the start of a string. The second error means that the string has not been ended with a quote mark.
+These errors generally mean that you've left off a string value's opening or closing quote mark. In the first error above, _string_ would be replaced with the unexpected character(s) that the browser found instead of a quote mark at the start of a string. The second error means that the string has not been ended with a quote mark.
 
 For all of these errors, think about how we tackled the examples we looked at in the walkthrough. When an error arises, look at the line number you are given, go to that line and see if you can spot what's wrong. Bear in mind that the error is not necessarily going to be on that line, and also that the error might not be caused by the exact same problem we cited above!
 
 **Note**: See our [SyntaxError: Unexpected token](/en-US/docs/Web/JavaScript/Reference/Errors/Unexpected_token) and [SyntaxError: unterminated string literal](/en-US/docs/Web/JavaScript/Reference/Errors/Unterminated_string_literal) reference pages for more details about these errors.
 
-Summary
--------
+## Summary
 
 So there we have it, the basics of figuring out errors in simple JavaScript programs. It won't always be that simple to work out what's wrong in your code, but at least this will save you a few hours of sleep and allow you to progress a bit faster when things don't turn out right, especially in the earlier stages of your learning journey.
 
-See also
---------
+## See also
 
--   There are many other types of errors that aren't listed here; we are compiling a reference that explains what they mean in detail — see the [JavaScript error reference](/en-US/docs/Web/JavaScript/Reference/Errors).
--   If you come across any errors in your code that you aren't sure how to fix after reading this article, you can get help! Ask for help on the [MDN Discourse forum Learning category](https://discourse.mozilla.org/c/mdn/learn), or in the [MDN Web Docs room](https://chat.mozilla.org/#/room/#mdn:mozilla.org) on <a href="https://wiki.mozilla.org/Matrix" class="external external-icon">Matrix</a>. Tell us what your error is, and we'll try to help you. A listing of your code would be useful as well.
+- There are many other types of errors that aren't listed here; we are compiling a reference that explains what they mean in detail — see the [JavaScript error reference](/en-US/docs/Web/JavaScript/Reference/Errors).
+- If you come across any errors in your code that you aren't sure how to fix after reading this article, you can get help! Ask for help on the [MDN Discourse forum Learning category](https://discourse.mozilla.org/c/mdn/learn), or in the [MDN Web Docs room](https://chat.mozilla.org/#/room/#mdn:mozilla.org) on <a href="https://wiki.mozilla.org/Matrix" class="external external-icon">Matrix</a>. Tell us what your error is, and we'll try to help you. A listing of your code would be useful as well.
 
 {{PreviousMenuNext("Learn/JavaScript/First\_steps/A\_first\_splash", "Learn/JavaScript/First\_steps/Variables", "Learn/JavaScript/First\_steps")}}
 
-In this module
---------------
+## In this module
 
--   [What is JavaScript?](/en-US/docs/Learn/JavaScript/First_steps/What_is_JavaScript)
--   [A first splash into JavaScript](/en-US/docs/Learn/JavaScript/First_steps/A_first_splash)
--   [What went wrong? Troubleshooting JavaScript](/en-US/docs/Learn/JavaScript/First_steps/What_went_wrong)
--   [Storing the information you need — Variables](/en-US/docs/Learn/JavaScript/First_steps/Variables)
--   [Basic math in JavaScript — numbers and operators](/en-US/docs/Learn/JavaScript/First_steps/Math)
--   [Handling text — strings in JavaScript](/en-US/docs/Learn/JavaScript/First_steps/Strings)
--   [Useful string methods](/en-US/docs/Learn/JavaScript/First_steps/Useful_string_methods)
--   [Arrays](/en-US/docs/Learn/JavaScript/First_steps/Arrays)
--   [Assessment: Silly story generator](/en-US/docs/Learn/JavaScript/First_steps/Silly_story_generator)
+- [What is JavaScript?](/en-US/docs/Learn/JavaScript/First_steps/What_is_JavaScript)
+- [A first splash into JavaScript](/en-US/docs/Learn/JavaScript/First_steps/A_first_splash)
+- [What went wrong? Troubleshooting JavaScript](/en-US/docs/Learn/JavaScript/First_steps/What_went_wrong)
+- [Storing the information you need — Variables](/en-US/docs/Learn/JavaScript/First_steps/Variables)
+- [Basic math in JavaScript — numbers and operators](/en-US/docs/Learn/JavaScript/First_steps/Math)
+- [Handling text — strings in JavaScript](/en-US/docs/Learn/JavaScript/First_steps/Strings)
+- [Useful string methods](/en-US/docs/Learn/JavaScript/First_steps/Useful_string_methods)
+- [Arrays](/en-US/docs/Learn/JavaScript/First_steps/Arrays)
+- [Assessment: Silly story generator](/en-US/docs/Learn/JavaScript/First_steps/Silly_story_generator)

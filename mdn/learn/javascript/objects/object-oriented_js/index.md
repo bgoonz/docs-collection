@@ -1,4 +1,4 @@
---- title: Object-oriented JavaScript for beginners slug: Learn/JavaScript/Objects/Object-oriented\_JS tags: - Article - Beginner - CodingScripting - Constructor - Create - JavaScript - Learn - OOJS - OOP - Object - Object-Oriented - instance - l10n:priority ---
+--- title: Object-oriented JavaScript for beginners slug: Learn/JavaScript/Objects/Object-oriented_JS tags: - Article - Beginner - CodingScripting - Constructor - Create - JavaScript - Learn - OOJS - OOP - Object - Object-Oriented - instance - l10n:priority ---
 
 {{LearnSidebar}}
 
@@ -8,8 +8,7 @@ With the basics out of the way, we'll now focus on object-oriented JavaScript (O
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, a basic understanding of HTML and CSS, familiarity with JavaScript basics (see <a href="/en-US/docs/Learn/JavaScript/First_steps">First steps</a> and <a href="/en-US/docs/Learn/JavaScript/Building_blocks">Building blocks</a>) and OOJS basics (see <a href="/en-US/docs/Learn/JavaScript/Objects/Basics">Introduction to objects</a>).</td></tr><tr class="even"><td>Objective:</td><td>To understand the basic theory behind object-oriented programming, how this relates to JavaScript ("everything is an object"), and how to create constructors and object instances.</td></tr></tbody></table>
 
-Object-oriented programming — the basics
-----------------------------------------
+## Object-oriented programming — the basics
 
 To start with, let's give you a simplistic, high-level view of what Object-oriented programming (OOP) is. We say simplistic, because OOP can quickly get very complicated, and giving it a full treatment now would probably confuse more than help. The basic idea of OOP is that we use objects to model real world things that we want to represent inside our programs, and/or provide a simple way to access functionality that would otherwise be hard or impossible to make use of.
 
@@ -19,7 +18,7 @@ Objects can contain related data and code, which represent information about the
 
 Let's consider a simple program that displays information about the students and teachers at a school. Here we'll look at OOP theory in general, not in the context of any specific programming language.
 
-To start this off, we could return to our Person object type from our [first objects article](/en-US/docs/Learn/JavaScript/Objects/Basics), which defines the generic data and functionality of a person. There are lots of things you *could* know about a person (their address, height, shoe size, DNA profile, passport number, significant personality traits ...) , but in this case we are only interested in showing their name, age, gender, and interests, and we also want to be able to write a short introduction about them based on this data, and get them to say hello. This is known as **abstraction** — creating a simple model of a more complex thing, which represents its most important aspects in a way that is easy to work with for our program's purposes.
+To start this off, we could return to our Person object type from our [first objects article](/en-US/docs/Learn/JavaScript/Objects/Basics), which defines the generic data and functionality of a person. There are lots of things you _could_ know about a person (their address, height, shoe size, DNA profile, passport number, significant personality traits ...) , but in this case we are only interested in showing their name, age, gender, and interests, and we also want to be able to write a short introduction about them based on this data, and get them to say hello. This is known as **abstraction** — creating a simple model of a more complex thing, which represents its most important aspects in a way that is easy to work with for our program's purposes.
 
 ![](person-diagram.png)
 
@@ -37,7 +36,7 @@ In this case we don't want generic people — we want teachers and students, whi
 
 ![](mdn-graphics-inherited-3.png)
 
-This is really useful — teachers and students share many common features such as name, gender, and age, so it is convenient to only have to define those features once. You can also define the same feature separately in different classes, as each definition of that feature will be in a different namespace. For example, a student's greeting might be of the form "Yo, I'm \[firstName\]" (e.g *Yo, I'm Sam*), whereas a teacher might use something more formal, such as "Hello, my name is \[Prefix\] \[lastName\], and I teach \[Subject\]." (e.g *Hello, My name is Mr Griffiths, and I teach Chemistry*).
+This is really useful — teachers and students share many common features such as name, gender, and age, so it is convenient to only have to define those features once. You can also define the same feature separately in different classes, as each definition of that feature will be in a different namespace. For example, a student's greeting might be of the form "Yo, I'm \[firstName\]" (e.g _Yo, I'm Sam_), whereas a teacher might use something more formal, such as "Hello, my name is \[Prefix\] \[lastName\], and I teach \[Subject\]." (e.g _Hello, My name is Mr Griffiths, and I teach Chemistry_).
 
 **Note**: The fancy word for the ability of multiple object types to implement the same functionality is **polymorphism**. Just in case you were wondering.
 
@@ -47,8 +46,7 @@ You can now create object instances from your child classes. For example:
 
 In the rest of the article, we'll start to look at how OOP theory can be put into practice in JavaScript.
 
-Constructors and object instances
----------------------------------
+## Constructors and object instances
 
 JavaScript uses special functions called **constructor functions** to define and initialize objects and their features. They are useful because you'll often come across situations in which you don't know how many objects you will be creating; constructors provide the means to create as many objects as you need in an effective way, attaching data and functions to them as required.
 
@@ -179,8 +177,7 @@ In addition, there are a couple of problems with our `bio()` method — the outp
 
 **Note**: If you get stuck, we have provided an [answer inside our GitHub repo](https://github.com/mdn/learning-area/blob/master/javascript/oojs/introduction/oojs-class-further-exercises.html) ([see it live](https://mdn.github.io/learning-area/javascript/oojs/introduction/oojs-class-further-exercises.html)) — try writing it yourself first though!
 
-Other ways to create object instances
--------------------------------------
+## Other ways to create object instances
 
 So far we've seen two different ways to create an object instance — [declaring an object literal](/en-US/docs/Learn/JavaScript/Objects/Basics#object_basics), and using a constructor function (see above).
 
@@ -233,15 +230,13 @@ One limitation of `create()` is that IE8 does not support it. So constructors ma
 
 We'll explore the effects of `create()` in more detail later on.
 
-Test your skills!
------------------
+## Test your skills!
 
 You've reached the end of this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: Object-oriented JavaScript](/en-US/docs/Learn/JavaScript/Objects/Test_your_skills:_Object-oriented_JavaScript).
 
 Note that this set of tests relies on some of the knowledge taught in the next two articles, so you might want to read them first before you try the tests.
 
-Summary
--------
+## Summary
 
 This article has provided a simplified view of object-oriented theory — this isn't the whole story, but it gives you an idea of what we are dealing with here. In addition, we have started to look at different ways of generating object instances.
 
@@ -249,13 +244,12 @@ In the next article, we'll explore JavaScript object prototypes.
 
 {{PreviousMenuNext("Learn/JavaScript/Objects/Basics", "Learn/JavaScript/Objects/Object\_prototypes", "Learn/JavaScript/Objects")}}
 
-In this module
---------------
+## In this module
 
--   [Object basics](/en-US/docs/Learn/JavaScript/Objects/Basics)
--   [Object-oriented JavaScript for beginners](/en-US/docs/Learn/JavaScript/Objects/Object-oriented_JS)
--   [Object prototypes](/en-US/docs/Learn/JavaScript/Objects/Object_prototypes)
--   [Inheritance in JavaScript](/en-US/docs/Learn/JavaScript/Objects/Inheritance)
--   [Working with JSON data](/en-US/docs/Learn/JavaScript/Objects/JSON)
--   [Object building practice](/en-US/docs/Learn/JavaScript/Objects/Object_building_practice)
--   [Adding features to our bouncing balls demo](/en-US/docs/Learn/JavaScript/Objects/Adding_bouncing_balls_features)
+- [Object basics](/en-US/docs/Learn/JavaScript/Objects/Basics)
+- [Object-oriented JavaScript for beginners](/en-US/docs/Learn/JavaScript/Objects/Object-oriented_JS)
+- [Object prototypes](/en-US/docs/Learn/JavaScript/Objects/Object_prototypes)
+- [Inheritance in JavaScript](/en-US/docs/Learn/JavaScript/Objects/Inheritance)
+- [Working with JSON data](/en-US/docs/Learn/JavaScript/Objects/JSON)
+- [Object building practice](/en-US/docs/Learn/JavaScript/Objects/Object_building_practice)
+- [Adding features to our bouncing balls demo](/en-US/docs/Learn/JavaScript/Objects/Adding_bouncing_balls_features)

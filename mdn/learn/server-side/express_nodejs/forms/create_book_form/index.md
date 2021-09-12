@@ -1,16 +1,14 @@
---- title: Create Book form slug: Learn/Server-side/Express\_Nodejs/forms/Create\_book\_form tags: - Express - Forms - Node - part 6 - server-side ---
+--- title: Create Book form slug: Learn/Server-side/Express_Nodejs/forms/Create_book_form tags: - Express - Forms - Node - part 6 - server-side ---
 
 This subarticle shows how to define a page/form to create `Book` objects. This is a little more complicated than the equivalent `Author` or `Genre` pages because we need to get and display available `Author` and `Genre` records in our `Book` form.
 
-Import validation and sanitisation methods
-------------------------------------------
+## Import validation and sanitisation methods
 
 Open **/controllers/bookController.js**, and add the following line at the top of the file:
 
     const { body,validationResult } = require('express-validator');
 
-Controller—get route
---------------------
+## Controller—get route
 
 Find the exported `book_create_get()` controller method and replace it with the following code.
 
@@ -34,8 +32,7 @@ Find the exported `book_create_get()` controller method and replace it with the 
 
 This uses the async module (described in [Express Tutorial Part 5: Displaying library data](/en-US/docs/Learn/Server-side/Express_Nodejs/Displaying_data)) to get all `Author` and `Genre` objects. These are then passed to the view `book_form.pug` as variables named `authors` and `genres` (along with the page `title`).
 
-Controller—post route
----------------------
+## Controller—post route
 
 Find the exported `book_create_post()` controller method and replace it with the following code.
 
@@ -138,10 +135,9 @@ The final difference with respect to the other form handling code is that we nee
         }
     }
 
-View
-----
+## View
 
-Create **/views/book\_form.pug** and copy in the text below.
+Create **/views/book_form.pug** and copy in the text below.
 
     extends layout
 
@@ -181,23 +177,21 @@ Create **/views/book\_form.pug** and copy in the text below.
           for error in errors
             li!= error.msg
 
-The view structure and behavior is almost the same as for the **genre\_form.pug** template.
+The view structure and behavior is almost the same as for the **genre_form.pug** template.
 
 The main differences are in how we implement the selection-type fields: `Author` and `Genre`.
 
--   The set of genres are displayed as checkboxes, using the `checked` value we set in the controller to determine whether or not the box should be selected.
--   The set of authors are displayed as a single-selection alphabetically ordered drop-down list. If the user has previously selected a book author (i.e. when fixing invalid field values after initial form submission, or when updating book details) the author will be re-selected when the form is displayed. Here we determine what author to select by comparing the id of the current author option with the value previously entered by the user (passed in via the `book` variable). This is highlighted above!
-    **Note:** If there is an error in the submitted form, then, when the form is to be re-rendered, the new book author's id and the existing books's authors ids are of type `Schema.Types.ObjectId`. So to compare them we must convert them to strings first.
+- The set of genres are displayed as checkboxes, using the `checked` value we set in the controller to determine whether or not the box should be selected.
+- The set of authors are displayed as a single-selection alphabetically ordered drop-down list. If the user has previously selected a book author (i.e. when fixing invalid field values after initial form submission, or when updating book details) the author will be re-selected when the form is displayed. Here we determine what author to select by comparing the id of the current author option with the value previously entered by the user (passed in via the `book` variable). This is highlighted above!
+  **Note:** If there is an error in the submitted form, then, when the form is to be re-rendered, the new book author's id and the existing books's authors ids are of type `Schema.Types.ObjectId`. So to compare them we must convert them to strings first.
 
-What does it look like?
------------------------
+## What does it look like?
 
-Run the application, open your browser to <a href="http://localhost:3000/" class="external external-icon">http://localhost:3000/</a>, then select the *Create new book* link. If everything is set up correctly, your site should look something like the following screenshot. After you submit a valid book, it should be saved and you'll be taken to the book detail page.
+Run the application, open your browser to <a href="http://localhost:3000/" class="external external-icon">http://localhost:3000/</a>, then select the _Create new book_ link. If everything is set up correctly, your site should look something like the following screenshot. After you submit a valid book, it should be saved and you'll be taken to the book detail page.
 
 ![](locallibary_express_book_create_empty.png)
 
-Next steps
-----------
+## Next steps
 
 Return to [Express Tutorial Part 6: Working with forms](/en-US/docs/Learn/Server-side/Express_Nodejs/forms).
 

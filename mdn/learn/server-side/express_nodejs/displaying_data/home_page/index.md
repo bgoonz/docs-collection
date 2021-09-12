@@ -1,11 +1,10 @@
---- title: Home page slug: Learn/Server-side/Express\_Nodejs/Displaying\_data/Home\_page tags: - Development - Express - Express Server - Node - displaying data - nodejs - part 5 - server-side ---
+--- title: Home page slug: Learn/Server-side/Express_Nodejs/Displaying_data/Home_page tags: - Development - Express - Express Server - Node - displaying data - nodejs - part 5 - server-side ---
 
 The first page we'll create will be the website home page, which is accessible from either the site (`'/'`) or catalog (`catalog/`) root. This will display some static text describing the site, along with dynamically calculated "counts" of different record types in the database.
 
 We've already created a route for the home page. In order to complete the page we need to update our controller function to fetch "counts" of records from the database, and create a view (template) that we can use to render the page.
 
-Route
------
+## Route
 
 We created our index page routes in a [previous tutorial.](/en-US/docs/Learn/Server-side/Express_Nodejs/routes) As a reminder, all the route functions are defined in **/routes/catalog.js**:
 
@@ -20,8 +19,7 @@ Where the callback function parameter (`book_controller.index`) is defined in **
 
 It is this controller function that we extend to get information from our models and then render it using a template (view).
 
-Controller
-----------
+## Controller
 
 The index controller function needs to fetch information about how many `Book`, `BookInstance`, available `BookInstance`, `Author`, and `Genre` records we have in the database, render this data in a template to create an HTML page, and then return it in an HTTP response.
 
@@ -40,7 +38,7 @@ Open **/controllers/bookController.js**. Near the top of the file you should see
      res.send('NOT IMPLEMENTED: Site Home Page');
     }
 
-Replace all the code above with the following code fragment. The first thing this does is import (`require()`) all the models (highlighted in bold). We need to do this because we'll be using them to get our counts of documents. It then imports the *async* module (which we discussed previously in [Asynchronous flow control using async](/en-US/docs/Learn/Server-side/Express_Nodejs/Displaying_data/flow_control_using_async)).
+Replace all the code above with the following code fragment. The first thing this does is import (`require()`) all the models (highlighted in bold). We need to do this because we'll be using them to get our counts of documents. It then imports the _async_ module (which we discussed previously in [Asynchronous flow control using async](/en-US/docs/Learn/Server-side/Express_Nodejs/Displaying_data/flow_control_using_async)).
 
     var Book = require('../models/book');
     var Author = require('../models/author');
@@ -78,8 +76,7 @@ On success the callback function calls `res.render()`, specifying a view (templa
 
 **Note:** The callback function from `async.parallel()` above is a little unusual in that we render the page whether or not there was an error (normally you might use a separate execution path for handling the display of errors).
 
-View
-----
+## View
 
 Open **/views/index.pug** and replace its content with the text below.
 
@@ -105,21 +102,19 @@ Open **/views/index.pug** and replace its content with the text below.
 
 The view is straightforward. We extend the **layout.pug** base template, overriding the `block` named '**content**'. The first `h1` heading will be the escaped text for the `title` variable that was passed into the `render()` function—note the use of the '`h1=`' so that the following text is treated as a JavaScript expression. We then include a paragraph introducing the LocalLibrary.
 
-Under the *Dynamic content* heading we check whether the error variable passed in from the `render()` function has been defined. If so, we note the error. If not, we get and list the number of copies of each model from the `data` variable.
+Under the _Dynamic content_ heading we check whether the error variable passed in from the `render()` function has been defined. If so, we note the error. If not, we get and list the number of copies of each model from the `data` variable.
 
 **Note:** We didn't escape the count values (i.e. we used the `!{}` syntax) because the count values are calculated. If the information was supplied by end-users then we'd escape the variable for display.
 
-What does it look like?
------------------------
+## What does it look like?
 
 At this point we should have created everything needed to display the index page. Run the application and open your browser to <a href="http://localhost:3000/" class="external external-icon">http://localhost:3000/</a>. If everything is set up correctly, your site should look something like the following screenshot.
 
 ![Home page - Express Local Library site](locallibary_express_home.png)
 
-**Note:** You won't be able to *use* the sidebar links yet because the urls, views, and templates for those pages haven't been defined. If you try you'll get errors like "NOT IMPLEMENTED: Book list" for example, depending on the link you click on.  These string literals (which will be replaced with proper data) were specified in the different controllers that live inside your "controllers" file.
+**Note:** You won't be able to _use_ the sidebar links yet because the urls, views, and templates for those pages haven't been defined. If you try you'll get errors like "NOT IMPLEMENTED: Book list" for example, depending on the link you click on.  These string literals (which will be replaced with proper data) were specified in the different controllers that live inside your "controllers" file.
 
-Next steps
-----------
+## Next steps
 
--   Return to [Express Tutorial Part 5: Displaying library data](/en-US/docs/Learn/Server-side/Express_Nodejs/Displaying_data).
--   Proceed to the next subarticle of part 5: [Book list page](/en-US/docs/Learn/Server-side/Express_Nodejs/Displaying_data/Book_list_page).
+- Return to [Express Tutorial Part 5: Displaying library data](/en-US/docs/Learn/Server-side/Express_Nodejs/Displaying_data).
+- Proceed to the next subarticle of part 5: [Book list page](/en-US/docs/Learn/Server-side/Express_Nodejs/Displaying_data/Book_list_page).

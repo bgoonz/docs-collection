@@ -8,8 +8,7 @@ In the second article in this module, we look at some more advanced features of 
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>The basics of HTML (see <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML">Introduction to HTML</a>).</td></tr><tr class="even"><td>Objective:</td><td>To learn about more advanced HTML table features, and the accessibility of tables.</td></tr></tbody></table>
 
-Adding a caption to your table with &lt;caption&gt;
----------------------------------------------------
+## Adding a caption to your table with &lt;caption&gt;
 
 You can give your table a caption by putting it inside a {{htmlelement("caption")}} element and nesting that inside the {{htmlelement("table")}} element. You should put it just below the opening `<table>` tag.
 
@@ -35,8 +34,7 @@ Let's try this out, revisiting an example we first met in the previous article.
 
 **Note**: You can find our version on GitHub — see [timetable-caption.html](https://github.com/mdn/learning-area/blob/master/html/tables/advanced/timetable-caption.html) ([see it live also](https://mdn.github.io/learning-area/html/tables/advanced/timetable-caption.html)).
 
-Adding structure with &lt;thead&gt;, &lt;tfoot&gt;, and &lt;tbody&gt;
----------------------------------------------------------------------
+## Adding structure with &lt;thead&gt;, &lt;tfoot&gt;, and &lt;tbody&gt;
 
 As your tables get a bit more complex in structure, it is useful to give them more structural definition. One clear way to do this is by using {{htmlelement("thead")}}, {{htmlelement("tfoot")}}, and {{htmlelement("tbody")}}, which allow you to mark up a header, footer, and body section for the table.
 
@@ -44,9 +42,9 @@ These elements don't make the table any more accessible to screenreader users, a
 
 To use them:
 
--   The `<thead>` element must wrap the part of the table that is the header — this is usually the first row containing the column headings, but this is not necessarily always the case. If you are using {{htmlelement("col")}}/{{htmlelement("colgroup")}} element, the table header should come just below those.
--   The `<tfoot>` element needs to wrap the part of the table that is the footer — this might be a final row with items in the previous rows summed, for example. You can include the table footer right at the bottom of the table as you'd expect, or just below the table header (the browser will still render it at the bottom of the table).
--   The `<tbody>` element needs to wrap the other parts of the table content that aren't in the table header or footer. It will appear below the table header or sometimes footer, depending on how you decided to structure it.
+- The `<thead>` element must wrap the part of the table that is the header — this is usually the first row containing the column headings, but this is not necessarily always the case. If you are using {{htmlelement("col")}}/{{htmlelement("colgroup")}} element, the table header should come just below those.
+- The `<tfoot>` element needs to wrap the part of the table that is the footer — this might be a final row with items in the previous rows summed, for example. You can include the table footer right at the bottom of the table as you'd expect, or just below the table header (the browser will still render it at the bottom of the table).
+- The `<tbody>` element needs to wrap the other parts of the table content that aren't in the table header or footer. It will appear below the table header or sometimes footer, depending on how you decided to structure it.
 
 **Note**: `<tbody>` is always included in every table, implicitly if you don't specify it in your code. To check this, open up one of your previous examples that doesn't include `<tbody>` and look at the HTML code in your [browser developer tools](/en-US/docs/Learn/Common_questions/What_are_browser_developer_tools) — you will see that the browser has added this tag for you. You might wonder why you ought to bother including it at all — you should, because it gives you more control over your table structure and styling.
 
@@ -186,8 +184,7 @@ Your finished table should look something like the following:
 
 **Note**: You can also find it on Github as [spending-record-finished.html](https://github.com/mdn/learning-area/blob/master/html/tables/advanced/spending-record-finished.html) ([see it live also](https://mdn.github.io/learning-area/html/tables/advanced/spending-record-finished.html)).
 
-Nesting Tables
---------------
+## Nesting Tables
 
 It is possible to nest a table inside another one, as long as you include the complete structure, including the `<table>` element. This is generally not really advised, as it makes the markup more confusing and less accessible to screenreader users, and in many cases you might as well just insert extra cells/rows/columns into the existing table. It is however sometimes necessary, for example if you want to import content easily from other sources.
 
@@ -231,8 +228,7 @@ The output of which looks something like this:
 
 {{EmbedLiveSample("Nesting\_Tables")}}
 
-Tables for visually impaired users
-----------------------------------
+## Tables for visually impaired users
 
 Let's recap briefly on how we use data tables. A table can be a handy tool, for giving us quick access to data and allowing us to look up different values. For example, It takes only a short glance at the table below to find out how many rings were sold in Gent last August. To understand its information we make visual associations between the data in this table and its column and/or row headers.
 
@@ -399,16 +395,14 @@ Returning to our spending costs example, the previous two snippets could be rewr
 
 **Note**: You can check your work against our finished examples — see [items-sold-scope.html](https://github.com/mdn/learning-area/blob/master/html/tables/advanced/items-sold-scope.html) ([also see this live](https://mdn.github.io/learning-area/html/tables/advanced/items-sold-scope.html)) and [items-sold-headers.html](https://github.com/mdn/learning-area/blob/master/html/tables/advanced/items-sold-headers.html) ([see this live too](https://mdn.github.io/learning-area/html/tables/advanced/items-sold-headers.html)).
 
-Summary
--------
+## Summary
 
 There are a few other things you could learn about table HTML, but we have really given all you need to know at this moment in time. At this point, you might want to go and learn about styling HTML tables — see [Styling Tables](/en-US/docs/Learn/CSS/Building_blocks/Styling_tables).
 
 {{PreviousMenuNext("Learn/HTML/Tables/Basics", "Learn/HTML/Tables/Structuring\_planet\_data", "Learn/HTML/Tables")}}
 
-In this module
---------------
+## In this module
 
--   [HTML table basics](/en-US/docs/Learn/HTML/Tables/Basics)
--   **HTML table advanced features and accessibility**
--   [Structuring planet data](/en-US/docs/Learn/HTML/Tables/Structuring_planet_data)
+- [HTML table basics](/en-US/docs/Learn/HTML/Tables/Basics)
+- **HTML table advanced features and accessibility**
+- [Structuring planet data](/en-US/docs/Learn/HTML/Tables/Structuring_planet_data)

@@ -6,8 +6,7 @@ In this article, we'll run through a number of important concepts relating to as
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, a reasonable understanding of JavaScript fundamentals.</td></tr><tr class="even"><td>Objective:</td><td>To understand the basic concepts behind asynchronous programming, and how they manifest in web browsers and JavaScript.</td></tr></tbody></table>
 
-Asynchronous?
--------------
+## Asynchronous?
 
 Normally, a given program's code runs straight along, with only one thing happening at once. If a function relies on the result of another function, it has to wait for the other function to finish and return, and until that happens, the entire program is essentially stopped from the perspective of the user.
 
@@ -17,8 +16,7 @@ Mac users, for example, sometimes experience this as the spinning rainbow-colore
 
 This is a frustrating experience and isn't a good use of computer processing power — especially in an era in which computers have multiple processor cores available. There's no sense sitting there waiting for something when you could let the other task chug along on another processor core and let you know when it's done. This lets you get other work done in the meantime, which is the basis of **asynchronous programming**. It is up to the programming environment you are using (web browsers, in the case of web development) to provide you with APIs that allow you to run such tasks asynchronously.
 
-Blocking code
--------------
+## Blocking code
 
 Asynchronous techniques are very useful, particularly in web programming. When a web app runs in a browser and it executes an intensive chunk of code without returning control to the browser, the browser can appear to be frozen. This is called **blocking**; the browser is blocked from continuing to handle user input and perform other tasks until the web app returns control of the processor.
 
@@ -47,8 +45,8 @@ When running the example, open your JavaScript console then click the button —
 
 In our second example, [simple-sync-ui-blocking.html](https://github.com/mdn/learning-area/blob/master/javascript/asynchronous/introducing/simple-sync-ui-blocking.html) ([see it live](https://mdn.github.io/learning-area/javascript/asynchronous/introducing/simple-sync-ui-blocking.html)), we simulate something slightly more realistic that you might come across on a real page. We block user interactivity with the rendering of the UI. In this example, we have two buttons:
 
--   A "Fill canvas" button that when clicked fills the available {{htmlelement("canvas")}} with 1 million blue circles.
--   A "Click me for alert" button that when clicked shows an alert message.
+- A "Fill canvas" button that when clicked fills the available {{htmlelement("canvas")}} with 1 million blue circles.
+- A "Click me for alert" button that when clicked shows an alert message.
 
 <!-- -->
 
@@ -73,8 +71,7 @@ If you click the first button and then quickly click the second one, you'll see 
 
 Why is this? The answer is because JavaScript, generally speaking, is **single-threaded**. At this point, we need to introduce the concept of **threads**.
 
-Threads
--------
+## Threads
 
 A **thread** is basically a single process that a program can use to complete tasks. Each thread can only do a single task at once:
 
@@ -100,8 +97,7 @@ After some time, JavaScript gained some tools to help with such problems. [Web w
 
 With this in mind, have a look at [simple-sync-worker.html](https://github.com/mdn/learning-area/blob/master/javascript/asynchronous/introducing/simple-sync-worker.html) ([see it running live](https://mdn.github.io/learning-area/javascript/asynchronous/introducing/simple-sync-worker.html)), again with your browser's JavaScript console open. This is a rewrite of our previous example that calculates the 10 million dates, but this time we're using a worker for the calculation. You can see the worker's code here: [worker.js](https://github.com/mdn/learning-area/blob/master/javascript/asynchronous/introducing/worker.js). Now when you click the button, the browser is able to display the paragraph before the dates have finished calculating. Once the worker has finished calculating, it logs the final date to the console. The first operation no longer blocks the second.
 
-Asynchronous code
------------------
+## Asynchronous code
 
 Web workers are pretty useful, but they do have their limitations. A major one is they are not able to access the {{Glossary("DOM")}} — you can't get a worker to directly do anything to update the UI. We couldn't render our 1 million blue circles inside our worker; it can basically just do the number crunching.
 
@@ -125,19 +121,17 @@ Since the operation is happening somewhere else, the main thread is not blocked 
 
 We'll start to look at how we can write asynchronous code in the next article. Exciting stuff, huh? Keep reading!
 
-Conclusion
-----------
+## Conclusion
 
 Modern software design increasingly revolves around using asynchronous programming, to allow programs to do more than one thing at a time. As you use newer and more powerful APIs, you'll find more cases where the only way to do things is asynchronously. It used to be hard to write asynchronous code. It still takes getting used to, but it's gotten a lot easier. In the rest of this module, we'll explore further why asynchronous code matters and how to design code that avoids some of the problems described above.
 
 {{LearnSidebar}}{{NextMenu("Learn/JavaScript/Asynchronous/Introducing", "Learn/JavaScript/Asynchronous")}}
 
-In this module
---------------
+## In this module
 
--   [General asynchronous programming concepts](/en-US/docs/Learn/JavaScript/Asynchronous/Concepts)
--   [Introducing asynchronous JavaScript](/en-US/docs/Learn/JavaScript/Asynchronous/Introducing)
--   [Cooperative asynchronous JavaScript: Timeouts and intervals](/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals)
--   [Graceful asynchronous programming with Promises](/en-US/docs/Learn/JavaScript/Asynchronous/Promises)
--   [Making asynchronous programming easier with async and await](/en-US/docs/Learn/JavaScript/Asynchronous/Async_await)
--   [Choosing the right approach](/en-US/docs/Learn/JavaScript/Asynchronous/Choosing_the_right_approach)
+- [General asynchronous programming concepts](/en-US/docs/Learn/JavaScript/Asynchronous/Concepts)
+- [Introducing asynchronous JavaScript](/en-US/docs/Learn/JavaScript/Asynchronous/Introducing)
+- [Cooperative asynchronous JavaScript: Timeouts and intervals](/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals)
+- [Graceful asynchronous programming with Promises](/en-US/docs/Learn/JavaScript/Asynchronous/Promises)
+- [Making asynchronous programming easier with async and await](/en-US/docs/Learn/JavaScript/Asynchronous/Async_await)
+- [Choosing the right approach](/en-US/docs/Learn/JavaScript/Asynchronous/Choosing_the_right_approach)

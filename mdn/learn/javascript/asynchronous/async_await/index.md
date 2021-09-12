@@ -1,4 +1,4 @@
---- title: Making asynchronous programming easier with async and await slug: Learn/JavaScript/Asynchronous/Async\_await tags: - Beginner - CodingScripting - Guide - JavaScript - Learn - Promises - async - asynchronous - await ---
+--- title: Making asynchronous programming easier with async and await slug: Learn/JavaScript/Asynchronous/Async_await tags: - Beginner - CodingScripting - Guide - JavaScript - Learn - Promises - async - asynchronous - await ---
 
 {{LearnSidebar}}
 
@@ -8,8 +8,7 @@ More recent additions to the JavaScript language are [async functions](/en-US/do
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, a reasonable understanding of JavaScript fundamentals, an understanding of async code in general and promises.</td></tr><tr class="even"><td>Objective:</td><td>To understand the use of async/await.</td></tr></tbody></table>
 
-The basics of async/await
--------------------------
+## The basics of async/await
 
 There are two parts to using async/await in your code.
 
@@ -72,8 +71,7 @@ Here is a trivial example:
 
 Of course, the above example is not very useful, although it does serve to illustrate the syntax. Let's move on and look at a real example.
 
-Rewriting promise code with async/await
----------------------------------------
+## Rewriting promise code with async/await
 
 Let's look back at a simple fetch example that we saw in the previous article:
 
@@ -207,11 +205,10 @@ This is because the `.catch()` block will catch errors occurring in both the asy
 
 You can find both of these examples on GitHub:
 
--   [simple-fetch-async-await-try-catch.html](https://mdn.github.io/learning-area/javascript/asynchronous/async-await/simple-fetch-async-await-try-catch.html) (see [source code](https://github.com/mdn/learning-area/blob/master/javascript/asynchronous/async-await/simple-fetch-async-await-try-catch.html))
--   [simple-fetch-async-await-promise-catch.html](https://mdn.github.io/learning-area/javascript/asynchronous/async-await/simple-fetch-async-await-promise-catch.html) (see [source code](https://github.com/mdn/learning-area/blob/master/javascript/asynchronous/async-await/simple-fetch-async-await-promise-catch.html))
+- [simple-fetch-async-await-try-catch.html](https://mdn.github.io/learning-area/javascript/asynchronous/async-await/simple-fetch-async-await-try-catch.html) (see [source code](https://github.com/mdn/learning-area/blob/master/javascript/asynchronous/async-await/simple-fetch-async-await-try-catch.html))
+- [simple-fetch-async-await-promise-catch.html](https://mdn.github.io/learning-area/javascript/asynchronous/async-await/simple-fetch-async-await-promise-catch.html) (see [source code](https://github.com/mdn/learning-area/blob/master/javascript/asynchronous/async-await/simple-fetch-async-await-promise-catch.html))
 
-Awaiting a Promise.all()
-------------------------
+## Awaiting a Promise.all()
 
 async/await is built on top of [promises](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), so it's compatible with all the features offered by promises. This includes `Promise.all()` — you can quite happily await a `Promise.all()` call to get all the results returned into a variable in a way that looks like simple synchronous code. Again, let's return to [an example we saw in our previous article](https://github.com/mdn/learning-area/blob/master/javascript/asynchronous/promises/promise-all.html). Keep it open in a separate tab so you can compare and contrast with the new version shown below.
 
@@ -275,8 +272,7 @@ For error handling, we've included a `.catch()` block on our `displayContent()` 
 
 **Note**: It is also possible to use a sync `finally` block within an async function, in place of a `.finally()` async block, to show a final report on how the operation went — you can see this in action in our [live example](https://mdn.github.io/learning-area/javascript/asynchronous/async-await/promise-finally-async-await.html) (see also the [source code](https://github.com/mdn/learning-area/blob/master/javascript/asynchronous/async-await/promise-finally-async-await.html)).
 
-Handling async/await slowdown
------------------------------
+## Handling async/await slowdown
 
 Async/await makes your code look synchronous, and in a way it makes it behave more synchronously. The `await` keyword blocks execution of all the code that follows it until the promise fulfills, exactly as it would with a synchronous operation. It does allow other tasks to continue to run in the meantime, but the awaited code is blocked. For example:
 
@@ -466,8 +462,7 @@ In this example, the error is handled properly after around 2 seconds and we als
 
 The `Promise.all()` rejects when any of the input promises are rejected. If you want all the promises to settle and then use some of their fulfilled values, even when some of them are rejected, you could use [`Promise.allSettled()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled) instead.
 
-Async/await class methods
--------------------------
+## Async/await class methods
 
 As a final note before we move on, you can even add `async` in front of class/object methods to make them return promises, and `await` promises inside them. Take a look at the [ES class code we saw in our object-oriented JavaScript article](/en-US/docs/Learn/JavaScript/Objects/Inheritance#ecmascript_2015_classes), and then look at our modified version with an `async` method:
 
@@ -497,25 +492,22 @@ The first class method could now be used something like this:
 
     han.greeting().then(console.log);
 
-Browser support
----------------
+## Browser support
 
 One consideration when deciding whether to use async/await is support for older browsers. They are available in modern versions of most browsers, the same as promises; the main support problems come with Internet Explorer and Opera Mini.
 
 If you want to use async/await but are concerned about older browser support, you could consider using the [BabelJS](https://babeljs.io/) library — this allows you to write your applications using the latest JavaScript and let Babel figure out what changes if any are needed for your user’s browsers. On encountering a browser that does not support async/await, Babel's polyfill can automatically provide fallbacks that work in older browsers.
 
-Conclusion
-----------
+## Conclusion
 
 And there you have it — async/await provide a nice, simplified way to write async code that is simpler to read and maintain. Even with browser support being more limited than other async code mechanisms at the time of writing, it is well worth learning and considering for use, both for now and in the future.
 
 {{PreviousMenuNext("Learn/JavaScript/Asynchronous/Promises", "Learn/JavaScript/Asynchronous/Choosing\_the\_right\_approach", "Learn/JavaScript/Asynchronous")}}
 
-In this module
---------------
+## In this module
 
--   [General asynchronous programming concepts](/en-US/docs/Learn/JavaScript/Asynchronous/Concepts)
--   [Introducing asynchronous JavaScript](/en-US/docs/Learn/JavaScript/Asynchronous/Introducing)
--   [Cooperative asynchronous JavaScript: Timeouts and intervals](/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals)
--   [Graceful asynchronous programming with Promises](/en-US/docs/Learn/JavaScript/Asynchronous/Promises)
--   [Choosing the right approach](/en-US/docs/Learn/JavaScript/Asynchronous/Choosing_the_right_approach)
+- [General asynchronous programming concepts](/en-US/docs/Learn/JavaScript/Asynchronous/Concepts)
+- [Introducing asynchronous JavaScript](/en-US/docs/Learn/JavaScript/Asynchronous/Introducing)
+- [Cooperative asynchronous JavaScript: Timeouts and intervals](/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals)
+- [Graceful asynchronous programming with Promises](/en-US/docs/Learn/JavaScript/Asynchronous/Promises)
+- [Choosing the right approach](/en-US/docs/Learn/JavaScript/Asynchronous/Choosing_the_right_approach)

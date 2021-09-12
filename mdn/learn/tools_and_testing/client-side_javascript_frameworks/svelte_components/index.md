@@ -1,4 +1,4 @@
---- title: Componentizing our Svelte app slug: Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks/Svelte\_components tags: - Beginner - Components - Frameworks - JavaScript - Learn - Svelte - client-side - conditional rendering - passing data ---
+--- title: Componentizing our Svelte app slug: Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_components tags: - Beginner - Components - Frameworks - JavaScript - Learn - Svelte - client-side - conditional rendering - passing data ---
 
 {{LearnSidebar}}  
 {{PreviousMenuNext("Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks/Svelte\_variables\_props","Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks/Svelte\_reactivity\_lifecycle\_accessibility", "Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks")}}
@@ -7,8 +7,7 @@ In the last article we started developing our Todo list app. The central objecti
 
 <table><colgroup><col style="width: 50%" /><col style="width: 50%" /></colgroup><tbody><tr class="odd"><td>Prerequisites:</td><td><p>At minimum, it is recommended that you are familiar with the core <a href="/en-US/docs/Learn/HTML">HTML</a>, <a href="/en-US/docs/Learn/CSS">CSS</a>, and <a href="/en-US/docs/Learn/JavaScript">JavaScript</a> languages, and have knowledge of the <a href="/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Command_line">terminal/command line</a>.</p><p>You'll need a terminal with node + npm installed to compile and build your app.</p></td></tr><tr class="even"><td>Objective:</td><td>To learn how to break our app into components and share information among them.</td></tr></tbody></table>
 
-Code along with us
-------------------
+## Code along with us
 
 ### Git
 
@@ -32,8 +31,7 @@ To code along with us using the REPL, start at
 
 <https://svelte.dev/repl/99b9eb228b404a2f8c8959b22c0a40d3?version=3.23.2>
 
-Breaking the app into components
---------------------------------
+## Breaking the app into components
 
 In Svelte, an application is composed from one or more components. A component is a reusable, self-contained block of code that encapsulates HTML, CSS and JavaScript that belong together, written into a `.svelte` file. Components can be big or small, but they are usually clearly defined: the most effective components serve a single, obvious purpose.
 
@@ -49,12 +47,12 @@ Both approaches should complement each other, and help you decide how to better 
 
 Eventually, we will split up our app into the following components:
 
--   `Alert.svelte`: A general notification box for communicating actions that have occurred.
--   `NewTodo.svelte`: The text input and button that allow you to enter a new todo item.
--   `FilterButton.svelte`: The *All*, *Active*, and *Completed* buttons that allow you to apply filters to the displayed todo items.
--   `TodosStatus.svelte`: The "x out of y items completed" heading.
--   `Todo.svelte`: An individual todo item. Each visible todo item will be displayed in a separate copy of this component.
--   `MoreActions.svelte`: The *Check All* and *Remove Completed* buttons at the bottom of the UI that allow you to perform mass actions on the todo items.
+- `Alert.svelte`: A general notification box for communicating actions that have occurred.
+- `NewTodo.svelte`: The text input and button that allow you to enter a new todo item.
+- `FilterButton.svelte`: The _All_, _Active_, and _Completed_ buttons that allow you to apply filters to the displayed todo items.
+- `TodosStatus.svelte`: The "x out of y items completed" heading.
+- `Todo.svelte`: An individual todo item. Each visible todo item will be displayed in a separate copy of this component.
+- `MoreActions.svelte`: The _Check All_ and _Remove Completed_ buttons at the bottom of the UI that allow you to perform mass actions on the todo items.
 
 ![graphical representation of the list of components in our app](01-todo-components.png)
 
@@ -64,8 +62,7 @@ Let's get started.
 
 **Note**: In the process of creating our first couple of components, we will also learn different techniques to communicate between components, and the pros and cons of each.
 
-Extracting our filter component
--------------------------------
+## Extracting our filter component
 
 We'll begin by creating our `FilterButton.svelte`.
 
@@ -107,8 +104,7 @@ We'll begin by creating our `FilterButton.svelte`.
 
 So far so good! Let's try out the app now. You'll notice that when you click on the filter buttons, they are selected and the style updates appropriately. But! We have a problem — the todos aren't filtered. That's because the `filter` variable flows down from the `Todos` component to the `FilterButton` component through the prop, but changes occurring in the `FilterButton` component don't flow back up to its parent — the data binding is one-way by default. Let's look at a way to solve this.
 
-Sharing data between components: passing a handler as a prop
-------------------------------------------------------------
+## Sharing data between components: passing a handler as a prop
 
 One way to let child components notify their parents of any changes is to pass a handler as a prop. The child component will execute the handler, passing the needed information as a parameter, and the handler will modify the parent's state.
 
@@ -134,8 +130,7 @@ And we'll declare the following reactive statement — `$: onclick(filter)` — 
 
 When any filter button is clicked, we just update the filter variable with the new filter. Now our `FilterButton` component will work again.
 
-Easier two-way data binding with the bind directive
----------------------------------------------------
+## Easier two-way data binding with the bind directive
 
 In the previous example we realized that our `FilterButton` component wasn't working because our application state was flowing down from parent to child through the `filter` prop — but it wasn't going back up. So we added an `onclick` prop to let the child component communicate the new `filter` value to its parent.
 
@@ -157,8 +152,7 @@ Using `bind`, we will tell Svelte that any changes made to the `filter` prop in 
 
 3.  Try your app again, and you should still see your filters working correctly.
 
-Creating our Todo component
----------------------------
+## Creating our Todo component
 
 Now we will create a `Todo` component to encapsulate each individual todo — including the checkbox and some editing logic so you can change an existing todo.
 
@@ -210,14 +204,13 @@ Our `Todo` component will receive a single `todo` object as a prop. Let's declar
 
 The list of todos is displayed on the page, and the checkboxes should work (try checking/unchecking a couple, and then observing that the filters still work as expected), but our "x out of y items completed" status heading will no longer update accordingly. That's because our `Todo` component is receiving the todo via the prop, but it's not sending any information back to its parent. We'll fix this later on.
 
-Sharing data between components: props-down, events-up pattern
---------------------------------------------------------------
+## Sharing data between components: props-down, events-up pattern
 
 The `bind` directive is pretty straightforward and allows you to share data between a parent and child component with minimal fuss. However, when your application grows larger and more complex it can easily get difficult to keep track of all your bound values. A different approach is the "props-down, events-up" communication pattern.
 
-Basically, this pattern relies on child components receiving data from their parents via props and parent components updating their state by handling events emitted from child components. So props *flow down* from parent to child and events *bubble up* from child to parent. This pattern establishes a two-way flow of information, which is predictable and easier to reason about.
+Basically, this pattern relies on child components receiving data from their parents via props and parent components updating their state by handling events emitted from child components. So props _flow down_ from parent to child and events _bubble up_ from child to parent. This pattern establishes a two-way flow of information, which is predictable and easier to reason about.
 
-Let's look at how to emit our own events to re-implement the missing *Delete* button functionality.
+Let's look at how to emit our own events to re-implement the missing _Delete_ button functionality.
 
 To create custom events we'll use the `createEventDispatcher` utility. This will return a `dispatch()` function that will allow us to emit custom events. When you dispatch an event you have to pass the name of the event and, optionally, an object with additional information that you want to pass to every listener. This additional data will be available on the `detail` property of the event object.
 
@@ -230,7 +223,7 @@ We'll edit our `Todo` component to emit a `remove` event, passing the todo being
         import { createEventDispatcher } from 'svelte'
         const dispatch = createEventDispatcher()
 
-2.  Now update the *Delete* button in the markup section of the same file to look like so:
+2.  Now update the _Delete_ button in the markup section of the same file to look like so:
 
         <button type="button" class="btn btn__danger" on:click={() => dispatch('remove', todo)}>
           Delete <span class="visually-hidden">{todo.name}</span>
@@ -244,12 +237,11 @@ We'll edit our `Todo` component to emit a `remove` event, passing the todo being
 
     Our handler receives the `e` parameter (the event object), which as described before holds the todo being deleted in the `detail` property.
 
-4.  At this point, if you try out your app again, you should see that the *Delete* functionality now works again! So our custom event has worked as we hoped. In addition, the `remove` event listener is sending the data change back up to the parent, so our "x out of y items completed" status heading will now update appropriately when todos are deleted.
+4.  At this point, if you try out your app again, you should see that the _Delete_ functionality now works again! So our custom event has worked as we hoped. In addition, the `remove` event listener is sending the data change back up to the parent, so our "x out of y items completed" status heading will now update appropriately when todos are deleted.
 
 Now we'll take care of the `update` event, so that our parent component can get notified of any modified todo.
 
-Updating todos
---------------
+## Updating todos
 
 We still have to implement functionality to allow us to edit existing todos. We'll have to include an editing mode in the `Todo` component. When entering editing mode we'll show an `<input>` field to allow us to edit the current todo name, with two buttons to confirm or cancel our changes.
 
@@ -262,8 +254,8 @@ We still have to implement functionality to allow us to edit existing todos. We'
 
 2.  We have to decide what events our `Todo` component will emit:
 
-    -   We could emit different events for the status toggle and editing of the name. (e.g. `updateTodoStatus` and `updateTodoName`).
-    -   Or we could take a more generic approach and emit a single `update` event for both operations.
+    - We could emit different events for the status toggle and editing of the name. (e.g. `updateTodoStatus` and `updateTodoName`).
+    - Or we could take a more generic approach and emit a single `update` event for both operations.
 
     We will take the second approach so we can demonstrate a different technique. The advantage of this approach is that later we can add more fields to the todos and still handle all updates with the same event.
 
@@ -306,7 +298,7 @@ We still have to implement functionality to allow us to edit existing todos. We'
 
 Now we need to update our `Todo` component's markup to call the above functions when the appropriate actions are taken.
 
-To handle the editing mode we are using the `editing` variable, which is a boolean. When it's `true`, it should display the `<input>` field for editing the todo name, and the *Cancel* and *Save* buttons. When it's not in editing mode it will display the checkbox, the todo name and the buttons to edit and delete the todo.
+To handle the editing mode we are using the `editing` variable, which is a boolean. When it's `true`, it should display the `<input>` field for editing the todo name, and the _Cancel_ and _Save_ buttons. When it's not in editing mode it will display the checkbox, the todo name and the buttons to edit and delete the todo.
 
 To achieve this we will use an [`if` block](https://svelte.dev/docs#if). The `if` block conditionally renders some markup. Take into account that it won't just show or hide the markup based on the condition — it will dynamically add and remove the elements from the DOM, depending on the condition.
 
@@ -344,10 +336,10 @@ The non-editing section — that is, the `{:else}` part (lower half) of the `if`
 
 It is worth noting that:
 
--   When the user presses the *Edit* button we execute `onEdit()`, which just sets the `editing` variable to `true`.
--   When the user clicks on the checkbox we call the `onToggle()` function, which executes `update()`, passing an object with the new `completed` value as a parameter.
--   The `update()` function emits the `update` event, passing as additional information a copy of the original todo with the changes applied.
--   Finally, the `onRemove()` function emits the `remove` event, passing the `todo` to be deleted as additional data.
+- When the user presses the _Edit_ button we execute `onEdit()`, which just sets the `editing` variable to `true`.
+- When the user clicks on the checkbox we call the `onToggle()` function, which executes `update()`, passing an object with the new `completed` value as a parameter.
+- The `update()` function emits the `update` event, passing as additional information a copy of the original todo with the changes applied.
+- Finally, the `onRemove()` function emits the `remove` event, passing the `todo` to be deleted as additional data.
 
 The editing UI (the upper half) will contain an `<input>` field and two buttons to cancel or save the changes:
 
@@ -370,14 +362,14 @@ The editing UI (the upper half) will contain an `<input>` field and two buttons 
     {:else}
     [...]
 
-When the user presses the *Edit* button, the `editing` variable will be set to `true`, and Svelte will remove the markup in the `{:else}` part of the DOM and replace it with the markup in the `{#if...}` section.
+When the user presses the _Edit_ button, the `editing` variable will be set to `true`, and Svelte will remove the markup in the `{:else}` part of the DOM and replace it with the markup in the `{#if...}` section.
 
 The `<input>`'s `value` property will be bound to the `name` variable, and the buttons to cancel and save the changes call `onCancel()` and `onSave()` respectively (we added those functions earlier):
 
--   When `onCancel()` is invoked, `name` is restored to its original value (when passed in as a prop) and we exit editing mode (by setting `editing` to `false`).
--   When `onSave()` in invoked, we run the `update()` function — passing it the modified `name` — and exit editing mode.
+- When `onCancel()` is invoked, `name` is restored to its original value (when passed in as a prop) and we exit editing mode (by setting `editing` to `false`).
+- When `onSave()` in invoked, we run the `update()` function — passing it the modified `name` — and exit editing mode.
 
-We also disable the *Save* button when the `<input>` is empty, using the `disabled={!name}` attribute, and allow the user to cancel the edit using the Escape key, like this:
+We also disable the _Save_ button when the `<input>` is empty, using the `disabled={!name}` attribute, and allow the user to cancel the edit using the Escape key, like this:
 
     on:keydown={e => e.key === 'Escape' && onCancel()}.
 
@@ -448,8 +440,7 @@ As you can see, it's easy to implement the "props-down, events-up" pattern in Sv
 
 **Note**: Svelte provides more advanced mechanisms to share information among components: the [Context API](https://svelte.dev/docs#setContext) and [Stores](https://svelte.dev/docs#svelte_store). The Context API provides a mechanism for components and their descendants to "talk" to each other without passing around data and functions as props, or dispatching lots of events. Stores allows you to share reactive data among components that are not hierarchically related. We will look at Stores later on in the series.
 
-The code so far
----------------
+## The code so far
 
 ### Git
 
@@ -469,67 +460,65 @@ To see the current state of the code in a REPL, visit:
 
 <https://svelte.dev/repl/76cc90c43a37452e8c7f70521f88b698?version=3.23.2>
 
-Summary
--------
+## Summary
 
 Now we have all of our app's required functionality in place. We can display, add, edit and delete todos, mark them as completed, and filter by status.
 
 In this article, we covered the following topics:
 
--   Extracting functionality to a new component.
--   Passing information from child to parent using a handler received as a prop.
--   Passing information from child to parent using the `bind` directive.
--   Conditionally rendering blocks of markup using the `if` block.
--   Implementing the "props-down, events-up" communication pattern.
--   Creating and listening to custom events.
+- Extracting functionality to a new component.
+- Passing information from child to parent using a handler received as a prop.
+- Passing information from child to parent using the `bind` directive.
+- Conditionally rendering blocks of markup using the `if` block.
+- Implementing the "props-down, events-up" communication pattern.
+- Creating and listening to custom events.
 
 In the next article we will continue componentizing our app and look at some advanced techniques for working with the DOM.
 
 {{PreviousMenuNext("Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks/Svelte\_variables\_props","Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks/Svelte\_reactivity\_lifecycle\_accessibility", "Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks")}}
 
-In this module
---------------
+## In this module
 
--   [Introduction to client-side frameworks](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Introduction)
--   [Framework main features](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Main_features)
--   React
-    -   [Getting started with React](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_getting_started)
-    -   [Beginning our React todo list](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_todo_list_beginning)
-    -   [Componentizing our React app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_components)
-    -   [React interactivity: Events and state](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_interactivity_events_state)
-    -   [React interactivity: Editing, filtering, conditional rendering](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_interactivity_filtering_conditional_rendering)
-    -   [Accessibility in React](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_accessibility)
-    -   [React resources](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_resources)
--   Ember
-    -   [Getting started with Ember](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_getting_started)
-    -   [Ember app structure and componentization](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_structure_componentization)
-    -   [Ember interactivity: Events, classes and state](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_interactivity_events_state)
-    -   [Ember Interactivity: Footer functionality, conditional rendering](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_conditional_footer)
-    -   [Routing in Ember](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_routing)
-    -   [Ember resources and troubleshooting](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_resources)
--   Vue
-    -   [Getting started with Vue](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_getting_started)
-    -   [Creating our first Vue component](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_first_component)
-    -   [Rendering a list of Vue components](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_rendering_lists)
-    -   [Adding a new todo form: Vue events, methods, and models](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_methods_events_models)
-    -   [Styling Vue components with CSS](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_styling)
-    -   [Using Vue computed properties](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_computed_properties)
-    -   [Vue conditional rendering: editing existing todos](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_conditional_rendering)
-    -   [Focus management with Vue refs](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_refs_focus_management)
-    -   [Vue resources](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_resources)
--   Svelte
-    -   [Getting started with Svelte](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_getting_started)
-    -   [Starting our Svelte Todo list app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_Todo_list_beginning)
-    -   [Dynamic behavior in Svelte: working with variables and props](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_variables_props)
-    -   [Componentizing our Svelte app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_components)
-    -   [Advanced Svelte: Reactivity, lifecycle, accessibility](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_reactivity_lifecycle_accessibility)
-    -   [Working with Svelte stores](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_stores)
-    -   [TypeScript support in Svelte](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_TypeScript)
-    -   [Deployment and next steps](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_deployment_next)
--   Angular
-    -   [Getting started with Angular](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_getting_started)
-    -   [Beginning our Angular todo list app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_todo_list_beginning)
-    -   [Styling our Angular app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_styling)
-    -   [Creating an item component](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_item_component)
-    -   [Filtering our to-do items](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_filtering)
-    -   [Building Angular applications and further resources](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_building)
+- [Introduction to client-side frameworks](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Introduction)
+- [Framework main features](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Main_features)
+- React
+  - [Getting started with React](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_getting_started)
+  - [Beginning our React todo list](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_todo_list_beginning)
+  - [Componentizing our React app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_components)
+  - [React interactivity: Events and state](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_interactivity_events_state)
+  - [React interactivity: Editing, filtering, conditional rendering](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_interactivity_filtering_conditional_rendering)
+  - [Accessibility in React](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_accessibility)
+  - [React resources](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_resources)
+- Ember
+  - [Getting started with Ember](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_getting_started)
+  - [Ember app structure and componentization](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_structure_componentization)
+  - [Ember interactivity: Events, classes and state](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_interactivity_events_state)
+  - [Ember Interactivity: Footer functionality, conditional rendering](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_conditional_footer)
+  - [Routing in Ember](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_routing)
+  - [Ember resources and troubleshooting](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_resources)
+- Vue
+  - [Getting started with Vue](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_getting_started)
+  - [Creating our first Vue component](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_first_component)
+  - [Rendering a list of Vue components](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_rendering_lists)
+  - [Adding a new todo form: Vue events, methods, and models](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_methods_events_models)
+  - [Styling Vue components with CSS](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_styling)
+  - [Using Vue computed properties](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_computed_properties)
+  - [Vue conditional rendering: editing existing todos](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_conditional_rendering)
+  - [Focus management with Vue refs](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_refs_focus_management)
+  - [Vue resources](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_resources)
+- Svelte
+  - [Getting started with Svelte](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_getting_started)
+  - [Starting our Svelte Todo list app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_Todo_list_beginning)
+  - [Dynamic behavior in Svelte: working with variables and props](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_variables_props)
+  - [Componentizing our Svelte app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_components)
+  - [Advanced Svelte: Reactivity, lifecycle, accessibility](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_reactivity_lifecycle_accessibility)
+  - [Working with Svelte stores](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_stores)
+  - [TypeScript support in Svelte](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_TypeScript)
+  - [Deployment and next steps](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_deployment_next)
+- Angular
+  - [Getting started with Angular](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_getting_started)
+  - [Beginning our Angular todo list app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_todo_list_beginning)
+  - [Styling our Angular app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_styling)
+  - [Creating an item component](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_item_component)
+  - [Filtering our to-do items](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_filtering)
+  - [Building Angular applications and further resources](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_building)

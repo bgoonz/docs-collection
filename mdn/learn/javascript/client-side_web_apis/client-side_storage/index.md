@@ -1,4 +1,4 @@
---- title: Client-side storage slug: Learn/JavaScript/Client-side\_web\_APIs/Client-side\_storage tags: - API - Article - Beginner - CodingScripting - Guide - IndexedDB - JavaScript - Learn - Storage ---
+--- title: Client-side storage slug: Learn/JavaScript/Client-side_web_APIs/Client-side_storage tags: - API - Article - Beginner - CodingScripting - Guide - IndexedDB - JavaScript - Learn - Storage ---
 
 {{LearnSidebar}}
 
@@ -8,17 +8,16 @@ Modern web browsers support a number of ways for web sites to store data on the 
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>JavaScript basics (see <a href="/en-US/docs/Learn/JavaScript/First_steps">first steps</a>, <a href="/en-US/docs/Learn/JavaScript/Building_blocks">building blocks</a>, <a href="/en-US/docs/Learn/JavaScript/Objects">JavaScript objects</a>), the <a href="/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Introduction">basics of Client-side APIs</a></td></tr><tr class="even"><td>Objective:</td><td>To learn how to use client-side storage APIs to store application data.</td></tr></tbody></table>
 
-Client-side storage?
---------------------
+## Client-side storage?
 
 Elsewhere in the MDN learning area we talked about the difference between [static sites](/en-US/docs/Learn/Server-side/First_steps/Client-Server_overview#static_sites) and [dynamic sites](/en-US/docs/Learn/Server-side/First_steps/Client-Server_overview#dynamic_sites). Most major modern web sites are dynamic — they store data on the server using some kind of database (server-side storage), then run [server-side](/en-US/docs/Learn/Server-side) code to retrieve needed data, insert it into static page templates, and serve the resulting HTML to the client to be displayed by the user's browser.
 
 Client-side storage works on similar principles, but has different uses. It consists of JavaScript APIs that allow you to store data on the client (i.e. on the user's machine) and then retrieve it when needed. This has many distinct uses, such as:
 
--   Personalizing site preferences (e.g. showing a user's choice of custom widgets, color scheme, or font size).
--   Persisting previous site activity (e.g. storing the contents of a shopping cart from a previous session, remembering if a user was previously logged in).
--   Saving data and assets locally so a site will be quicker (and potentially less expensive) to download, or be usable without a network connection.
--   Saving web application generated documents locally for use offline
+- Personalizing site preferences (e.g. showing a user's choice of custom widgets, color scheme, or font size).
+- Persisting previous site activity (e.g. storing the contents of a shopping cart from a previous session, remembering if a user was previously logged in).
+- Saving data and assets locally so a site will be quicker (and potentially less expensive) to download, or be usable without a network connection.
+- Saving web application generated documents locally for use offline
 
 Often client-side and server-side storage are used together. For example, you could download a batch of music files (perhaps used by a web game or music player application), store them inside a client-side database, and play them as needed. The user would only have to download the music files once — on subsequent visits they would be retrieved from the database instead.
 
@@ -34,8 +33,8 @@ These days, there are easier mechanisms available for storing client-side data, 
 
 The "easier" features we mentioned above are as follows:
 
--   The [Web Storage API](/en-US/docs/Web/API/Web_Storage_API) provides a very simple syntax for storing and retrieving smaller, data items consisting of a name and a corresponding value. This is useful when you just need to store some simple data, like the user's name, whether they are logged in, what color to use for the background of the screen, etc.
--   The [IndexedDB API](/en-US/docs/Web/API/IndexedDB_API) provides the browser with a complete database system for storing complex data. This can be used for things from complete sets of customer records to even complex data types like audio or video files.
+- The [Web Storage API](/en-US/docs/Web/API/Web_Storage_API) provides a very simple syntax for storing and retrieving smaller, data items consisting of a name and a corresponding value. This is useful when you just need to store some simple data, like the user's name, whether they are logged in, what color to use for the background of the screen, etc.
+- The [IndexedDB API](/en-US/docs/Web/API/IndexedDB_API) provides the browser with a complete database system for storing complex data. This can be used for things from complete sets of customer records to even complex data types like audio or video files.
 
 You'll learn more about these APIs below.
 
@@ -45,8 +44,7 @@ Some modern browsers support the new {{domxref("Cache")}} API. This API is desig
 
 Use of Cache and Service Workers is an advanced topic, and we won't be covering it in great detail in this article, although we will show a simple example in the {{anch("Offline asset storage")}} section below.
 
-Storing simple data — web storage
----------------------------------
+## Storing simple data — web storage
 
 The [Web Storage API](/en-US/docs/Web/API/Web_Storage_API) is very easy to use — you store simple name/value pairs of data (limited to strings, numbers, etc.) and retrieve these values when needed.
 
@@ -120,7 +118,7 @@ Let's build up the example, so you can understand how it works.
 
 1.  First, make a local copy of our [personal-greeting.html](https://github.com/mdn/learning-area/blob/master/javascript/apis/client-side-storage/web-storage/personal-greeting.html) file in a new directory on your computer.
 
-2.  Next, note how our HTML references a JavaScript file called `index.js`, with a line like `<script src="index.js" defer></script>`. We need to create this and write our JavaScript code into it. Create an `index.js` file in the same directory as your HTML file. 
+2.  Next, note how our HTML references a JavaScript file called `index.js`, with a line like `<script src="index.js" defer></script>`. We need to create this and write our JavaScript code into it. Create an `index.js` file in the same directory as your HTML file.
 
 3.  We'll start off by creating references to all the HTML features we need to manipulate in this example — we'll create them all as constants, as these references do not need to change in the lifecycle of the app. Add the following lines to your JavaScript file:
 
@@ -197,8 +195,7 @@ Your example is finished — well done! All that remains now is to save your cod
 
 **Note**: In the line `<script src="index.js" defer></script>` of the source for our finished version, the `defer` attribute specifies that the contents of the {{htmlelement("script")}} element will not execute until the page has finished loading.
 
-Storing complex data — IndexedDB
---------------------------------
+## Storing complex data — IndexedDB
 
 The [IndexedDB API](/en-US/docs/Web/API/IndexedDB_API) (sometimes abbreviated IDB) is a complete database system available in the browser in which you can store complex related data, the types of which aren't limited to simple values like strings or numbers. You can store videos, images, and pretty much anything else in an IndexedDB instance.
 
@@ -353,12 +350,12 @@ Now let's define the `addData()` function. Add this below your previous line:
 
 This is quite complex; breaking it down, we:
 
--   Run {{domxref("Event.preventDefault()")}} on the event object to stop the form actually submitting in the conventional manner (this would cause a page refresh and spoil the experience).
--   Create an object representing a record to enter into the database, populating it with values from the form inputs. note that we don't have to explicitly include an `id` value — as we explained earlier, this is auto-populated.
--   Open a `readwrite` transaction against the `notes_os` object store using the {{domxref("IDBDatabase.transaction()")}} method. This transaction object allows us to access the object store so we can do something to it, e.g. add a new record.
--   Access the object store using the {{domxref("IDBTransaction.objectStore()")}} method, saving the result in the `objectStore` variable.
--   Add the new record to the database using {{domxref("IDBObjectStore.add()")}}. This creates a request object, in the same fashion as we've seen before.
--   Add a bunch of event handlers to the `request` and the `transaction` to run code at critical points in the lifecycle. Once the request has succeeded, we clear the form inputs ready for entering the next note. Once the transaction has completed, we run the `displayData()` function again to update the display of notes on the page.
+- Run {{domxref("Event.preventDefault()")}} on the event object to stop the form actually submitting in the conventional manner (this would cause a page refresh and spoil the experience).
+- Create an object representing a record to enter into the database, populating it with values from the form inputs. note that we don't have to explicitly include an `id` value — as we explained earlier, this is auto-populated.
+- Open a `readwrite` transaction against the `notes_os` object store using the {{domxref("IDBDatabase.transaction()")}} method. This transaction object allows us to access the object store so we can do something to it, e.g. add a new record.
+- Access the object store using the {{domxref("IDBTransaction.objectStore()")}} method, saving the result in the `objectStore` variable.
+- Add the new record to the database using {{domxref("IDBObjectStore.add()")}}. This creates a request object, in the same fashion as we've seen before.
+- Add a bunch of event handlers to the `request` and the `transaction` to run code at critical points in the lifecycle. Once the request has succeeded, we clear the form inputs ready for entering the next note. Once the transaction has completed, we run the `displayData()` function again to update the display of notes on the page.
 
 ### Displaying the data
 
@@ -425,13 +422,13 @@ We've referenced `displayData()` twice in our code already, so we'd probably bet
 
 Again, let's break this down:
 
--   First we empty out the {{htmlelement("ul")}} element's content, before then filling it with the updated content. If you didn't do this, you'd end up with a huge list of duplicated content being added to with each update.
--   Next, we get a reference to the `notes_os` object store using {{domxref("IDBDatabase.transaction()")}} and {{domxref("IDBTransaction.objectStore()")}} like we did in `addData()`, except here we are chaining them together in one line.
--   The next step is to use {{domxref("IDBObjectStore.openCursor()")}} method to open a request for a cursor — this is a construct that can be used to iterate over the records in an object store. We chain an `onsuccess` handler on to the end of this line to make the code more concise — when the cursor is successfully returned, the handler is run.
--   We get a reference to the cursor itself (an {{domxref("IDBCursor")}} object) using let `cursor = e.target.result`.
--   Next, we check to see if the cursor contains a record from the datastore (`if(cursor){ ... }`) — if so, we create a DOM fragment, populate it with the data from the record, and insert it into the page (inside the `<ul>` element). We also include a delete button that, when clicked, will delete that note by running the `deleteItem()` function, which we will look at in the next section.
--   At the end of the `if` block, we use the {{domxref("IDBCursor.continue()")}} method to advance the cursor to the next record in the datastore, and run the content of the `if` block again. If there is another record to iterate to, this causes it to be inserted into the page, and then `continue()` is run again, and so on.
--   When there are no more records to iterate over, `cursor` will return `undefined`, and therefore the `else` block will run instead of the `if` block. This block checks whether any notes were inserted into the `<ul>` — if not, it inserts a message to say no note was stored.
+- First we empty out the {{htmlelement("ul")}} element's content, before then filling it with the updated content. If you didn't do this, you'd end up with a huge list of duplicated content being added to with each update.
+- Next, we get a reference to the `notes_os` object store using {{domxref("IDBDatabase.transaction()")}} and {{domxref("IDBTransaction.objectStore()")}} like we did in `addData()`, except here we are chaining them together in one line.
+- The next step is to use {{domxref("IDBObjectStore.openCursor()")}} method to open a request for a cursor — this is a construct that can be used to iterate over the records in an object store. We chain an `onsuccess` handler on to the end of this line to make the code more concise — when the cursor is successfully returned, the handler is run.
+- We get a reference to the cursor itself (an {{domxref("IDBCursor")}} object) using let `cursor = e.target.result`.
+- Next, we check to see if the cursor contains a record from the datastore (`if(cursor){ ... }`) — if so, we create a DOM fragment, populate it with the data from the record, and insert it into the page (inside the `<ul>` element). We also include a delete button that, when clicked, will delete that note by running the `deleteItem()` function, which we will look at in the next section.
+- At the end of the `if` block, we use the {{domxref("IDBCursor.continue()")}} method to advance the cursor to the next record in the datastore, and run the content of the `if` block again. If there is another record to iterate to, this causes it to be inserted into the page, and then `continue()` is run again, and so on.
+- When there are no more records to iterate over, `cursor` will return `undefined`, and therefore the `else` block will run instead of the `if` block. This block checks whether any notes were inserted into the `<ul>` — if not, it inserts a message to say no note was stored.
 
 ### Deleting a note
 
@@ -465,9 +462,9 @@ As stated above, when a note's delete button is pressed, the note is deleted. Th
       };
     }
 
--   The first part of this could use some explaining — we retrieve the ID of the record to be deleted using `Number(e.target.parentNode.getAttribute('data-note-id'))` — recall that the ID of the record was saved in a `data-note-id` attribute on the `<li>` when it was first displayed. We do however need to pass the attribute through the global built-in `Number()` object as it is of datatype string, and therefore wouldn't be recognized by the database, which expects a number.
--   We then get a reference to the object store using the same pattern we've seen previously, and use the {{domxref("IDBObjectStore.delete()")}} method to delete the record from the database, passing it the ID.
--   When the database transaction is complete, we delete the note's `<li>` from the DOM, and again do the check to see if the `<ul>` is now empty, inserting a note as appropriate.
+- The first part of this could use some explaining — we retrieve the ID of the record to be deleted using `Number(e.target.parentNode.getAttribute('data-note-id'))` — recall that the ID of the record was saved in a `data-note-id` attribute on the `<li>` when it was first displayed. We do however need to pass the attribute through the global built-in `Number()` object as it is of datatype string, and therefore wouldn't be recognized by the database, which expects a number.
+- We then get a reference to the object store using the same pattern we've seen previously, and use the {{domxref("IDBObjectStore.delete()")}} method to delete the record from the database, passing it the ID.
+- When the database transaction is complete, we delete the note's `<li>` from the DOM, and again do the check to see if the `<ul>` is now empty, inserting a note as appropriate.
 
 So that's it! Your example should now work.
 
@@ -577,8 +574,7 @@ Let's walk through the most interesting parts of the example. We won't look at i
           ...
         }
 
-Offline asset storage
----------------------
+## Offline asset storage
 
 The above example already shows how to create an app that will store large assets in an IndexedDB database, avoiding the need to download them more than once. This is already a great improvement to the user experience, but there is still one thing missing — the main HTML, CSS, and JavaScript files still need to be downloaded each time the site is accessed, meaning that it won't work when there is no network connection.
 
@@ -664,34 +660,31 @@ And that is it for our simple service worker. There is a whole load more you can
 
 To test our [service worker example](https://mdn.github.io/learning-area/javascript/apis/client-side-storage/cache-sw/video-store-offline/), you'll need to load it a couple of times to make sure it is installed. Once this is done, you can:
 
--   Try unplugging your network/turning your Wifi off.
--   Select *File &gt; Work Offline* if you are using Firefox.
--   Go to the devtools, then choose *Application &gt; Service Workers*, then check the *Offline* checkbox if you are using Chrome.
+- Try unplugging your network/turning your Wifi off.
+- Select _File &gt; Work Offline_ if you are using Firefox.
+- Go to the devtools, then choose _Application &gt; Service Workers_, then check the _Offline_ checkbox if you are using Chrome.
 
 If you refresh your example page again, you should still see it load just fine. Everything is stored offline — the page assets in a cache, and the videos in an IndexedDB database.
 
-Summary
--------
+## Summary
 
 That's it for now. We hope you've found our rundown of client-side storage technologies useful.
 
-See also
---------
+## See also
 
--   [Web storage API](/en-US/docs/Web/API/Web_Storage_API)
--   [IndexedDB API](/en-US/docs/Web/API/IndexedDB_API)
--   [Cookies](/en-US/docs/Web/HTTP/Cookies)
--   [Service worker API](/en-US/docs/Web/API/Service_Worker_API)
+- [Web storage API](/en-US/docs/Web/API/Web_Storage_API)
+- [IndexedDB API](/en-US/docs/Web/API/IndexedDB_API)
+- [Cookies](/en-US/docs/Web/HTTP/Cookies)
+- [Service worker API](/en-US/docs/Web/API/Service_Worker_API)
 
 {{PreviousMenu("Learn/JavaScript/Client-side\_web\_APIs/Video\_and\_audio\_APIs", "Learn/JavaScript/Client-side\_web\_APIs")}}
 
-In this module
---------------
+## In this module
 
--   [Introduction to web APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Introduction)
--   [Manipulating documents](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Manipulating_documents)
--   [Fetching data from the server](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Fetching_data)
--   [Third party APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Third_party_APIs)
--   [Drawing graphics](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Drawing_graphics)
--   [Video and audio APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Video_and_audio_APIs)
--   [Client-side storage](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Client-side_storage)
+- [Introduction to web APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Introduction)
+- [Manipulating documents](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Manipulating_documents)
+- [Fetching data from the server](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Fetching_data)
+- [Third party APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Third_party_APIs)
+- [Drawing graphics](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Drawing_graphics)
+- [Video and audio APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Video_and_audio_APIs)
+- [Client-side storage](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Client-side_storage)

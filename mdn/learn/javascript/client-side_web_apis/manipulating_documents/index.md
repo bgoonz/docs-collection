@@ -1,4 +1,4 @@
---- title: Manipulating documents slug: Learn/JavaScript/Client-side\_web\_APIs/Manipulating\_documents tags: - API - Article - Beginner - CodingScripting - DOM - Document - Document Object Model - JavaScript - Learn - Navigator - WebAPI - Window ---
+--- title: Manipulating documents slug: Learn/JavaScript/Client-side_web_APIs/Manipulating_documents tags: - API - Article - Beginner - CodingScripting - DOM - Document - Document Object Model - JavaScript - Learn - Navigator - WebAPI - Window ---
 
 {{LearnSidebar}}
 
@@ -8,8 +8,7 @@ When writing web pages and apps, one of the most common things you'll want to do
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, a basic understanding of HTML, CSS, and JavaScript — including JavaScript objects.</td></tr><tr class="even"><td>Objective:</td><td>To gain familiarity with the core DOM APIs, and the other APIs commonly associated with DOM and document manipulation</td></tr></tbody></table>
 
-The important parts of a web browser
-------------------------------------
+## The important parts of a web browser
 
 Web browsers are very complicated pieces of software with a lot of moving parts, many of which can't be controlled or manipulated by a web developer using JavaScript. You might think that such limitations are a bad thing, but browsers are locked down for good reasons, mostly centering around security. Imagine if a web site could get access to your stored passwords or other sensitive information, and log into websites as if it were you?
 
@@ -17,14 +16,13 @@ Despite the limitations, Web APIs still give us access to a lot of functionality
 
 ![](document-window-navigator.png)
 
--   The window is the browser tab that a web page is loaded into; this is represented in JavaScript by the {{domxref("Window")}} object. Using methods available on this object you can do things like return the window's size (see {{domxref("Window.innerWidth")}} and {{domxref("Window.innerHeight")}}), manipulate the document loaded into that window, store data specific to that document on the client-side (for example using a local database or other storage mechanism), attach an [event handler](/en-US/docs/Learn/JavaScript/Building_blocks/Events#a_series_of_fortunate_events) to the current window, and more.
--   The navigator represents the state and identity of the browser (i.e. the user-agent) as it exists on the web. In JavaScript, this is represented by the {{domxref("Navigator")}} object. You can use this object to retrieve things like the user's preferred language, a media stream from the user's webcam, etc.
--   The document (represented by the DOM in browsers) is the actual page loaded into the window, and is represented in JavaScript by the {{domxref("Document")}} object. You can use this object to return and manipulate information on the HTML and CSS that comprises the document, for example get a reference to an element in the DOM, change its text content, apply new styles to it, create new elements and add them to the current element as children, or even delete it altogether.
+- The window is the browser tab that a web page is loaded into; this is represented in JavaScript by the {{domxref("Window")}} object. Using methods available on this object you can do things like return the window's size (see {{domxref("Window.innerWidth")}} and {{domxref("Window.innerHeight")}}), manipulate the document loaded into that window, store data specific to that document on the client-side (for example using a local database or other storage mechanism), attach an [event handler](/en-US/docs/Learn/JavaScript/Building_blocks/Events#a_series_of_fortunate_events) to the current window, and more.
+- The navigator represents the state and identity of the browser (i.e. the user-agent) as it exists on the web. In JavaScript, this is represented by the {{domxref("Navigator")}} object. You can use this object to retrieve things like the user's preferred language, a media stream from the user's webcam, etc.
+- The document (represented by the DOM in browsers) is the actual page loaded into the window, and is represented in JavaScript by the {{domxref("Document")}} object. You can use this object to return and manipulate information on the HTML and CSS that comprises the document, for example get a reference to an element in the DOM, change its text content, apply new styles to it, create new elements and add them to the current element as children, or even delete it altogether.
 
 In this article we'll focus mostly on manipulating the document, but we'll show a few other useful bits besides.
 
-The document object model
--------------------------
+## The document object model
 
 The document currently loaded in each one of your browser tabs is represented by a document object model. This is a "tree structure" representation created by the browser that enables the HTML structure to be easily accessed by programming languages — for example the browser itself uses it to apply styling and other information to the correct elements as it renders a page, and developers like you can manipulate the DOM with JavaScript after the page has been rendered.
 
@@ -52,18 +50,17 @@ The DOM on the other hand looks like this:
 
 You can see here that each element and bit of text in the document has its own entry in the tree — each one is called a **node**. You will also encounter various terms used to describe the type of node, and their position in the tree in relation to one another:
 
--   **Element node**: An element, as it exists in the DOM.
--   **Root node**: The top node in the tree, which in the case of HTML is always the `HTML` node (other markup vocabularies like SVG and custom XML will have different root elements).
--   **Child node**: A node *directly* inside another node. For example, `IMG` is a child of `SECTION` in the above example.
--   **Descendant node**: A node *anywhere* inside another node. For example, `IMG` is a child of `SECTION` in the above example, and it is also a descendant. `IMG` is not a child of `BODY`, as it is two levels below it in the tree, but it is a descendant of `BODY`.
--   **Parent node**: A node which has another node inside it. For example, `BODY` is the parent node of `SECTION` in the above example.
--   **Sibling nodes**: Nodes that sit on the same level in the DOM tree. For example, `IMG` and `P` are siblings in the above example.
--   **Text node**: A node containing a text string.
+- **Element node**: An element, as it exists in the DOM.
+- **Root node**: The top node in the tree, which in the case of HTML is always the `HTML` node (other markup vocabularies like SVG and custom XML will have different root elements).
+- **Child node**: A node _directly_ inside another node. For example, `IMG` is a child of `SECTION` in the above example.
+- **Descendant node**: A node _anywhere_ inside another node. For example, `IMG` is a child of `SECTION` in the above example, and it is also a descendant. `IMG` is not a child of `BODY`, as it is two levels below it in the tree, but it is a descendant of `BODY`.
+- **Parent node**: A node which has another node inside it. For example, `BODY` is the parent node of `SECTION` in the above example.
+- **Sibling nodes**: Nodes that sit on the same level in the DOM tree. For example, `IMG` and `P` are siblings in the above example.
+- **Text node**: A node containing a text string.
 
 It is useful to familiarize yourself with this terminology before working with the DOM, as a number of the code terms you'll come across make use of them. You may have also come across them if you have studied CSS (e.g. descendant selector, child selector).
 
-Active learning: Basic DOM manipulation
----------------------------------------
+## Active learning: Basic DOM manipulation
 
 To start learning about DOM manipulation, let's begin with a practical example.
 
@@ -85,8 +82,8 @@ Note that, as with many things in JavaScript, there are many ways to select an e
 
 There are older methods available for grabbing element references, such as:
 
--   {{domxref("Document.getElementById()")}}, which selects an element with a given `id` attribute value, e.g. `<p id="myId">My paragraph</p>`. The ID is passed to the function as a parameter, i.e. `const elementRef = document.getElementById('myId')`.
--   {{domxref("Document.getElementsByTagName()")}}, which returns an array-like object containing all the elements on the page of a given type, for example `<p>`s, `<a>`s, etc. The element type is passed to the function as a parameter, i.e. `const elementRefArray = document.getElementsByTagName('p')`.
+- {{domxref("Document.getElementById()")}}, which selects an element with a given `id` attribute value, e.g. `<p id="myId">My paragraph</p>`. The ID is passed to the function as a parameter, i.e. `const elementRef = document.getElementById('myId')`.
+- {{domxref("Document.getElementsByTagName()")}}, which returns an array-like object containing all the elements on the page of a given type, for example `<p>`s, `<a>`s, etc. The element type is passed to the function as a parameter, i.e. `const elementRefArray = document.getElementsByTagName('p')`.
 
 These two work better in older browsers than the modern methods like `querySelector()`, but are not as convenient. Have a look and see what others you can find!
 
@@ -193,8 +190,7 @@ In the next couple of sections we will look at a couple of more practical uses o
 
 **Note**: You can find our [finished version of the dom-example.html](https://github.com/mdn/learning-area/blob/master/javascript/apis/document-manipulation/dom-example-manipulated.html) demo on GitHub ([see it live also](https://mdn.github.io/learning-area/javascript/apis/document-manipulation/dom-example-manipulated.html)).
 
-Active learning: Getting useful information from the Window object
-------------------------------------------------------------------
+## Active learning: Getting useful information from the Window object
 
 So far we've only really looked at using {{domxref("Node")}} and {{domxref("Document")}} features to manipulate documents, but there is no reason why you can't get data from other sources and use it in your UI. You just have to make sure your data is in the right format; JavaScript makes it easier than many other languages, being weakly typed — for example numbers will convert to strings automatically when you want to print them to the screen.
 
@@ -225,14 +221,13 @@ To start with, make a local copy of our [window-resize-example.html](https://git
 
 **Note**: If you get stuck, have a look at our [finished window resize example](https://github.com/mdn/learning-area/blob/master/javascript/apis/document-manipulation/window-resize-example-finished.html) ([see it live also](https://mdn.github.io/learning-area/javascript/apis/document-manipulation/window-resize-example-finished.html)).
 
-Active learning: A dynamic shopping list
-----------------------------------------
+## Active learning: A dynamic shopping list
 
 To round off the article, we'd like to set you a little challenge — we want to make a simple shopping list example that allows you to dynamically add items to the list using a form input and button. When you add an item to the input and press the button:
 
--   The item should appear in the list.
--   Each item should be given a button that can be pressed to delete that item off the list.
--   The input should be emptied and focused ready for you to enter another item.
+- The item should appear in the list.
+- Each item should be given a button that can be pressed to delete that item off the list.
+- The input should be emptied and focused ready for you to enter another item.
 
 The finished demo will look something like this:
 
@@ -254,32 +249,29 @@ To complete the exercise, follow the steps below, and make sure that the list be
 
 **Note**: If you get really stuck, have a look at our [finished shopping list](https://github.com/mdn/learning-area/blob/master/javascript/apis/document-manipulation/shopping-list-finished.html) ([see it running live also](https://mdn.github.io/learning-area/javascript/apis/document-manipulation/shopping-list-finished.html).)
 
-Summary
--------
+## Summary
 
 We have reached the end of our study of document and DOM manipulation. At this point you should understand what the important parts of a web browser are with respect to controlling documents and other aspects of the user's web experience. Most importantly, you should understand what the Document Object Model is, and how to manipulate it to create useful functionality.
 
-See also
---------
+## See also
 
 There are lots more features you can use to manipulate your documents. Check out some of our references and see what you can discover:
 
--   {{domxref("Document")}}
--   {{domxref("Window")}}
--   {{domxref("Node")}}
--   {{domxref("HTMLElement")}}, {{domxref("HTMLInputElement")}}, {{domxref("HTMLImageElement")}}, etc.
+- {{domxref("Document")}}
+- {{domxref("Window")}}
+- {{domxref("Node")}}
+- {{domxref("HTMLElement")}}, {{domxref("HTMLInputElement")}}, {{domxref("HTMLImageElement")}}, etc.
 
 (See our [Web API index](/en-US/docs/Web/API) for the full list of Web APIs documented on MDN!)
 
 {{PreviousMenuNext("Learn/JavaScript/Client-side\_web\_APIs/Introduction", "Learn/JavaScript/Client-side\_web\_APIs/Fetching\_data", "Learn/JavaScript/Client-side\_web\_APIs")}}
 
-In this module
---------------
+## In this module
 
--   [Introduction to web APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Introduction)
--   [Manipulating documents](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Manipulating_documents)
--   [Fetching data from the server](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Fetching_data)
--   [Third party APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Third_party_APIs)
--   [Drawing graphics](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Drawing_graphics)
--   [Video and audio APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Video_and_audio_APIs)
--   [Client-side storage](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Client-side_storage)
+- [Introduction to web APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Introduction)
+- [Manipulating documents](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Manipulating_documents)
+- [Fetching data from the server](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Fetching_data)
+- [Third party APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Third_party_APIs)
+- [Drawing graphics](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Drawing_graphics)
+- [Video and audio APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Video_and_audio_APIs)
+- [Client-side storage](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Client-side_storage)

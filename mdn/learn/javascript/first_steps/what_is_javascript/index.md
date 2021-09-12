@@ -1,4 +1,4 @@
---- title: What is JavaScript? slug: Learn/JavaScript/First\_steps/What\_is\_JavaScript tags: - 3rd party - API - Article - Beginner - Browser - CodingScripting - Core - JavaScript - Learn - Script - comments - external - inline - l10n:priority - what ---
+--- title: What is JavaScript? slug: Learn/JavaScript/First_steps/What_is_JavaScript tags: - 3rd party - API - Article - Beginner - Browser - CodingScripting - Core - JavaScript - Learn - Script - comments - external - inline - l10n:priority - what ---
 
 {{LearnSidebar}}
 
@@ -8,16 +8,15 @@ Welcome to the MDN beginner's JavaScript course! In this article we will look a
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, a basic understanding of HTML and CSS.</td></tr><tr class="even"><td>Objective:</td><td>To gain familiarity with what JavaScript is, what it can do, and how it fits into a web site.</td></tr></tbody></table>
 
-A high-level definition
------------------------
+## A high-level definition
 
 JavaScript is a scripting or programming language that allows you to implement complex features on web pages — every time a web page does more than just sit there and display static information for you to look at — displaying timely content updates, interactive maps, animated 2D/3D graphics, scrolling video jukeboxes, etc. — you can bet that JavaScript is probably involved. It is the third layer of the layer cake of standard web technologies, two of which ([HTML](/en-US/docs/Learn/HTML) and [CSS](/en-US/docs/Learn/CSS)) we have covered in much more detail in other parts of the Learning Area.
 
 ![](cake.png)
 
--   {{glossary("HTML")}} is the markup language that we use to structure and give meaning to our web content, for example defining paragraphs, headings, and data tables, or embedding images and videos in the page.
--   {{glossary("CSS")}} is a language of style rules that we use to apply styling to our HTML content, for example setting background colors and fonts, and laying out our content in multiple columns.
--   {{glossary("JavaScript")}} is a scripting language that enables you to create dynamically updating content, control multimedia, animate images, and pretty much everything else. (Okay, not everything, but it is amazing what you can achieve with a few lines of JavaScript code.)
+- {{glossary("HTML")}} is the markup language that we use to structure and give meaning to our web content, for example defining paragraphs, headings, and data tables, or embedding images and videos in the page.
+- {{glossary("CSS")}} is a language of style rules that we use to apply styling to our HTML content, for example setting background colors and fonts, and laying out our content in multiple columns.
+- {{glossary("JavaScript")}} is a scripting language that enables you to create dynamically updating content, control multimedia, animate images, and pretty much everything else. (Okay, not everything, but it is amazing what you can achieve with a few lines of JavaScript code.)
 
 The three layers build on top of one another nicely. Let's take a simple text label as an example. We can mark it up using HTML to give it structure and purpose:
 
@@ -61,19 +60,18 @@ Try clicking on this last version of the text label to see what happens (note al
 
 JavaScript can do a lot more than that — let's explore what in more detail.
 
-So what can it really do?
--------------------------
+## So what can it really do?
 
 The core client-side JavaScript language consists of some common programming features that allow you to do things like:
 
--   Store useful values inside variables. In the above example for instance, we ask for a new name to be entered then store that name in a variable called `name`.
--   Operations on pieces of text (known as "strings" in programming). In the above example we take the string "Player 1: " and join it to the `name` variable to create the complete text label, e.g. ''Player 1: Chris".
--   Running code in response to certain events occurring on a web page. We used a {{Event("click")}} event in our example above to detect when the button is clicked and then run the code that updates the text label.
--   And much more!
+- Store useful values inside variables. In the above example for instance, we ask for a new name to be entered then store that name in a variable called `name`.
+- Operations on pieces of text (known as "strings" in programming). In the above example we take the string "Player 1: " and join it to the `name` variable to create the complete text label, e.g. ''Player 1: Chris".
+- Running code in response to certain events occurring on a web page. We used a {{Event("click")}} event in our example above to detect when the button is clicked and then run the code that updates the text label.
+- And much more!
 
 What is even more exciting however is the functionality built on top of the client-side JavaScript language. So-called **Application Programming Interfaces** (**APIs**) provide you with extra superpowers to use in your JavaScript code.
 
-APIs are ready-made sets of code building blocks that allow a developer to implement programs that would otherwise be hard or impossible to implement. They do the same thing for programming that ready-made furniture kits do for home building — it is much easier to take ready-cut panels and screw them together to make a bookshelf than it is to work out the design yourself, go and find the correct wood, cut all the panels to the right size and shape, find the correct-sized screws, and *then* put them together to make a bookshelf.
+APIs are ready-made sets of code building blocks that allow a developer to implement programs that would otherwise be hard or impossible to implement. They do the same thing for programming that ready-made furniture kits do for home building — it is much easier to take ready-cut panels and screw them together to make a bookshelf than it is to work out the design yourself, go and find the correct wood, cut all the panels to the right size and shape, find the correct-sized screws, and _then_ put them together to make a bookshelf.
 
 They generally fall into two categories.
 
@@ -81,24 +79,23 @@ They generally fall into two categories.
 
 **Browser APIs** are built into your web browser, and are able to expose data from the surrounding computer environment, or do useful complex things. For example:
 
--   The {{domxref("Document\_Object\_Model","DOM (Document Object Model) API")}} allows you to manipulate HTML and CSS, creating, removing and changing HTML, dynamically applying new styles to your page, etc. Every time you see a popup window appear on a page, or some new content displayed (as we saw above in our simple demo) for example, that's the DOM in action.
--   The {{domxref("Geolocation","Geolocation API")}} retrieves geographical information. This is how [Google Maps](https://www.google.com/maps) is able to find your location and plot it on a map.
--   The {{domxref("Canvas\_API","Canvas")}} and {{domxref("WebGL\_API","WebGL")}} APIs allow you to create animated 2D and 3D graphics. People are doing some amazing things using these web technologies —see [Chrome Experiments](https://www.chromeexperiments.com/webgl) and [webglsamples](https://webglsamples.org/).
--   [Audio and Video APIs](/en-US/docs/Web/Guide/Audio_and_video_delivery) like {{domxref("HTMLMediaElement")}} and {{domxref("WebRTC API", "WebRTC")}} allow you to do really interesting things with multimedia, such as play audio and video right in a web page, or grab video from your web camera and display it on someone else's computer (try our simple [Snapshot demo](https://chrisdavidmills.github.io/snapshot/) to get the idea).
+- The {{domxref("Document\_Object\_Model","DOM (Document Object Model) API")}} allows you to manipulate HTML and CSS, creating, removing and changing HTML, dynamically applying new styles to your page, etc. Every time you see a popup window appear on a page, or some new content displayed (as we saw above in our simple demo) for example, that's the DOM in action.
+- The {{domxref("Geolocation","Geolocation API")}} retrieves geographical information. This is how [Google Maps](https://www.google.com/maps) is able to find your location and plot it on a map.
+- The {{domxref("Canvas\_API","Canvas")}} and {{domxref("WebGL\_API","WebGL")}} APIs allow you to create animated 2D and 3D graphics. People are doing some amazing things using these web technologies —see [Chrome Experiments](https://www.chromeexperiments.com/webgl) and [webglsamples](https://webglsamples.org/).
+- [Audio and Video APIs](/en-US/docs/Web/Guide/Audio_and_video_delivery) like {{domxref("HTMLMediaElement")}} and {{domxref("WebRTC API", "WebRTC")}} allow you to do really interesting things with multimedia, such as play audio and video right in a web page, or grab video from your web camera and display it on someone else's computer (try our simple [Snapshot demo](https://chrisdavidmills.github.io/snapshot/) to get the idea).
 
 **Note**: Many of the above demos won't work in an older browser — when experimenting, it's a good idea to use a modern browser like Firefox, Chrome, Edge or Opera to run your code in. You will need to consider [cross browser testing](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing) in more detail when you get closer to delivering production code (i.e. real code that real customers will use).
 
 **Third party APIs** are not built into the browser by default, and you generally have to grab their code and information from somewhere on the Web. For example:
 
--   The [Twitter API](https://dev.twitter.com/overview/documentation) allows you to do things like displaying your latest tweets on your website.
--   The [Google Maps API](https://developers.google.com/maps/) and [OpenStreetMap API](https://wiki.openstreetmap.org/wiki/API) allows you to embed custom maps into your website, and other such functionality.
+- The [Twitter API](https://dev.twitter.com/overview/documentation) allows you to do things like displaying your latest tweets on your website.
+- The [Google Maps API](https://developers.google.com/maps/) and [OpenStreetMap API](https://wiki.openstreetmap.org/wiki/API) allows you to embed custom maps into your website, and other such functionality.
 
 **Note**: These APIs are advanced, and we'll not be covering any of these in this module. You can find out much more about these in our [Client-side web APIs module](/en-US/docs/Learn/JavaScript/Client-side_web_APIs).
 
 There's a lot more available, too! However, don't get over excited just yet. You won't be able to build the next Facebook, Google Maps, or Instagram after studying JavaScript for 24 hours — there are a lot of basics to cover first. And that's why you're here — let's move on!
 
-What is JavaScript doing on your page?
---------------------------------------
+## What is JavaScript doing on your page?
 
 Here we'll actually start looking at some code, and while doing so, explore what actually happens when you run some JavaScript in your page.
 
@@ -155,8 +152,7 @@ The word **dynamic** is used to describe both client-side JavaScript, and server
 
 A web page with no dynamically updating content is referred to as **static** — it just shows the same content all the time.
 
-How do you add JavaScript to your page?
----------------------------------------
+## How do you add JavaScript to your page?
 
 JavaScript is applied to your HTML page in a similar manner to CSS. Whereas CSS uses {{htmlelement("link")}} elements to apply external stylesheets and {{htmlelement("style")}} elements to apply internal stylesheets to HTML, JavaScript only needs one friend in the world of HTML — the {{htmlelement("script")}} element. Let's learn how this works.
 
@@ -289,8 +285,6 @@ Here is a visual representation of the different script loading methods and what
 
 ![Image from the [HTML spec](https://html.spec.whatwg.org/images/asyncdefer.svg), copied and cropped to a reduced version, under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) license terms.](async-defer.jpg)
 
-  
-
 For example, if you have the following script elements:
 
     <script async src="js/vendor/jquery.js"></script>
@@ -315,27 +309,26 @@ In the second example, we can be sure that `jquery.js` will load before `script2
 
 To summarize:
 
--   `async` and `defer` both instruct the browser to download the script(s) in a separate thread, while the rest of the page (the DOM, etc.) is downloading, so the page loading is not blocked during the fetch process.
--   scripts with an `async` attribute will execute as soon the download is done. This blocks the page and does not guarantee any specific execution order.
--   scripts with a `defer` attribute will load in the order they are in and will only execute once everything has finished loading.
--   If your scripts should be run immediately and they don't have any dependencies, then use `async`.
--   If your scripts need to wait for parsing and depend on other scripts and/or the DOM being in place, load them using `defer` and put their corresponding `<script>` elements in the order you want the browser to execute them.
+- `async` and `defer` both instruct the browser to download the script(s) in a separate thread, while the rest of the page (the DOM, etc.) is downloading, so the page loading is not blocked during the fetch process.
+- scripts with an `async` attribute will execute as soon the download is done. This blocks the page and does not guarantee any specific execution order.
+- scripts with a `defer` attribute will load in the order they are in and will only execute once everything has finished loading.
+- If your scripts should be run immediately and they don't have any dependencies, then use `async`.
+- If your scripts need to wait for parsing and depend on other scripts and/or the DOM being in place, load them using `defer` and put their corresponding `<script>` elements in the order you want the browser to execute them.
 
-Comments
---------
+## Comments
 
 As with HTML and CSS, it is possible to write comments into your JavaScript code that will be ignored by the browser, and exist to provide instructions to your fellow developers on how the code works (and you, if you come back to your code after six months and can't remember what you did). Comments are very useful, and you should use them often, particularly for larger applications. There are two types:
 
--   A single line comment is written after a double forward slash (//), e.g.
+- A single line comment is written after a double forward slash (//), e.g.
 
-        // I am a comment
+      // I am a comment
 
--   A multi-line comment is written between the strings /\* and \*/, e.g.
+- A multi-line comment is written between the strings /\* and \*/, e.g.
 
-        /*
-          I am also
-          a comment
-        */
+      /*
+        I am also
+        a comment
+      */
 
 So for example, we could annotate our last demo's JavaScript with comments like so:
 
@@ -362,8 +355,7 @@ So for example, we could annotate our last demo's JavaScript with comments like 
 
 **Note**: In general more comments are usually better than less, but you should be careful if you find yourself adding lots of comments to explain what variables are (your variable names perhaps should be more intuitive), or to explain very simple operations (maybe your code is overcomplicated).
 
-Summary
--------
+## Summary
 
 So there you go, your first step into the world of JavaScript. We've begun with just theory, to start getting you used to why you'd use JavaScript and what kind of things you can do with it. Along the way, you saw a few code examples and learned how JavaScript fits in with the rest of the code on your website, amongst other things.
 
@@ -371,15 +363,14 @@ JavaScript may seem a bit daunting right now, but don't worry — in this course
 
 {{NextMenu("Learn/JavaScript/First\_steps/A\_first\_splash", "Learn/JavaScript/First\_steps")}}
 
-In this module
---------------
+## In this module
 
--   [What is JavaScript?](/en-US/docs/Learn/JavaScript/First_steps/What_is_JavaScript)
--   [A first splash into JavaScript](/en-US/docs/Learn/JavaScript/First_steps/A_first_splash)
--   [What went wrong? Troubleshooting JavaScript](/en-US/docs/Learn/JavaScript/First_steps/What_went_wrong)
--   [Storing the information you need — Variables](/en-US/docs/Learn/JavaScript/First_steps/Variables)
--   [Basic math in JavaScript — numbers and operators](/en-US/docs/Learn/JavaScript/First_steps/Math)
--   [Handling text — strings in JavaScript](/en-US/docs/Learn/JavaScript/First_steps/Strings)
--   [Useful string methods](/en-US/docs/Learn/JavaScript/First_steps/Useful_string_methods)
--   [Arrays](/en-US/docs/Learn/JavaScript/First_steps/Arrays)
--   [Assessment: Silly story generator](/en-US/docs/Learn/JavaScript/First_steps/Silly_story_generator)
+- [What is JavaScript?](/en-US/docs/Learn/JavaScript/First_steps/What_is_JavaScript)
+- [A first splash into JavaScript](/en-US/docs/Learn/JavaScript/First_steps/A_first_splash)
+- [What went wrong? Troubleshooting JavaScript](/en-US/docs/Learn/JavaScript/First_steps/What_went_wrong)
+- [Storing the information you need — Variables](/en-US/docs/Learn/JavaScript/First_steps/Variables)
+- [Basic math in JavaScript — numbers and operators](/en-US/docs/Learn/JavaScript/First_steps/Math)
+- [Handling text — strings in JavaScript](/en-US/docs/Learn/JavaScript/First_steps/Strings)
+- [Useful string methods](/en-US/docs/Learn/JavaScript/First_steps/Useful_string_methods)
+- [Arrays](/en-US/docs/Learn/JavaScript/First_steps/Arrays)
+- [Assessment: Silly story generator](/en-US/docs/Learn/JavaScript/First_steps/Silly_story_generator)

@@ -1,4 +1,4 @@
---- title: Advanced text formatting slug: Learn/HTML/Introduction\_to\_HTML/Advanced\_text\_formatting tags: - Beginner - CodingScripting - Guide - HTML - Learn - Text - abbreviation - description list - quote - semantic ---
+--- title: Advanced text formatting slug: Learn/HTML/Introduction_to_HTML/Advanced_text_formatting tags: - Beginner - CodingScripting - Guide - HTML - Learn - Text - abbreviation - description list - quote - semantic ---
 
 {{LearnSidebar}}
 
@@ -8,8 +8,7 @@ There are many other elements in HTML for formatting text, which we didn't get t
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic HTML familiarity, as covered in <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML/Getting_started">Getting started with HTML</a>. HTML text formatting, as covered in <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML/HTML_text_fundamentals">HTML text fundamentals</a>.</td></tr><tr class="even"><td>Objective:</td><td>To learn how to use lesser-known HTML elements to mark up advanced semantic features.</td></tr></tbody></table>
 
-Description lists
------------------
+## Description lists
 
 In HTML text fundamentals, we walked through how to [mark up basic lists](/en-US/docs/Learn/HTML#lists) in HTML, but we didn't mention the third type of list you'll occasionally come across — **description lists**. The purpose of these lists is to mark up a set of items and their associated descriptions, such as terms and definitions, or questions and answers. Let's look at an example of a set of terms and definitions:
 
@@ -47,9 +46,9 @@ Note that it is permitted to have a single term with multiple descriptions, for 
 
 ### Active learning: Marking up a set of definitions
 
-It's time to try your hand at description lists; add elements to the raw text in the *Input* field so that it appears as a description list in the *Output* field. You could try using your own terms and descriptions if you like.
+It's time to try your hand at description lists; add elements to the raw text in the _Input_ field so that it appears as a description list in the _Output_ field. You could try using your own terms and descriptions if you like.
 
-If you make a mistake, you can always reset it using the *Reset* button. If you get really stuck, press the *Show solution* button to see the answer.
+If you make a mistake, you can always reset it using the _Reset_ button. If you get really stuck, press the _Show solution_ button to see the answer.
 
 ###### Playable code
 
@@ -175,8 +174,7 @@ If you make a mistake, you can always reset it using the *Reset* button. If you 
 
 {{ EmbedLiveSample('Playable\_code', 700, 350, "", "", "hide-codepen-jsfiddle") }}
 
-Quotations
-----------
+## Quotations
 
 HTML also has features available for marking up quotations; which element you use depends on whether you are marking up a block or inline quotation.
 
@@ -243,10 +241,10 @@ Time for another active learning example! In this example we'd like you to:
 
 The citation sources you need are:
 
--   http://www.brainyquote.com/quotes/authors/c/confucius.html for the Confucius quote
--   http://example.com/affirmationsforpositivethinking for "The Need To Eliminate Negative Self Talk".
+- http://www.brainyquote.com/quotes/authors/c/confucius.html for the Confucius quote
+- http://example.com/affirmationsforpositivethinking for "The Need To Eliminate Negative Self Talk".
 
-If you make a mistake, you can always reset it using the *Reset* button. If you get really stuck, press the *Show solution* button to see the answer.
+If you make a mistake, you can always reset it using the _Reset_ button. If you get really stuck, press the _Show solution_ button to see the answer.
 
 ###### Playable code 2
 
@@ -369,8 +367,7 @@ If you make a mistake, you can always reset it using the *Reset* button. If you 
 
 {{ EmbedLiveSample('Playable\_code\_2', 700, 450, "", "", "hide-codepen-jsfiddle") }}
 
-Abbreviations
--------------
+## Abbreviations
 
 Another fairly common element you'll meet when looking around the Web is {{htmlelement("abbr")}} — this is used to wrap around an abbreviation or acronym, and provide a full expansion of the term (included inside a {{htmlattrxref("title")}} attribute.) Let's look at a couple of examples:
 
@@ -386,7 +383,7 @@ These will come out looking something like this (the expansion will appear in a 
 
 ### Active learning: marking up an abbreviation
 
-For this simple active learning assignment, we'd like you to mark up an abbreviation. You can use our sample below, or replace it with one of your own. 
+For this simple active learning assignment, we'd like you to mark up an abbreviation. You can use our sample below, or replace it with one of your own.
 
 ###### Playable code
 
@@ -507,8 +504,7 @@ For this simple active learning assignment, we'd like you to mark up an abbrevia
 
 {{ EmbedLiveSample('Playable\_code\_3', 700, 300, "", "", "hide-codepen-jsfiddle") }}
 
-Marking up contact details
---------------------------
+## Marking up contact details
 
 HTML has an element for marking up contact details — {{htmlelement("address")}}. This wraps around your contact details, for example:
 
@@ -538,8 +534,7 @@ Note that something like this would also be ok, if the linked page contained the
       <p>Page written by <a href="../authors/chris-mills/">Chris Mills</a>.</p>
     </address>
 
-Superscript and subscript
--------------------------
+## Superscript and subscript
 
 You will occasionally need to use superscript and subscript when marking up items like dates, chemical formulae, and mathematical equations so they have the correct meaning. The {{htmlelement("sup")}} and {{htmlelement("sub")}} elements handle this job. For example:
 
@@ -551,16 +546,15 @@ The output of this code looks like so:
 
 {{ EmbedLiveSample('Superscript\_and\_subscript', '100%', '141px', '', '', 'hide-codepen-jsfiddle') }}
 
-Representing computer code
---------------------------
+## Representing computer code
 
 There are a number of elements available for marking up computer code using HTML:
 
--   {{htmlelement("code")}}: For marking up generic pieces of computer code.
--   {{htmlelement("pre")}}: For retaining whitespace (generally code blocks) — if you use indentation or excess whitespace inside your text, browsers will ignore it and you will not see it on your rendered page. If you wrap the text in `<pre></pre>` tags however, your whitespace will be rendered identically to how you see it in your text editor.
--   {{htmlelement("var")}}: For specifically marking up variable names.
--   {{htmlelement("kbd")}}: For marking up keyboard (and other types of) input entered into the computer.
--   {{htmlelement("samp")}}: For marking up the output of a computer program.
+- {{htmlelement("code")}}: For marking up generic pieces of computer code.
+- {{htmlelement("pre")}}: For retaining whitespace (generally code blocks) — if you use indentation or excess whitespace inside your text, browsers will ignore it and you will not see it on your rendered page. If you wrap the text in `<pre></pre>` tags however, your whitespace will be rendered identically to how you see it in your text editor.
+- {{htmlelement("var")}}: For specifically marking up variable names.
+- {{htmlelement("kbd")}}: For marking up keyboard (and other types of) input entered into the computer.
+- {{htmlelement("samp")}}: For marking up the output of a computer program.
 
 Let's look at a few examples. You should try having a play with these (try grabbing a copy of our [other-semantics.html](https://github.com/mdn/learning-area/blob/master/html/introduction-to-html/advanced-text-formatting/other-semantics.html) sample file):
 
@@ -584,8 +578,7 @@ The above code will look like so:
 
 {{ EmbedLiveSample('Representing\_computer\_code','100%',300, "", "", "hide-codepen-jsfiddle") }}
 
-Marking up times and dates
---------------------------
+## Marking up times and dates
 
 HTML also provides the {{htmlelement("time")}} element for marking up times and dates in a machine-readable format. For example:
 
@@ -593,15 +586,15 @@ HTML also provides the {{htmlelement("time")}} element for marking up times and 
 
 Why is this useful? Well, there are many different ways that humans write down dates. The above date could be written as:
 
--   20 January 2016
--   20th January 2016
--   Jan 20 2016
--   20/01/16
--   01/20/16
--   The 20th of next month
--   <span lang="fr">20e Janvier 2016</span>
--   <span lang="ja">2016年1月20日</span>
--   And so on
+- 20 January 2016
+- 20th January 2016
+- Jan 20 2016
+- 20/01/16
+- 01/20/16
+- The 20th of next month
+- <span lang="fr">20e Janvier 2016</span>
+- <span lang="ja">2016 年 1 月 20 日</span>
+- And so on
 
 But these different forms cannot be easily recognized by computers — what if you wanted to automatically grab the dates of all events in a page and insert them into a calendar? The {{htmlelement("time")}} element allows you to attach an unambiguous, machine-readable time/date for this purpose.
 
@@ -624,27 +617,24 @@ The basic example above just provides a simple machine readable date, but there 
     <!-- Calling out a specific week number -->
     <time datetime="2016-W04">The fourth week of 2016</time>
 
-Test your skills!
------------------
+## Test your skills!
 
 You've reached the end of this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: Advanced HTML text](/en-US/docs/Learn/HTML/Introduction_to_HTML/Test_your_skills:_Advanced_HTML_text).
 
-Summary
--------
+## Summary
 
 That marks the end of our study of HTML text semantics. Bear in mind that what you have seen during this course is not an exhaustive list of HTML text elements — we wanted to try to cover the essentials, and some of the more common ones you will see in the wild, or at least might find interesting. To find way more HTML elements, you can take a look at our [HTML element reference](/en-US/docs/Web/HTML/Element) (the [Inline text semantics](/en-US/docs/Web/HTML/Element#inline_text_semantics) section would be a great place to start.) In the next article we will look at the HTML elements you'd use to structure the different parts of an HTML document.
 
 {{PreviousMenuNext("Learn/HTML/Introduction\_to\_HTML/Creating\_hyperlinks", "Learn/HTML/Introduction\_to\_HTML/Document\_and\_website\_structure", "Learn/HTML/Introduction\_to\_HTML")}}
 
-In this module
---------------
+## In this module
 
--   [Getting started with HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML/Getting_started)
--   [What’s in the head? Metadata in HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML/The_head_metadata_in_HTML)
--   [HTML text fundamentals](/en-US/docs/Learn/HTML/Introduction_to_HTML/HTML_text_fundamentals)
--   [Creating hyperlinks](/en-US/docs/Learn/HTML/Introduction_to_HTML/Creating_hyperlinks)
--   [Advanced text formatting](/en-US/docs/Learn/HTML/Introduction_to_HTML/Advanced_text_formatting)
--   [Document and website structure](/en-US/docs/Learn/HTML/Introduction_to_HTML/Document_and_website_structure)
--   [Debugging HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML/Debugging_HTML)
--   [Marking up a letter](/en-US/docs/Learn/HTML/Introduction_to_HTML/Marking_up_a_letter)
--   [Structuring a page of content](/en-US/docs/Learn/HTML/Introduction_to_HTML/Structuring_a_page_of_content)
+- [Getting started with HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML/Getting_started)
+- [What’s in the head? Metadata in HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML/The_head_metadata_in_HTML)
+- [HTML text fundamentals](/en-US/docs/Learn/HTML/Introduction_to_HTML/HTML_text_fundamentals)
+- [Creating hyperlinks](/en-US/docs/Learn/HTML/Introduction_to_HTML/Creating_hyperlinks)
+- [Advanced text formatting](/en-US/docs/Learn/HTML/Introduction_to_HTML/Advanced_text_formatting)
+- [Document and website structure](/en-US/docs/Learn/HTML/Introduction_to_HTML/Document_and_website_structure)
+- [Debugging HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML/Debugging_HTML)
+- [Marking up a letter](/en-US/docs/Learn/HTML/Introduction_to_HTML/Marking_up_a_letter)
+- [Structuring a page of content](/en-US/docs/Learn/HTML/Introduction_to_HTML/Structuring_a_page_of_content)

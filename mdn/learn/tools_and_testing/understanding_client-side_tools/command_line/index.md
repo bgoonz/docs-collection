@@ -1,4 +1,4 @@
---- title: Command line crash course slug: Learn/Tools\_and\_testing/Understanding\_client-side\_tools/Command\_line tags: - Beginner - CLI - Command Line - Learn - Terminal - Tools - client-side - npm ---
+--- title: Command line crash course slug: Learn/Tools_and_testing/Understanding_client-side_tools/Command_line tags: - Beginner - CLI - Command Line - Learn - Terminal - Tools - client-side - npm ---
 
 {{LearnSidebar}}
 
@@ -8,8 +8,7 @@ In your development process you'll undoubtedly be required to run some command i
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Familiarity with the core <a href="/en-US/docs/Learn/HTML">HTML</a>, <a href="/en-US/docs/Learn/CSS">CSS</a>, and <a href="/en-US/docs/Learn/JavaScript">JavaScript</a> languages.</td></tr><tr class="even"><td>Objective:</td><td>To understand what the terminal/command line is, what basic commands you should learn, and how to install new command line tools.</td></tr></tbody></table>
 
-Welcome to the terminal
------------------------
+## Welcome to the terminal
 
 The terminal is a text interface for executing text-based programs. If you're running any tooling for web development there's a near-guaranteed chance that you'll have to pop open the command line and run some commands to use your chosen tools (you'll often see such tools referred to as **CLI tools** — command line interface tools).
 
@@ -59,7 +58,7 @@ The terminal is available on macOS at Applications/Utilities/Terminal.
 
 As with some other programming tools, using the terminal (or command line) on Windows has traditionally not been as simple or easy as on other operating systems. But things are getting better.
 
-Windows has traditionally had its own terminal-like program called cmd (“the command prompt”) for a long time, but this definitely doesn’t have parity with Unix commands, and is equivalent to the old-style Windows DOS prompt. 
+Windows has traditionally had its own terminal-like program called cmd (“the command prompt”) for a long time, but this definitely doesn’t have parity with Unix commands, and is equivalent to the old-style Windows DOS prompt.
 
 Better programs exist for providing a terminal experience on Windows, such as Powershell ([see here to find installers](https://github.com/PowerShell/PowerShell)), and Gitbash (which comes as part of the [git for Windows](https://gitforwindows.org/) toolset)
 
@@ -75,26 +74,25 @@ In terms of what option to choose on Windows, we’d strongly recommend trying t
 
 Generally you'll find these two terms used interchangeably. Technically, a terminal is software that starts and connects to a shell. A shell is your session and session environment (where things like the prompt and shortcuts might be customised). The command line is the literal line where you enter commands and the cursor blinks.
 
-### Do you *have* to use the terminal?
+### Do you _have_ to use the terminal?
 
 Although there's a great wealth of tools available from the command line, if you're using tools like [Visual Studio Code](https://code.visualstudio.com/) there's also a mass of extensions that can be used as a proxy to using terminal commands without needing to use the terminal directly. However, you won’t find a code editor extension for everything you want to do — you’ll have to get some experience with the terminal eventually.
 
-Basic built-in terminal commands
---------------------------------
+## Basic built-in terminal commands
 
 Enough talk — let’s start looking at some terminal commands! Out of the box, here are just a few of the things the command line can do, along with names of relevant tools in each case:
 
--   Navigate your computer’s file system along with base level tasks such as create, copy, rename and delete:
-    -   Move around your directory structure: `cd`
-    -   Create directories: `mkdir`
-    -   Create files (and modify their metadata): `touch`
-    -   Copy files: `cp`
-    -   Move files: `mv`
-    -   Delete files or directories: `rm`
--   Download files found at specific URLs: `curl`
--   Search for fragments of text inside larger bodies of text: `grep`
--   View a file's contents page by page: `less`, `cat`
--   Manipulate and transform streams of text (for example changing all the instances of `<div>`s in an HTML file to `<article>`): `awk`, `tr`, `sed`
+- Navigate your computer’s file system along with base level tasks such as create, copy, rename and delete:
+  - Move around your directory structure: `cd`
+  - Create directories: `mkdir`
+  - Create files (and modify their metadata): `touch`
+  - Copy files: `cp`
+  - Move files: `mv`
+  - Delete files or directories: `rm`
+- Download files found at specific URLs: `curl`
+- Search for fragments of text inside larger bodies of text: `grep`
+- View a file's contents page by page: `less`, `cat`
+- Manipulate and transform streams of text (for example changing all the instances of `<div>`s in an HTML file to `<article>`): `awk`, `tr`, `sed`
 
 **Note**: There are a number of good tutorials on the web that go much deeper into the command line on the web — this is only a brief introduction!
 
@@ -152,9 +150,9 @@ Most terminal commands have options — these are modifiers that you add onto th
 
 For example, give this a go and see what you get:
 
-    ls -l 
+    ls -l
 
-In the case of `ls`, the `-l` (*dash ell*) option gives you a listing with one file or directory on each line, and a lot more information shown. Directories can be identified by looking for a letter "d" on the very left-hand side of the lines. Those are the ones we can `cd` into.
+In the case of `ls`, the `-l` (_dash ell_) option gives you a listing with one file or directory on each line, and a lot more information shown. Directories can be identified by looking for a letter "d" on the very left-hand side of the lines. Those are the ones we can `cd` into.
 
 Below is a screenshot with a “vanilla” macOS terminal at the top, and a customised terminal with some extra icons and colors to keep it looking lively — both showing the results of running `ls -l`:
 
@@ -172,17 +170,16 @@ There are a number of other basic utility commands that you’ll probably end up
 
 Have a play with them in a test directory you’ve created somewhere so that you don’t accidentally delete anything important, using the example commands below for guidance:
 
--   `mkdir` — this creates a new directory inside the current directory you are in, with the name you provide after the command name. For example, `mkdir my-awesome-website` will make a new directory called `my-awesome-website`.
--   `rmdir` — removes the named directory, but only if it’s empty. For example `rmdir my-awesome-website` will remove the directory we created above. If you want to remove a directory that is not empty (and also remove everything it contains), then you can use the `-r` option (recursive), but this is dangerous. Make sure there is nothing you might need inside the directory later on, as it will be gone forever.
--   `touch` — creates a new empty file, inside the current directory. For example, `touch mdn-example.md` creates a new empty file called `mdn-example.md`.
--   `mv` — moves a file from the first specified file location to the second specified file location, for example `mv mdn-example.md mdn-example.txt` (the locations are written as file paths). This command moves a file called `mdn-example.md` in the current directory to a file called `mdn-example.txt` in the current directory. Technically the file is being moved, but from a practical perspective, this command is actually renaming the file.
--   `cp` — similar in usage to `mv`, `cp` creates a copy of the file in the first location specified, in the second location specified. For example, `cp mdn-example.txt mdn-example.txt.bak` creates a copy of `mdn-example.txt` called `mdn-example.txt.bak` (you can of course call it something else if you wish).
--   `rm` — removes the specified file. For example, `rm mdn-example.txt` deletes a single file called `mdn-example.txt`. Note that this delete is permanent and can’t be undone via the recycle bin that you might have on your desktop user interface.
+- `mkdir` — this creates a new directory inside the current directory you are in, with the name you provide after the command name. For example, `mkdir my-awesome-website` will make a new directory called `my-awesome-website`.
+- `rmdir` — removes the named directory, but only if it’s empty. For example `rmdir my-awesome-website` will remove the directory we created above. If you want to remove a directory that is not empty (and also remove everything it contains), then you can use the `-r` option (recursive), but this is dangerous. Make sure there is nothing you might need inside the directory later on, as it will be gone forever.
+- `touch` — creates a new empty file, inside the current directory. For example, `touch mdn-example.md` creates a new empty file called `mdn-example.md`.
+- `mv` — moves a file from the first specified file location to the second specified file location, for example `mv mdn-example.md mdn-example.txt` (the locations are written as file paths). This command moves a file called `mdn-example.md` in the current directory to a file called `mdn-example.txt` in the current directory. Technically the file is being moved, but from a practical perspective, this command is actually renaming the file.
+- `cp` — similar in usage to `mv`, `cp` creates a copy of the file in the first location specified, in the second location specified. For example, `cp mdn-example.txt mdn-example.txt.bak` creates a copy of `mdn-example.txt` called `mdn-example.txt.bak` (you can of course call it something else if you wish).
+- `rm` — removes the specified file. For example, `rm mdn-example.txt` deletes a single file called `mdn-example.txt`. Note that this delete is permanent and can’t be undone via the recycle bin that you might have on your desktop user interface.
 
 **Note**: Many terminal commands allow you to use asterisks as "wild card" characters, meaning "any sequence of characters". This allows you to run an operation against a potentially large number of files at once, all of which match the specified pattern. As an example, `rm mdn-*` would delete all files beginning with `mdn-`. `rm mdn-*.bak` would delete all files that start with `mdn-` and end with `.bak`.
 
-Terminal — considered harmful?
-------------------------------
+## Terminal — considered harmful?
 
 We’ve alluded to this before, but to be clear — you need to be careful with the terminal. Simple commands do not carry too much danger, but as you start putting together more complex commands, you need to think carefully about what the command will do, and try testing them out first before you finally run them in the intended directory.
 
@@ -197,8 +194,7 @@ A great resource for getting a quick overview of specific terminal commands is [
 
 In the next section let’s step it up a notch (or several notches in fact) and see how we can connect tools together on the command line to really see how the terminal can be advantageous over the regular desktop user interface.
 
-Connecting commands together with pipes
----------------------------------------
+## Connecting commands together with pipes
 
 The terminal really comes into its own when you start to chain commands together using the `|` (pipe) symbol. Let’s look at a very quick example of what this means.
 
@@ -220,10 +216,9 @@ Since `ls` prints each file or directory on its own line, that effectively gives
 
 So what is going on here? A general philosophy of (unix) command line tools is that they print text to the terminal (also referred to "printing to standard output" or `STDOUT`). A good deal of commands can also read content from streamed input (known as "standard input" or `STDIN`).
 
-The pipe operator can *connect* these inputs and outputs together, allowing us to build up increasingly more complex operations to suit our needs — the output from one command can become the input to the next command. In this case, `ls` would normally print its output to `STDOUT`, but instead `ls`’s output is being piped into `wc`, which takes that output as an input, counting the number of lines it contains, and prints that count to `STDOUT` instead.
+The pipe operator can _connect_ these inputs and outputs together, allowing us to build up increasingly more complex operations to suit our needs — the output from one command can become the input to the next command. In this case, `ls` would normally print its output to `STDOUT`, but instead `ls`’s output is being piped into `wc`, which takes that output as an input, counting the number of lines it contains, and prints that count to `STDOUT` instead.
 
-A slightly more complex example
--------------------------------
+## A slightly more complex example
 
 Let’s go through something a bit more complicated. We will first try to fetch the contents of MDN's "fetch" page using the `curl` command (which can be used to request content from URLs), from [https://developer.mozilla.org/en-US/docs/Web/API/fetch](/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch).
 
@@ -264,8 +259,7 @@ Your final output should look something like this:
 By combining these commands we've customised the output to show the full URLs that the Mozilla server is redirecting through when we request the `/docs/Web/API/fetch` URL.  
 Getting to know your system will prove useful in years to come — learn how these single serving tools work and how they can become part of your arsenal to solve niche problems.
 
-Adding powerups
----------------
+## Adding powerups
 
 Now we’ve had a look at some of the built-in commands your system comes equipped with, let’s look at how we can install a third-party CLI tool and make use of it.
 
@@ -289,7 +283,7 @@ There's pros and cons each way — and this list of pros and cons for globally i
 
 <table><thead><tr class="header"><th>Pros of installing globally</th><th>Cons of installing globally</th></tr></thead><tbody><tr class="odd"><td>Accessible anywhere in your terminal</td><td>May not be compatible with your project's codebase</td></tr><tr class="even"><td>Only install once</td><td>Other developers in your team won't have access to these tools, for example if you are sharing the codebase over a tool like git.</td></tr><tr class="odd"><td>Uses less disk space</td><td>Related to the previous point, it makes project code harder to replicate (if you install your tools locally, they can be set up as dependencies and installed with <code>npm install</code>).</td></tr><tr class="even"><td>Always the same version</td><td></td></tr><tr class="odd"><td>Feels like any other unix command</td><td></td></tr></tbody></table>
 
-Although the *cons* list is shorter, the negative impact of global installing is potentially much larger than the benefits. However, for now we'll err on the side of simplicity and install globally to keep things simple. We'll look more at local installs and why they're good in the next article.
+Although the _cons_ list is shorter, the negative impact of global installing is potentially much larger than the benefits. However, for now we'll err on the side of simplicity and install globally to keep things simple. We'll look more at local installs and why they're good in the next article.
 
 ### Installing Prettier
 
@@ -298,10 +292,10 @@ For this article we will install Prettier as a global command line utility.
 Prettier is an opinionated code formatting tool for front end developers, focusing around JavaScript-based languages and adding support for HTML, CSS, SCSS, JSON and more.  
 Prettier can:
 
--   Save the cognitive overhead of getting the style consistent manually across all your code files; Prettier can do this for you automatically.
--   Help newcomers to web development format their code in best-practice fashion.
--   Be installed on any operating system and even as a direct part of project tooling, ensuring that colleagues and friends who work on your code use the code style you’re using.
--   Be configured to run upon save, as you type, or even before publishing your code (with additional tooling that we’ll see later on in the module).
+- Save the cognitive overhead of getting the style consistent manually across all your code files; Prettier can do this for you automatically.
+- Help newcomers to web development format their code in best-practice fashion.
+- Be installed on any operating system and even as a direct part of project tooling, ensuring that colleagues and friends who work on your code use the code style you’re using.
+- Be configured to run upon save, as you type, or even before publishing your code (with additional tooling that we’ll see later on in the module).
 
 Once you've installed node, open up the terminal and run the following command to install Prettier:
 
@@ -374,36 +368,33 @@ Depending on your workflow (or the workflow that you pick) you can make this an 
 
 With Prettier there's a number of ways automation can be achieved and though they're beyond the scope of this article, there's some excellent resources online to help (some of which have been linked to). You can invoke prettier:
 
--   Before you commit your code into a git repository using [Husky](https://github.com/typicode/husky).
--   Whenever you hit "save" in your code editor, be it [VS Code](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode), [Atom](https://atom.io/packages/prettier-atom), or [Sublime Text](https://packagecontrol.io/packages/JsPrettier).
--   As part of continuous integration checks using tools like [Github Actions](https://github.com/features/actions).
+- Before you commit your code into a git repository using [Husky](https://github.com/typicode/husky).
+- Whenever you hit "save" in your code editor, be it [VS Code](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode), [Atom](https://atom.io/packages/prettier-atom), or [Sublime Text](https://packagecontrol.io/packages/JsPrettier).
+- As part of continuous integration checks using tools like [Github Actions](https://github.com/features/actions).
 
 Our personal preference is the second one — while using say VS Code, Prettier kicks in and cleans up any formatting it needs to do every time we hit save. You can find a lot more information about using Prettier in different ways in the [Prettier docs](https://prettier.io/docs/en/).
 
-Other tools to play with
-------------------------
+## Other tools to play with
 
 If you want to play with a few more tools, here’s a brief list that are fun to try out:
 
--   `bat` — A “nicer” `cat` (`cat` is used to print the contents of files).
--   `prettyping` — `ping` on the command line, but visualized (`ping` is a useful tool to check if a server is responding).
--   `htop` — A process viewer, useful for when something is making your CPU fan behave like a jet engine and you want to identify the offending program.
--   `tldr` — mentioned earlier in this chapter, but available as a command line tool.
+- `bat` — A “nicer” `cat` (`cat` is used to print the contents of files).
+- `prettyping` — `ping` on the command line, but visualized (`ping` is a useful tool to check if a server is responding).
+- `htop` — A process viewer, useful for when something is making your CPU fan behave like a jet engine and you want to identify the offending program.
+- `tldr` — mentioned earlier in this chapter, but available as a command line tool.
 
 Note that some of the above suggestions may need installing using npm, like we did with Prettier.
 
-Summary
--------
+## Summary
 
 That brings us to the end of our brief tour of the terminal/command line. Next up we’ll be looking in more detail at package managers, and what we can do with them.
 
 {{PreviousMenuNext("Learn/Tools\_and\_testing/Understanding\_client-side\_tools/Overview","Learn/Tools\_and\_testing/Understanding\_client-side\_tools/Package\_management", "Learn/Tools\_and\_testing/Understanding\_client-side\_tools")}}
 
-In this module
---------------
+## In this module
 
--   [Client-side tooling overview](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Overview)
--   **Command line crash course**
--   [Package management basics](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Package_management)
--   [Introducing a complete toolchain](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Introducing_complete_toolchain)
--   [Deploying our app](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Deployment)
+- [Client-side tooling overview](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Overview)
+- **Command line crash course**
+- [Package management basics](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Package_management)
+- [Introducing a complete toolchain](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Introducing_complete_toolchain)
+- [Deploying our app](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Deployment)

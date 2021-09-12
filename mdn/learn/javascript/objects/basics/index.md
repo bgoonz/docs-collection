@@ -8,8 +8,7 @@ In this article, we'll look at fundamental JavaScript object syntax, and revisit
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, a basic understanding of HTML and CSS, familiarity with JavaScript basics (see <a href="/en-US/docs/Learn/JavaScript/First_steps">First steps</a> and <a href="/en-US/docs/Learn/JavaScript/Building_blocks">Building blocks</a>).</td></tr><tr class="even"><td>Objective:</td><td>To understand the basic theory behind object-oriented programming, how this relates to JavaScript ("most things are objects"), and how to start working with JavaScript objects.</td></tr></tbody></table>
 
-Object basics
--------------
+## Object basics
 
 An object is a collection of related data and/or functionality (which usually consists of several variables and functions — which are called properties and methods when they are inside objects.) Let's work through an example to understand what they look like.
 
@@ -67,8 +66,7 @@ An object like this is referred to as an **object literal** — we've literally 
 
 It is very common to create an object using an object literal when you want to transfer a series of structured, related data items in some manner, for example sending a request to the server to be put into a database. Sending a single object is much more efficient than sending several items individually, and it is easier to work with than an array, when you want to identify individual items by name.
 
-Dot notation
-------------
+## Dot notation
 
 Above, you accessed the object's properties and methods using **dot notation**. The object name (person) acts as the **namespace** — it must be entered first to access anything **encapsulated** inside the object. Next you write a dot, then the item you want to access — this can be the name of a simple property, an item of an array property, or a call to one of the object's methods, for example:
 
@@ -106,8 +104,7 @@ to
 
 Otherwise your methods will no longer work.
 
-Bracket notation
-----------------
+## Bracket notation
 
 There is another way to access object properties — using bracket notation. Instead of using these:
 
@@ -121,8 +118,7 @@ You can use
 
 This looks very similar to how you access the items in an array, and it is basically the same thing — instead of using an index number to select an item, you are using the name associated with each member's value. It is no wonder that objects are sometimes called **associative arrays** — they map strings to values in the same way that arrays map numbers to values.
 
-Setting object members
-----------------------
+## Setting object members
 
 So far we've only looked at retrieving (or **getting**) object members — you can also **set** (update) the value of object members by declaring the member you want to set (using dot or bracket notation), like this:
 
@@ -165,8 +161,7 @@ Now try saving and refreshing, and entering the following into your text input:
 
 Adding a property to an object using the method above isn't possible with dot notation, which can only accept a literal member name, not a variable value pointing to a name.
 
-What is "this"?
----------------
+## What is "this"?
 
 You may have noticed something slightly strange in our methods. Look at this one for example:
 
@@ -194,8 +189,7 @@ Let's illustrate what we mean with a simplified pair of person objects:
 
 In this case, `person1.greeting()` outputs "Hi! I'm Chris."; `person2.greeting()` on the other hand outputs "Hi! I'm Deepti.", even though the method's code is exactly the same in each case. As we said earlier, `this` is equal to the object the code is inside — this isn't hugely useful when you are writing out object literals by hand, but it really comes into its own when you are dynamically generating objects (for example using constructors). It will all become clearer later on.
 
-You've been using objects all along
------------------------------------
+## You've been using objects all along
 
 As you've been going through these examples, you have probably been thinking that the dot notation you've been using is very familiar. That's because you've been using it throughout the course! Every time we've been working through an example that uses a built-in browser API or JavaScript object, we've been using objects, because such features are built using exactly the same kind of object structures that we've been looking at here, albeit more complex ones than in our own basic custom examples.
 
@@ -222,13 +216,11 @@ Again, we'll look at constructors in a later article.
 
 **Note**: It is useful to think about the way objects communicate as **message passing** — when an object needs another object to perform some kind of action often it sends a message to another object via one of its methods, and waits for a response, which we know as a return value.
 
-Test your skills!
------------------
+## Test your skills!
 
 You've reached the end of this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: Object basics](/en-US/docs/Learn/JavaScript/Objects/Test_your_skills:_Object_basics).
 
-Summary
--------
+## Summary
 
 Congratulations, you've reached the end of our first JS objects article — you should now have a good idea of how to work with objects in JavaScript — including creating your own simple objects. You should also appreciate that objects are very useful as structures for storing related data and functionality — if you tried to keep track of all the properties and methods in our `person` object as separate variables and functions, it would be inefficient and frustrating, and we'd run the risk of clashing with other variables and functions that have the same names. Objects let us keep the information safely locked away in their own package, out of harm's way.
 
@@ -236,13 +228,12 @@ In the next article we'll start to look at object-oriented programming (OOP) the
 
 {{NextMenu("Learn/JavaScript/Objects/Object-oriented\_JS", "Learn/JavaScript/Objects")}}
 
-In this module
---------------
+## In this module
 
--   [Object basics](/en-US/docs/Learn/JavaScript/Objects/Basics)
--   [Object-oriented JavaScript for beginners](/en-US/docs/Learn/JavaScript/Objects/Object-oriented_JS)
--   [Object prototypes](/en-US/docs/Learn/JavaScript/Objects/Object_prototypes)
--   [Inheritance in JavaScript](/en-US/docs/Learn/JavaScript/Objects/Inheritance)
--   [Working with JSON data](/en-US/docs/Learn/JavaScript/Objects/JSON)
--   [Object building practice](/en-US/docs/Learn/JavaScript/Objects/Object_building_practice)
--   [Adding features to our bouncing balls demo](/en-US/docs/Learn/JavaScript/Objects/Adding_bouncing_balls_features)
+- [Object basics](/en-US/docs/Learn/JavaScript/Objects/Basics)
+- [Object-oriented JavaScript for beginners](/en-US/docs/Learn/JavaScript/Objects/Object-oriented_JS)
+- [Object prototypes](/en-US/docs/Learn/JavaScript/Objects/Object_prototypes)
+- [Inheritance in JavaScript](/en-US/docs/Learn/JavaScript/Objects/Inheritance)
+- [Working with JSON data](/en-US/docs/Learn/JavaScript/Objects/JSON)
+- [Object building practice](/en-US/docs/Learn/JavaScript/Objects/Object_building_practice)
+- [Adding features to our bouncing balls demo](/en-US/docs/Learn/JavaScript/Objects/Adding_bouncing_balls_features)

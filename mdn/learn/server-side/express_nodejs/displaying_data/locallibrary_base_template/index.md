@@ -1,4 +1,4 @@
---- title: LocalLibrary base template slug: Learn/Server-side/Express\_Nodejs/Displaying\_data/LocalLibrary\_base\_template tags: - Express - Node - displaying data - part 5 - server-side ---
+--- title: LocalLibrary base template slug: Learn/Server-side/Express_Nodejs/Displaying_data/LocalLibrary_base_template tags: - Express - Node - displaying data - part 5 - server-side ---
 
 Now that we understand how to extend templates using Pug, let's start by creating a base template for the project. This will have a sidebar with links for the pages we hope to create across the tutorial articles (e.g. to display and create books, genres, authors, etc.) and a main content area that we'll override in each of our individual pages.
 
@@ -58,8 +58,7 @@ The base template also references a local css file (**style.css**) that provides
 
 Now we have a base template for creating pages with a sidebar. In the next sections we will use it to define the individual pages.
 
-Next steps
-----------
+## Next steps
 
--   Return to [Express Tutorial Part 5: Displaying library data](/en-US/docs/Learn/Server-side/Express_Nodejs/Displaying_data).
--   Proceed to the next subarticle of part 5: [Home page](/en-US/docs/Learn/Server-side/Express_Nodejs/Displaying_data/Home_page).
+- Return to [Express Tutorial Part 5: Displaying library data](/en-US/docs/Learn/Server-side/Express_Nodejs/Displaying_data).
+- Proceed to the next subarticle of part 5: [Home page](/en-US/docs/Learn/Server-side/Express_Nodejs/Displaying_data/Home_page).

@@ -1,4 +1,4 @@
---- title: Fetching data from the server slug: Learn/JavaScript/Client-side\_web\_APIs/Fetching\_data tags: - API - Article - Beginner - CodingScripting - Fetch - JSON - JavaScript - Learn - Promises - Server - XHR - XML - XMLHttpRequest - data - request ---
+--- title: Fetching data from the server slug: Learn/JavaScript/Client-side_web_APIs/Fetching_data tags: - API - Article - Beginner - CodingScripting - Fetch - JSON - JavaScript - Learn - Promises - Server - XHR - XML - XMLHttpRequest - data - request ---
 
 {{LearnSidebar}}
 
@@ -8,8 +8,7 @@ Another very common task in modern websites and applications is retrieving indiv
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>JavaScript basics (see <a href="/en-US/docs/Learn/JavaScript/First_steps">first steps</a>, <a href="/en-US/docs/Learn/JavaScript/Building_blocks">building blocks</a>, <a href="/en-US/docs/Learn/JavaScript/Objects">JavaScript objects</a>), the <a href="/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Introduction">basics of Client-side APIs</a></td></tr><tr class="even"><td>Objective:</td><td>To learn how to fetch data from the server and use it to update the contents of a web page.</td></tr></tbody></table>
 
-What is the problem here?
--------------------------
+## What is the problem here?
 
 Originally page loading on the web was simple — you'd send a request for a website to a server, and as long as nothing went wrong, the assets that made the web page would be downloaded and displayed on your computer.
 
@@ -34,15 +33,14 @@ The Ajax model involves using a web API as a proxy to more intelligently request
 
 This is a really good thing because:
 
--   Page updates are a lot quicker and you don't have to wait for the page to refresh, meaning that the site feels faster and more responsive.
--   Less data is downloaded on each update, meaning less wasted bandwidth. This may not be such a big issue on a desktop on a broadband connection, but it's a major issue on mobile devices and in developing countries that don't have ubiquitous fast Internet service.
+- Page updates are a lot quicker and you don't have to wait for the page to refresh, meaning that the site feels faster and more responsive.
+- Less data is downloaded on each update, meaning less wasted bandwidth. This may not be such a big issue on a desktop on a broadband connection, but it's a major issue on mobile devices and in developing countries that don't have ubiquitous fast Internet service.
 
 To speed things up even further, some sites also store assets and data on the user's computer when they are first requested, meaning that on subsequent visits they use the local versions instead of downloading fresh copies everytime the page is first loaded. The content is only reloaded from the server when it has been updated.
 
 ![A basic web app data flow architecture](web-app-architecture@2x.png)
 
-A basic Ajax request
---------------------
+## A basic Ajax request
 
 Let's look at how such a request is handled, using both {{domxref("XMLHttpRequest")}} and [Fetch](/en-US/docs/Web/API/Fetch_API). For these examples, we'll request data out of a few different text files and use them to populate a content area.
 
@@ -64,7 +62,7 @@ This series of files will act as our fake database; in a real application, we'd 
           updateDisplay(verse);
         };
 
-3.  Let's define our `updateDisplay()` function. First of all, put the following beneath your previous code block — this is the empty shell of the function. Note: Steps 4 - 9 will all be performed *within* this function.
+3.  Let's define our `updateDisplay()` function. First of all, put the following beneath your previous code block — this is the empty shell of the function. Note: Steps 4 - 9 will all be performed _within_ this function.
 
         function updateDisplay(verse) {
 
@@ -219,8 +217,7 @@ If you need to support older browsers, then an XHR solution might be preferable.
 
 You should really learn both — Fetch will become more popular as Internet Explorer declines in usage (IE is no longer being developed, in favor of Microsoft's new Edge browser), but you might need XHR for a while yet.
 
-A more complex example
-----------------------
+## A more complex example
 
 To round off the article, we'll look at a slightly more complex example that shows some more interesting uses of Fetch. We have created a sample site called The Can Store — it's a fictional supermarket that only sells canned goods. You can find this [example live on GitHub](https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/), and [see the source code](https://github.com/mdn/learning-area/tree/master/javascript/apis/fetching-data/can-store).
 
@@ -284,41 +281,38 @@ We'd like you to try converting the Fetch version of the app to use XHR as a use
 
 Some helpful hints:
 
--   You might find the {{domxref("XMLHttpRequest")}} reference material useful.
--   You will basically need to use the same pattern as you saw earlier in the [XHR-basic.html](https://github.com/mdn/learning-area/blob/master/javascript/apis/fetching-data/xhr-basic.html) example.
--   You will, however, need to add the error handling we showed you in the Fetch version of the Can Store:
-    -   The response is found in `request.response` after the `load` event has fired, not in a promise `then()`.
-    -   About the best equivalent to Fetch's `response.ok` in XHR is to check whether {{domxref("XMLHttpRequest.status","request.status")}} is equal to 200, or if {{domxref("XMLHttpRequest.readyState","request.readyState")}} is equal to 4.
-    -   The properties for getting the status and status message are the same, but they are found on the `request` (XHR) object, not the `response` object.
+- You might find the {{domxref("XMLHttpRequest")}} reference material useful.
+- You will basically need to use the same pattern as you saw earlier in the [XHR-basic.html](https://github.com/mdn/learning-area/blob/master/javascript/apis/fetching-data/xhr-basic.html) example.
+- You will, however, need to add the error handling we showed you in the Fetch version of the Can Store:
+  - The response is found in `request.response` after the `load` event has fired, not in a promise `then()`.
+  - About the best equivalent to Fetch's `response.ok` in XHR is to check whether {{domxref("XMLHttpRequest.status","request.status")}} is equal to 200, or if {{domxref("XMLHttpRequest.readyState","request.readyState")}} is equal to 4.
+  - The properties for getting the status and status message are the same, but they are found on the `request` (XHR) object, not the `response` object.
 
 **Note**: If you have trouble with this, feel free to check your code against the finished version on GitHub ([see the source here](https://github.com/mdn/learning-area/blob/master/javascript/apis/fetching-data/can-store-xhr/can-script.js), and also [see it running live](https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store-xhr/)).
 
-Summary
--------
+## Summary
 
 This article shows how to start working with both XHR and Fetch to fetch data from the server.
 
-See also
---------
+## See also
 
 There are however a lot of different subjects discussed in this article, which has only really scratched the surface. For a lot more detail on these subjects, try the following articles:
 
--   [Ajax — Getting started](/en-US/docs/Web/Guide/AJAX/Getting_Started)
--   [Using Fetch](/en-US/docs/Web/API/Fetch_API/Using_Fetch)
--   [Promises](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
--   [Working with JSON data](/en-US/docs/Learn/JavaScript/Objects/JSON)
--   [An overview of HTTP](/en-US/docs/Web/HTTP/Overview)
--   [Server-side website programming](/en-US/docs/Learn/Server-side)
+- [Ajax — Getting started](/en-US/docs/Web/Guide/AJAX/Getting_Started)
+- [Using Fetch](/en-US/docs/Web/API/Fetch_API/Using_Fetch)
+- [Promises](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+- [Working with JSON data](/en-US/docs/Learn/JavaScript/Objects/JSON)
+- [An overview of HTTP](/en-US/docs/Web/HTTP/Overview)
+- [Server-side website programming](/en-US/docs/Learn/Server-side)
 
 {{PreviousMenuNext("Learn/JavaScript/Client-side\_web\_APIs/Manipulating\_documents", "Learn/JavaScript/Client-side\_web\_APIs/Third\_party\_APIs", "Learn/JavaScript/Client-side\_web\_APIs")}}
 
-In this module
---------------
+## In this module
 
--   [Introduction to web APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Introduction)
--   [Manipulating documents](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Manipulating_documents)
--   [Fetching data from the server](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Fetching_data)
--   [Third party APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Third_party_APIs)
--   [Drawing graphics](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Drawing_graphics)
--   [Video and audio APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Video_and_audio_APIs)
--   [Client-side storage](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Client-side_storage)
+- [Introduction to web APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Introduction)
+- [Manipulating documents](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Manipulating_documents)
+- [Fetching data from the server](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Fetching_data)
+- [Third party APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Third_party_APIs)
+- [Drawing graphics](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Drawing_graphics)
+- [Video and audio APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Video_and_audio_APIs)
+- [Client-side storage](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Client-side_storage)

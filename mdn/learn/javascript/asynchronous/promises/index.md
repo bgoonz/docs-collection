@@ -8,18 +8,17 @@
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, a reasonable understanding of JavaScript fundamentals.</td></tr><tr class="even"><td>Objective:</td><td>To understand promises and how to use them.</td></tr></tbody></table>
 
-What are promises?
-------------------
+## What are promises?
 
 We looked at [Promises](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) briefly in the first article of the course, but here we'll look at them in a lot more depth.
 
-Essentially, a Promise is an object that represents an intermediate state of an operation — in effect, a *promise* that a result of some kind will be returned at some point in the future. There is no guarantee of exactly when the operation will complete and the result will be returned, but there *is* a guarantee that when the result is available, or the promise fails, the code you provide will be executed in order to do something else with a successful result, or to gracefully handle a failure case.
+Essentially, a Promise is an object that represents an intermediate state of an operation — in effect, a _promise_ that a result of some kind will be returned at some point in the future. There is no guarantee of exactly when the operation will complete and the result will be returned, but there _is_ a guarantee that when the result is available, or the promise fails, the code you provide will be executed in order to do something else with a successful result, or to gracefully handle a failure case.
 
-Generally, you are less interested in the amount of time an async operation will take to return its result (unless of course, it takes *far* too long!), and more interested in being able to respond to it being returned, whenever that is. And of course, it's nice that it doesn't block the rest of the code execution.
+Generally, you are less interested in the amount of time an async operation will take to return its result (unless of course, it takes _far_ too long!), and more interested in being able to respond to it being returned, whenever that is. And of course, it's nice that it doesn't block the rest of the code execution.
 
 One of the most common engagements you'll have with promises is with web APIs that return a promise. Let's consider a hypothetical video chat application. The application has a window with a list of the user's friends, and clicking on a button next to a user starts a video call to that user.
 
-That button's handler calls {{domxref("MediaDevices.getUserMedia", "getUserMedia()")}} in order to get access to the user's camera and microphone. Since `getUserMedia()` has to ensure that the user has permission to use those devices *and* ask the user which microphone to use and which camera to use (or whether to be a voice-only call, among other possible options), it can block until not only all of those decisions are made, but also the camera and microphone have been engaged. Also, the user may not respond immediately to these permission requests. This can potentially take a long time.
+That button's handler calls {{domxref("MediaDevices.getUserMedia", "getUserMedia()")}} in order to get access to the user's camera and microphone. Since `getUserMedia()` has to ensure that the user has permission to use those devices _and_ ask the user which microphone to use and which camera to use (or whether to be a voice-only call, among other possible options), it can block until not only all of those decisions are made, but also the camera and microphone have been engaged. Also, the user may not respond immediately to these permission requests. This can potentially take a long time.
 
 Since the call to `getUserMedia()` is made from the browser's main thread, the entire browser is blocked until `getUserMedia()` returns! Obviously, that's not an acceptable option; without promises, everything in the browser becomes unusable until the user decides what to do about the camera and microphone. So instead of waiting for the user, getting the chosen devices enabled, and directly returning the {{domxref("MediaStream")}} for the stream created from the selected sources, `getUserMedia()` returns a {{jsxref("promise")}} which is resolved with the {{domxref("MediaStream")}} once it's available.
 
@@ -45,8 +44,7 @@ The important thing here is that the `getUserMedia()` call returns almost immedi
 
 **Note:** You can learn more about this somewhat advanced topic, if you're interested, in the article [Signaling and video calling](/en-US/docs/Web/API/WebRTC_API/Signaling_and_video_calling). Code similar to this, but much more complete, is used in that example.
 
-The trouble with callbacks
---------------------------
+## The trouble with callbacks
 
 To fully understand why promises are a good thing, it helps to think back to old-style callbacks and to appreciate why they are problematic.
 
@@ -120,11 +118,10 @@ This is not quite as easy to read, however, and this syntax might not be usable 
 
 At their most basic, promises are similar to event listeners, but with a few differences:
 
--   A promise can only succeed or fail once. It cannot succeed or fail twice and it cannot switch from success to failure or vice versa once the operation has completed.
--   If a promise has succeeded or failed and you later add a success/failure callback, the correct callback will be called, even though the event took place earlier.
+- A promise can only succeed or fail once. It cannot succeed or fail twice and it cannot switch from success to failure or vice versa once the operation has completed.
+- If a promise has succeeded or failed and you later add a success/failure callback, the correct callback will be called, even though the event took place earlier.
 
-Explaining basic promise syntax: A real example
------------------------------------------------
+## Explaining basic promise syntax: A real example
 
 Promises are important to understand because most modern Web APIs use them for functions that perform potentially lengthy tasks. To use modern web technologies you'll need to use promises. Later on in the chapter, we'll look at how to write your own promise, but for now, we'll look at some simple examples that you'll encounter in Web APIs.
 
@@ -227,8 +224,7 @@ Bear in mind that the value returned by a fulfilled promise becomes the paramete
 
 **Note**: `.then()`/`.catch()` blocks in promises are basically the async equivalent of a `try...catch` block in sync code. Bear in mind that synchronous `try...catch` won't work in async code.
 
-Promise terminology recap
--------------------------
+## Promise terminology recap
 
 There was a lot to cover in the above section, so let's go back over it quickly to give you a [short guide that you can bookmark](/en-US/docs/Learn/JavaScript/Asynchronous/Promises#promise_terminology_recap) and use to refresh your memory in the future. You should also go over the above section again a few more times to make sure these concepts stick.
 
@@ -237,12 +233,11 @@ There was a lot to cover in the above section, so let's go back over it quickly 
     1.  A successfully resolved promise is said to be **fulfilled**. It returns a value, which can be accessed by chaining a `.then()` block onto the end of the promise chain. The callback function inside the `.then()` block will contain the promise's return value.
     2.  An unsuccessful resolved promise is said to be **rejected**. It returns a **reason**, an error message stating why the promise was rejected. This reason can be accessed by chaining a `.catch()` block onto the end of the promise chain.
 
-Running code in response to multiple promises fulfilling
---------------------------------------------------------
+## Running code in response to multiple promises fulfilling
 
-The above example showed us some of the real basics of using promises. Now let's look at some more advanced features. For a start, chaining processes to occur one after the other is all fine, but what if you want to run some code only after a whole bunch of promises have *all* fulfilled?
+The above example showed us some of the real basics of using promises. Now let's look at some more advanced features. For a start, chaining processes to occur one after the other is all fine, but what if you want to run some code only after a whole bunch of promises have _all_ fulfilled?
 
-You can do this with the ingeniously named `Promise.all()` static method. This takes an array of promises as an input parameter and returns a new `Promise` object that will fulfil only if and when *all* promises in the array fulfil. It looks something like this:
+You can do this with the ingeniously named `Promise.all()` static method. This takes an array of promises as an input parameter and returns a new `Promise` object that will fulfil only if and when _all_ promises in the array fulfil. It looks something like this:
 
     Promise.all([a, b, c]).then(values => {
       ...
@@ -294,9 +289,9 @@ Let's build another example to show this in action.
     1.  First of all, we define the function, passing it a URL and a string representing the type of resource it is fetching.
     2.  Inside the function body, we have a similar structure to what we saw in the first example — we call the `fetch()` function to fetch the resource at the specified URL, then chain it onto another promise that returns the decoded (or "read") response body. This was always the `blob()` method in the previous example.
     3.  However, two things are different here:
-        -   First of all, the second promise we return is different depending on what the `type` value is. Inside the `.then()` callback function, we include a simple `if ... else if` statement to return a different promise depending on what type of file we need to decode (in this case we've got a choice of `blob` or `text`, but it would be easy to extend this to deal with other types as well).
-        -   Second, we have added the `return` keyword before the `fetch()` call. The effect this has is to run the entire chain and then run the final result (i.e. the promise returned by `blob()` or `text()`) as the return value of the function we've just defined. In effect, the `return` statements pass the results back up the chain to the top.
-    4.  At the end of the block, we chain on a `.catch()` call, to handle any error cases that may occur with any of the promises passed in the array to `.all()`. If any of the promises reject, the `.catch()` block will let you know which one had a problem. The `.all()` block (see below) will still fulfill, but it won't display the resources that had problems. Remember that, once you handle the promise with a  `.catch()` block, the resulting promise is considered resolved but with a value of `undefined`; that's why in this case the `.all()` block will always get fulfilled. If you wanted the `.all()` to reject, you'd have to chain the `.catch()` block on to the end of the `.all()` instead. 
+        - First of all, the second promise we return is different depending on what the `type` value is. Inside the `.then()` callback function, we include a simple `if ... else if` statement to return a different promise depending on what type of file we need to decode (in this case we've got a choice of `blob` or `text`, but it would be easy to extend this to deal with other types as well).
+        - Second, we have added the `return` keyword before the `fetch()` call. The effect this has is to run the entire chain and then run the final result (i.e. the promise returned by `blob()` or `text()`) as the return value of the function we've just defined. In effect, the `return` statements pass the results back up the chain to the top.
+    4.  At the end of the block, we chain on a `.catch()` call, to handle any error cases that may occur with any of the promises passed in the array to `.all()`. If any of the promises reject, the `.catch()` block will let you know which one had a problem. The `.all()` block (see below) will still fulfill, but it won't display the resources that had problems. Remember that, once you handle the promise with a  `.catch()` block, the resulting promise is considered resolved but with a value of `undefined`; that's why in this case the `.all()` block will always get fulfilled. If you wanted the `.all()` to reject, you'd have to chain the `.catch()` block on to the end of the `.all()` instead.
 
     The code inside the function body is async and promise-based, therefore in effect, the entire function acts like a promise — convenient.
 
@@ -345,8 +340,7 @@ The code we provided here for displaying the items is fairly rudimentary but wor
 
 Also, you could determine what the type of file is being fetched without needing an explicit `type` property. You could, for example, check the {{HTTPHeader("Content-Type")}} HTTP header of the response in each case using `response.headers.get("content-type")`, and then react accordingly.
 
-Running some final code after a promise fulfills/rejects
---------------------------------------------------------
+## Running some final code after a promise fulfills/rejects
 
 There will be cases where you want to run a final block of code after a promise completes, regardless of whether it fulfilled or rejected. Previously you'd have to include the same code in both the `.then()` and `.catch()` callbacks, for example:
 
@@ -399,8 +393,7 @@ This logs a simple message to the console to tell us when each fetch attempt has
 
 **Note**: `then()`/`catch()`/`finally()` is the async equivalent to `try`/`catch`/`finally` in sync code.
 
-Building your own custom promises
----------------------------------
+## Building your own custom promises
 
 The good news is that, in a way, you've already built your own promises. When you've chained multiple promises together with `.then()` blocks, or otherwise combined them to create custom functionality, you are already making your own custom async promise-based functions. Take our `fetchAndDecode()` function from the previous examples, for example.
 
@@ -435,7 +428,7 @@ Try [running this live](https://mdn.github.io/learning-area/javascript/asynchron
 
 The above example is not very flexible — the promise can only ever fulfil with a single string, and it doesn't have any kind of `reject()` condition specified (admittedly, `setTimeout()` doesn't really have a fail condition, so it doesn't matter for this simple example).
 
-**Note**: Why `resolve()`, and not `fulfill()`? The answer we'll give you, for now, is *it's complicated*.
+**Note**: Why `resolve()`, and not `fulfill()`? The answer we'll give you, for now, is _it's complicated_.
 
 ### Rejecting a custom promise
 
@@ -487,8 +480,7 @@ The above example was kept deliberately simple to make the concepts easy to unde
 
 One example we'd like to invite you to study, which does show a useful async application of the `Promise()` constructor, is [Jake Archibald's idb library](https://github.com/jakearchibald/idb/). This takes the [IndexedDB API](/en-US/docs/Web/API/IndexedDB_API), which is an old-style callback-based API for storing and retrieving data on the client-side, and allows you to use it with promises. In the code you'll see the same kind of techniques we discussed above being used there. The following block converts the basic request model used by many IndexedDB methods to use promises ([see this code, for example](https://github.com/jakearchibald/idb/blob/01082ad696eef05e9c913f55a17cda7b3016b12c/build/esm/wrap-idb-value.js#L30)).
 
-Conclusion
-----------
+## Conclusion
 
 Promises are a good way to build asynchronous applications when we don’t know the return value of a function or how long it will take to return. They make it easier to express and reason about sequences of asynchronous operations without deeply nested callbacks, and they support a style of error handling that is similar to the synchronous `try...catch` statement.
 
@@ -498,21 +490,19 @@ We didn't touch on all promise features in this article, just the most interesti
 
 Most modern Web APIs are promise-based, so you'll need to understand promises to get the most out of them. Among those APIs are [WebRTC](/en-US/docs/Web/API/WebRTC_API), [Web Audio API](/en-US/docs/Web/API/Web_Audio_API), [Media Capture and Streams](/en-US/docs/Web/API/Media_Streams_API), and many more. Promises will be more and more important as time goes on, so learning to use and understand them is an important step in learning modern JavaScript.
 
-See also
---------
+## See also
 
--   `Promise()`
--   [Using promises](/en-US/docs/Web/JavaScript/Guide/Using_promises)
--   [We have a problem with promises](https://pouchdb.com/2015/05/18/we-have-a-problem-with-promises.html) by Nolan Lawson
+- `Promise()`
+- [Using promises](/en-US/docs/Web/JavaScript/Guide/Using_promises)
+- [We have a problem with promises](https://pouchdb.com/2015/05/18/we-have-a-problem-with-promises.html) by Nolan Lawson
 
 {{PreviousMenuNext("Learn/JavaScript/Asynchronous/Timeouts\_and\_intervals", "Learn/JavaScript/Asynchronous/Async\_await", "Learn/JavaScript/Asynchronous")}}
 
-In this module
---------------
+## In this module
 
--   [General asynchronous programming concepts](/en-US/docs/Learn/JavaScript/Asynchronous/Concepts)
--   [Introducing asynchronous JavaScript](/en-US/docs/Learn/JavaScript/Asynchronous/Introducing)
--   [Cooperative asynchronous JavaScript: Timeouts and intervals](/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals)
--   [Graceful asynchronous programming with Promises](/en-US/docs/Learn/JavaScript/Asynchronous/Promises)
--   [Making asynchronous programming easier with async and await](/en-US/docs/Learn/JavaScript/Asynchronous/Async_await)
--   [Choosing the right approach](/en-US/docs/Learn/JavaScript/Asynchronous/Choosing_the_right_approach)
+- [General asynchronous programming concepts](/en-US/docs/Learn/JavaScript/Asynchronous/Concepts)
+- [Introducing asynchronous JavaScript](/en-US/docs/Learn/JavaScript/Asynchronous/Introducing)
+- [Cooperative asynchronous JavaScript: Timeouts and intervals](/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals)
+- [Graceful asynchronous programming with Promises](/en-US/docs/Learn/JavaScript/Asynchronous/Promises)
+- [Making asynchronous programming easier with async and await](/en-US/docs/Learn/JavaScript/Asynchronous/Async_await)
+- [Choosing the right approach](/en-US/docs/Learn/JavaScript/Asynchronous/Choosing_the_right_approach)

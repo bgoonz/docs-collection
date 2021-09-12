@@ -1,4 +1,4 @@
---- title: TypeScript support in Svelte slug: Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks/Svelte\_TypeScript tags: - Beginner - Frameworks - JavaScript - Learn - Svelte - Typescript - client-side ---
+--- title: TypeScript support in Svelte slug: Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_TypeScript tags: - Beginner - Frameworks - JavaScript - Learn - Svelte - Typescript - client-side ---
 
 {{LearnSidebar}}  
 {{PreviousMenuNext("Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks/Svelte\_stores","Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks/Svelte\_deployment\_next", "Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks")}}
@@ -11,8 +11,7 @@ We will now learn how to use TypeScript in Svelte applications. First we'll lear
 
 Note that our application is fully functional and porting it to TypeScript is completely optional. There are different opinions about it, and in this chapter we will talk briefly about the pros and cons of using TypeScript. Even if you are not planning to adopt it, this article will be useful for allowing you to learn what it has to offer and help you make your own decision. If you are not interested at all in TypeScript, you can skip to the next chapter, where we will look at different options for deploying our Svelte applications, further resources, and more.
 
-Code along with us
-------------------
+## Code along with us
 
 ### Git
 
@@ -34,8 +33,7 @@ Remember to run `npm install && npm run dev` to start your app in development mo
 
 Unfortunately, [TypeScript support is not yet available in the REPL](https://github.com/sveltejs/svelte-repl/issues/130).
 
-TypeScript: optional static typing for JavaScript
--------------------------------------------------
+## TypeScript: optional static typing for JavaScript
 
 [TypeScript](https://www.typescriptlang.org/) is a superset of JavaScript that provides features such as optional static typing, classes, interfaces, and generics. The goal of TypeScript is to help catch mistakes early through its type system and make JavaScript development more efficient. One of the big benefits is enabling IDEs to provide a richer environment for spotting common errors as you type the code.
 
@@ -47,32 +45,30 @@ Our TypeScript code will be able to run everywhere JavaScript can run. How is th
 
 First class TypeScript support has been Svelte's most requested feature for quite some time. Thanks to the hard work of the Svelte team, together with many contributors, we have an [official solution](https://svelte.dev/blog/svelte-and-typescript) ready to be put to the test. In this section we'll show you how to setup a Svelte project With TypeScript support to give it a try.
 
-Why TypeScript?
----------------
+## Why TypeScript?
 
 TypeScript's main advantages are:
 
--   Early spotted bugs: The compiler checks types at compile time and provides error reporting.
--   Readability: Static typing gives the code more structure, making it self-documenting and more readable.
--   Rich IDE support: Type information allows code editors and IDEs to offer features like code navigation, autocompletion, and smarter hints.
--   Safer refactoring: Types allows IDEs to know more about your code, and assist you while refactoring large portions of your code base.
--   Type inference: Enables you to take advantage of many TypeScript features even without declaring variable types.
--   Availability of new and future JavaScript features: TypeScript transpiles many recent [ES6 features](http://es6-features.org/) to plain old-school JavaScript, allowing you to use them even on user-agents that don't support them natively yet.
+- Early spotted bugs: The compiler checks types at compile time and provides error reporting.
+- Readability: Static typing gives the code more structure, making it self-documenting and more readable.
+- Rich IDE support: Type information allows code editors and IDEs to offer features like code navigation, autocompletion, and smarter hints.
+- Safer refactoring: Types allows IDEs to know more about your code, and assist you while refactoring large portions of your code base.
+- Type inference: Enables you to take advantage of many TypeScript features even without declaring variable types.
+- Availability of new and future JavaScript features: TypeScript transpiles many recent [ES6 features](http://es6-features.org/) to plain old-school JavaScript, allowing you to use them even on user-agents that don't support them natively yet.
 
 TypeScript also has some disadvantages:
 
--   Not true static typing: Types are only checked at compile time, and they are removed from the generated code.
--   Steep learning curve: Even though TypeScript is a superset of JavaScript and not a completely new language, there is a considerable learning curve, especially if you have no experience at all with static languages like Java or C\#.
--   More code: You have to write and maintain more code.
--   No replacement for automatic tests: Even though types might help you catch several bugs, TypeScript is not a true replacement for a comprehensive suite of automated tests.
--   Boiler plate code: Working with types, classes, interfaces, and generics can lead to over-engineered code bases.
+- Not true static typing: Types are only checked at compile time, and they are removed from the generated code.
+- Steep learning curve: Even though TypeScript is a superset of JavaScript and not a completely new language, there is a considerable learning curve, especially if you have no experience at all with static languages like Java or C\#.
+- More code: You have to write and maintain more code.
+- No replacement for automatic tests: Even though types might help you catch several bugs, TypeScript is not a true replacement for a comprehensive suite of automated tests.
+- Boiler plate code: Working with types, classes, interfaces, and generics can lead to over-engineered code bases.
 
 There seems to be a broad consensus that TypeScript is particularly well suited for large-scale projects, with many developers working on the same code base. And it is indeed being used by several large-scale projects, like Angular 2, Vue 3, Ionic, Visual Studio Code, Jest and even the Svelte compiler. Nevertheless, some developers prefer to use it even on small projects like the one we are developing.
 
 In the end, it's your decision. In the following sections we hope to give you more evidence to make up your mind about it.
 
-Creating a Svelte TypeScript project from scratch
--------------------------------------------------
+## Creating a Svelte TypeScript project from scratch
 
 You can start a new Svelte TypeScript project using the [standard template](https://github.com/sveltejs/template). All you have to do is run the following terminal commands (run them somewhere where you are storing your Svelte test projects — it creates a new directory):
 
@@ -90,14 +86,13 @@ Then you'll have to tell npm to download dependencies and start the project in d
 
     npm run dev
 
-Adding TypeScript support to an existing Svelte Project
--------------------------------------------------------
+## Adding TypeScript support to an existing Svelte Project
 
 To add TypeScript support to an existing Svelte project you can [follow these instructions](https://svelte.dev/blog/svelte-and-typescript#Adding_TypeScript_to_an_existing_project). Alternatively, you can download the `setupTypeScript.js` file to a `scripts` folder inside your project's root folder, and then run `node scripts/setupTypeScript.js`.
 
 You can even use `degit` to download the script. That's what we will do to start porting our application to TypeScript.
 
-**Note**: Remember that you can run `npx degit opensas/mdn-svelte-tutorial/07-typescript-support       svelte-todo-typescript` to get the complete to-do list application in JavaScript before you start porting it to TypeScript.
+**Note**: Remember that you can run `npx degit opensas/mdn-svelte-tutorial/07-typescript-support svelte-todo-typescript` to get the complete to-do list application in JavaScript before you start porting it to TypeScript.
 
 Go to the root directory of the project and enter these commands:
 
@@ -122,8 +117,7 @@ Once you have TypeScript configured, you can start using it from a Svelte compon
 
 **Note**: using TypeScript in component markup sections is [not supported yet](https://github.com/sveltejs/svelte/issues/4701). You'll have to use JavaScript from the markup, and TypeScript in the `<script lang='ts'>` section.
 
-Improved developer experience with TypeScript
----------------------------------------------
+## Improved developer experience with TypeScript
 
 TypeScript provides code editors and IDEs with lots of information to allow them to deliver a friendlier development experience.
 
@@ -139,7 +133,7 @@ Anyway, assuming you are inside the VS Code application, from the root of your p
 
 ![dialog box saying this workspace has extension recommendations, with options to install or show a list](01-vscode-extension-recommendations.png)
 
-Clicking *Install all* will install Svelte for VS Code.
+Clicking _Install all_ will install Svelte for VS Code.
 
 ![svelte for vs code extension information](02-svelte-for-vscode.png)
 
@@ -169,8 +163,7 @@ Even better, if you run it from the VS Code integrated terminal (you can open it
 
 You can also run the `validate` script in watch mode with `npm run validate -- --watch`. In this case, the script will execute whenever you change any file. If you are running this in your regular terminal, you are advised to keep it running in the background in a separate terminal window of its own so that it can keep reporting errors but won't interfere with other terminal usage.
 
-Creating a custom type
-----------------------
+## Creating a custom type
 
 TypeScript supports structural typing. Structural typing is a way of relating types based solely on their members, even if you do not explicitly define the type.
 
@@ -224,8 +217,7 @@ Now we will undo these changes in order to start porting our application to Type
 
 We'll take care of them properly, later on.
 
-Porting our to-do list app to TypeScript
-----------------------------------------
+## Porting our to-do list app to TypeScript
 
 Now we are ready to start porting our to-do list application to take advantage of all the features that TypeScript offers to us.
 
@@ -685,8 +677,7 @@ This is another example of how specifying types can make our code more robust, a
 
 And that's it. We've converted our whole application to use TypeScript.
 
-Bulletproofing our stores with Generics
----------------------------------------
+## Bulletproofing our stores with Generics
 
 Our stores have already been ported to TypeScript but we can do better. We shouldn't need to store any kind of value — we know that the alert store should contain string messages, and the todos store should contain an array of `TodoType`, etc. We can let TypeScript enforce this using [TypeScript Generics](https://www.typescriptlang.org/docs/handbook/generics.html); let's find out more.
 
@@ -826,8 +817,7 @@ Once again, if we wanted to be explicit about it, we could do so in the `stores.
 
 That will do for our brief tour of TypeScript Generics.
 
-The code so far
----------------
+## The code so far
 
 ### Git
 
@@ -845,8 +835,7 @@ Remember to run `npm install && npm run dev` to start your app in development mo
 
 As we said earlier, TypeScript is not yet available in the REPL.
 
-Summary
--------
+## Summary
 
 In this article we took our to-do list application and ported it to TypeScript.
 
@@ -858,49 +847,48 @@ In the next article we will learn how to compile and deploy our app to productio
 
 {{PreviousMenuNext("Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks/Svelte\_stores","Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks/Svelte\_deployment\_next", "Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks")}}
 
-In this module
---------------
+## In this module
 
--   [Introduction to client-side frameworks](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Introduction)
--   [Framework main features](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Main_features)
--   React
-    -   [Getting started with React](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_getting_started)
-    -   [Beginning our React todo list](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_todo_list_beginning)
-    -   [Componentizing our React app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_components)
-    -   [React interactivity: Events and state](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_interactivity_events_state)
-    -   [React interactivity: Editing, filtering, conditional rendering](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_interactivity_filtering_conditional_rendering)
-    -   [Accessibility in React](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_accessibility)
-    -   [React resources](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_resources)
--   Ember
-    -   [Getting started with Ember](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_getting_started)
-    -   [Ember app structure and componentization](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_structure_componentization)
-    -   [Ember interactivity: Events, classes and state](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_interactivity_events_state)
-    -   [Ember Interactivity: Footer functionality, conditional rendering](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_conditional_footer)
-    -   [Routing in Ember](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_routing)
-    -   [Ember resources and troubleshooting](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_resources)
--   Vue
-    -   [Getting started with Vue](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_getting_started)
-    -   [Creating our first Vue component](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_first_component)
-    -   [Rendering a list of Vue components](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_rendering_lists)
-    -   [Adding a new todo form: Vue events, methods, and models](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_methods_events_models)
-    -   [Styling Vue components with CSS](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_styling)
-    -   [Using Vue computed properties](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_computed_properties)
-    -   [Vue conditional rendering: editing existing todos](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_conditional_rendering)
-    -   [Focus management with Vue refs](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_refs_focus_management)
-    -   [Vue resources](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_resources)
--   Svelte
-    -   [Getting started with Svelte](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_getting_started)
-    -   [Starting our Svelte Todo list app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_Todo_list_beginning)
-    -   [Dynamic behavior in Svelte: working with variables and props](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_variables_props)
-    -   [Componentizing our Svelte app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_components)
-    -   [Advanced Svelte: Reactivity, lifecycle, accessibility](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_reactivity_lifecycle_accessibility)
-    -   [Working with Svelte stores](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_stores)
-    -   [TypeScript support in Svelte](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_TypeScript)
-    -   [Deployment and next steps](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_deployment_next)
--   Angular
-    -   [Getting started with Angular](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_getting_started)
-    -   [Beginning our Angular todo list app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_todo_list_beginning)
-    -   [Styling our Angular app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_styling)
-    -   [Creating an item component](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_item_component)
-    -   [Filtering our to-do items](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_filtering)
-    -   [Building Angular applications and further resources](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_building)
+- [Introduction to client-side frameworks](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Introduction)
+- [Framework main features](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Main_features)
+- React
+  - [Getting started with React](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_getting_started)
+  - [Beginning our React todo list](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_todo_list_beginning)
+  - [Componentizing our React app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_components)
+  - [React interactivity: Events and state](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_interactivity_events_state)
+  - [React interactivity: Editing, filtering, conditional rendering](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_interactivity_filtering_conditional_rendering)
+  - [Accessibility in React](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_accessibility)
+  - [React resources](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_resources)
+- Ember
+  - [Getting started with Ember](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_getting_started)
+  - [Ember app structure and componentization](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_structure_componentization)
+  - [Ember interactivity: Events, classes and state](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_interactivity_events_state)
+  - [Ember Interactivity: Footer functionality, conditional rendering](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_conditional_footer)
+  - [Routing in Ember](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_routing)
+  - [Ember resources and troubleshooting](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_resources)
+- Vue
+  - [Getting started with Vue](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_getting_started)
+  - [Creating our first Vue component](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_first_component)
+  - [Rendering a list of Vue components](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_rendering_lists)
+  - [Adding a new todo form: Vue events, methods, and models](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_methods_events_models)
+  - [Styling Vue components with CSS](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_styling)
+  - [Using Vue computed properties](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_computed_properties)
+  - [Vue conditional rendering: editing existing todos](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_conditional_rendering)
+  - [Focus management with Vue refs](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_refs_focus_management)
+  - [Vue resources](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_resources)
+- Svelte
+  - [Getting started with Svelte](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_getting_started)
+  - [Starting our Svelte Todo list app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_Todo_list_beginning)
+  - [Dynamic behavior in Svelte: working with variables and props](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_variables_props)
+  - [Componentizing our Svelte app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_components)
+  - [Advanced Svelte: Reactivity, lifecycle, accessibility](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_reactivity_lifecycle_accessibility)
+  - [Working with Svelte stores](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_stores)
+  - [TypeScript support in Svelte](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_TypeScript)
+  - [Deployment and next steps](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_deployment_next)
+- Angular
+  - [Getting started with Angular](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_getting_started)
+  - [Beginning our Angular todo list app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_todo_list_beginning)
+  - [Styling our Angular app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_styling)
+  - [Creating an item component](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_item_component)
+  - [Filtering our to-do items](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_filtering)
+  - [Building Angular applications and further resources](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_building)

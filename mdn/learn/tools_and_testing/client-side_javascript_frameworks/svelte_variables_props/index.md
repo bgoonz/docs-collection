@@ -1,4 +1,4 @@
---- title: "Dynamic behavior in Svelte: working with variables and props" slug: &gt;- Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks/Svelte\_variables\_props tags: - Beginner - Frameworks - JavaScript - Learn - Svelte - Variables - client-side - props ---
+--- title: "Dynamic behavior in Svelte: working with variables and props" slug: &gt;- Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_variables_props tags: - Beginner - Frameworks - JavaScript - Learn - Svelte - Variables - client-side - props ---
 
 {{LearnSidebar}}  
 {{PreviousMenuNext("Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks/Svelte\_Todo\_list\_beginning","Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks/Svelte\_components", "Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks")}}
@@ -7,8 +7,7 @@ Now that we have our markup and styles ready we can start developing the require
 
 <table><colgroup><col style="width: 50%" /><col style="width: 50%" /></colgroup><tbody><tr class="odd"><td>Prerequisites:</td><td><p>At minimum, it is recommended that you are familiar with the core <a href="/en-US/docs/Learn/HTML">HTML</a>, <a href="/en-US/docs/Learn/CSS">CSS</a>, and <a href="/en-US/docs/Learn/JavaScript">JavaScript</a> languages, and have knowledge of the <a href="/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Command_line">terminal/command line</a>.</p><p>You'll need a terminal with node + npm installed to compile and build your app.</p></td></tr><tr class="even"><td>Objective:</td><td>Learn and put into practice some basic Svelte concepts, like creating components, passing data using props, render JavaScript expressions into our markup, modify the components state and iterating over lists.</td></tr></tbody></table>
 
-Code along with us
-------------------
+## Code along with us
 
 ### Git
 
@@ -32,8 +31,7 @@ To code along with us using the REPL, start at
 
 <https://svelte.dev/repl/c862d964d48d473ca63ab91709a0a5a0?version=3.23.2>
 
-Working with todos
-------------------
+## Working with todos
 
 Our `Todos.svelte` component is currently just displaying static markup; let's start making it a bit more dynamic. We'll take the tasks information from the markup and store it in a `todos` array. We'll also create two variables to keep track of the total number of tasks and the completed tasks.
 
@@ -62,8 +60,7 @@ The state of our component will be represented by these three top-level variable
 
 4.  To prove it, go to that array, and try changing some of the todo object's completed property values, and even add a new todo object. Observe how the numbers in the message are updated appropriately.
 
-Dynamically generating the todos from the data
-----------------------------------------------
+## Dynamically generating the todos from the data
 
 At the moment, our displayed todo items are all static. We want to iterate over each item in our `todos` array and render the markup for each task, so let's do that now.
 
@@ -119,8 +116,7 @@ Let's give it a try.
 
 We've turned our static markup into a dynamic template ready to display the tasks from our component's state. Great! We are getting there.
 
-Working with props
-------------------
+## Working with props
 
 With a hardcoded list of todos, our `Todos` component is not very useful. To turn our component into a general purpose To-Do editor we should allow the parent of this component to pass in the list of todos to edit. This would allow us to save them to a web service or local storage and later retrieve them for update. So let's turn the array into a `prop`.
 
@@ -156,8 +152,7 @@ With a hardcoded list of todos, our `Todos` component is not very useful. To tur
 
 At this point your todos should render just like they did before, except that now we're passing them in from the `App.svelte` component.
 
-Toggling and removing todos
----------------------------
+## Toggling and removing todos
 
 Let's add some functionality to toggle the task status. Svelte has the `on:eventname` directive for listening to DOM events. Let's add a handler to the `on:click` event of the checkbox input to toggle the completed value.
 
@@ -174,7 +169,7 @@ Let's add some functionality to toggle the task status. Svelte has the `on:event
           todos = todos.filter(t => t.id !== todo.id)
         }
 
-3.  We'll call it via the *Delete* button. Update it with a `click` event, like so:
+3.  We'll call it via the _Delete_ button. Update it with a `click` event, like so:
 
         <button type="button" class="btn btn__danger"
           on:click={() => removeTodo(todo)}
@@ -186,12 +181,11 @@ Let's add some functionality to toggle the task status. Svelte has the `on:event
 
     In this case you have to specify `on:click={() => removeTodo(todo)}` as the handler. If `removeTodo()` received no params, you could use `on:event={removeTodo}`, but not `on:event={removeTodo()}`. This is not some special Svelte syntax — here we are just using regular JavaScript [arrow functions](/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions).
 
-Again, this is good progress — at this point, we can now delete tasks. When a todo item's *Delete* button is pressed, the relevant todo is removed from the `todos` array, and the UI updates to no longer show it. In addition, we can now check the checkboxes, and the completed status of the relevant todos will now update in the todos array.
+Again, this is good progress — at this point, we can now delete tasks. When a todo item's _Delete_ button is pressed, the relevant todo is removed from the `todos` array, and the UI updates to no longer show it. In addition, we can now check the checkboxes, and the completed status of the relevant todos will now update in the todos array.
 
 However, the "x out of y items completed" heading is not being updated. Read on to find out why this is happening and how we can solve it.
 
-Reactive todos
---------------
+## Reactive todos
 
 As we've already seen, every time the value of a component top-level variable is modified Svelte knows how to update the UI. In our app, the `todos` array value is updated directly every time a todo is toggled or deleted, and so Svelte will update the DOM automatically.
 
@@ -215,8 +209,7 @@ If you check your app now, you'll see that the heading's numbers are updated whe
 
 Behind the scenes the Svelte compiler will parse and analyze our code to make a dependency tree, then it will generate the JavaScript code to re-evaluate each reactive statement whenever one of their dependencies is updated. Reactivity in Svelte is implemented in a very lightweight and performant way, without using listeners, setters, getters, or any other complex mechanism.
 
-Adding new todos
-----------------
+## Adding new todos
 
 Now onto the next major task for this article — let's add some functionality for adding new todos.
 
@@ -242,7 +235,7 @@ Now onto the next major task for this article — let's add some functionality f
 
         $: console.log('newTodoName: ', newTodoName)
 
-    **Note**: as you may have noticed, reactive statements aren't limited to variable declarations. You can put *any* JavaScript statement after the `$:` sign.
+    **Note**: as you may have noticed, reactive statements aren't limited to variable declarations. You can put _any_ JavaScript statement after the `$:` sign.
 
 4.  Now try going back to `localhost:5000`, pressing Ctrl + Shift + K to open your browser console and typing something into the input field. You should see your entries logged. At this point, you can delete the reactive `console.log()` if you wish.
 
@@ -274,8 +267,7 @@ Now onto the next major task for this article — let's add some functionality f
           newTodoName = ''
         }
 
-Giving each todo a unique ID
-----------------------------
+## Giving each todo a unique ID
 
 If you try to add new todos in your app now, you'll be able to add a new todo and have it appear in the UI! Once. If you try it a second time, it won't work, and you'll get a console message saying "Error: Cannot have duplicate keys in a keyed each". We need unique IDs for our todos!
 
@@ -290,7 +282,7 @@ If you try to add new todos in your app now, you'll be able to add a new todo an
             }
           }
 
-    **Note**: as you can see, reactive statements are not limited to one-liners. The following would work too, but it is a little less readable: `$: newTodoId = totalTodos ? Math.max(...todos.map(t => t.id)) + 1           : 1`
+    **Note**: as you can see, reactive statements are not limited to one-liners. The following would work too, but it is a little less readable: `$: newTodoId = totalTodos ? Math.max(...todos.map(t => t.id)) + 1 : 1`
 
 2.  How does Svelte achieve this? The compiler parses the whole reactive statement, and detects that it depends on the `totalTodos` variable and the `todos` array. So whenever either of them is modified, this code is re-evaluated, updating `newTodoId` accordingly.
 
@@ -301,8 +293,7 @@ If you try to add new todos in your app now, you'll be able to add a new todo an
           newTodoName = ''
         }
 
-Filtering todos by status
--------------------------
+## Filtering todos by status
 
 Finally for this article, let's implement the ability to filter our todos by status. We'll create a variable to hold the current filter, and a helper function that will return the filtered todos.
 
@@ -314,7 +305,7 @@ Finally for this article, let's implement the ability to filter our todos by sta
             filter === 'completed' ? todos.filter(t => t.completed) :
             todos
 
-    We use the `filter` variable to control the active filter: *all*, *active*, or *completed*. Just assigning one of these values to the filter variable will activate the filter and update the list of todos. Let's see how to achieve this.
+    We use the `filter` variable to control the active filter: _all_, _active_, or _completed_. Just assigning one of these values to the filter variable will activate the filter and update the list of todos. Let's see how to achieve this.
 
     The `filterTodos()` function will receive the current filter and the list of todos, and return a new array of todos filtered accordingly.
 
@@ -359,8 +350,7 @@ Finally for this article, let's implement the ability to filter our todos by sta
 
 Tip: reactivity can be tricky sometimes. Svelte recognizes `filter` as a dependency because we are referencing it in the `filterTodos(filter, todo)` expression. `filter` is a top-level variable, so we might be tempted to remove it from the helper function params, and just call it like this — `filterTodos(todo)`. This would work, but now Svelte has no way to find out that `{#each filterTodos(todos)... }` depends on `filter`, and the list of filtered todos won't be updated when the filter changes. Always remember that Svelte analyzes our code to find out dependencies, so it's better to be explicit about it and not rely on the visibility of top-level variables. Besides, it's a good practice to make our code clear and explicit about what information it is using.
 
-The code so far
----------------
+## The code so far
 
 ### Git
 
@@ -380,73 +370,71 @@ To see the current state of the code in a REPL, visit:
 
 <https://svelte.dev/repl/99b9eb228b404a2f8c8959b22c0a40d3?version=3.23.2>
 
-Summary
--------
+## Summary
 
 That will do for now! In this article we already implemented most of our desired functionality. Our app can display, add, and delete todos, toggle their completed status, show how many of them are completed and apply filters.
 
 To recap, we covered the following topics:
 
--   Creating and using components.
--   Turning static markup into a live template.
--   Embedding JavaScript expressions in our markup.
--   Iterating over lists using the `{#each}` directive.
--   Passing information between components with props.
--   Listening to DOM events.
--   Declaring reactive statements.
--   Basic debugging with `console.log()` and reactive statements.
--   Binding HTML properties with the `bind:property` directive.
--   Triggering reactivity with assignments.
--   Using reactive expressions to filter data
--   Explicitly defining our reactive dependencies
+- Creating and using components.
+- Turning static markup into a live template.
+- Embedding JavaScript expressions in our markup.
+- Iterating over lists using the `{#each}` directive.
+- Passing information between components with props.
+- Listening to DOM events.
+- Declaring reactive statements.
+- Basic debugging with `console.log()` and reactive statements.
+- Binding HTML properties with the `bind:property` directive.
+- Triggering reactivity with assignments.
+- Using reactive expressions to filter data
+- Explicitly defining our reactive dependencies
 
 In the next article we will add further functionality, which will allow users to edit todos.
 
 {{PreviousMenuNext("Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks/Svelte\_Todo\_list\_beginning","Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks/Svelte\_components", "Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks")}}
 
-In this module
---------------
+## In this module
 
--   [Introduction to client-side frameworks](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Introduction)
--   [Framework main features](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Main_features)
--   React
-    -   [Getting started with React](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_getting_started)
-    -   [Beginning our React todo list](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_todo_list_beginning)
-    -   [Componentizing our React app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_components)
-    -   [React interactivity: Events and state](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_interactivity_events_state)
-    -   [React interactivity: Editing, filtering, conditional rendering](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_interactivity_filtering_conditional_rendering)
-    -   [Accessibility in React](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_accessibility)
-    -   [React resources](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_resources)
--   Ember
-    -   [Getting started with Ember](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_getting_started)
-    -   [Ember app structure and componentization](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_structure_componentization)
-    -   [Ember interactivity: Events, classes and state](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_interactivity_events_state)
-    -   [Ember Interactivity: Footer functionality, conditional rendering](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_conditional_footer)
-    -   [Routing in Ember](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_routing)
-    -   [Ember resources and troubleshooting](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_resources)
--   Vue
-    -   [Getting started with Vue](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_getting_started)
-    -   [Creating our first Vue component](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_first_component)
-    -   [Rendering a list of Vue components](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_rendering_lists)
-    -   [Adding a new todo form: Vue events, methods, and models](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_methods_events_models)
-    -   [Styling Vue components with CSS](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_styling)
-    -   [Using Vue computed properties](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_computed_properties)
-    -   [Vue conditional rendering: editing existing todos](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_conditional_rendering)
-    -   [Focus management with Vue refs](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_refs_focus_management)
-    -   [Vue resources](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_resources)
--   Svelte
-    -   [Getting started with Svelte](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_getting_started)
-    -   [Starting our Svelte Todo list app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_Todo_list_beginning)
-    -   [Dynamic behavior in Svelte: working with variables and props](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_variables_props)
-    -   [Componentizing our Svelte app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_components)
-    -   [Advanced Svelte: Reactivity, lifecycle, accessibility](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_reactivity_lifecycle_accessibility)
-    -   [Working with Svelte stores](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_stores)
-    -   [TypeScript support in Svelte](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_TypeScript)
-    -   [Deployment and next steps](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_deployment_next)
--   Angular
-    -   [Getting started with Angular](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_getting_started)
-    -   [Beginning our Angular todo list app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_todo_list_beginning)
-    -   [Styling our Angular app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_styling)
-    -   [Creating an item component](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_item_component)
-    -   [Filtering our to-do items](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_filtering)
-    -   [Building Angular applications and further resources](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_building)
+- [Introduction to client-side frameworks](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Introduction)
+- [Framework main features](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Main_features)
+- React
+  - [Getting started with React](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_getting_started)
+  - [Beginning our React todo list](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_todo_list_beginning)
+  - [Componentizing our React app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_components)
+  - [React interactivity: Events and state](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_interactivity_events_state)
+  - [React interactivity: Editing, filtering, conditional rendering](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_interactivity_filtering_conditional_rendering)
+  - [Accessibility in React](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_accessibility)
+  - [React resources](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_resources)
+- Ember
+  - [Getting started with Ember](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_getting_started)
+  - [Ember app structure and componentization](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_structure_componentization)
+  - [Ember interactivity: Events, classes and state](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_interactivity_events_state)
+  - [Ember Interactivity: Footer functionality, conditional rendering](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_conditional_footer)
+  - [Routing in Ember](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_routing)
+  - [Ember resources and troubleshooting](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_resources)
+- Vue
+  - [Getting started with Vue](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_getting_started)
+  - [Creating our first Vue component](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_first_component)
+  - [Rendering a list of Vue components](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_rendering_lists)
+  - [Adding a new todo form: Vue events, methods, and models](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_methods_events_models)
+  - [Styling Vue components with CSS](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_styling)
+  - [Using Vue computed properties](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_computed_properties)
+  - [Vue conditional rendering: editing existing todos](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_conditional_rendering)
+  - [Focus management with Vue refs](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_refs_focus_management)
+  - [Vue resources](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_resources)
+- Svelte
+  - [Getting started with Svelte](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_getting_started)
+  - [Starting our Svelte Todo list app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_Todo_list_beginning)
+  - [Dynamic behavior in Svelte: working with variables and props](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_variables_props)
+  - [Componentizing our Svelte app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_components)
+  - [Advanced Svelte: Reactivity, lifecycle, accessibility](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_reactivity_lifecycle_accessibility)
+  - [Working with Svelte stores](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_stores)
+  - [TypeScript support in Svelte](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_TypeScript)
+  - [Deployment and next steps](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_deployment_next)
+- Angular
+  - [Getting started with Angular](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_getting_started)
+  - [Beginning our Angular todo list app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_todo_list_beginning)
+  - [Styling our Angular app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_styling)
+  - [Creating an item component](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_item_component)
+  - [Filtering our to-do items](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_filtering)
+  - [Building Angular applications and further resources](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_building)

@@ -1,18 +1,16 @@
---- title: Create BookInstance form slug: Learn/Server-side/Express\_Nodejs/forms/Create\_BookInstance\_form tags: - Express - Forms - Node - part 6 - server-side ---
+--- title: Create BookInstance form slug: Learn/Server-side/Express_Nodejs/forms/Create_BookInstance_form tags: - Express - Forms - Node - part 6 - server-side ---
 
 This subarticle shows how to define a page/form to create `BookInstance` objects. This is very much like the form we used to create `Book` objects.
 
-Import validation and sanitisation methods
-------------------------------------------
+## Import validation and sanitisation methods
 
 Open **/controllers/bookinstanceController.js**, and add the following lines at the top of the file:
 
     const { body,validationResult } = require('express-validator');
 
-Controller—get route
---------------------
+## Controller—get route
 
-At the top of the file, require the *Book* module (needed because each `BookInstance` is associated with a particular `Book`).
+At the top of the file, require the _Book_ module (needed because each `BookInstance` is associated with a particular `Book`).
 
     var Book = require('../models/book');
 
@@ -32,8 +30,7 @@ Find the exported `bookinstance_create_get()` controller method and replace it w
 
 The controller gets a list of all books (`book_list`) and passes it to the view `bookinstance_form.pug` (along with the `title`)
 
-Controller—post route
----------------------
+## Controller—post route
 
 Find the exported `bookinstance_create_post()` controller method and replace it with the following code.
 
@@ -83,10 +80,9 @@ Find the exported `bookinstance_create_post()` controller method and replace it 
 
 The structure and behavior of this code is the same as for creating our other objects. First we validate and sanitize the data. If the data is invalid, we then re-display the form along with the data that was originally entered by the user and a list of error messages. If the data is valid, we save the new `BookInstance` record and redirect the user to the detail page.
 
-View
-----
+## View
 
-Create **/views/bookinstance\_form.pug** and copy in the text below.
+Create **/views/bookinstance_form.pug** and copy in the text below.
 
     extends layout
 
@@ -126,19 +122,17 @@ Create **/views/bookinstance\_form.pug** and copy in the text below.
           for error in errors
             li!= error.msg
 
-The view structure and behavior is almost the same as for the **book\_form.pug** template, so we won't go over it again.
+The view structure and behavior is almost the same as for the **book_form.pug** template, so we won't go over it again.
 
-**Note:** The above template hard-codes the *Status* values (Maintenance, Available, etc.) and does not "remember" the user's entered values. Should you so wish, consider reimplementing the list, passing in option data from the controller and setting the selected value when the form is re-displayed.
+**Note:** The above template hard-codes the _Status_ values (Maintenance, Available, etc.) and does not "remember" the user's entered values. Should you so wish, consider reimplementing the list, passing in option data from the controller and setting the selected value when the form is re-displayed.
 
-What does it look like?
------------------------
+## What does it look like?
 
-Run the application and open your browser to <a href="http://localhost:3000/" class="external external-icon">http://localhost:3000/</a>. Then select the *Create new book instance (copy)* link. If everything is set up correctly, your site should look something like the following screenshot. After you submit a valid `BookInstance`, it should be saved and you'll be taken to the detail page.
+Run the application and open your browser to <a href="http://localhost:3000/" class="external external-icon">http://localhost:3000/</a>. Then select the _Create new book instance (copy)_ link. If everything is set up correctly, your site should look something like the following screenshot. After you submit a valid `BookInstance`, it should be saved and you'll be taken to the detail page.
 
 ![](locallibary_express_bookinstance_create_empty.png)
 
-Next steps
-----------
+## Next steps
 
--   Return to [Express Tutorial Part 6: Working with forms](/en-US/docs/Learn/Server-side/Express_Nodejs/forms).
--   Proceed to the next subarticle of part 6: [Delete Author form](/en-US/docs/Learn/Server-side/Express_Nodejs/forms/Delete_author_form).
+- Return to [Express Tutorial Part 6: Working with forms](/en-US/docs/Learn/Server-side/Express_Nodejs/forms).
+- Proceed to the next subarticle of part 6: [Delete Author form](/en-US/docs/Learn/Server-side/Express_Nodejs/forms/Delete_author_form).

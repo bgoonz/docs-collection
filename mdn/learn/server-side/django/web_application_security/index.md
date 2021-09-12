@@ -1,4 +1,4 @@
---- title: Django web application security slug: Learn/Server-side/Django/web\_application\_security tags: - Article - Beginner - CodingScripting - Learn - Python - Security - Server-side programming - Web security - django - server-side ---
+--- title: Django web application security slug: Learn/Server-side/Django/web_application_security tags: - Article - Beginner - CodingScripting - Learn - Python - Security - Server-side programming - Web security - django - server-side ---
 
 {{LearnSidebar}}
 
@@ -8,8 +8,7 @@ Protecting user data is an essential part of any website design. We previously e
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Read the Server-side programming "<a href="/en-US/docs/Learn/Server-side/First_steps/Website_security">Website security</a>" topic. Complete the Django tutorial topics up to (and including) at least <a href="/en-US/docs/Learn/Server-side/Django/Forms">Django Tutorial Part 9: Working with forms</a>.</td></tr><tr class="even"><td>Objective:</td><td>To understand the main things you need to do (or not do) to secure your Django web application.</td></tr></tbody></table>
 
-Overview
---------
+## Overview
 
 The [Website security](/en-US/docs/Web/Security) topic provides an overview of what website security means for server-side design, and some of the more common threats that you should protect against. One of the key messages in that article is that almost all attacks are successful when the web application trusts data from the browser.
 
@@ -19,14 +18,13 @@ The single most important lesson you can learn about website security is to **ne
 
 The good news for Django users is that many of the more common threats are handled by the framework! The [Security in Django](https://docs.djangoproject.com/en/3.1/topics/security/) (Django docs) article explains Django's security features and how to secure a Django-powered website.
 
-Common threats/protections
---------------------------
+## Common threats/protections
 
 Rather than duplicate the Django documentation here, in this article we'll demonstrate just a few of the security features in the context of our Django [LocalLibrary](/en-US/docs/Learn/Server-side/Django/Tutorial_local_library_website) tutorial.
 
 ### Cross site scripting (XSS)
 
-XSS is a term used to describe a class of attacks that allow an attacker to inject client-side scripts *through* the website into the browsers of other users. This is usually achieved by storing malicious scripts in the database where they can be retrieved and displayed to other users, or by getting users to click a link that will cause the attacker’s JavaScript to be executed by the user’s browser.
+XSS is a term used to describe a class of attacks that allow an attacker to inject client-side scripts _through_ the website into the browsers of other users. This is usually achieved by storing malicious scripts in the database where they can be retrieved and displayed to other users, or by getting users to click a link that will cause the attacker’s JavaScript to be executed by the user’s browser.
 
 Django's template system protects you against the majority of XSS attacks by [escaping specific characters](https://docs.djangoproject.com/en/3.1/ref/templates/language/#automatic-html-escaping) that are "dangerous" in HTML. We can demonstrate this by attempting to inject some JavaScript into our LocalLibrary website using the Create-author form we set up in [Django Tutorial Part 9: Working with forms](/en-US/docs/Learn/Server-side/Django/Forms).
 
@@ -36,6 +34,7 @@ Django's template system protects you against the majority of XSS attacks by [es
 4.  Enter names and date details for a new user, and then append the following text to the Last Name field:  
     `<script>alert('Test alert');</script>`.  
     ![Author Form XSS test](author_create_form_alert_xss.png)
+
     #### Note
 
     This is a harmless script that, if executed, will display an alert box in your browser. If the alert is displayed when you submit the record then the site is vulnerable to XSS threats.
@@ -102,49 +101,46 @@ In this attack a malicious user hijacks clicks meant for a visible top level sit
 Enforcing SSL/HTTPS  
 SSL/HTTPS can be enabled on the web server in order to encrypt all traffic between the site and browser, including authentication credentials that would otherwise be sent in plain text (enabling HTTPS is highly recommended). If HTTPS is enabled then Django provides a number of other protections you can use:
 
--   [`SECURE_PROXY_SSL_HEADER`](https://docs.djangoproject.com/en/3.1/ref/settings/#std:setting-SECURE_PROXY_SSL_HEADER) can be used to check whether content is secure, even if it is incoming from a non-HTTP proxy.
--   [`SECURE_SSL_REDIRECT`](https://docs.djangoproject.com/en/3.1/ref/settings/#std:setting-SECURE_SSL_REDIRECT) is used to redirect all HTTP requests to HTTPS.
--   Use [HTTP Strict Transport Security](https://docs.djangoproject.com/en/3.1/ref/middleware/#http-strict-transport-security) (HSTS). This is an HTTP header that informs a browser that all future connections to a particular site should always use HTTPS. Combined with redirecting HTTP requests to HTTPS, this setting ensures that HTTPS is always used after a successful connection has occurred. HSTS may either be configured with [`SECURE_HSTS_SECONDS`](https://docs.djangoproject.com/en/3.1/ref/settings/#std:setting-SECURE_HSTS_SECONDS) and [`SECURE_HSTS_INCLUDE_SUBDOMAINS`](https://docs.djangoproject.com/en/3.1/ref/settings/#std:setting-SECURE_HSTS_INCLUDE_SUBDOMAINS) or on the Web server.
--   Use ‘secure’ cookies by setting [`SESSION_COOKIE_SECURE`](https://docs.djangoproject.com/en/3.1/ref/settings/#std:setting-SESSION_COOKIE_SECURE) and [`CSRF_COOKIE_SECURE`](https://docs.djangoproject.com/en/3.1/ref/settings/#std:setting-CSRF_COOKIE_SECURE) to `True`. This will ensure that cookies are only ever sent over HTTPS.
+- [`SECURE_PROXY_SSL_HEADER`](https://docs.djangoproject.com/en/3.1/ref/settings/#std:setting-SECURE_PROXY_SSL_HEADER) can be used to check whether content is secure, even if it is incoming from a non-HTTP proxy.
+- [`SECURE_SSL_REDIRECT`](https://docs.djangoproject.com/en/3.1/ref/settings/#std:setting-SECURE_SSL_REDIRECT) is used to redirect all HTTP requests to HTTPS.
+- Use [HTTP Strict Transport Security](https://docs.djangoproject.com/en/3.1/ref/middleware/#http-strict-transport-security) (HSTS). This is an HTTP header that informs a browser that all future connections to a particular site should always use HTTPS. Combined with redirecting HTTP requests to HTTPS, this setting ensures that HTTPS is always used after a successful connection has occurred. HSTS may either be configured with [`SECURE_HSTS_SECONDS`](https://docs.djangoproject.com/en/3.1/ref/settings/#std:setting-SECURE_HSTS_SECONDS) and [`SECURE_HSTS_INCLUDE_SUBDOMAINS`](https://docs.djangoproject.com/en/3.1/ref/settings/#std:setting-SECURE_HSTS_INCLUDE_SUBDOMAINS) or on the Web server.
+- Use ‘secure’ cookies by setting [`SESSION_COOKIE_SECURE`](https://docs.djangoproject.com/en/3.1/ref/settings/#std:setting-SESSION_COOKIE_SECURE) and [`CSRF_COOKIE_SECURE`](https://docs.djangoproject.com/en/3.1/ref/settings/#std:setting-CSRF_COOKIE_SECURE) to `True`. This will ensure that cookies are only ever sent over HTTPS.
 
 Host header validation  
 Use [`ALLOWED_HOSTS`](https://docs.djangoproject.com/en/3.1/ref/settings/#std:setting-ALLOWED_HOSTS) to only accept requests from trusted hosts.
 
 There are many other protections, and caveats to the usage of the above mechanisms. While we hope that this has given you an overview of what Django offers, you should still read the Django security documentation.
 
-Summary
--------
+## Summary
 
-Django has effective protections against a number of common threats, including XSS and CSRF attacks. In this article we've demonstrated how those particular threats are handled by Django in our *LocalLibrary* website. We've also provided a brief overview of some of the other protections.
+Django has effective protections against a number of common threats, including XSS and CSRF attacks. In this article we've demonstrated how those particular threats are handled by Django in our _LocalLibrary_ website. We've also provided a brief overview of some of the other protections.
 
 This has been a very brief foray into web security. We strongly recommend that you read [Security in Django](https://docs.djangoproject.com/en/3.1/topics/security/) to gain a deeper understanding.
 
 The next and final step in this module about Django is to complete the [assessment task](/en-US/docs/Learn/Server-side/Django/django_assessment_blog).
 
-See also
---------
+## See also
 
--   [Security in Django](https://docs.djangoproject.com/en/3.1/topics/security/) (Django docs)
--   [Server side website security](/en-US/docs/Web/Security) (MDN)
--   [Securing your site](/en-US/docs/Web/Security/Securing_your_site) (MDN)
+- [Security in Django](https://docs.djangoproject.com/en/3.1/topics/security/) (Django docs)
+- [Server side website security](/en-US/docs/Web/Security) (MDN)
+- [Securing your site](/en-US/docs/Web/Security/Securing_your_site) (MDN)
 
 {{PreviousMenuNext("Learn/Server-side/Django/Deployment", "Learn/Server-side/Django/django\_assessment\_blog", "Learn/Server-side/Django")}}
 
-In this module
---------------
+## In this module
 
--   [Django introduction](/en-US/docs/Learn/Server-side/Django/Introduction)
--   [Setting up a Django development environment](/en-US/docs/Learn/Server-side/Django/development_environment)
--   [Django Tutorial: The Local Library website](/en-US/docs/Learn/Server-side/Django/Tutorial_local_library_website)
--   [Django Tutorial Part 2: Creating a skeleton website](/en-US/docs/Learn/Server-side/Django/skeleton_website)
--   [Django Tutorial Part 3: Using models](/en-US/docs/Learn/Server-side/Django/Models)
--   [Django Tutorial Part 4: Django admin site](/en-US/docs/Learn/Server-side/Django/Admin_site)
--   [Django Tutorial Part 5: Creating our home page](/en-US/docs/Learn/Server-side/Django/Home_page)
--   [Django Tutorial Part 6: Generic list and detail views](/en-US/docs/Learn/Server-side/Django/Generic_views)
--   [Django Tutorial Part 7: Sessions framework](/en-US/docs/Learn/Server-side/Django/Sessions)
--   [Django Tutorial Part 8: User authentication and permissions](/en-US/docs/Learn/Server-side/Django/Authentication)
--   [Django Tutorial Part 9: Working with forms](/en-US/docs/Learn/Server-side/Django/Forms)
--   [Django Tutorial Part 10: Testing a Django web application](/en-US/docs/Learn/Server-side/Django/Testing)
--   [Django Tutorial Part 11: Deploying Django to production](/en-US/docs/Learn/Server-side/Django/Deployment)
--   **Django web application security**
--   [DIY Django mini blog](/en-US/docs/Learn/Server-side/Django/django_assessment_blog)
+- [Django introduction](/en-US/docs/Learn/Server-side/Django/Introduction)
+- [Setting up a Django development environment](/en-US/docs/Learn/Server-side/Django/development_environment)
+- [Django Tutorial: The Local Library website](/en-US/docs/Learn/Server-side/Django/Tutorial_local_library_website)
+- [Django Tutorial Part 2: Creating a skeleton website](/en-US/docs/Learn/Server-side/Django/skeleton_website)
+- [Django Tutorial Part 3: Using models](/en-US/docs/Learn/Server-side/Django/Models)
+- [Django Tutorial Part 4: Django admin site](/en-US/docs/Learn/Server-side/Django/Admin_site)
+- [Django Tutorial Part 5: Creating our home page](/en-US/docs/Learn/Server-side/Django/Home_page)
+- [Django Tutorial Part 6: Generic list and detail views](/en-US/docs/Learn/Server-side/Django/Generic_views)
+- [Django Tutorial Part 7: Sessions framework](/en-US/docs/Learn/Server-side/Django/Sessions)
+- [Django Tutorial Part 8: User authentication and permissions](/en-US/docs/Learn/Server-side/Django/Authentication)
+- [Django Tutorial Part 9: Working with forms](/en-US/docs/Learn/Server-side/Django/Forms)
+- [Django Tutorial Part 10: Testing a Django web application](/en-US/docs/Learn/Server-side/Django/Testing)
+- [Django Tutorial Part 11: Deploying Django to production](/en-US/docs/Learn/Server-side/Django/Deployment)
+- **Django web application security**
+- [DIY Django mini blog](/en-US/docs/Learn/Server-side/Django/django_assessment_blog)

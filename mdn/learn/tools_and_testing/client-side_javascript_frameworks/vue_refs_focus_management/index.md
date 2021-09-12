@@ -1,4 +1,4 @@
---- title: Focus management with Vue refs slug: &gt;- Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks/Vue\_refs\_focus\_management tags: - Beginner - Frameworks - JavaScript - Learn - client-side - focus management - refs - vue ---
+--- title: Focus management with Vue refs slug: &gt;- Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_refs_focus_management tags: - Beginner - Frameworks - JavaScript - Learn - client-side - focus management - refs - vue ---
 
 {{LearnSidebar}}
 
@@ -8,8 +8,7 @@ We are nearly done with Vue. The last bit of functionality to look at is focus m
 
 <table><colgroup><col style="width: 50%" /><col style="width: 50%" /></colgroup><tbody><tr class="odd"><td>Prerequisites:</td><td><p>Familiarity with the core <a href="/en-US/docs/Learn/HTML">HTML</a>, <a href="/en-US/docs/Learn/CSS">CSS</a>, and <a href="/en-US/docs/Learn/JavaScript">JavaScript</a> languages, knowledge of the <a href="/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Command_line">terminal/command line</a>.</p><p>Vue components are written as a combination of JavaScript objects that manage the app's data and an HTML-based template syntax that maps to the underlying DOM structure. For installation, and to use some of the more advanced features of Vue (like Single File Components or render functions), you'll need a terminal with node + npm installed.</p></td></tr><tr class="even"><td>Objective:</td><td>To learn how to handle focus management using Vue refs.</td></tr></tbody></table>
 
-The focus management problem
-----------------------------
+## The focus management problem
 
 While we do have working edit functionality, we aren't providing a great experience for non-mouse users. Specifically, when a user activates the "Edit" Button, we remove the "Edit" Button from the DOM, but we don't move the user's focus anywhere, so in effect it just disappears. This can be disorienting for keyboard and non-visual users.
 
@@ -24,8 +23,7 @@ This behavior can be jarring. In addition, what happens when you press Tab again
 
 To give users a better experience, we'll add code to control the focus so that it gets set to the edit field when the edit form is shown. We'll also want to put focus back on the "Edit" button when a user cancels or saves their edit. In order to set focus, we need to understand a little bit more about how Vue works internally.
 
-Virtual DOM and refs
---------------------
+## Virtual DOM and refs
 
 Vue, like some other frameworks, uses a virtual DOM (VDOM) to manage elements. This means that Vue keeps a representation of all of the nodes in our app in memory. Any updates are first performed on the in-memory nodes, and then all the changes that need to be made to the actual nodes on the page are synced in a batch.
 
@@ -53,8 +51,7 @@ To access the value associated with our ref, we use the `$refs` property provide
 
 If you activate the "Edit" Button at this point, you should see an HTML `<button>` element referenced in your console.
 
-Vue's `$nextTick()` method
---------------------------
+## Vue's `$nextTick()` method
 
 We want to set focus on the "Edit" Button when a user saves or cancels their edit. To do that, we need to handle focus in the `ToDoItem` component’s `itemEdited()` and `editCancelled()` methods.
 
@@ -77,7 +74,7 @@ Next, add a call to `this.focusOnEditButton()` at the end of the `itemEdited()` 
       this.focusOnEditButton();
     },
 
-Try editing and then saving/cancelling a to-do item via your keyboard. You'll notice that focus isn’t being set, so we still have a problem to solve. If you open your console, you'll see an error raised along the lines of *"can't access property "focus", editButtonRef is undefined"*. This seems weird. Your button ref was defined when you activated the "Edit" Button, but now it’s not. What is going on?
+Try editing and then saving/cancelling a to-do item via your keyboard. You'll notice that focus isn’t being set, so we still have a problem to solve. If you open your console, you'll see an error raised along the lines of _"can't access property "focus", editButtonRef is undefined"_. This seems weird. Your button ref was defined when you activated the "Edit" Button, but now it’s not. What is going on?
 
 Well, remember that when we change `isEditing` to `true`, we no longer render the section of the component featuring the "Edit" Button. This means there's no element to bind the ref to, so it becomes `undefined`.
 
@@ -96,12 +93,11 @@ Since the `focusOnEditButton()` method needs to be invoked after the DOM has upd
 
 Now when you activate the "Edit" Button and then cancel or save your changes via the keyboard, focus should be returned to the "Edit" Button. Success!
 
-Vue lifecycle methods
----------------------
+## Vue lifecycle methods
 
 Next, we need to move focus to the edit form’s `<input>` element when the "Edit" button is clicked. However, because our edit form is in a different component to our "Edit" button, we can't just set focus inside the "Edit" button’s click event handler. Instead, we can use the fact that we remove and re-mount our `ToDoItemEditForm` component whenever the "Edit" Button is clicked to handle this.
 
-So how does this work? Well, Vue components undergo a series of events, known as a **lifecycle**. This lifecycle spans from all the way before elements are *created* and added to the VDOM (*mounted*), until they are removed from the VDOM (*destroyed*).
+So how does this work? Well, Vue components undergo a series of events, known as a **lifecycle**. This lifecycle spans from all the way before elements are _created_ and added to the VDOM (_mounted_), until they are removed from the VDOM (_destroyed_).
 
 Vue lets you run methods at various stages of this lifecycle using **lifecycle methods**. This can be useful for things like data fetching, where you may need to get your data before your component renders, or after a property changes. The list of lifecycle methods are below, in the order that they fire.
 
@@ -139,8 +135,7 @@ Inside your `mounted()` method, assign your `labelInput` ref to a variable, and 
 
 Now when you activate the "Edit" Button with your keyboard, focus should immediately be moved to the edit `<input>`.
 
-Handling focus when deleting to-do items
-----------------------------------------
+## Handling focus when deleting to-do items
 
 There's one more place we need to consider focus management: when a user deletes a to-do. When clicking the "Edit" Button, it makes sense to move focus to the edit name text box, and back to the "Edit" button when canceling or saving from the edit screen.
 
@@ -148,7 +143,7 @@ However, unlike with the edit form, we don’t have a clear location for focus t
 
 We're already tracking the number of elements in our list heading — the `<h2>` in `App.vue` — and it's associated with our list of to-do items. This makes it a reasonable place to move focus to when we delete a node.
 
-First, we need to add a ref to our list heading. We also need to add a`     tabindex="-1"` to it — this makes the element programmatically focusable (i.e. it can be focused via JavaScript), when by default it is not.
+First, we need to add a ref to our list heading. We also need to add a` tabindex="-1"` to it — this makes the element programmatically focusable (i.e. it can be focused via JavaScript), when by default it is not.
 
 Inside `App.vue`, update your `<h2>` as follows:
 
@@ -166,8 +161,7 @@ Now that we have a `ref` and have let browsers know that we can programmatically
 
 Now, when you delete an item from your list, focus should be moved up to the list heading. This should provide a reasonable focus experience for all of our users.
 
-Summary
--------
+## Summary
 
 So that's it for focus management, and for our app! Congratulations for working your way through all our Vue tutorials. In the next article we'll round things off with some further resources to take your Vue learning further.
 
@@ -175,49 +169,48 @@ So that's it for focus management, and for our app! Congratulations for working 
 
 {{PreviousMenuNext("Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks/Vue\_conditional\_rendering","Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks/Vue\_resources", "Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks")}}
 
-In this module
---------------
+## In this module
 
--   [Introduction to client-side frameworks](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Introduction)
--   [Framework main features](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Main_features)
--   React
-    -   [Getting started with React](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_getting_started)
-    -   [Beginning our React todo list](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_todo_list_beginning)
-    -   [Componentizing our React app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_components)
-    -   [React interactivity: Events and state](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_interactivity_events_state)
-    -   [React interactivity: Editing, filtering, conditional rendering](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_interactivity_filtering_conditional_rendering)
-    -   [Accessibility in React](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_accessibility)
-    -   [React resources](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_resources)
--   Ember
-    -   [Getting started with Ember](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_getting_started)
-    -   [Ember app structure and componentization](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_structure_componentization)
-    -   [Ember interactivity: Events, classes and state](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_interactivity_events_state)
-    -   [Ember Interactivity: Footer functionality, conditional rendering](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_conditional_footer)
-    -   [Routing in Ember](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_routing)
-    -   [Ember resources and troubleshooting](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_resources)
--   Vue
-    -   [Getting started with Vue](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_getting_started)
-    -   [Creating our first Vue component](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_first_component)
-    -   [Rendering a list of Vue components](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_rendering_lists)
-    -   [Adding a new todo form: Vue events, methods, and models](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_methods_events_models)
-    -   [Styling Vue components with CSS](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_styling)
-    -   [Using Vue computed properties](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_computed_properties)
-    -   [Vue conditional rendering: editing existing todos](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_conditional_rendering)
-    -   [Focus management with Vue refs](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_refs_focus_management)
-    -   [Vue resources](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_resources)
--   Svelte
-    -   [Getting started with Svelte](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_getting_started)
-    -   [Starting our Svelte Todo list app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_Todo_list_beginning)
-    -   [Dynamic behavior in Svelte: working with variables and props](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_variables_props)
-    -   [Componentizing our Svelte app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_components)
-    -   [Advanced Svelte: Reactivity, lifecycle, accessibility](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_reactivity_lifecycle_accessibility)
-    -   [Working with Svelte stores](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_stores)
-    -   [TypeScript support in Svelte](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_TypeScript)
-    -   [Deployment and next steps](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_deployment_next)
--   Angular
-    -   [Getting started with Angular](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_getting_started)
-    -   [Beginning our Angular todo list app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_todo_list_beginning)
-    -   [Styling our Angular app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_styling)
-    -   [Creating an item component](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_item_component)
-    -   [Filtering our to-do items](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_filtering)
-    -   [Building Angular applications and further resources](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_building)
+- [Introduction to client-side frameworks](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Introduction)
+- [Framework main features](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Main_features)
+- React
+  - [Getting started with React](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_getting_started)
+  - [Beginning our React todo list](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_todo_list_beginning)
+  - [Componentizing our React app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_components)
+  - [React interactivity: Events and state](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_interactivity_events_state)
+  - [React interactivity: Editing, filtering, conditional rendering](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_interactivity_filtering_conditional_rendering)
+  - [Accessibility in React](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_accessibility)
+  - [React resources](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_resources)
+- Ember
+  - [Getting started with Ember](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_getting_started)
+  - [Ember app structure and componentization](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_structure_componentization)
+  - [Ember interactivity: Events, classes and state](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_interactivity_events_state)
+  - [Ember Interactivity: Footer functionality, conditional rendering](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_conditional_footer)
+  - [Routing in Ember](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_routing)
+  - [Ember resources and troubleshooting](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_resources)
+- Vue
+  - [Getting started with Vue](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_getting_started)
+  - [Creating our first Vue component](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_first_component)
+  - [Rendering a list of Vue components](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_rendering_lists)
+  - [Adding a new todo form: Vue events, methods, and models](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_methods_events_models)
+  - [Styling Vue components with CSS](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_styling)
+  - [Using Vue computed properties](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_computed_properties)
+  - [Vue conditional rendering: editing existing todos](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_conditional_rendering)
+  - [Focus management with Vue refs](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_refs_focus_management)
+  - [Vue resources](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_resources)
+- Svelte
+  - [Getting started with Svelte](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_getting_started)
+  - [Starting our Svelte Todo list app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_Todo_list_beginning)
+  - [Dynamic behavior in Svelte: working with variables and props](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_variables_props)
+  - [Componentizing our Svelte app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_components)
+  - [Advanced Svelte: Reactivity, lifecycle, accessibility](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_reactivity_lifecycle_accessibility)
+  - [Working with Svelte stores](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_stores)
+  - [TypeScript support in Svelte](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_TypeScript)
+  - [Deployment and next steps](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_deployment_next)
+- Angular
+  - [Getting started with Angular](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_getting_started)
+  - [Beginning our Angular todo list app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_todo_list_beginning)
+  - [Styling our Angular app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_styling)
+  - [Creating an item component](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_item_component)
+  - [Filtering our to-do items](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_filtering)
+  - [Building Angular applications and further resources](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_building)

@@ -1,4 +1,4 @@
---- title: Object building practice slug: Learn/JavaScript/Objects/Object\_building\_practice tags: - Article - Beginner - Canvas - CodingScripting - Guide - JavaScript - Learn - Objects - Tutorial - l10n:priority ---
+--- title: Object building practice slug: Learn/JavaScript/Objects/Object_building_practice tags: - Article - Beginner - Canvas - CodingScripting - Guide - JavaScript - Learn - Objects - Tutorial - l10n:priority ---
 
 {{LearnSidebar}}
 
@@ -8,8 +8,7 @@ In previous articles we looked at all the essential JavaScript object theory and
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, a basic understanding of HTML and CSS, familiarity with JavaScript basics (see <a href="/en-US/docs/Learn/JavaScript/First_steps">First steps</a> and <a href="/en-US/docs/Learn/JavaScript/Building_blocks">Building blocks</a>) and OOJS basics (see <a href="/en-US/docs/Learn/JavaScript/Objects/Basics">Introduction to objects</a>).</td></tr><tr class="even"><td>Objective:</td><td>To get some practice with using objects and object-oriented techniques in a real world context.</td></tr></tbody></table>
 
-Let's bounce some balls
------------------------
+## Let's bounce some balls
 
 In this article we will write a classic "bouncing balls" demo, to show you how useful objects can be in JavaScript. Our little balls will bounce around on the screen, and change color when they touch each other. The finished example will look a little something like this:
 
@@ -17,8 +16,7 @@ In this article we will write a classic "bouncing balls" demo, to show you how u
 
 This example will make use of the [Canvas API](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Drawing_graphics) for drawing the balls to the screen, and the [requestAnimationFrame](/en-US/docs/Web/API/window/requestAnimationFrame) API for animating the whole display — you don't need to have any previous knowledge of these APIs, and we hope that by the time you've finished this article you'll be interested in exploring them more. Along the way we'll make use of some nifty objects, and show you a couple of nice techniques like bouncing balls off walls, and checking whether they have hit each other (otherwise known as **collision detection**).
 
-Getting started
----------------
+## Getting started
 
 To begin with, make local copies of our `index.html`, `style.css`, and `main.js` files. These contain the following, respectively:
 
@@ -50,8 +48,7 @@ The last bit of the initial script looks as follows:
 
 This function takes two numbers as arguments, and returns a random number in the range between the two.
 
-Modeling a ball in our program
-------------------------------
+## Modeling a ball in our program
 
 Our program will feature lots of balls bouncing around the screen. Since these balls will all behave in the same way, it makes sense to represent them with an object. Let's start by adding the following constructor to the bottom of our code.
 
@@ -66,10 +63,10 @@ Our program will feature lots of balls bouncing around the screen. Since these b
 
 Here we include some parameters that define the properties each ball needs in order to function in our program:
 
--   `x` and `y` coordinates — the horizontal and vertical coordinates where the ball starts on the screen. This can range between 0 (top left hand corner) to the width and height of the browser viewport (bottom right hand corner).
--   horizontal and vertical velocity (`velX` and `velY`) — each ball is given a horizontal and vertical velocity; in real terms these values are regularly added to the `x`/`y` coordinate values when we animate the balls, to move them by this much on each frame.
--   `color` — each ball gets a color.
--   `size` — each ball gets a size — this is its radius, in pixels.
+- `x` and `y` coordinates — the horizontal and vertical coordinates where the ball starts on the screen. This can range between 0 (top left hand corner) to the width and height of the browser viewport (bottom right hand corner).
+- horizontal and vertical velocity (`velX` and `velY`) — each ball is given a horizontal and vertical velocity; in real terms these values are regularly added to the `x`/`y` coordinate values when we animate the balls, to move them by this much on each frame.
+- `color` — each ball gets a color.
+- `size` — each ball gets a size — this is its radius, in pixels.
 
 This handles the properties, but what about the methods? We want to get our balls to actually do something in our program.
 
@@ -86,13 +83,13 @@ First add the following `draw()` method to the `Ball()`'s `prototype`:
 
 Using this function, we can tell the ball to draw itself onto the screen, by calling a series of members of the 2D canvas context we defined earlier (`ctx`). The context is like the paper, and now we want to command our pen to draw something on it:
 
--   First, we use `beginPath()` to state that we want to draw a shape on the paper.
--   Next, we use `fillStyle` to define what color we want the shape to be — we set it to our ball's `color` property.
--   Next, we use the `arc()` method to trace an arc shape on the paper. Its parameters are:
-    -   The `x` and `y` position of the arc's center — we are specifying the ball's `x` and `y` properties.
-    -   The radius of the arc — in this case, the ball's `size` property.
-    -   The last two parameters specify the start and end number of degrees around the circle that the arc is drawn between. Here we specify 0 degrees, and `2 * PI`, which is the equivalent of 360 degrees in radians (annoyingly, you have to specify this in radians). That gives us a complete circle. If you had specified only `1 * PI`, you'd get a semi-circle (180 degrees).
--   Last of all, we use the `fill()` method, which basically states "finish drawing the path we started with `beginPath()`, and fill the area it takes up with the color we specified earlier in `fillStyle`."
+- First, we use `beginPath()` to state that we want to draw a shape on the paper.
+- Next, we use `fillStyle` to define what color we want the shape to be — we set it to our ball's `color` property.
+- Next, we use the `arc()` method to trace an arc shape on the paper. Its parameters are:
+  - The `x` and `y` position of the arc's center — we are specifying the ball's `x` and `y` properties.
+  - The radius of the arc — in this case, the ball's `size` property.
+  - The last two parameters specify the start and end number of degrees around the circle that the arc is drawn between. Here we specify 0 degrees, and `2 * PI`, which is the equivalent of 360 degrees in radians (annoyingly, you have to specify this in radians). That gives us a complete circle. If you had specified only `1 * PI`, you'd get a semi-circle (180 degrees).
+- Last of all, we use the `fill()` method, which basically states "finish drawing the path we started with `beginPath()`, and fill the area it takes up with the color we specified earlier in `fillStyle`."
 
 You can start testing your object out already.
 
@@ -140,10 +137,10 @@ The first four parts of the function check whether the ball has reached the edge
 
 In the four cases, we are checking to see:
 
--   if the `x` coordinate is greater than the width of the canvas (the ball is going off the right edge).
--   if the `x` coordinate is smaller than 0 (the ball is going off the left edge).
--   if the `y` coordinate is greater than the height of the canvas (the ball is going off the bottom edge).
--   if the `y` coordinate is smaller than 0 (the ball is going off the top edge).
+- if the `x` coordinate is greater than the width of the canvas (the ball is going off the right edge).
+- if the `x` coordinate is smaller than 0 (the ball is going off the left edge).
+- if the `y` coordinate is greater than the height of the canvas (the ball is going off the bottom edge).
+- if the `y` coordinate is smaller than 0 (the ball is going off the top edge).
 
 In each case, we include the `size` of the ball in the calculation because the `x`/`y` coordinates are in the center of the ball, but we want the edge of the ball to bounce off the perimeter — we don't want the ball to go halfway off the screen before it starts to bounce back.
 
@@ -151,8 +148,7 @@ The last two lines add the `velX` value to the `x` coordinate, and the `velY` va
 
 This will do for now; let's get on with some animation!
 
-Animating the ball
-------------------
+## Animating the ball
 
 Now let's make this fun. We are now going to start adding balls to the canvas, and animating them.
 
@@ -194,9 +190,9 @@ Now let's make this fun. We are now going to start adding balls to the canvas, a
 
     All programs that animate things generally involve an animation loop, which serves to update the information in the program and then render the resulting view on each frame of the animation; this is the basis for most games and other such programs. Our `loop()` function does the following:
 
-    -   Sets the canvas fill color to semi-transparent black, then draws a rectangle of the color across the whole width and height of the canvas, using `fillRect()` (the four parameters provide a start coordinate, and a width and height for the rectangle drawn). This serves to cover up the previous frame's drawing before the next one is drawn. If you don't do this, you'll just see long snakes worming their way around the canvas instead of balls moving! The color of the fill is set to semi-transparent, `rgba(0,0,0,0.25)`, to allow the previous few frames to shine through slightly, producing the little trails behind the balls as they move. If you changed 0.25 to 1, you won't see them at all any more. Try varying this number to see the effect it has.
-    -   Loops through all the balls in the `balls` array, and runs each ball's `draw()` and `update()` function to draw each one on the screen, then do the necessary updates to position and velocity in time for the next frame.
-    -   Runs the function again using the `requestAnimationFrame()` method — when this method is repeatedly run and passed the same function name, it runs that function a set number of times per second to create a smooth animation. This is generally done recursively — which means that the function is calling itself every time it runs, so it runs over and over again.
+    - Sets the canvas fill color to semi-transparent black, then draws a rectangle of the color across the whole width and height of the canvas, using `fillRect()` (the four parameters provide a start coordinate, and a width and height for the rectangle drawn). This serves to cover up the previous frame's drawing before the next one is drawn. If you don't do this, you'll just see long snakes worming their way around the canvas instead of balls moving! The color of the fill is set to semi-transparent, `rgba(0,0,0,0.25)`, to allow the previous few frames to shine through slightly, producing the little trails behind the balls as they move. If you changed 0.25 to 1, you won't see them at all any more. Try varying this number to see the effect it has.
+    - Loops through all the balls in the `balls` array, and runs each ball's `draw()` and `update()` function to draw each one on the screen, then do the necessary updates to position and velocity in time for the next frame.
+    - Runs the function again using the `requestAnimationFrame()` method — when this method is repeatedly run and passed the same function name, it runs that function a set number of times per second to create a smooth animation. This is generally done recursively — which means that the function is calling itself every time it runs, so it runs over and over again.
 
 3.  Last but not least, add the following line to the bottom of your code — we need to call the function once to get the animation started.
 
@@ -204,8 +200,7 @@ Now let's make this fun. We are now going to start adding balls to the canvas, a
 
 That's it for the basics — try saving and refreshing to test your bouncing balls out!
 
-Adding collision detection
---------------------------
+## Adding collision detection
 
 Now for a bit of fun, let's add some collision detection to our program, so our balls know when they have hit another ball.
 
@@ -227,10 +222,10 @@ Now for a bit of fun, let's add some collision detection to our program, so our 
 
     This method is a little complex, so don't worry if you don't understand exactly how it works for now. An explanation follows:
 
-    -   For each ball, we need to check every other ball to see if it has collided with the current ball. To do this, we start another `for` loop to loop through all the balls in the `balls[]` array.
-    -   Immediately inside the for loop, we use an `if` statement to check whether the current ball being looped through is the same ball as the one we are currently checking. We don't want to check whether a ball has collided with itself! To do this, we check whether the current ball (i.e., the ball whose collisionDetect method is being invoked) is the same as the loop ball (i.e., the ball that is being referred to by the current iteration of the for loop in the collisionDetect method). We then use `!` to negate the check, so that the code inside the `if` statement only runs if they are **not** the same.
-    -   We then use a common algorithm to check the collision of two circles. We are basically checking whether any of the two circle's areas overlap. This is explained further in [2D collision detection](/en-US/docs/Games/Techniques/2D_collision_detection).
-    -   If a collision is detected, the code inside the inner `if` statement is run. In this case we only set the `color` property of both the circles to a new random color. We could have done something far more complex, like get the balls to bounce off each other realistically, but that would have been far more complex to implement. For such physics simulations, developers tend to use a games or physics library such as [PhysicsJS](https://wellcaffeinated.net/PhysicsJS/), [matter.js](https://brm.io/matter-js/), [Phaser](https://phaser.io/), etc.
+    - For each ball, we need to check every other ball to see if it has collided with the current ball. To do this, we start another `for` loop to loop through all the balls in the `balls[]` array.
+    - Immediately inside the for loop, we use an `if` statement to check whether the current ball being looped through is the same ball as the one we are currently checking. We don't want to check whether a ball has collided with itself! To do this, we check whether the current ball (i.e., the ball whose collisionDetect method is being invoked) is the same as the loop ball (i.e., the ball that is being referred to by the current iteration of the for loop in the collisionDetect method). We then use `!` to negate the check, so that the code inside the `if` statement only runs if they are **not** the same.
+    - We then use a common algorithm to check the collision of two circles. We are basically checking whether any of the two circle's areas overlap. This is explained further in [2D collision detection](/en-US/docs/Games/Techniques/2D_collision_detection).
+    - If a collision is detected, the code inside the inner `if` statement is run. In this case we only set the `color` property of both the circles to a new random color. We could have done something far more complex, like get the balls to bounce off each other realistically, but that would have been far more complex to implement. For such physics simulations, developers tend to use a games or physics library such as [PhysicsJS](https://wellcaffeinated.net/PhysicsJS/), [matter.js](https://brm.io/matter-js/), [Phaser](https://phaser.io/), etc.
 
 2.  You also need to call this method in each frame of the animation. Add the following below the `balls[i].update();` line:
 
@@ -240,32 +235,29 @@ Now for a bit of fun, let's add some collision detection to our program, so our 
 
 **Note**: If you have trouble getting this example to work, try comparing your JavaScript code against our [finished version](https://github.com/mdn/learning-area/blob/master/javascript/oojs/bouncing-balls/main-finished.js) (also see it [running live](https://mdn.github.io/learning-area/javascript/oojs/bouncing-balls/index-finished.html)).
 
-Summary
--------
+## Summary
 
 We hope you had fun writing your own real world random bouncing balls example, using various object and object-oriented techniques from throughout the module! This should have given you some useful practice in using objects, and good real world context.
 
 That's it for object articles — all that remains now is for you to test your skills in the object assessment.
 
-See also
---------
+## See also
 
--   [Canvas tutorial](/en-US/docs/Web/API/Canvas_API/Tutorial) — a beginner's guide to using 2D canvas.
--   [requestAnimationFrame()](/en-US/docs/Web/API/window/requestAnimationFrame)
--   [2D collision detection](/en-US/docs/Games/Techniques/2D_collision_detection)
--   [3D collision detection](/en-US/docs/Games/Techniques/3D_collision_detection)
--   [2D breakout game using pure JavaScript](/en-US/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript) — a great beginner's tutorial showing how to build a 2D game.
--   [2D breakout game using Phaser](/en-US/docs/Games/Tutorials/2D_breakout_game_Phaser) — explains the basics of building a 2D game using a JavaScript game library.
+- [Canvas tutorial](/en-US/docs/Web/API/Canvas_API/Tutorial) — a beginner's guide to using 2D canvas.
+- [requestAnimationFrame()](/en-US/docs/Web/API/window/requestAnimationFrame)
+- [2D collision detection](/en-US/docs/Games/Techniques/2D_collision_detection)
+- [3D collision detection](/en-US/docs/Games/Techniques/3D_collision_detection)
+- [2D breakout game using pure JavaScript](/en-US/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript) — a great beginner's tutorial showing how to build a 2D game.
+- [2D breakout game using Phaser](/en-US/docs/Games/Tutorials/2D_breakout_game_Phaser) — explains the basics of building a 2D game using a JavaScript game library.
 
 {{PreviousMenuNext("Learn/JavaScript/Objects/JSON", "Learn/JavaScript/Objects/Adding\_bouncing\_balls\_features", "Learn/JavaScript/Objects")}}
 
-In this module
---------------
+## In this module
 
--   [Object basics](/en-US/docs/Learn/JavaScript/Objects/Basics)
--   [Object-oriented JavaScript for beginners](/en-US/docs/Learn/JavaScript/Objects/Object-oriented_JS)
--   [Object prototypes](/en-US/docs/Learn/JavaScript/Objects/Object_prototypes)
--   [Inheritance in JavaScript](/en-US/docs/Learn/JavaScript/Objects/Inheritance)
--   [Working with JSON data](/en-US/docs/Learn/JavaScript/Objects/JSON)
--   [Object building practice](/en-US/docs/Learn/JavaScript/Objects/Object_building_practice)
--   [Adding features to our bouncing balls demo](/en-US/docs/Learn/JavaScript/Objects/Adding_bouncing_balls_features)
+- [Object basics](/en-US/docs/Learn/JavaScript/Objects/Basics)
+- [Object-oriented JavaScript for beginners](/en-US/docs/Learn/JavaScript/Objects/Object-oriented_JS)
+- [Object prototypes](/en-US/docs/Learn/JavaScript/Objects/Object_prototypes)
+- [Inheritance in JavaScript](/en-US/docs/Learn/JavaScript/Objects/Inheritance)
+- [Working with JSON data](/en-US/docs/Learn/JavaScript/Objects/JSON)
+- [Object building practice](/en-US/docs/Learn/JavaScript/Objects/Object_building_practice)
+- [Adding features to our bouncing balls demo](/en-US/docs/Learn/JavaScript/Objects/Adding_bouncing_balls_features)

@@ -1,4 +1,4 @@
---- title: Third-party APIs slug: Learn/JavaScript/Client-side\_web\_APIs/Third\_party\_APIs tags: - 3rd party - API - Beginner - CodingScripting - Google Maps - Learn - NYTimes - Third party - youtube ---
+--- title: Third-party APIs slug: Learn/JavaScript/Client-side_web_APIs/Third_party_APIs tags: - 3rd party - API - Beginner - CodingScripting - Google Maps - Learn - NYTimes - Third party - youtube ---
 
 {{LearnSidebar}}{{PreviousMenuNext("Learn/JavaScript/Client-side\_web\_APIs/Fetching\_data", "Learn/JavaScript/Client-side\_web\_APIs/Drawing\_graphics", "Learn/JavaScript/Client-side\_web\_APIs")}}
 
@@ -6,8 +6,7 @@ The APIs we've covered so far are built into the browser, but not all APIs are. 
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>JavaScript basics (see <a href="/en-US/docs/Learn/JavaScript/First_steps">first steps</a>, <a href="/en-US/docs/Learn/JavaScript/Building_blocks">building blocks</a>, <a href="/en-US/docs/Learn/JavaScript/Objects">JavaScript objects</a>), the <a href="/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Introduction">basics of Client-side APIs</a></td></tr><tr class="even"><td>Objective:</td><td>To learn how third-party APIs work, and how to use them to enhance your websites.</td></tr></tbody></table>
 
-What are third party APIs?
---------------------------
+## What are third party APIs?
 
 Third party APIs are APIs provided by third parties — generally companies such as Facebook, Twitter, or Google — to allow you to access their functionality via JavaScript and use it on your site. One of the most obvious examples is using mapping APIs to display custom maps on your pages.
 
@@ -63,12 +62,11 @@ Other APIs may require that you include the key in a slightly different way, but
 
 Requiring a key enables the API provider to hold users of the API accountable for their actions. When the developer has registered for a key, they are then known to the API provider, and action can be taken if they start to do anything malicious with the API (such as tracking people's location or trying to spam the API with loads of requests to stop it working, for example). The easiest action would be to just revoke their API privileges.
 
-Extending the Mapquest example
-------------------------------
+## Extending the Mapquest example
 
 Let's add some more functionality to the Mapquest example to show how to use some other features of the API.
 
-1.  To start this section, make yourself a copy of the [mapquest starter file](https://github.com/mdn/learning-area/blob/master/javascript/apis/third-party-apis/mapquest/starter-file.html), in a new directory. If you've already [cloned the examples repository](/en-US/docs/Learn#getting_our_code_examples), you'll already have a copy of this file, which you can find in the *javascript/apis/third-party-apis/mapquest* directory.
+1.  To start this section, make yourself a copy of the [mapquest starter file](https://github.com/mdn/learning-area/blob/master/javascript/apis/third-party-apis/mapquest/starter-file.html), in a new directory. If you've already [cloned the examples repository](/en-US/docs/Learn#getting_our_code_examples), you'll already have a copy of this file, which you can find in the _javascript/apis/third-party-apis/mapquest_ directory.
 
 2.  Next, you need to go to the [Mapquest developer site](https://developer.mapquest.com/), create an account, and then create a developer key to use with your example. (At the time of writing, it was called a "consumer key" on the site, and the key creation process also asked for an optional "callback URL". You don't need to fill in a URL here: just leave it blank.)
 
@@ -122,21 +120,18 @@ Have a play with the other options shown in the documentation and see what you c
 
 **Note**: If you have trouble getting the example to work, check your code against our finished version — see [expanded-example.html](https://github.com/mdn/learning-area/blob/master/javascript/apis/third-party-apis/mapquest/expanded-example.html) (also [see it running live here](https://mdn.github.io/learning-area/javascript/apis/third-party-apis/mapquest/expanded-example.html)).
 
-What about Google Maps?
------------------------
+## What about Google Maps?
 
 Google Maps is arguably the most popular maps API, so why didn't we use it for our maps example? We did [create an example](https://github.com/mdn/learning-area/blob/master/javascript/apis/third-party-apis/google-maps/finished-maps-example.html) to show how to use it, but in the end we went with Mapquest for a couple of reasons:
 
--   It is much easier to get started with. For Google APIs in general, you need to create a Google account and log into the [Google Cloud Platform Console](https://console.cloud.google.com) to create API keys, etc., and the process is fairly complex. For the [Google Maps API](https://cloud.google.com/maps-platform/) in particular, you need to provide a credit card for billing purposes (although basic usage is free), which we didn't think was acceptable for a basic tutorial.
--   We wanted to show that there are other alternatives available.
+- It is much easier to get started with. For Google APIs in general, you need to create a Google account and log into the [Google Cloud Platform Console](https://console.cloud.google.com) to create API keys, etc., and the process is fairly complex. For the [Google Maps API](https://cloud.google.com/maps-platform/) in particular, you need to provide a credit card for billing purposes (although basic usage is free), which we didn't think was acceptable for a basic tutorial.
+- We wanted to show that there are other alternatives available.
 
-A RESTful API — NYTimes
------------------------
+## A RESTful API — NYTimes
 
 Now let's look at another API example — the [New York Times API](https://developer.nytimes.com). This API allows you to retrieve New York Times news story information and display it on your site. This type of API is known as a **RESTful API** — instead of getting data using the features of a JavaScript library like we did with Mapquest, we get data by making HTTP requests to specific URLs, with data like search terms and other properties encoded in the URL (often as URL parameters). This is a common pattern you'll encounter with APIs.
 
-An approach for using third-party APIs
---------------------------------------
+## An approach for using third-party APIs
 
 Below we'll take you through an exercise to show you how to use the NYTimes API, which also provides a more general set of steps to follow that you can use as an approach for working with new APIs.
 
@@ -152,7 +147,7 @@ Most APIs require you to use some kind of developer key, for reasons of security
 
 2.  Get the API key from the resulting page.
 
-3.  Now, to start the example off, make copies of [nytimes\_start.html](https://github.com/mdn/learning-area/blob/master/javascript/apis/third-party-apis/nytimes/nytimes_start.html) and [nytimes.css](https://github.com/mdn/learning-area/blob/master/javascript/apis/third-party-apis/nytimes/nytimes.css) in a new directory on your computer. If you've already [cloned the examples repository](/en-US/docs/Learn#getting_our_code_examples), you'll already have a copy of these files, which you can find in the *javascript/apis/third-party-apis/nytimes* directory. Initially the `<script>` element contains a number of variables needed for the setup of the example; below we'll fill in the required functionality.
+3.  Now, to start the example off, make copies of [nytimes_start.html](https://github.com/mdn/learning-area/blob/master/javascript/apis/third-party-apis/nytimes/nytimes_start.html) and [nytimes.css](https://github.com/mdn/learning-area/blob/master/javascript/apis/third-party-apis/nytimes/nytimes.css) in a new directory on your computer. If you've already [cloned the examples repository](/en-US/docs/Learn#getting_our_code_examples), you'll already have a copy of these files, which you can find in the _javascript/apis/third-party-apis/nytimes_ directory. Initially the `<script>` element contains a number of variables needed for the setup of the example; below we'll fill in the required functionality.
 
 The app will end up allowing you to type in a search term and optional start and end dates, which it will then use to query the Article Search API and display the search results.
 
@@ -198,11 +193,11 @@ First, you'll need to make a connection between the API and your app. In the cas
 
 `submitSearch()` sets the page number back to 0 to begin with, then calls `fetchResults()`. This first calls `preventDefault()` on the event object, to stop the form actually submitting (which would break the example). Next, we use some string manipulation to assemble the full URL that we will make the request to. We start off by assembling the parts we deem as mandatory for this demo:
 
--   The base URL (taken from the `baseURL` variable).
--   The API key, which has to be specified in the `api-key` URL parameter (the value is taken from the `key` variable).
--   The page number, which has to be specified in the `page` URL parameter (the value is taken from the `pageNumber` variable).
--   The search term, which has to be specified in the `q` URL parameter (the value is taken from the value of the `searchTerm` text {{htmlelement("input")}}).
--   The document type to return results for, as specified in an expression passed in via the `fq` URL parameter. In this case, we want to return articles.
+- The base URL (taken from the `baseURL` variable).
+- The API key, which has to be specified in the `api-key` URL parameter (the value is taken from the `key` variable).
+- The page number, which has to be specified in the `page` URL parameter (the value is taken from the `pageNumber` variable).
+- The search term, which has to be specified in the `q` URL parameter (the value is taken from the value of the `searchTerm` text {{htmlelement("input")}}).
+- The document type to return results for, as specified in an expression passed in via the `fq` URL parameter. In this case, we want to return articles.
 
 Next, we use a couple of `if()` statements to check whether the `startDate` and `endDate` `<input>`s have had values filled in on them. If they do, we append their values to the URL, specified in `begin_date` and `end_date` URL parameters respectively.
 
@@ -294,14 +289,14 @@ OK, let's look at how we'll display the data. Add the following function below y
 
 There's a lot of code here; let's explain it step by step:
 
--   The `while` loop is a common pattern used to delete all of the contents of a DOM element, in this case, the {{htmlelement("section")}} element. We keep checking to see if the `<section>` has a first child, and if it does, we remove the first child. The loop ends when `<section>` no longer has any children.
--   Next, we set the `articles` variable to equal `json.response.docs` — this is the array holding all the objects that represent the articles returned by the search. This is done purely to make the following code a bit simpler.
--   The first `if()` block checks to see if 10 articles are returned (the API returns up to 10 articles at a time.) If so, we display the {{htmlelement("nav")}} that contains the *Previous 10*/*Next 10* pagination buttons. If less than 10 articles are returned, they will all fit on one page, so we don't need to show the pagination buttons. We will wire up the pagination functionality in the next section.
--   The next `if()` block checks to see if no articles are returned. If so, we don't try to display any — we create a {{htmlelement("p")}} containing the text "No results returned." and insert it into the.`<section>`
--   If some articles are returned, we, first of all, create all the elements that we want to use to display each news story, insert the right contents into each one, and then insert them into the DOM at the appropriate places. To work out which properties in the article objects contained the right data to show, we consulted the Article Search API reference (see [NYTimes APIs](https://developer.nytimes.com/apis)). Most of these operations are fairly obvious, but a few are worth calling out:
-    -   We used a [for loop](/en-US/docs/Web/JavaScript/Reference/Statements/for) (`for(var j = 0; j < current.keywords.length; j++) { ... }` ) to loop through all the keywords associated with each article, and insert each one inside its own {{htmlelement("span")}}, inside a `<p>`. This was done to make it easy to style each one.
-    -   We used an `if()` block (`if(current.multimedia.length > 0) { ... }`) to check whether each article has any images associated with it (some stories don't.) We display the first image only if it exists (otherwise an error would be thrown).
-    -   We gave our `<div>` element a class of "clearfix", so we can easily apply clearing to it.
+- The `while` loop is a common pattern used to delete all of the contents of a DOM element, in this case, the {{htmlelement("section")}} element. We keep checking to see if the `<section>` has a first child, and if it does, we remove the first child. The loop ends when `<section>` no longer has any children.
+- Next, we set the `articles` variable to equal `json.response.docs` — this is the array holding all the objects that represent the articles returned by the search. This is done purely to make the following code a bit simpler.
+- The first `if()` block checks to see if 10 articles are returned (the API returns up to 10 articles at a time.) If so, we display the {{htmlelement("nav")}} that contains the _Previous 10_/_Next 10_ pagination buttons. If less than 10 articles are returned, they will all fit on one page, so we don't need to show the pagination buttons. We will wire up the pagination functionality in the next section.
+- The next `if()` block checks to see if no articles are returned. If so, we don't try to display any — we create a {{htmlelement("p")}} containing the text "No results returned." and insert it into the.`<section>`
+- If some articles are returned, we, first of all, create all the elements that we want to use to display each news story, insert the right contents into each one, and then insert them into the DOM at the appropriate places. To work out which properties in the article objects contained the right data to show, we consulted the Article Search API reference (see [NYTimes APIs](https://developer.nytimes.com/apis)). Most of these operations are fairly obvious, but a few are worth calling out:
+  - We used a [for loop](/en-US/docs/Web/JavaScript/Reference/Statements/for) (`for(var j = 0; j < current.keywords.length; j++) { ... }` ) to loop through all the keywords associated with each article, and insert each one inside its own {{htmlelement("span")}}, inside a `<p>`. This was done to make it easy to style each one.
+  - We used an `if()` block (`if(current.multimedia.length > 0) { ... }`) to check whether each article has any images associated with it (some stories don't.) We display the first image only if it exists (otherwise an error would be thrown).
+  - We gave our `<div>` element a class of "clearfix", so we can easily apply clearing to it.
 
 ### Wiring up the pagination buttons
 
@@ -336,13 +331,12 @@ This allows us to write a simplistic pagination function easily.
 
 **Note**: You can find our [finished nytimes API example code on GitHub](https://github.com/mdn/learning-area/blob/master/javascript/apis/third-party-apis/nytimes/index.html) (also [see it running live here](https://mdn.github.io/learning-area/javascript/apis/third-party-apis/nytimes/)).
 
-YouTube example
----------------
+## YouTube example
 
 We also built another example for you to study and learn from — see our [YouTube video search example](https://mdn.github.io/learning-area/javascript/apis/third-party-apis/youtube/). This uses two related APIs:
 
--   The [YouTube Data API](https://developers.google.com/youtube/v3/docs/) to search for YouTube videos and return results.
--   The [YouTube IFrame Player API](https://developers.google.com/youtube/iframe_api_reference) to display the returned video examples inside IFrame video players so you can watch them.
+- The [YouTube Data API](https://developers.google.com/youtube/v3/docs/) to search for YouTube videos and return results.
+- The [YouTube IFrame Player API](https://developers.google.com/youtube/iframe_api_reference) to display the returned video examples inside IFrame video players so you can watch them.
 
 This example is interesting because it shows two related third-party APIs being used together to build an app. The first one is a RESTful API, while the second one works more like Mapquest (with API-specific methods, etc.). It is worth noting however that both of the APIs require a JavaScript library to be applied to the page. The RESTful API has functions available to handle making the HTTP requests and returning the results.
 
@@ -352,25 +346,23 @@ We are not going to say too much more about this example in the article — [the
 
 To get it running, you'll need to:
 
--   Read the [YouTube Data API Overview](https://developers.google.com/youtube/v3/getting-started) documentation.
--   Make sure you visit the [Enabled APIs page](https://console.developers.google.com/apis/enabled), and in the list of APIs, make sure the status is ON for the YouTube Data API v3.
--   Get an API key from [Google Cloud](https://cloud.google.com/).
--   Find the string `ENTER-API-KEY-HERE` in the source code, and replace it with your API key.
--   Run the example through a web server. It won't work if you just run it directly in the browser (i.e. via a `file://` URL).
+- Read the [YouTube Data API Overview](https://developers.google.com/youtube/v3/getting-started) documentation.
+- Make sure you visit the [Enabled APIs page](https://console.developers.google.com/apis/enabled), and in the list of APIs, make sure the status is ON for the YouTube Data API v3.
+- Get an API key from [Google Cloud](https://cloud.google.com/).
+- Find the string `ENTER-API-KEY-HERE` in the source code, and replace it with your API key.
+- Run the example through a web server. It won't work if you just run it directly in the browser (i.e. via a `file://` URL).
 
-Summary
--------
+## Summary
 
 This article has given you a useful introduction to using third-party APIs to add functionality to your websites.
 
 {{PreviousMenuNext("Learn/JavaScript/Client-side\_web\_APIs/Fetching\_data", "Learn/JavaScript/Client-side\_web\_APIs/Drawing\_graphics", "Learn/JavaScript/Client-side\_web\_APIs")}}
 
-In this module
---------------
+## In this module
 
--   [Introduction to web APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Introduction)
--   [Manipulating documents](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Manipulating_documents)
--   [Fetching data from the server](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Fetching_data)
--   [Drawing graphics](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Drawing_graphics)
--   [Video and audio APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Video_and_audio_APIs)
--   [Client-side storage](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Client-side_storage)
+- [Introduction to web APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Introduction)
+- [Manipulating documents](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Manipulating_documents)
+- [Fetching data from the server](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Fetching_data)
+- [Drawing graphics](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Drawing_graphics)
+- [Video and audio APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Video_and_audio_APIs)
+- [Client-side storage](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Client-side_storage)

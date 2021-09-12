@@ -1,4 +1,4 @@
---- title: "Advanced Svelte: Reactivity, lifecycle, accessibility" slug: &gt;- Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks/Svelte\_reactivity\_lifecycle\_accessibility tags: - Accessibility - Beginner - Components - Frameworks - JavaScript - Learn - Lifecycle - Svelte - client-side - reactivity ---
+--- title: "Advanced Svelte: Reactivity, lifecycle, accessibility" slug: &gt;- Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_reactivity_lifecycle_accessibility tags: - Accessibility - Beginner - Components - Frameworks - JavaScript - Learn - Lifecycle - Svelte - client-side - reactivity ---
 
 {{LearnSidebar}}  
 {{PreviousMenuNext("Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks/Svelte\_components","Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks/Svelte\_stores", "Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks")}}
@@ -15,12 +15,11 @@ Finally, we will learn a bit more about components. So far, we've seen how compo
 
 The following new components will be developed throughout the course of this article:
 
--   `MoreActions`: Displays the *Check All* and *Remove Completed* buttons, and emits the corresponding events required to handle their functionality.
--   `NewTodo`: Displays the `<input>` field and *Add* button for adding a new todo.
--   `TodosStatus`: Displays the "x out of y items completed" status heading.
+- `MoreActions`: Displays the _Check All_ and _Remove Completed_ buttons, and emits the corresponding events required to handle their functionality.
+- `NewTodo`: Displays the `<input>` field and _Add_ button for adding a new todo.
+- `TodosStatus`: Displays the "x out of y items completed" status heading.
 
-Code along with us
-------------------
+## Code along with us
 
 ### Git
 
@@ -44,10 +43,9 @@ To code along with us using the REPL, start at
 
 <https://svelte.dev/repl/76cc90c43a37452e8c7f70521f88b698?version=3.23.2>
 
-Working on the MoreActions component
-------------------------------------
+## Working on the MoreActions component
 
-Now we'll tackle the *Check All* and *Remove Completed* buttons. Let's create a component that will be in charge of displaying the buttons and emitting the corresponding events.
+Now we'll tackle the _Check All_ and _Remove Completed_ buttons. Let's create a component that will be in charge of displaying the buttons and emitting the corresponding events.
 
 1.  Create a new file — `components/MoreActions.svelte`.
 
@@ -95,12 +93,11 @@ Now we'll tackle the *Check All* and *Remove Completed* buttons. Let's create a 
           on:removeCompleted={removeCompletedTodos}
         />
 
-6.  OK, let's go back into the app and try it out! You'll find that the *Remove Completed* button works fine, but the *Check All*/*Uncheck All* button just silently fails.
+6.  OK, let's go back into the app and try it out! You'll find that the _Remove Completed_ button works fine, but the _Check All_/_Uncheck All_ button just silently fails.
 
 To find out what is happening here, we'll have to dig a little deeper into Svelte reactivity.
 
-Reactivity gotchas: updating objects and arrays
------------------------------------------------
+## Reactivity gotchas: updating objects and arrays
 
 To see what's happening we can log the `todos` array from the `checkAllTodos()` function to the console.
 
@@ -111,7 +108,7 @@ To see what's happening we can log the `todos` array from the `checkAllTodos()` 
           console.log('todos', todos)
         }
 
-2.  Go back to your browser, open your DevTools console, and click *Check All*/*Uncheck All* a few times.
+2.  Go back to your browser, open your DevTools console, and click _Check All_/_Uncheck All_ a few times.
 
 You'll notice that the array is successfully updated every time you press the button (the `todo` objects' `completed` properties are toggled between `true` and `false`), but Svelte is not aware of that. This also means that in this case, a reactive statement like `$: console.log('todos', todos)` won't be very useful.
 
@@ -175,8 +172,7 @@ All of these solutions involve an assignment in which the updated variable is on
 
 **Choose one, and update your `checkAllTodos()` function as required. Now you should be able to check and uncheck all your todos at once. Try it!**
 
-Finishing our MoreActions component
------------------------------------
+## Finishing our MoreActions component
 
 We will add one usability detail to our component. We'll disable the buttons when there are no tasks to be processed. To create this we'll receive the `todos` array as a prop, and set the `disabled` property of each button accordingly.
 
@@ -207,7 +203,7 @@ We will add one usability detail to our component. We'll disable the buttons whe
             disabled={completedTodos === 0} on:click={removeCompleted}>Remove completed</button>
         </div>
 
-    We've also declared a reactive `completedTodos` variable to enable or disable the *Remove Completed* button.
+    We've also declared a reactive `completedTodos` variable to enable or disable the _Remove Completed_ button.
 
 2.  Don't forget to pass the prop into `MoreActions` from inside `Todos.svelte`, where the component is called:
 
@@ -216,15 +212,13 @@ We will add one usability detail to our component. We'll disable the buttons whe
             on:removeCompleted={removeCompletedTodos}
           />
 
-Working with the DOM: focusing on the details
----------------------------------------------
+## Working with the DOM: focusing on the details
 
 Now that we have completed all of the app's required functionality, we'll concentrate on some accessibility features that will improve the usability of our app for both keyboard-only and screenreader users.
 
 In its current state our app has a couple of keyboard accessibility problems involving focus management. Let's have a look at these issues.
 
-Exploring keyboard accessibility issues in our todo app
--------------------------------------------------------
+## Exploring keyboard accessibility issues in our todo app
 
 Right now, keyboard users will find out that the focus flow of our app is not very predictable or coherent.
 
@@ -232,18 +226,17 @@ If you click on the input at the top of our app, you'll see a thick, dashed outl
 
 If you are a mouse user, you might have skipped this visual hint. But if you are working exclusively with the keyboard, knowing which control has focus is of vital importance. It tells us which control is going to receive our keystrokes.
 
-If you press the Tab key repeatedly, you'll see the dashed focus indicator cycling between all the focusable elements on the page. If you move the focus to the *Edit* button and press Enter, suddenly the focus disappears, you can no longer tell which control will receive our keystrokes.
+If you press the Tab key repeatedly, you'll see the dashed focus indicator cycling between all the focusable elements on the page. If you move the focus to the _Edit_ button and press Enter, suddenly the focus disappears, you can no longer tell which control will receive our keystrokes.
 
-Moreover, if you press the Escape or Enter key, nothing happens. And if you click on *Cancel* or *Save*, the focus disappears again. For a user working with the keyboard, this behavior will be confusing at best.
+Moreover, if you press the Escape or Enter key, nothing happens. And if you click on _Cancel_ or _Save_, the focus disappears again. For a user working with the keyboard, this behavior will be confusing at best.
 
-We'd also like to add some usability features, like disabling the *Save* button when required fields are empty, giving focus to certain HTML elements or auto-selecting contents when a text input receives focus.
+We'd also like to add some usability features, like disabling the _Save_ button when required fields are empty, giving focus to certain HTML elements or auto-selecting contents when a text input receives focus.
 
 To implement all these features we'll need programmatic access to DOM nodes to run functions like `focus()` and `select()`. We will also have to use `addEventListener()` and `removeEventListener()` to run specific tasks when the control receives focus.
 
 The problem is that all these DOM nodes are dynamically created by Svelte at runtime. So we'll have to wait for them to be created and added to the DOM in order to use them. To do so, we'll have to learn about the [component lifecycle](https://svelte.dev/tutorial/onmount) to understand when we can access them — more on this later.
 
-Creating a NewTodo component
-----------------------------
+## Creating a NewTodo component
 
 Let's begin by extracting our new todo form out to its own component. With what we know so far we can create a new component file and adjust the code to emit an `addTodo` event, passing the name of the new todo in with the additional details.
 
@@ -274,7 +267,7 @@ Let's begin by extracting our new todo form out to its own component. With what 
           <button type="submit" disabled={!name} class="btn btn__primary btn__lg">Add</button>
         </form>
 
-    Here we are binding the `<input>` to the `name` variable with `bind:value={name}` and disabling the *Add* button when it is empty (i.e. no text content) using `disabled={!name}`. We are also taking care of the Escape key with `on:keydown={e => e.key === 'Escape' && onCancel()}`. Whenever the Escape key is pressed we run `onCancel()`, which just clears up the `name` variable.
+    Here we are binding the `<input>` to the `name` variable with `bind:value={name}` and disabling the _Add_ button when it is empty (i.e. no text content) using `disabled={!name}`. We are also taking care of the Escape key with `on:keydown={e => e.key === 'Escape' && onCancel()}`. Whenever the Escape key is pressed we run `onCancel()`, which just clears up the `name` variable.
 
 3.  Now we have to `import` and use it from inside the `Todos` component, and update the `addTodo()` function to receive the name of the new todo.
 
@@ -297,10 +290,9 @@ Let's begin by extracting our new todo form out to its own component. With what 
         <!-- NewTodo -->
         <NewTodo on:addTodo={e => addTodo(e.detail)} />
 
-Working with DOM nodes using the `bind:this={dom_node}` directive
------------------------------------------------------------------
+## Working with DOM nodes using the `bind:this={dom_node}` directive
 
-Now we want the `NewTodo` `<input>` to re-gain focus every time the *Add* button is pressed. For that we'll need a reference to the DOM node of the input. Svelte provides a way to do this with the `bind:this={dom_node}` directive. When specified, as soon as the component is mounted and the DOM node is created Svelte assigns a reference to the DOM node to the specified variable.
+Now we want the `NewTodo` `<input>` to re-gain focus every time the _Add_ button is pressed. For that we'll need a reference to the DOM node of the input. Svelte provides a way to do this with the `bind:this={dom_node}` directive. When specified, as soon as the component is mounted and the DOM node is created Svelte assigns a reference to the DOM node to the specified variable.
 
 We'll create a `nameEl` variable and bind it to the input it using `bind:this={nameEl}`. Then inside `addTodo()`, after adding the new todo we will call `nameEl.focus()` to refocus the `<input>` again. We will do the same when the user presses the Escape key, with the `onCancel()` function.
 
@@ -334,7 +326,7 @@ Update the contents of `NewTodo.svelte` like so:
       <button type="submit" disabled={!name} class="btn btn__primary btn__lg">Add</button>
     </form>
 
-Try the app out — type a new todo name in to the `<input>` field, press tab to give focus to the *Add* button, and then hit Enter or Escape to see how the input recovers focus.
+Try the app out — type a new todo name in to the `<input>` field, press tab to give focus to the _Add_ button, and then hit Enter or Escape to see how the input recovers focus.
 
 ### Autofocusing our input
 
@@ -362,8 +354,7 @@ The next feature will add to our `NewTodo` component will be an `autofocus` prop
 
 To understand what's happening here, let's talk some more about that [component lifecycle](https://svelte.dev/tutorial/onmount) we mentioned earlier.
 
-Component lifecycle, and the `onMount()` function
--------------------------------------------------
+## Component lifecycle, and the `onMount()` function
 
 When a component is instantiated, Svelte runs the initialization code (that is, the `<script>` section of the component). But at that moment, all the nodes that comprise the component are not attached to the DOM, in fact, they don't even exist.
 
@@ -399,10 +390,9 @@ The one you'll use most frequently is `onMount()`, which lets us run a callback 
 
 **Note**: You can have a look at the other [lifecycle functions in the Svelte docs](https://svelte.dev/docs#svelte), and you can see them in action in the [interactive tutorial](https://svelte.dev/tutorial/onmount).
 
-Waiting for the DOM to be updated with the `tick()` function
-------------------------------------------------------------
+## Waiting for the DOM to be updated with the `tick()` function
 
-Now we will take care of the `Todo` component's focus management details. First of all, we want a `Todo` component's edit `<input>` to receive focus when we enter editing mode by pressing its *Edit* button. In the same fashion as we saw earlier, we'll create a `nameEl` variable inside `Todo.svelte` and call `nameEl.focus()` after setting the `editing` variable to `true`.
+Now we will take care of the `Todo` component's focus management details. First of all, we want a `Todo` component's edit `<input>` to receive focus when we enter editing mode by pressing its _Edit_ button. In the same fashion as we saw earlier, we'll create a `nameEl` variable inside `Todo.svelte` and call `nameEl.focus()` after setting the `editing` variable to `true`.
 
 1.  Open the file `components/Todo.svelte` and add a `nameEl` variable declaration, just below your editing and name declarations:
 
@@ -419,7 +409,7 @@ Now we will take care of the `Todo` component's focus management details. First 
 
         <input bind:value={name} bind:this={nameEl} type="text" id="todo-{todo.id}" autoComplete="off" class="todo-text" />
 
-4.  However, when you try the updated app you'll get an error along the lines of "TypeError: nameEl is undefined" in the console when you press a todo's *Edit* button.
+4.  However, when you try the updated app you'll get an error along the lines of "TypeError: nameEl is undefined" in the console when you press a todo's _Edit_ button.
 
 So, what is happening here? When you update a component's state in Svelte, it doesn't update the DOM immediately. Instead, it waits until the next microtask to see if there are any other changes that need to be applied, including in other components. Doing so avoids unnecessary work and allows the browser to batch things more effectively.
 
@@ -452,8 +442,7 @@ The above solution works, but it is rather inelegant. Svelte provides a better w
 
 **Note**: To see another example using `tick()`, visit the [Svelte tutorial](https://svelte.dev/tutorial/tick).
 
-Adding functionality to HTML elements with the `use:action` directive
----------------------------------------------------------------------
+## Adding functionality to HTML elements with the `use:action` directive
 
 Next up, we want the name `<input>` to automatically select all text on focus. Moreover, we want to develop this in such a way that it could be easily reused on any HTML `<input>` and applied in a declarative way. We will use this requirement as an excuse to show a very powerful feature that Svelte provides us to add functionality to regular HTML elements: [actions](https://svelte.dev/docs#use_action).
 
@@ -461,7 +450,7 @@ To select the text of a DOM input node we have to call `select()`. To get this f
 
     node.addEventListener('focus', event => node.select()).
 
-And, in order to avoid memory leaks, we should also call the `removeEventListener()     `function when the node is destroyed.
+And, in order to avoid memory leaks, we should also call the `removeEventListener() `function when the node is destroyed.
 
 **Note**: All this is just standard WebAPI functionality; nothing here is specific to Svelte.
 
@@ -495,7 +484,7 @@ In our immediate use case, we will define a function called `selectOnFocus()` th
         <input bind:value={name} bind:this={nameEl} use:selectOnFocus type="text" id="todo-{todo.id}" autoComplete="off" class="todo-text"
         />
 
-3.  Let's try it out. Go to your app, press a todo's *Edit* button, then Tab to take focus away from the `<input>`. Now click on the `<input>` — you'll see that the entire input text is selected.
+3.  Let's try it out. Go to your app, press a todo's _Edit_ button, then Tab to take focus away from the `<input>`. Now click on the `<input>` — you'll see that the entire input text is selected.
 
 ### Making the action reusable
 
@@ -557,11 +546,11 @@ In the previous section, while working with the `Todo` components, we had to dea
           editing = true                        // enter editing mode
         }
 
-As a last example before we move on, let's go back to our `Todo.svelte` component and give focus to the *Edit* button after the user presses *Save* or *Cancel*.
+As a last example before we move on, let's go back to our `Todo.svelte` component and give focus to the _Edit_ button after the user presses _Save_ or _Cancel_.
 
-We could try just reusing our `focusOnInit` action again, adding `use:focusOnInit` to the *Edit* button. But we'd be introducing a subtle bug. When you add a new todo, the focus will be put on the *Edit* button of the recently added todo. That's because the `focusOnInit` action is running when the component is created.
+We could try just reusing our `focusOnInit` action again, adding `use:focusOnInit` to the _Edit_ button. But we'd be introducing a subtle bug. When you add a new todo, the focus will be put on the _Edit_ button of the recently added todo. That's because the `focusOnInit` action is running when the component is created.
 
-That's not what we want — we want the *Edit* button to receive focus only when the user has pressed *Save* or *Cancel*.
+That's not what we want — we want the _Edit_ button to receive focus only when the user has pressed _Save_ or _Cancel_.
 
 1.  So, go back to your `Todo.svelte` file.
 
@@ -569,7 +558,7 @@ That's not what we want — we want the *Edit* button to receive focus only when
 
         let editButtonPressed = false           // track if edit button has been pressed, to give focus to it after cancel or save
 
-3.  Next, we'll modify the *Edit* button's functionality to save this flag, and create the action for it. Update the `onEdit()` function like so:
+3.  Next, we'll modify the _Edit_ button's functionality to save this flag, and create the action for it. Update the `onEdit()` function like so:
 
         function onEdit() {
           editButtonPressed = true              // user pressed the Edit button, focus will come back to the Edit button
@@ -580,20 +569,19 @@ That's not what we want — we want the *Edit* button to receive focus only when
 
         const focusEditButton = (node) => editButtonPressed && node.focus()
 
-5.  Finally, we `use` the `focusEditButton` action on the *Edit* button, like so:
+5.  Finally, we `use` the `focusEditButton` action on the _Edit_ button, like so:
 
         <button type="button" class="btn" on:click={onEdit} use:focusEditButton>
           Edit<span class="visually-hidden"> {todo.name}</span>
         </button>
 
-6.  Go back and try your app again. At this point, every time the *Edit* button is added to the DOM, the `focusEditButton` action is executed, but it will only give focus to the button if the `editButtonPressed` flag is `true`.
+6.  Go back and try your app again. At this point, every time the _Edit_ button is added to the DOM, the `focusEditButton` action is executed, but it will only give focus to the button if the `editButtonPressed` flag is `true`.
 
 **Note**: We have barely scratched the surface of actions here. Actions can also have reactive parameters, and Svelte lets us detect when any of those parameters change. So we can add functionality that integrates nicely with the Svelte reactive system. Have a look at the relevant Svelte School article for a more [detailed introduction to actions](https://svelte.school/tutorials/introduction-to-actions). Actions are also very useful for seamlessly [integrating with third party libraries](https://svelte.school/tutorials/external-libraries-in-svelte-and-sapper-using-actions).
 
-Component binding: exposing component methods and variables using the `bind:this={component}` directive
--------------------------------------------------------------------------------------------------------
+## Component binding: exposing component methods and variables using the `bind:this={component}` directive
 
-There's still one accessibility annoyance left. When the user presses the *Delete* button, the focus vanishes.
+There's still one accessibility annoyance left. When the user presses the _Delete_ button, the focus vanishes.
 
 So, the last feature we will be looking at in this article involves setting the focus on the status heading after a todo has been deleted.
 
@@ -696,8 +684,7 @@ With this in mind, let's go back to our use case. We'll create a function called
 
 **Note**: You might be wondering why we need to declare a new variable for component binding — why can't we just call `TodosStatus.focus()`? You might have multiple `TodosStatus` instances active, so you need a way to reference each particular instance. That's why you have to specify a variable to bind each specific instance to.
 
-The code so far
----------------
+## The code so far
 
 ### Git
 
@@ -717,67 +704,65 @@ To see the current state of the code in a REPL, visit:
 
 <https://svelte.dev/repl/d1fa84a5a4494366b179c87395940039?version=3.23.2>
 
-Summary
--------
+## Summary
 
 In this article we have finished adding all the required functionality to our app, plus we've taken care of a number of accessibility and usability issues. We also finished splitting our app into manageable components, each one with a unique responsibility.
 
 In the meantime, we saw a few advanced Svelte techniques, like:
 
--   Dealing with reactivity gotchas when updating objects and arrays.
--   Working with DOM nodes using `bind:this={dom_node}` (binding DOM elements).
--   Using the component lifecycle `onMount()` function.
--   Forcing Svelte to resolve pending state changes with the `tick()` function.
--   Adding functionality to HTML elements in a reusable and declarative way with the `use:action` directive.
--   Accessing component methods using `bind:this={component}` (binding components).
+- Dealing with reactivity gotchas when updating objects and arrays.
+- Working with DOM nodes using `bind:this={dom_node}` (binding DOM elements).
+- Using the component lifecycle `onMount()` function.
+- Forcing Svelte to resolve pending state changes with the `tick()` function.
+- Adding functionality to HTML elements in a reusable and declarative way with the `use:action` directive.
+- Accessing component methods using `bind:this={component}` (binding components).
 
 In the next article we will see how to use stores to communicate between components, and add animations to our components.
 
 {{PreviousMenuNext("Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks/Svelte\_components","Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks/Svelte\_stores", "Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks")}}
 
-In this module
---------------
+## In this module
 
--   [Introduction to client-side frameworks](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Introduction)
--   [Framework main features](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Main_features)
--   React
-    -   [Getting started with React](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_getting_started)
-    -   [Beginning our React todo list](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_todo_list_beginning)
-    -   [Componentizing our React app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_components)
-    -   [React interactivity: Events and state](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_interactivity_events_state)
-    -   [React interactivity: Editing, filtering, conditional rendering](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_interactivity_filtering_conditional_rendering)
-    -   [Accessibility in React](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_accessibility)
-    -   [React resources](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_resources)
--   Ember
-    -   [Getting started with Ember](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_getting_started)
-    -   [Ember app structure and componentization](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_structure_componentization)
-    -   [Ember interactivity: Events, classes and state](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_interactivity_events_state)
-    -   [Ember Interactivity: Footer functionality, conditional rendering](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_conditional_footer)
-    -   [Routing in Ember](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_routing)
-    -   [Ember resources and troubleshooting](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_resources)
--   Vue
-    -   [Getting started with Vue](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_getting_started)
-    -   [Creating our first Vue component](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_first_component)
-    -   [Rendering a list of Vue components](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_rendering_lists)
-    -   [Adding a new todo form: Vue events, methods, and models](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_methods_events_models)
-    -   [Styling Vue components with CSS](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_styling)
-    -   [Using Vue computed properties](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_computed_properties)
-    -   [Vue conditional rendering: editing existing todos](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_conditional_rendering)
-    -   [Focus management with Vue refs](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_refs_focus_management)
-    -   [Vue resources](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_resources)
--   Svelte
-    -   [Getting started with Svelte](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_getting_started)
-    -   [Starting our Svelte Todo list app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_Todo_list_beginning)
-    -   [Dynamic behavior in Svelte: working with variables and props](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_variables_props)
-    -   [Componentizing our Svelte app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_components)
-    -   [Advanced Svelte: Reactivity, lifecycle, accessibility](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_reactivity_lifecycle_accessibility)
-    -   [Working with Svelte stores](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_stores)
-    -   [TypeScript support in Svelte](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_TypeScript)
-    -   [Deployment and next steps](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_deployment_next)
--   Angular
-    -   [Getting started with Angular](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_getting_started)
-    -   [Beginning our Angular todo list app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_todo_list_beginning)
-    -   [Styling our Angular app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_styling)
-    -   [Creating an item component](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_item_component)
-    -   [Filtering our to-do items](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_filtering)
-    -   [Building Angular applications and further resources](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_building)
+- [Introduction to client-side frameworks](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Introduction)
+- [Framework main features](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Main_features)
+- React
+  - [Getting started with React](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_getting_started)
+  - [Beginning our React todo list](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_todo_list_beginning)
+  - [Componentizing our React app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_components)
+  - [React interactivity: Events and state](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_interactivity_events_state)
+  - [React interactivity: Editing, filtering, conditional rendering](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_interactivity_filtering_conditional_rendering)
+  - [Accessibility in React](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_accessibility)
+  - [React resources](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_resources)
+- Ember
+  - [Getting started with Ember](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_getting_started)
+  - [Ember app structure and componentization](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_structure_componentization)
+  - [Ember interactivity: Events, classes and state](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_interactivity_events_state)
+  - [Ember Interactivity: Footer functionality, conditional rendering](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_conditional_footer)
+  - [Routing in Ember](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_routing)
+  - [Ember resources and troubleshooting](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_resources)
+- Vue
+  - [Getting started with Vue](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_getting_started)
+  - [Creating our first Vue component](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_first_component)
+  - [Rendering a list of Vue components](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_rendering_lists)
+  - [Adding a new todo form: Vue events, methods, and models](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_methods_events_models)
+  - [Styling Vue components with CSS](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_styling)
+  - [Using Vue computed properties](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_computed_properties)
+  - [Vue conditional rendering: editing existing todos](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_conditional_rendering)
+  - [Focus management with Vue refs](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_refs_focus_management)
+  - [Vue resources](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_resources)
+- Svelte
+  - [Getting started with Svelte](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_getting_started)
+  - [Starting our Svelte Todo list app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_Todo_list_beginning)
+  - [Dynamic behavior in Svelte: working with variables and props](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_variables_props)
+  - [Componentizing our Svelte app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_components)
+  - [Advanced Svelte: Reactivity, lifecycle, accessibility](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_reactivity_lifecycle_accessibility)
+  - [Working with Svelte stores](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_stores)
+  - [TypeScript support in Svelte](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_TypeScript)
+  - [Deployment and next steps](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_deployment_next)
+- Angular
+  - [Getting started with Angular](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_getting_started)
+  - [Beginning our Angular todo list app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_todo_list_beginning)
+  - [Styling our Angular app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_styling)
+  - [Creating an item component](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_item_component)
+  - [Filtering our to-do items](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_filtering)
+  - [Building Angular applications and further resources](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_building)

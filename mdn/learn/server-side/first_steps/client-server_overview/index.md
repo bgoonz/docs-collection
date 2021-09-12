@@ -1,4 +1,4 @@
---- title: Client-Server Overview slug: Learn/Server-side/First\_steps/Client-Server\_overview tags: - Beginner - CodingScripting - Guide - Intro - Learn - Server - Server-side programming ---
+--- title: Client-Server Overview slug: Learn/Server-side/First_steps/Client-Server_overview tags: - Beginner - CodingScripting - Guide - Intro - Learn - Server - Server-side programming ---
 
 {{LearnSidebar}}
 
@@ -10,25 +10,24 @@ Now that you know the purpose and potential benefits of server-side programming 
 
 There is no real code in the discussion because we haven't yet chosen a web framework to use to write our code! This discussion is however still very relevant, because the described behavior must be implemented by your server-side code, irrespective of which programming language or web framework you select.
 
-Web servers and HTTP (a primer)
--------------------------------
+## Web servers and HTTP (a primer)
 
-Web browsers communicate with [web servers](/en-US/docs/Learn/Common_questions/What_is_a_web_server) using the **H**yper**T**ext **T**ransfer **P**rotocol ([HTTP](/en-US/docs/Web/HTTP)). When you click a link on a web page, submit a form, or run a search, the browser sends an *HTTP Request* to the server.
+Web browsers communicate with [web servers](/en-US/docs/Learn/Common_questions/What_is_a_web_server) using the **H**yper**T**ext **T**ransfer **P**rotocol ([HTTP](/en-US/docs/Web/HTTP)). When you click a link on a web page, submit a form, or run a search, the browser sends an _HTTP Request_ to the server.
 
 This request includes:
 
--   A URL identifying the target server and resource (e.g. an HTML file, a particular data point on the server, or a tool to run).
--   A method that defines the required action (for example, to get a file or to save or update some data). The different methods/verbs and their associated actions are listed below:
-    -   `GET`: Get a specific resource (e.g. an HTML file containing information about a product, or a list of products). 
-    -   `POST`: Create a new resource (e.g. add a new article to a wiki, add a new contact to a database). 
-    -   `HEAD`: Get the metadata information about a specific resource without getting the body like `GET` would. You might for example use a `HEAD` request to find out the last time a resource was updated, and then only use the (more "expensive") `GET` request to download the resource if it has changed. 
-    -   `PUT`: Update an existing resource (or create a new one if it doesn't exist).
-    -   `DELETE`: Delete the specified resource.
-    -   `TRACE`, `OPTIONS`, `CONNECT`, `PATCH`: These verbs are for less common/advanced tasks, so we won't cover them here.
--   Additional information can be encoded with the request (for example, HTML form data). Information can be encoded as:
-    -   URL parameters: `GET` requests encode data in the URL sent to the server by adding name/value pairs onto the end of it — for example `http://mysite.com?name=Fred&age=11`. You always have a question mark (`?`) separating the rest of the URL from the URL parameters, an equals sign (`=`) separating each name from its associated value, and an ampersand (`&`) separating each pair. URL parameters are inherently "insecure" as they can be changed by users and then resubmitted. As a result URL parameters/`GET` requests are not used for requests that update data on the server.
-    -   `POST` data. `POST` requests add new resources, the data for which is encoded within the request body.
-    -   Client-side cookies. Cookies contain session data about the client, including keys that the server can use to determine their login status and permissions/accesses to resources.
+- A URL identifying the target server and resource (e.g. an HTML file, a particular data point on the server, or a tool to run).
+- A method that defines the required action (for example, to get a file or to save or update some data). The different methods/verbs and their associated actions are listed below:
+  - `GET`: Get a specific resource (e.g. an HTML file containing information about a product, or a list of products).
+  - `POST`: Create a new resource (e.g. add a new article to a wiki, add a new contact to a database).
+  - `HEAD`: Get the metadata information about a specific resource without getting the body like `GET` would. You might for example use a `HEAD` request to find out the last time a resource was updated, and then only use the (more "expensive") `GET` request to download the resource if it has changed.
+  - `PUT`: Update an existing resource (or create a new one if it doesn't exist).
+  - `DELETE`: Delete the specified resource.
+  - `TRACE`, `OPTIONS`, `CONNECT`, `PATCH`: These verbs are for less common/advanced tasks, so we won't cover them here.
+- Additional information can be encoded with the request (for example, HTML form data). Information can be encoded as:
+  - URL parameters: `GET` requests encode data in the URL sent to the server by adding name/value pairs onto the end of it — for example `http://mysite.com?name=Fred&age=11`. You always have a question mark (`?`) separating the rest of the URL from the URL parameters, an equals sign (`=`) separating each name from its associated value, and an ampersand (`&`) separating each pair. URL parameters are inherently "insecure" as they can be changed by users and then resubmitted. As a result URL parameters/`GET` requests are not used for requests that update data on the server.
+  - `POST` data. `POST` requests add new resources, the data for which is encoded within the request body.
+  - Client-side cookies. Cookies contain session data about the client, including keys that the server can use to determine their login status and permissions/accesses to resources.
 
 Web servers wait for client request messages, process them when they arrive, and reply to the web browser with an HTTP Response message. The response contains an [HTTP Response status code](/en-US/docs/Web/HTTP/Status) indicating whether or not the request succeeded (e.g. "`200 OK`" for success, "`404 Not Found`" if the resource cannot be found, "`403 Forbidden`" if the user isn't authorized to see the resource, etc). The body of a successful response to a `GET` request would contain the requested resource.
 
@@ -62,20 +61,20 @@ Each line of the request contains information about it. The first part is called
 
 The first and second lines contain most of the information we talked about above:
 
--   The type of request (`GET`).
--   The target resource URL (`/en-US/search`).
--   The URL parameters (`q=client%2Bserver%2Boverview&topic=apps&topic=html&topic=css&topic=js&topic=api&topic=webdev`).
--   The target/host website (developer.mozilla.org).
--   The end of the first line also includes a short string identifying the specific protocol version (`HTTP/1.1`).
+- The type of request (`GET`).
+- The target resource URL (`/en-US/search`).
+- The URL parameters (`q=client%2Bserver%2Boverview&topic=apps&topic=html&topic=css&topic=js&topic=api&topic=webdev`).
+- The target/host website (developer.mozilla.org).
+- The end of the first line also includes a short string identifying the specific protocol version (`HTTP/1.1`).
 
 The final line contains information about the client-side cookies — you can see in this case the cookie includes an id for managing sessions (`Cookie: sessionid=6ynxs23n521lu21b1t136rhbv7ezngie; ...`).
 
 The remaining lines contain information about the browser used and the sort of responses it can handle. For example, you can see here that:
 
--   My browser (`User-Agent`) is Mozilla Firefox (`Mozilla/5.0`).
--   It can accept gzip compressed information (`Accept-Encoding: gzip`).
--   It can accept the specified set of characters (`Accept-Charset: ISO-8859-1,UTF-8;q=0.7,*;q=0.7`) and languages (`Accept-Language: de,en;q=0.7,en-us;q=0.3`).
--   The `Referer` line indicates the address of the web page that contained the link to this resource (i.e. the origin of the request, `https://developer.mozilla.org/en-US/`).
+- My browser (`User-Agent`) is Mozilla Firefox (`Mozilla/5.0`).
+- It can accept gzip compressed information (`Accept-Encoding: gzip`).
+- It can accept the specified set of characters (`Accept-Charset: ISO-8859-1,UTF-8;q=0.7,*;q=0.7`) and languages (`Accept-Language: de,en;q=0.7,en-us;q=0.3`).
+- The `Referer` line indicates the address of the web page that contained the link to this resource (i.e. the origin of the request, `https://developer.mozilla.org/en-US/`).
 
 HTTP requests can also have a body, but it is empty in this case.
 
@@ -83,10 +82,10 @@ HTTP requests can also have a body, but it is empty in this case.
 
 The first part of the response for this request is shown below. The header contains information like the following:
 
--   The first line includes the response code `200 OK`, which tells us that the request succeeded.
--   We can see that the response is `text/html` formatted (`Content-Type`).
--   We can also see that it uses the UTF-8 character set (`Content-Type: text/html; charset=utf-8`).
--   The head also tells us how big it is (`Content-Length: 41823`).
+- The first line includes the response code `200 OK`, which tells us that the request succeeded.
+- We can see that the response is `text/html` formatted (`Content-Type`).
+- We can also see that it uses the UTF-8 character set (`Content-Type: text/html; charset=utf-8`).
+- The head also tells us how big it is (`Content-Length: 41823`).
 
 At the end of the message we see the **body** content — which contains the actual HTML returned by the request.
 
@@ -119,7 +118,7 @@ An HTTP `POST` is made when you submit a form containing information to be saved
 
 #### The request
 
-The text below shows the HTTP request made when a user submits new profile details on this site. The format of the request is almost the same as the `GET` request example shown previously, though the first line identifies this request as a `POST`. 
+The text below shows the HTTP request made when a user submits new profile details on this site. The format of the request is almost the same as the `GET` request example shown previously, though the first line identifies this request as a `POST`.
 
     POST https://developer.mozilla.org/en-US/profiles/hamishwillee/edit HTTP/1.1
     Host: developer.mozilla.org
@@ -143,7 +142,7 @@ The main difference is that the URL doesn't have any parameters. As you can see,
 
 #### The response
 
-The response from the request is shown below. The status code of "`302 Found`" tells the browser that the post succeeded, and that it must issue a second HTTP request to load the page specified in the `Location` field. The information is otherwise similar to that for the response to a `GET` request.
+The response from the request is shown below. The status code of "`302 Found`" tells the browser that the post succeeded, and that it must issue a second HTTP request to load the page specified in the `Location` field. The information is otherwise similar to that for the response to a `GET` request.
 
     HTTP/1.1 302 FOUND
     Server: Apache
@@ -161,10 +160,9 @@ The response from the request is shown below. The status code of "`302 Found`" 
 
 **Note**: The HTTP responses and requests shown in these examples were captured using the [Fiddler](https://www.telerik.com/download/fiddler) application, but you can get similar information using web sniffers (e.g. [Websniffer](https://websniffer.cc/)) or browser extensions like [HttpFox](https://addons.mozilla.org/en-US/firefox/addon/httpfox/). You can try this yourself. Use any of the linked tools, and then navigate through a site and edit profile information to see the different requests and responses. Most modern browsers also have tools that monitor network requests (for example, the [Network Monitor](/en-US/docs/Tools/Network_Monitor) tool in Firefox).
 
-Static sites
-------------
+## Static sites
 
-A *static site* is one that returns the same hard coded content from the server whenever a particular resource is requested. So for example if you have a page about a product at `/static/myproduct1.html`, this same page will be returned to every user. If you add another similar product to your site you will need to add another page (e.g. `myproduct2.html`) and so on. This can start to get really inefficient — what happens when you get to thousands of product pages? You would repeat a lot of code across each page (the basic page template, structure, etc.), and if you wanted to change anything about the page structure — like add a new "related products" section for example — then you'd have to change every page individually. 
+A _static site_ is one that returns the same hard coded content from the server whenever a particular resource is requested. So for example if you have a page about a product at `/static/myproduct1.html`, this same page will be returned to every user. If you add another similar product to your site you will need to add another page (e.g. `myproduct2.html`) and so on. This can start to get really inefficient — what happens when you get to thousands of product pages? You would repeat a lot of code across each page (the basic page template, structure, etc.), and if you wanted to change anything about the page structure — like add a new "related products" section for example — then you'd have to change every page individually.
 
 **Note**: Static sites are excellent when you have a small number of pages and you want to send the same content to every user. However they can have a significant cost to maintain as the number of pages becomes larger.
 
@@ -174,14 +172,13 @@ Let's recap on how this works, by looking again at the static site architecture 
 
 When a user wants to navigate to a page, the browser sends an HTTP `GET` request specifying the URL of its HTML page. The server retrieves the requested document from its file system and returns an HTTP response containing the document and an [HTTP Response status code](/en-US/docs/Web/HTTP/Status) of "`200 OK`" (indicating success). The server might return a different status code, for example "`404 Not Found`" if the file is not present on the server, or "`301 Moved Permanently`" if the file exists but has been redirected to a different location.
 
-The server for a static site will only ever need to process GET requests, because the server doesn't store any modifiable data. It also doesn't change its responses based on HTTP Request data (e.g. URL parameters or cookies). 
+The server for a static site will only ever need to process GET requests, because the server doesn't store any modifiable data. It also doesn't change its responses based on HTTP Request data (e.g. URL parameters or cookies).
 
 Understanding how static sites work is nevertheless useful when learning server-side programming, because dynamic sites handle requests for static files (CSS, JavaScript, static images, etc.) in exactly the same way.
 
-Dynamic sites
--------------
+## Dynamic sites
 
-A *dynamic site* is one that can generate and return content based on the specific request URL and data (rather than always returning the same hard-coded file for a particular URL). Using the example of a product site, the server would store product "data" in a database rather than individual HTML files. When receiving an HTTP `GET` Request for a product, the server determines the product ID, fetches the data from the database, and then constructs the HTML page for the response by inserting the data into an HTML template. This has major advantages over a static site:
+A _dynamic site_ is one that can generate and return content based on the specific request URL and data (rather than always returning the same hard-coded file for a particular URL). Using the example of a product site, the server would store product "data" in a database rather than individual HTML files. When receiving an HTTP `GET` Request for a product, the server determines the product ID, fetches the data from the database, and then constructs the HTML page for the response by inserting the data into an HTML template. This has major advantages over a static site:
 
 Using a database allows the product information to be stored efficiently in an easily extensible, modifiable, and searchable way.
 
@@ -189,9 +186,9 @@ Using HTML templates makes it very easy to change the HTML structure, because th
 
 ### Anatomy of a dynamic request
 
-This section provides a step-by-step overview of the "dynamic" HTTP request and response cycle, building on what we looked at in the last article with much more detail. In order to "keep things real" we'll use the context of a sports-team manager website where a coach can select their team name and team size in an HTML form and get back a suggested "best lineup" for their next game. 
+This section provides a step-by-step overview of the "dynamic" HTTP request and response cycle, building on what we looked at in the last article with much more detail. In order to "keep things real" we'll use the context of a sports-team manager website where a coach can select their team name and team size in an HTML form and get back a suggested "best lineup" for their next game.
 
-The diagram below shows the main elements of the "team coach" website, along with numbered labels for the sequence of operations when the coach accesses their "best team" list. The parts of the site that make it dynamic are the *Web Application* (this is how we will refer to the server-side code that processes HTTP requests and returns HTTP responses), the *Database*, which contains information about players, teams, coaches and their relationships, and the *HTML Templates*.
+The diagram below shows the main elements of the "team coach" website, along with numbered labels for the sequence of operations when the coach accesses their "best team" list. The parts of the site that make it dynamic are the *Web Application* (this is how we will refer to the server-side code that processes HTTP requests and returns HTTP responses), the _Database_, which contains information about players, teams, coaches and their relationships, and the _HTML Templates_.
 
 ![This is a diagram of a simple web server with step numbers for each of step of the client-server interaction.](web_application_with_html_and_steps.png)
 
@@ -199,19 +196,19 @@ After the coach submits the form with the team name and number of players, the 
 
 1.  The web browser creates an HTTP `GET` request to the server using the base URL for the resource (`/best`) and encoding the team and player number either as URL parameters (e.g. `/best?team=my_team_name&show=11)` or as part of the URL pattern (e.g. `/best/my_team_name/11/`). A `GET` request is used because the request is only fetching data (not modifying data).
 2.  The *Web Server* detects that the request is "dynamic" and forwards it to the *Web Application* for processing (the web server determines how to handle different URLs based on pattern matching rules defined in its configuration).
-3.  The *Web Application* identifies that the *intention* of the request is to get the "best team list" based on the URL (`/best/`) and finds out the required team name and number of players from the URL. The *Web Application* then gets the required information from the database (using additional "internal" parameters to define which players are "best", and possibly also getting the identity of the logged in coach from a client-side cookie).
-4.  The *Web Application* dynamically creates an HTML page by putting the data (from the *Database*) into placeholders inside an HTML template.
-5.  The *Web Application* returns the generated HTML to the web browser (via the *Web Server*), along with an HTTP status code of 200 ("success"). If anything prevents the HTML from being returned then the *Web Application* will return another code — for example "404" to indicate that the team does not exist.
+3.  The *Web Application* identifies that the _intention_ of the request is to get the "best team list" based on the URL (`/best/`) and finds out the required team name and number of players from the URL. The *Web Application* then gets the required information from the database (using additional "internal" parameters to define which players are "best", and possibly also getting the identity of the logged in coach from a client-side cookie).
+4.  The _Web Application_ dynamically creates an HTML page by putting the data (from the _Database_) into placeholders inside an HTML template.
+5.  The _Web Application_ returns the generated HTML to the web browser (via the _Web Server_), along with an HTTP status code of 200 ("success"). If anything prevents the HTML from being returned then the _Web Application_ will return another code — for example "404" to indicate that the team does not exist.
 6.  The Web Browser will then start to process the returned HTML, sending separate requests to get any other CSS or JavaScript files that it references (see step 7).
 7.  The Web Server loads static files from the file system and returns them to the browser directly (again, correct file handling is based on configuration rules and URL pattern matching).
 
-An operation to update a record in the database would be handled similarly, except that like any database update, the HTTP request from the browser should be encoded as a `POST` request. 
+An operation to update a record in the database would be handled similarly, except that like any database update, the HTTP request from the browser should be encoded as a `POST` request.
 
 ### Doing other work
 
-A *Web Application's* job is to receive HTTP requests and return HTTP responses. While interacting with a database to get or update information are very common tasks, the code may do other things at the same time, or not interact with a database at all.
+A _Web Application's_ job is to receive HTTP requests and return HTTP responses. While interacting with a database to get or update information are very common tasks, the code may do other things at the same time, or not interact with a database at all.
 
-A good example of an additional task that a *Web Application* might perform would be sending an email to users to confirm their registration with the site. The site might also perform logging or other operations. 
+A good example of an additional task that a _Web Application_ might perform would be sending an email to users to confirm their registration with the site. The site might also perform logging or other operations.
 
 ### Returning something other than HTML
 
@@ -219,8 +216,7 @@ Server-side website code does not have to return HTML snippets/files in the resp
 
 The idea of returning data to a web browser so that it can dynamically update its own content ({{glossary("AJAX")}}) has been around for quite a while. More recently "Single-page apps" have become popular, where the whole website is written with a single HTML file that is dynamically updated when needed. Websites created using this style of application push a lot of computational cost from the server to the web browser, and can result in websites that appear to behave a lot more like native apps (highly responsive, etc.).
 
-Web frameworks simplify server-side web programming
----------------------------------------------------
+## Web frameworks simplify server-side web programming
 
 Server-side web frameworks make writing code to handle the operations described above much easier.
 
@@ -244,9 +240,9 @@ For example, consider the following Django (Python) code that maps two URL patte
 
 **Note**: The first parameters in the `url()` functions may look a bit odd (e.g. `r'^junior/$'`) because they use a pattern matching technique called "regular expressions" (RegEx, or RE). You don't need to know how regular expressions work at this point, other than that they allow us to match patterns in the URL (rather than the hard coded values above) and use them as parameters in our view functions. As an example, a really simple RegEx might say "match a single uppercase letter, followed by between 4 and 7 lower case letters."
 
-The web framework also makes it easy for a view function to fetch information from the database. The structure of our data is defined in models, which are Python classes that define the fields to be stored in the underlying database. If we have a model named *Team* with a field of "*team\_type*" then we can use a simple query syntax to get back all teams that have a particular type.
+The web framework also makes it easy for a view function to fetch information from the database. The structure of our data is defined in models, which are Python classes that define the fields to be stored in the underlying database. If we have a model named _Team_ with a field of "_team_type_" then we can use a simple query syntax to get back all teams that have a particular type.
 
-The example below gets a list of all teams that have the exact (case sensitive) `team_type` of "junior" — note the format: field name (`team_type`) followed by double underscore, and then the type of match to use (in this case `exact`). There are many other types of matches and we can daisy chain them. We can also control the order and the number of results returned. 
+The example below gets a list of all teams that have the exact (case sensitive) `team_type` of "junior" — note the format: field name (`team_type`) followed by double underscore, and then the type of match to use (in this case `exact`). There are many other types of matches and we can daisy chain them. We can also control the order and the number of results returned.
 
     #best/views.py
 
@@ -263,8 +259,7 @@ After the `junior()` function gets the list of junior teams, it calls the `ren
 
 Obviously web frameworks can help you with a lot of other tasks. We discuss a lot more benefits and some popular web framework choices in the next article.
 
-Summary
--------
+## Summary
 
 At this point you should have a good overview of the operations that server-side code has to perform, and know some of the ways in which a server-side web framework can make this easier.
 
@@ -272,10 +267,9 @@ In a following module we'll help you choose the best Web Framework for your firs
 
 {{PreviousMenuNext("Learn/Server-side/First\_steps/Introduction", "Learn/Server-side/First\_steps/Web\_frameworks", "Learn/Server-side/First\_steps")}}
 
-In this module
---------------
+## In this module
 
--   [Introduction to the server side](/en-US/docs/Learn/Server-side/First_steps/Introduction)
--   [Client-Server overview](/en-US/docs/Learn/Server-side/First_steps/Client-Server_overview)
--   [Server-side web frameworks](/en-US/docs/Learn/Server-side/First_steps/Web_frameworks)
--   [Website security](/en-US/docs/Learn/Server-side/First_steps/Website_security)
+- [Introduction to the server side](/en-US/docs/Learn/Server-side/First_steps/Introduction)
+- [Client-Server overview](/en-US/docs/Learn/Server-side/First_steps/Client-Server_overview)
+- [Server-side web frameworks](/en-US/docs/Learn/Server-side/First_steps/Web_frameworks)
+- [Website security](/en-US/docs/Learn/Server-side/First_steps/Website_security)

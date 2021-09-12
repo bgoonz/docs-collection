@@ -1,4 +1,4 @@
---- title: Introducing a complete toolchain slug: &gt;- Learn/Tools\_and\_testing/Understanding\_client-side\_tools/Introducing\_complete\_toolchain tags: - Beginner - Complete toolchain - Development environment - Learn - Tools - Transformation - case study ---
+--- title: Introducing a complete toolchain slug: &gt;- Learn/Tools_and_testing/Understanding_client-side_tools/Introducing_complete_toolchain tags: - Beginner - Complete toolchain - Development environment - Learn - Tools - Transformation - case study ---
 
 {{LearnSidebar}}
 
@@ -8,12 +8,11 @@ In the final couple of articles in the series we will solidify your tooling know
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Familiarity with the core <a href="/en-US/docs/Learn/HTML">HTML</a>, <a href="/en-US/docs/Learn/CSS">CSS</a>, and <a href="/en-US/docs/Learn/JavaScript">JavaScript</a> languages.</td></tr><tr class="even"><td>Objective:</td><td>To solidify what we've learnt so far by working through a complete toolchain case study.</td></tr></tbody></table>
 
-There really are unlimited combinations of tools and ways to use them, what you see in this article and the next is only *one* way that the featured tools can be used for a project.
+There really are unlimited combinations of tools and ways to use them, what you see in this article and the next is only _one_ way that the featured tools can be used for a project.
 
-**Note**: It's also worth repeating that not all of these tools need to be run on the command line. Many of today's code editors (such as VS Code and Atom) have integration support for a *lot* of tools via plugins.
+**Note**: It's also worth repeating that not all of these tools need to be run on the command line. Many of today's code editors (such as VS Code and Atom) have integration support for a _lot_ of tools via plugins.
 
-Introducing our case study
---------------------------
+## Introducing our case study
 
 The toolchain that we are creating in this article will be used to build and deploy a mini site that lists data (taken from one of [NASA's open APIs](https://api.nasa.gov/)) concerning potentially hazardous space objects that threaten our existence on Earth! It looks like this:
 
@@ -21,23 +20,21 @@ The toolchain that we are creating in this article will be used to build and dep
 
 You can see a live version of the site at [near-misses.netlify.com](https://near-misses.netlify.com/).
 
-Tools used in our toolchain
----------------------------
+## Tools used in our toolchain
 
 In this article we're going to use the following tools and features:
 
--   [JSX](https://reactjs.org/docs/introducing-jsx.html), a [React](https://reactjs.org)-related set of syntax extensions that allow you to do things like defining component structures inside JavaScript. You won't need to know React to follow this tutorial, but we've included this to give you an idea of how a non-native web language could be integrated into a toolchain.
--   The latest built-in JavaScript features (at time of writing), such as `import`.
--   Useful development tools such as [Prettier](https://prettier.io/) for formatting and [eslint](https://eslint.org/) for linting.
--   [PostCSS](https://postcss.org/) to provide CSS nesting capabilities.
--   [Parcel](https://parceljs.org/) to build and minify our code, and to write a bunch of configuration file content automatically for us.
--   [GitHub](/en-US/docs/Learn/Tools_and_testing/GitHub) to manage our source code control.
--   [Netlify](https://www.netlify.com/) to automate our deployment process.
+- [JSX](https://reactjs.org/docs/introducing-jsx.html), a [React](https://reactjs.org)-related set of syntax extensions that allow you to do things like defining component structures inside JavaScript. You won't need to know React to follow this tutorial, but we've included this to give you an idea of how a non-native web language could be integrated into a toolchain.
+- The latest built-in JavaScript features (at time of writing), such as `import`.
+- Useful development tools such as [Prettier](https://prettier.io/) for formatting and [eslint](https://eslint.org/) for linting.
+- [PostCSS](https://postcss.org/) to provide CSS nesting capabilities.
+- [Parcel](https://parceljs.org/) to build and minify our code, and to write a bunch of configuration file content automatically for us.
+- [GitHub](/en-US/docs/Learn/Tools_and_testing/GitHub) to manage our source code control.
+- [Netlify](https://www.netlify.com/) to automate our deployment process.
 
 You may not be familiar with all the above features and tools or what they are doing, but don't panic — we'll explain each part as we move through this article.
 
-Toolchains and their inherent complexity
-----------------------------------------
+## Toolchains and their inherent complexity
 
 As with any chain, the more links you have in your toolchain, the more complex and potentially brittle it is — for example it might be more complex to configure, and easier to break. Conversely, the fewer links, the more resilient the toolchain is likely to be.
 
@@ -49,33 +46,30 @@ However, more complicated software requirements will likely benefit from the usa
 
 For our sample project, we'll be using a toolchain specifically designed to aid our software development and support the technical choices made during the software design phase. We will however be avoiding any superfluous tooling, with the aim of keeping complexity to a minimum.
 
-For  example, we *could* have included a tool to minimize our SVG file sizes during build. However, this project has only 4 SVG images, which were [manually minified using SVGO](https://www.npmjs.com/package/svgo) before adding them to the project.
+For  example, we _could_ have included a tool to minimize our SVG file sizes during build. However, this project has only 4 SVG images, which were [manually minified using SVGO](https://www.npmjs.com/package/svgo) before adding them to the project.
 
-A couple of prerequisites
--------------------------
+## A couple of prerequisites
 
 Besides the tools we're going to install that contribute to our toolchain, we mentioned two web services in the above list of tools. Let's take this opportunity to make sure we are set up with them before we continue. You will need to create accounts with each of GitHub and Netlify if you wish to complete the tutorial.
 
--   As mentioned previously, GitHub is a source code repository service that adds community features such as issue tracking, following project releases and much more. In the next chapter we will push to a GitHub code repository, which will cause a cascade effect that (should) deploy all the software to a home on the web.
--   Netlify is a hosting service for static websites (that is, websites that entirely consist of files that do not change in real time), which lets us deploy multiple times a day and freely hosts static sites of all kinds. Netlify is what provides the "home on the web" mentioned above — free hosting for us to deploy our test app to.
+- As mentioned previously, GitHub is a source code repository service that adds community features such as issue tracking, following project releases and much more. In the next chapter we will push to a GitHub code repository, which will cause a cascade effect that (should) deploy all the software to a home on the web.
+- Netlify is a hosting service for static websites (that is, websites that entirely consist of files that do not change in real time), which lets us deploy multiple times a day and freely hosts static sites of all kinds. Netlify is what provides the "home on the web" mentioned above — free hosting for us to deploy our test app to.
 
-Once you've signed up for [GitHub](https://github.com/) (click the *Sign Up* link on the homepage if you don't already have an account, and follow the instructions), you can use your GitHub account for authentication on [Netlify](https://www.netlify.com/) (click *Sign Up*, then choose *GitHub* from the "Sign up with one of the following" list), so technically you only need to create one new account.
+Once you've signed up for [GitHub](https://github.com/) (click the _Sign Up_ link on the homepage if you don't already have an account, and follow the instructions), you can use your GitHub account for authentication on [Netlify](https://www.netlify.com/) (click _Sign Up_, then choose _GitHub_ from the "Sign up with one of the following" list), so technically you only need to create one new account.
 
 Later on you'll need to connect your Netlify account to your GitHub repository to deploy this project; we'll see how to do that in the next chapter.
 
-Three stages of tools
----------------------
+## Three stages of tools
 
 As we talked about in [Chapter 1](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Overview), the toolchain will be structured into the following phases:
 
--   **Safety net**: Making the software development experience stable and more efficient. We might also refer to this as our development environment.
--   **Transformation**: Tooling that allows us to use the latest features of a language (e.g. JavaScript) or another language entirely (e.g. JSX or TypeScript) in our development process, and then transforms our code so that the production version still runs on a wide variety of browsers, modern and older.
--   **Post development**: Tooling that comes into play after you are done with the body of development to ensure that your software makes it to the web and continues to run. In this case study we'll look at adding tests to your code, and deploying your app using Netlify so it is available for all the web to see.
+- **Safety net**: Making the software development experience stable and more efficient. We might also refer to this as our development environment.
+- **Transformation**: Tooling that allows us to use the latest features of a language (e.g. JavaScript) or another language entirely (e.g. JSX or TypeScript) in our development process, and then transforms our code so that the production version still runs on a wide variety of browsers, modern and older.
+- **Post development**: Tooling that comes into play after you are done with the body of development to ensure that your software makes it to the web and continues to run. In this case study we'll look at adding tests to your code, and deploying your app using Netlify so it is available for all the web to see.
 
 Let's start working on these, beginning with our development environment.
 
-Creating a development environment
-----------------------------------
+## Creating a development environment
 
 This part of the toolchain is sometimes seen to be delaying the actual work, and it can be very easy to fall into a "rabbit hole" of tooling where you spend a lot of time trying to get the environment "just right".
 
@@ -85,10 +79,10 @@ In the same way, setting up your development environment, if done well, needs do
 
 Your toolchain will depend on your own needs, but for this example of a (possible) complete toolchain, the tools that will be installed up front will be:
 
--   Library installation tools — for adding dependencies.
--   Code revision control.
--   Code tidying tools — for tidying JavaScript, CSS, and HTML.
--   Code linting tools — for linting our code.
+- Library installation tools — for adding dependencies.
+- Code revision control.
+- Code tidying tools — for tidying JavaScript, CSS, and HTML.
+- Code linting tools — for linting our code.
 
 ### Library installation tools
 
@@ -106,7 +100,7 @@ It might be obvious to some, but it bears repeating: Git is not the same thing a
 
 Using revision control in your projects and including it as part of the toolchain will help manage the evolution of your code. It offers a way to "commit" blocks of work as you progress, along with comments such as "X new feature implemented", or "Bug Z now fixed due to Y changes".
 
-Revision control can also allow you to *branch* out your project code, creating a separate version and try out new functionality on, without those changes affecting your original code.
+Revision control can also allow you to _branch_ out your project code, creating a separate version and try out new functionality on, without those changes affecting your original code.
 
 Finally, it can help you undo changes or revert your code back to a time "when it was working" if a mistake has been introduced somewhere and you are having trouble fixing it — something all developers need to do once in a while!
 
@@ -140,9 +134,9 @@ It can be arduous to run the initial command against each file, and it would be 
 
 There's many different ways to solve this problem; here's just a few:
 
--   Using npm scripts to run multiple commands from the command line in one go, such as `npm run tidy-code`.
--   Using special "git hooks" to test if the code is formatted before a commit.
--   Using code editor plugins to run prettier commands each time a file is saved.
+- Using npm scripts to run multiple commands from the command line in one go, such as `npm run tidy-code`.
+- Using special "git hooks" to test if the code is formatted before a commit.
+- Using code editor plugins to run prettier commands each time a file is saved.
 
 **Note**: What is a git hook? Git (not GitHub) provides a system that lets us attach pre- and post- actions to the tasks you perform with git (such as committing your code). Although git hooks can be a bit overly complicated (in this author's opinion), once they're in place they can be very powerful. If you're interested in using hooks, [Husky](https://github.com/typicode/husky) is a greatly simplified route into using hooks.
 
@@ -156,14 +150,14 @@ Linting helps with code quality but also is a way to catch potential errors earl
 
 Web development linting tools mostly exist for JavaScript (though there are a few available for HTML and CSS). This makes sense: if an unknown HTML element or invalid CSS property is used, due to the resilient nature of these two languages nothing is likely to break. JavaScript is a lot more fragile — mistakenly calling a function that doesn't exist for example causes your JavaScript to break; linting JavaScript is therefore very important, especially for larger projects.
 
-The go to tool for JavaScript linting is [eslint](https://eslint.org/). It's an extremely powerful and versatile tool but can be tricky to configure correctly and you could easily consume many hours trying to get a configuration *just right*!
+The go to tool for JavaScript linting is [eslint](https://eslint.org/). It's an extremely powerful and versatile tool but can be tricky to configure correctly and you could easily consume many hours trying to get a configuration _just right_!
 
 Out of the box, eslint is going to complain that it can't find the configuration file if you run it. The configuration file supports multiple formats but for this project we'll use `.eslintrc.json` (the leading period means the file is hidden by default).
 
 eslint is installed via npm, so as per discussions in Chapter 2, you have the choice to install this tool locally or globally. Using both is recommended:
 
--   For projects you intend to share, you should always include eslint as a local dependency so that anyone making their own copy can follow the rules you've applied to the project.
--   You should also consider having eslint installed globally so that you can quickly use it to check any file you want.
+- For projects you intend to share, you should always include eslint as a local dependency so that anyone making their own copy can follow the rules you've applied to the project.
+- You should also consider having eslint installed globally so that you can quickly use it to check any file you want.
 
 For the sake of simplicity, in this chapter we're not going to explore all the features of eslint, but we will put a configuration in place that works for our particular project and its requirements. However, bear in mind that if you want to refine and enforce a rule about how your code looks (or validates), it's very likely that it can be done with the right eslint configuration.
 
@@ -182,12 +176,11 @@ As with other tools, code editor integration support is typically good for eslin
 
 ![eslint error integration shown in VS Code](eslint-error.png)
 
-Configuring the initial project
--------------------------------
+## Configuring the initial project
 
 Using these tools, a new project can be set up safe in the knowledge that many "basic" issues will be caught early on.
 
-Using the command line, we can create the project, install the initial tooling, and create rudimentary configuration files. Again, once you've repeated this process a few times, you'll get a feel for what your default setup should be. Of course, this is *just one* possible configuration.
+Using the command line, we can create the project, install the initial tooling, and create rudimentary configuration files. Again, once you've repeated this process a few times, you'll get a feel for what your default setup should be. Of course, this is _just one_ possible configuration.
 
 ### Initial setup
 
@@ -220,9 +213,9 @@ OK, let's get the initial project setup out the way.
 
 #### Getting the project code files
 
-At this point, we'll get hold of the project's code files (HTML, CSS, JavaScript, etc.), and put them in our `src` directory. We won't teach you how they work, as that is not the point of this chapter. They are merely here to run the tools on, to teach you about how *they* work.
+At this point, we'll get hold of the project's code files (HTML, CSS, JavaScript, etc.), and put them in our `src` directory. We won't teach you how they work, as that is not the point of this chapter. They are merely here to run the tools on, to teach you about how _they_ work.
 
-1.  To get hold of the code files, visit <https://github.com/remy/mdn-will-it-miss> and download and unzip the contents of this repo onto your local drive somewhere. You can download the entire project as a zip file by selecting *Clone or download* &gt; *Download ZIP*.
+1.  To get hold of the code files, visit <https://github.com/remy/mdn-will-it-miss> and download and unzip the contents of this repo onto your local drive somewhere. You can download the entire project as a zip file by selecting _Clone or download_ &gt; _Download ZIP_.
 
     ![The github will it miss repo](github-will-it-miss.png)
 
@@ -315,8 +308,7 @@ There’s a complete [list of eslint rules](https://eslint.org/docs/rules/) that
 
 That’s our dev environment setup complete at this point. Now, finally we're (very nearly) ready to code.
 
-Build and transformation tools
-------------------------------
+## Build and transformation tools
 
 For this project, as mentioned above, React is going to be used, which also means that JSX will be used in the source code. The project will also use the latest JavaScript features.
 
@@ -362,8 +354,7 @@ Although this stage of our toolchain can be quite painful, because we've chosen 
 
 Now our software is ready to be written!
 
-Running the transformation
---------------------------
+## Running the transformation
 
 To start working with our project, we’ll run the Parcel server on the command line. In its default mode it will watch for changes in your code and automatically install your dependencies. This is nice because we don't have to flit back and forth between the code and the command line.
 
@@ -394,8 +385,7 @@ Another clever trick Parcel has up its sleeve is that any changes to your source
 
 You could also try using eslint and Prettier too — try deliberately removing a load of the whitespace from one of your files and try put prettier on it to clean it up, or introduce a syntax error into one of your JavaScript files and see what errors eslint gives you when you try to use Parcel to build it again.
 
-Summary
--------
+## Summary
 
 We've come a long way in this chapter, building up a rather nice local development environment to create an application in.
 
@@ -405,11 +395,10 @@ Instead, we’ve written an example project for you to use your tools on. We’d
 
 {{PreviousMenuNext("Learn/Tools\_and\_testing/Understanding\_client-side\_tools/Package\_management","Learn/Tools\_and\_testing/Understanding\_client-side\_tools/Deployment", "Learn/Tools\_and\_testing/Understanding\_client-side\_tools")}}
 
-In this module
---------------
+## In this module
 
--   [Client-side tooling overview](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Overview)
--   [Command line crash course](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Command_line)
--   [Package management basics](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Package_management)
--   [Introducing a complete toolchain](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Introducing_complete_toolchain)
--   [Deploying our app](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Deployment)
+- [Client-side tooling overview](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Overview)
+- [Command line crash course](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Command_line)
+- [Package management basics](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Package_management)
+- [Introducing a complete toolchain](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Introducing_complete_toolchain)
+- [Deploying our app](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Deployment)

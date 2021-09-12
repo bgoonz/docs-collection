@@ -1,4 +1,4 @@
---- title: The business case for web performance slug: Learn/Performance/business\_case\_for\_performance tags: - Web Development - Web Performance ---
+--- title: The business case for web performance slug: Learn/Performance/business_case_for_performance tags: - Web Development - Web Performance ---
 
 {{LearnSidebar}}
 
@@ -6,12 +6,11 @@
 
 {{draft}}
 
-We've discussed the importance of web performance.  You've learned what you need to do to optimize for web performance. But how do you convince your clients and/or management to prioritize and invest in performance? In this section, we discuss creating a clear business case to convince decision-makers to make the investment. 
+We've discussed the importance of web performance.  You've learned what you need to do to optimize for web performance. But how do you convince your clients and/or management to prioritize and invest in performance? In this section, we discuss creating a clear business case to convince decision-makers to make the investment.
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, basic knowledge of <a href="/en-US/docs/Learn/Getting_started_with_the_web">client-side web technologies</a>, and a basic understanding of <a href="/en-US/docs/Web/Performance">web performance optimization</a>.</td></tr><tr class="even"><td>Objective:</td><td>To gain confidence in working with clients and management to get them to make web performance a priority.</td></tr></tbody></table>
 
-Making performance a business priority
---------------------------------------
+## Making performance a business priority
 
 We've discussed how prioritizing performance can improve user experience and therefore revenue. We know that not prioritizing web performance can result in a loss of business revenue. This article discusses how certain business metrics directly relate to a user's web performance experience and how to apply service design to boost the user's experiences of web performance. It highlights the importance of understanding how cumulative experiences impact conversion and retention rates.
 
@@ -36,8 +35,7 @@ The net promoter score (NPS) is a metric for assessing customer-loyalty for a co
 
 Setting conversion rate, time on site, and/or net promotion scores as KPIs give financial and other business goal value to the web performance efforts, and get help boost buy-in, with metrics to prove the efforts worth.
 
-Expectation versus reality in performance
------------------------------------------
+## Expectation versus reality in performance
 
 Business performance (in revenue, operations, etc.) is directly related to how to web performance. (source needed).
 
@@ -45,18 +43,17 @@ Area of conflict - not prioritizing web performance, but expecting good business
 
 {{PreviousMenu("Learn/Performance/Mobile", "Learn/Performance")}}
 
-In this module
---------------
+## In this module
 
--   [The "why" of web performance](/en-US/docs/Learn/Performance/why_web_performance)
--   [What is web performance?](/en-US/docs/Learn/Performance/What_is_web_performance)
--   [How do users perceive performance?](/en-US/docs/Learn/Performance/Perceived_performance)
--   [Measuring performance](/en-US/docs/Learn/Performance/Measuring_performance)
--   [Multimedia: images](/en-US/docs/Learn/Performance/Multimedia)
--   [Multimedia: video](/en-US/docs/Learn/Performance/video)
--   [JavaScript performance best practices](/en-US/docs/Learn/Performance/JavaScript).
--   [HTML performance features](/en-US/docs/Learn/Performance/HTML)
--   [CSS performance features](/en-US/docs/Learn/Performance/CSS)
--   [Fonts and performance](/en-US/docs/Learn/Performance/Fonts)
--   [Mobile performance](/en-US/docs/Learn/Performance/Mobile)
--   [Focusing on performance](/en-US/docs/Learn/Performance/business_case_for_performance)
+- [The "why" of web performance](/en-US/docs/Learn/Performance/why_web_performance)
+- [What is web performance?](/en-US/docs/Learn/Performance/What_is_web_performance)
+- [How do users perceive performance?](/en-US/docs/Learn/Performance/Perceived_performance)
+- [Measuring performance](/en-US/docs/Learn/Performance/Measuring_performance)
+- [Multimedia: images](/en-US/docs/Learn/Performance/Multimedia)
+- [Multimedia: video](/en-US/docs/Learn/Performance/video)
+- [JavaScript performance best practices](/en-US/docs/Learn/Performance/JavaScript).
+- [HTML performance features](/en-US/docs/Learn/Performance/HTML)
+- [CSS performance features](/en-US/docs/Learn/Performance/CSS)
+- [Fonts and performance](/en-US/docs/Learn/Performance/Fonts)
+- [Mobile performance](/en-US/docs/Learn/Performance/Mobile)
+- [Focusing on performance](/en-US/docs/Learn/Performance/business_case_for_performance)

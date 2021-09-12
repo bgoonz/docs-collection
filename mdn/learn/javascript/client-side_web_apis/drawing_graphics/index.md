@@ -1,4 +1,4 @@
---- title: Drawing graphics slug: Learn/JavaScript/Client-side\_web\_APIs/Drawing\_graphics tags: - API - Article - Beginner - Canvas - CodingScripting - Graphics - JavaScript - Learn - WebGL ---
+--- title: Drawing graphics slug: Learn/JavaScript/Client-side_web_APIs/Drawing_graphics tags: - API - Article - Beginner - Canvas - CodingScripting - Graphics - JavaScript - Learn - WebGL ---
 
 {{LearnSidebar}}{{PreviousMenuNext("Learn/JavaScript/Client-side\_web\_APIs/Third\_party\_APIs", "Learn/JavaScript/Client-side\_web\_APIs/Video\_and\_audio\_APIs", "Learn/JavaScript/Client-side\_web\_APIs")}}
 
@@ -6,8 +6,7 @@ The browser contains some very powerful graphics programming tools, from the Sca
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>JavaScript basics (see <a href="/en-US/docs/Learn/JavaScript/First_steps">first steps</a>, <a href="/en-US/docs/Learn/JavaScript/Building_blocks">building blocks</a>, <a href="/en-US/docs/Learn/JavaScript/Objects">JavaScript objects</a>), the <a href="/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Introduction">basics of Client-side APIs</a></td></tr><tr class="even"><td>Objective:</td><td>To learn the basics of drawing on <code>&lt;canvas&gt;</code> elements using JavaScript.</td></tr></tbody></table>
 
-Graphics on the Web
--------------------
+## Graphics on the Web
 
 As we talked about in our HTML [Multimedia and embedding](/en-US/docs/Learn/HTML/Multimedia_and_embedding) module, the Web was originally just text, which was very boring, so images were introduced — first via the {{htmlelement("img")}} element and later via CSS properties such as {{cssxref("background-image")}}, and [SVG](/en-US/docs/Web/SVG).
 
@@ -27,10 +26,9 @@ This article will focus mainly on 2D canvas, as raw WebGL code is very complex. 
 
 **Note**: Basic canvas functionality is supported well across browsers, with the exception of IE 8 and below for 2D canvas, and IE 11 and below for WebGL.
 
-Active learning: Getting started with a &lt;canvas&gt;
-------------------------------------------------------
+## Active learning: Getting started with a &lt;canvas&gt;
 
-If you want to create a 2D *or* 3D scene on a web page, you need to start with an HTML {{htmlelement("canvas")}} element. This element is used to define the area on the page into which the image will be drawn. This is as simple as including the element on the page:
+If you want to create a 2D _or_ 3D scene on a web page, you need to start with an HTML {{htmlelement("canvas")}} element. This element is used to define the area on the page into which the image will be drawn. This is as simple as including the element on the page:
 
     <canvas width="320" height="240"></canvas>
 
@@ -48,7 +46,7 @@ Of course, the above message is really unhelpful! In a real example you'd want t
 
 Let's start by creating our own canvas that we draw future experiments on to.
 
-1.  First make a local copy of our [0\_canvas\_start.html](https://github.com/mdn/learning-area/blob/master/javascript/apis/drawing-graphics/getting-started/0_canvas_start.html) file, and open it in your text editor.
+1.  First make a local copy of our [0_canvas_start.html](https://github.com/mdn/learning-area/blob/master/javascript/apis/drawing-graphics/getting-started/0_canvas_start.html) file, and open it in your text editor.
 
 2.  Add the following code into it, just below the opening {{htmlelement("body")}} tag:
 
@@ -102,8 +100,7 @@ Here we are setting a fill color using the canvas' {{domxref("CanvasRenderingCon
 
 OK, our template is done and it's time to move on.
 
-2D canvas basics
-----------------
+## 2D canvas basics
 
 As we said above, all drawing operations are done by manipulating a {{domxref("CanvasRenderingContext2D")}} object (in our case, `ctx`). Many operations need to be given coordinates to pinpoint exactly where to draw something — the top left of the canvas is point (0, 0), the horizontal (x) axis runs from left to right, and the vertical (y) axis runs from top to bottom.
 
@@ -115,7 +112,7 @@ Drawing shapes tends to be done using the rectangle shape primitive, or by traci
 
 Let's start with some simple rectangles.
 
-1.  First of all, take a copy of your newly coded canvas template (or make a local copy of [1\_canvas\_template.html](https://github.com/mdn/learning-area/blob/master/javascript/apis/drawing-graphics/getting-started/1_canvas_template.html) if you didn't follow the above steps).
+1.  First of all, take a copy of your newly coded canvas template (or make a local copy of [1_canvas_template.html](https://github.com/mdn/learning-area/blob/master/javascript/apis/drawing-graphics/getting-started/1_canvas_template.html) if you didn't follow the above steps).
 
 2.  Next, add the following lines to the bottom of your JavaScript:
 
@@ -155,21 +152,21 @@ Now you should see that your white outline has become much thicker! That's it fo
 
 {{EmbedGHLiveSample("learning-area/javascript/apis/drawing-graphics/getting-started/2\_canvas\_rectangles.html", '100%', 250)}}
 
-**Note**: The finished code is available on GitHub as [2\_canvas\_rectangles.html](https://github.com/mdn/learning-area/blob/master/javascript/apis/drawing-graphics/getting-started/2_canvas_rectangles.html).
+**Note**: The finished code is available on GitHub as [2_canvas_rectangles.html](https://github.com/mdn/learning-area/blob/master/javascript/apis/drawing-graphics/getting-started/2_canvas_rectangles.html).
 
 ### Drawing paths
 
 If you want to draw anything more complex than a rectangle, you need to draw a path. Basically, this involves writing code to specify exactly what path the pen should move along on your canvas to trace the shape you want to draw. Canvas includes functions for drawing straight lines, circles, Bézier curves, and more.
 
-Let's start the section off by making a fresh copy of our canvas template ([1\_canvas\_template.html](https://github.com/mdn/learning-area/blob/master/javascript/apis/drawing-graphics/getting-started/1_canvas_template.html)), in which to draw the new example.
+Let's start the section off by making a fresh copy of our canvas template ([1_canvas_template.html](https://github.com/mdn/learning-area/blob/master/javascript/apis/drawing-graphics/getting-started/1_canvas_template.html)), in which to draw the new example.
 
 We'll be using some common methods and properties across all of the below sections:
 
--   {{domxref("CanvasRenderingContext2D.beginPath", "beginPath()")}} — start drawing a path at the point where the pen currently is on the canvas. On a new canvas, the pen starts out at (0, 0).
--   {{domxref("CanvasRenderingContext2D.moveTo", "moveTo()")}} — move the pen to a different point on the canvas, without recording or tracing the line; the pen "jumps" to the new position.
--   {{domxref("CanvasRenderingContext2D.fill", "fill()")}} — draw a filled shape by filling in the path you've traced so far.
--   {{domxref("CanvasRenderingContext2D.stroke", "stroke()")}} — draw an outline shape by drawing a stroke along the path you've drawn so far.
--   You can also use features like `lineWidth` and `fillStyle`/`strokeStyle` with paths as well as rectangles.
+- {{domxref("CanvasRenderingContext2D.beginPath", "beginPath()")}} — start drawing a path at the point where the pen currently is on the canvas. On a new canvas, the pen starts out at (0, 0).
+- {{domxref("CanvasRenderingContext2D.moveTo", "moveTo()")}} — move the pen to a different point on the canvas, without recording or tracing the line; the pen "jumps" to the new position.
+- {{domxref("CanvasRenderingContext2D.fill", "fill()")}} — draw a filled shape by filling in the path you've traced so far.
+- {{domxref("CanvasRenderingContext2D.stroke", "stroke()")}} — draw an outline shape by drawing a stroke along the path you've drawn so far.
+- You can also use features like `lineWidth` and `fillStyle`/`strokeStyle` with paths as well as rectangles.
 
 A typical, simple path-drawing operation would look something like so:
 
@@ -209,9 +206,9 @@ Let's draw an equilateral triangle on the canvas.
 
     Second, we work out the height of our equilateral triangle, using a bit of simple trigonometry. Basically, we are drawing the triangle pointing downwards. The angles in an equilateral triangle are always 60 degrees; to work out the height we can split it down the middle into two right-angled triangles, which will each have angles of 90 degrees, 60 degrees, and 30 degrees. In terms of the sides:
 
-    -   The longest side is called the **hypotenuse**
-    -   The side next to the 60 degree angle is called the **adjacent** — which we know is 50 pixels, as it is half of the line we just drew.
-    -   The side opposite the 60 degree angle is called the **opposite**, which is the height of the triangle we want to calculate.
+    - The longest side is called the **hypotenuse**
+    - The side next to the 60 degree angle is called the **adjacent** — which we know is 50 pixels, as it is half of the line we just drew.
+    - The side opposite the 60 degree angle is called the **opposite**, which is the height of the triangle we want to calculate.
 
     ![](trigonometry.png)
 
@@ -248,25 +245,25 @@ Now let's look at how to draw a circle in canvas. This is accomplished using the
 
     The pattern here is very similar, but with two differences:
 
-    -   We have set the last parameter of `arc()` to `true`, meaning that the arc is drawn counterclockwise, which means that even though the arc is specified as starting at -45 degrees and ending at 45 degrees, we draw the arc around the 270 degrees not inside this portion. If you were to change `true` to `false` and then re-run the code, only the 90 degree slice of the circle would be drawn.
-    -   Before calling `fill()`, we draw a line to the center of the circle. This means that we get the rather nice Pac-Man-style cutout rendered. If you removed this line (try it!) then re-ran the code, you'd get just an edge of the circle chopped off between the start and end point of the arc. This illustrates another important point of the canvas — if you try to fill an incomplete path (i.e. one that is not closed), the browser fills in a straight line between the start and end point and then fills it in.
+    - We have set the last parameter of `arc()` to `true`, meaning that the arc is drawn counterclockwise, which means that even though the arc is specified as starting at -45 degrees and ending at 45 degrees, we draw the arc around the 270 degrees not inside this portion. If you were to change `true` to `false` and then re-run the code, only the 90 degree slice of the circle would be drawn.
+    - Before calling `fill()`, we draw a line to the center of the circle. This means that we get the rather nice Pac-Man-style cutout rendered. If you removed this line (try it!) then re-ran the code, you'd get just an edge of the circle chopped off between the start and end point of the arc. This illustrates another important point of the canvas — if you try to fill an incomplete path (i.e. one that is not closed), the browser fills in a straight line between the start and end point and then fills it in.
 
 That's it for now; your final example should look like this:
 
 {{EmbedGHLiveSample("learning-area/javascript/apis/drawing-graphics/getting-started/3\_canvas\_paths.html", '100%', 200)}}
 
-**Note**: The finished code is available on GitHub as [3\_canvas\_paths.html](https://github.com/mdn/learning-area/blob/master/javascript/apis/drawing-graphics/getting-started/3_canvas_paths.html).
+**Note**: The finished code is available on GitHub as [3_canvas_paths.html](https://github.com/mdn/learning-area/blob/master/javascript/apis/drawing-graphics/getting-started/3_canvas_paths.html).
 
 **Note**: To find out more about advanced path drawing features such as Bézier curves, check out our [Drawing shapes with canvas](/en-US/docs/Web/API/Canvas_API/Tutorial/Drawing_shapes) tutorial.
 
 ### Text
 
-Canvas also has features for drawing text. Let's explore these briefly. Start by making another fresh copy of our canvas template ([1\_canvas\_template.html](https://github.com/mdn/learning-area/blob/master/javascript/apis/drawing-graphics/getting-started/1_canvas_template.html)) in which to draw the new example.
+Canvas also has features for drawing text. Let's explore these briefly. Start by making another fresh copy of our canvas template ([1_canvas_template.html](https://github.com/mdn/learning-area/blob/master/javascript/apis/drawing-graphics/getting-started/1_canvas_template.html)) in which to draw the new example.
 
 Text is drawn using two methods:
 
--   {{domxref("CanvasRenderingContext2D.fillText", "fillText()")}} — draws filled text.
--   {{domxref("CanvasRenderingContext2D.strokeText", "strokeText()")}} — draws outline (stroke) text.
+- {{domxref("CanvasRenderingContext2D.fillText", "fillText()")}} — draws filled text.
+- {{domxref("CanvasRenderingContext2D.strokeText", "strokeText()")}} — draws outline (stroke) text.
 
 Both of these take three properties in their basic usage: the text string to draw and the X and Y coordinates of the point to start drawing the text at. This works out as the **bottom left** corner of the **text box** (literally, the box surrounding the text you draw), which might confuse you as other drawing operations tend to start from the top left corner — bear this in mind.
 
@@ -287,7 +284,7 @@ Here we draw two lines of text, one outline and the other stroke. The final exam
 
 {{EmbedGHLiveSample("learning-area/javascript/apis/drawing-graphics/getting-started/4\_canvas\_text.html", '100%', 180)}}
 
-**Note**: The finished code is available on GitHub as [4\_canvas\_text.html](https://github.com/mdn/learning-area/blob/master/javascript/apis/drawing-graphics/getting-started/4_canvas_text.html).
+**Note**: The finished code is available on GitHub as [4_canvas_text.html](https://github.com/mdn/learning-area/blob/master/javascript/apis/drawing-graphics/getting-started/4_canvas_text.html).
 
 Have a play and see what you can come up with! You can find more information on the options available for canvas text at [Drawing text](/en-US/docs/Web/API/Canvas_API/Tutorial/Drawing_text).
 
@@ -295,7 +292,7 @@ Have a play and see what you can come up with! You can find more information on 
 
 It is possible to render external images onto your canvas. These can be simple images, frames from videos, or the content of other canvases. For the moment we'll just look at the case of using some simple images on our canvas.
 
-1.  As before, make another fresh copy of our canvas template ([1\_canvas\_template.html](https://github.com/mdn/learning-area/blob/master/javascript/apis/drawing-graphics/getting-started/1_canvas_template.html)) in which to draw the new example. In this case you'll also need to save a copy of our sample image — [firefox.png](https://github.com/mdn/learning-area/blob/master/javascript/apis/drawing-graphics/getting-started/firefox.png) — in the same directory.
+1.  As before, make another fresh copy of our canvas template ([1_canvas_template.html](https://github.com/mdn/learning-area/blob/master/javascript/apis/drawing-graphics/getting-started/1_canvas_template.html)) in which to draw the new example. In this case you'll also need to save a copy of our sample image — [firefox.png](https://github.com/mdn/learning-area/blob/master/javascript/apis/drawing-graphics/getting-started/firefox.png) — in the same directory.
 
     Images are drawn onto canvas using the {{domxref("CanvasRenderingContext2D.drawImage", "drawImage()")}} method. The simplest version takes three parameters — a reference to the image you want to render, and the X and Y coordinates of the image's top left corner.
 
@@ -318,20 +315,19 @@ It is possible to render external images onto your canvas. These can be simple i
 
         ctx.drawImage(image, 20, 20, 185, 175, 50, 50, 185, 175);
 
-    -   The first parameter is the image reference, as before.
-    -   Parameters 2 and 3 define the coordinates of the top left corner of the area you want to cut out of the loaded image, relative to the top-left corner of the image itself. Nothing to the left of the first parameter or above the second will be drawn.
-    -   Parameters 4 and 5 define the width and height of the area we want to cut out from the original image we loaded.
-    -   Parameters 6 and 7 define the coordinates at which you want to draw the top-left corner of the cut-out portion of the image, relative to the top-left corner of the canvas.
-    -   Parameters 8 and 9 define the width and height to draw the cut-out area of the image. In this case, we have specified the same dimensions as the original slice, but you could resize it by specifying different values.
+    - The first parameter is the image reference, as before.
+    - Parameters 2 and 3 define the coordinates of the top left corner of the area you want to cut out of the loaded image, relative to the top-left corner of the image itself. Nothing to the left of the first parameter or above the second will be drawn.
+    - Parameters 4 and 5 define the width and height of the area we want to cut out from the original image we loaded.
+    - Parameters 6 and 7 define the coordinates at which you want to draw the top-left corner of the cut-out portion of the image, relative to the top-left corner of the canvas.
+    - Parameters 8 and 9 define the width and height to draw the cut-out area of the image. In this case, we have specified the same dimensions as the original slice, but you could resize it by specifying different values.
 
 The final example should look like so:
 
 {{EmbedGHLiveSample("learning-area/javascript/apis/drawing-graphics/getting-started/5\_canvas\_images.html", '100%', 260)}}
 
-**Note**: The finished code is available on GitHub as [5\_canvas\_images.html](https://github.com/mdn/learning-area/blob/master/javascript/apis/drawing-graphics/getting-started/5_canvas_images.html).
+**Note**: The finished code is available on GitHub as [5_canvas_images.html](https://github.com/mdn/learning-area/blob/master/javascript/apis/drawing-graphics/getting-started/5_canvas_images.html).
 
-Loops and animations
---------------------
+## Loops and animations
 
 We have so far covered some very basic uses of 2D canvas, but really you won't experience the full power of canvas unless you update or animate it in some way. After all, canvas does provide scriptable images! If you aren't going to change anything, then you might as well just use static images and save yourself all the work.
 
@@ -341,7 +337,7 @@ Playing with loops in canvas is rather fun — you can run canvas commands insid
 
 Let's build a simple example.
 
-1.  Make another fresh copy of our canvas template ([1\_canvas\_template.html](https://github.com/mdn/learning-area/blob/master/javascript/apis/drawing-graphics/getting-started/1_canvas_template.html)) and open it in your code editor.
+1.  Make another fresh copy of our canvas template ([1_canvas_template.html](https://github.com/mdn/learning-area/blob/master/javascript/apis/drawing-graphics/getting-started/1_canvas_template.html)) and open it in your code editor.
 
 2.  Add the following line to the bottom of your JavaScript. This contains a new method, {{domxref("CanvasRenderingContext2D.translate", "translate()")}}, which moves the origin point of the canvas:
 
@@ -385,14 +381,14 @@ Let's build a simple example.
 
     So on each iteration, we:
 
-    -   Set the `fillStyle` to be a shade of slightly transparent purple, which changes each time based on the value of `length`. As you'll see later the length gets smaller each time the loop runs, so the effect here is that the color gets brighter with each successive triangle drawn.
-    -   Begin the path.
-    -   Move the pen to a coordinate of `(moveOffset, moveOffset)`; This variable defines how far we want to move each time we draw a new triangle.
-    -   Draw a line to a coordinate of `(moveOffset+length, moveOffset)`. This draws a line of length `length` parallel to the X axis.
-    -   Calculate the triangle's height, as before.
-    -   Draw a line to the downward-pointing corner of the triangle, then draw a line back to the start of the triangle.
-    -   Call `fill()` to fill in the triangle.
-    -   Update the variables that describe the sequence of triangles, so we can be ready to draw the next one. We decrease the `length` value by 1, so the triangles get smaller each time; increase `moveOffset` by a small amount so each successive triangle is slightly further away, and use another new function, {{domxref("CanvasRenderingContext2D.rotate", "rotate()")}}, which allows us to rotate the entire canvas! We rotate it by 5 degrees before drawing the next triangle.
+    - Set the `fillStyle` to be a shade of slightly transparent purple, which changes each time based on the value of `length`. As you'll see later the length gets smaller each time the loop runs, so the effect here is that the color gets brighter with each successive triangle drawn.
+    - Begin the path.
+    - Move the pen to a coordinate of `(moveOffset, moveOffset)`; This variable defines how far we want to move each time we draw a new triangle.
+    - Draw a line to a coordinate of `(moveOffset+length, moveOffset)`. This draws a line of length `length` parallel to the X axis.
+    - Calculate the triangle's height, as before.
+    - Draw a line to the downward-pointing corner of the triangle, then draw a line back to the start of the triangle.
+    - Call `fill()` to fill in the triangle.
+    - Update the variables that describe the sequence of triangles, so we can be ready to draw the next one. We decrease the `length` value by 1, so the triangles get smaller each time; increase `moveOffset` by a small amount so each successive triangle is slightly further away, and use another new function, {{domxref("CanvasRenderingContext2D.rotate", "rotate()")}}, which allows us to rotate the entire canvas! We rotate it by 5 degrees before drawing the next triangle.
 
 That's it! The final example should look like so:
 
@@ -400,11 +396,11 @@ That's it! The final example should look like so:
 
 At this point, we'd like to encourage you to play with the example and make it your own! For example:
 
--   Draw rectangles or arcs instead of triangles, or even embed images.
--   Play with the `length` and `moveOffset` values.
--   Introduce some random numbers using that `rand()` function we included above but didn't use.
+- Draw rectangles or arcs instead of triangles, or even embed images.
+- Play with the `length` and `moveOffset` values.
+- Introduce some random numbers using that `rand()` function we included above but didn't use.
 
-**Note**: The finished code is available on GitHub as [6\_canvas\_for\_loop.html](https://github.com/mdn/learning-area/blob/master/javascript/apis/drawing-graphics/loops_animation/6_canvas_for_loop.html).
+**Note**: The finished code is available on GitHub as [6_canvas_for_loop.html](https://github.com/mdn/learning-area/blob/master/javascript/apis/drawing-graphics/loops_animation/6_canvas_for_loop.html).
 
 ### Animations
 
@@ -453,7 +449,7 @@ In general, the process of doing a canvas animation involves the following steps
 
 Now let's create our own simple animation — we'll get a character from a certain rather awesome retro computer game to walk across the screen.
 
-1.  Make another fresh copy of our canvas template ([1\_canvas\_template.html](https://github.com/mdn/learning-area/blob/master/javascript/apis/drawing-graphics/getting-started/1_canvas_template.html)) and open it in your code editor. Make a copy of [walk-right.png](https://github.com/mdn/learning-area/blob/master/javascript/apis/drawing-graphics/loops_animation/walk-right.png) in the same directory.
+1.  Make another fresh copy of our canvas template ([1_canvas_template.html](https://github.com/mdn/learning-area/blob/master/javascript/apis/drawing-graphics/getting-started/1_canvas_template.html)) and open it in your code editor. Make a copy of [walk-right.png](https://github.com/mdn/learning-area/blob/master/javascript/apis/drawing-graphics/loops_animation/walk-right.png) in the same directory.
 
 2.  At the bottom of the JavaScript, add the following line to once again make the coordinate origin sit in the middle of the canvas:
 
@@ -492,11 +488,11 @@ Now let's create our own simple animation — we'll get a character from a certa
 
     As you can see:
 
-    -   We specify `image` as the image to embed.
-    -   Parameters 2 and 3 specify the top-left corner of the slice to cut out of the source image, with the X value as `sprite` multiplied by 102 (where `sprite` is the sprite number between 0 and 5) and the Y value always 0.
-    -   Parameters 4 and 5 specify the size of the slice to cut out — 102 pixels by 148 pixels.
-    -   Parameters 6 and 7 specify the top-left corner of the box into which to draw the slice on the canvas — the X position is 0 + `posX`, meaning that we can alter the drawing position by altering the `posX` value.
-    -   Parameters 8 and 9 specify the size of the image on the canvas. We just want to keep its original size, so we specify 102 and 148 as the width and height.
+    - We specify `image` as the image to embed.
+    - Parameters 2 and 3 specify the top-left corner of the slice to cut out of the source image, with the X value as `sprite` multiplied by 102 (where `sprite` is the sprite number between 0 and 5) and the Y value always 0.
+    - Parameters 4 and 5 specify the size of the slice to cut out — 102 pixels by 148 pixels.
+    - Parameters 6 and 7 specify the top-left corner of the box into which to draw the slice on the canvas — the X position is 0 + `posX`, meaning that we can alter the drawing position by altering the `posX` value.
+    - Parameters 8 and 9 specify the size of the image on the canvas. We just want to keep its original size, so we specify 102 and 148 as the width and height.
 
 8.  Now we'll alter the `sprite` value after each draw — well, after some of them anyway. Add the following block to the bottom of the `draw()` function:
 
@@ -508,11 +504,11 @@ Now let's create our own simple animation — we'll get a character from a certa
             }
           }
 
-    We are wrapping the whole block in ` if (posX % 13 === 0) { ... }`. We use the modulo (`%`) operator (also known as the [remainder operator](/en-US/docs/Web/JavaScript/Reference/Operators#remainder_())) to check whether the `posX` value can be exactly divided by 13 with no remainder. If so, we move on  to the next sprite by incrementing `sprite` (wrapping to 0 after we're done with sprite \#5). This effectively means that we are only updating the sprite on every 13th frame, or roughly about 5 frames a second (`requestAnimationFrame()` calls us at up to 60 frames per second if possible). We are deliberately slowing down the frame rate because we only have six sprites to work with, and if we display one every 60th of a second, our character will move way too fast!
+    We are wrapping the whole block in ` if (posX % 13 === 0) { ... }`. We use the modulo (`%`) operator (also known as the [remainder operator](</en-US/docs/Web/JavaScript/Reference/Operators#remainder_()>)) to check whether the `posX` value can be exactly divided by 13 with no remainder. If so, we move on  to the next sprite by incrementing `sprite` (wrapping to 0 after we're done with sprite \#5). This effectively means that we are only updating the sprite on every 13th frame, or roughly about 5 frames a second (`requestAnimationFrame()` calls us at up to 60 frames per second if possible). We are deliberately slowing down the frame rate because we only have six sprites to work with, and if we display one every 60th of a second, our character will move way too fast!
 
     Inside the outer block we use an `if ... else` statement to check whether the `sprite` value is at 5 (the last sprite, given that the sprite numbers run from 0 to 5). If we are showing the last sprite already, we reset `sprite` back to 0; if not we just increment it by 1.
 
-9.  Next we need to work out how to change the `posX` value on each frame — add the following code block just below your last one. 
+9.  Next we need to work out how to change the `posX` value on each frame — add the following code block just below your last one.
 
           if(posX > width/2) {
             newStartPos = -((width/2) + 102);
@@ -534,13 +530,13 @@ That's it! The final example should look like so:
 
 {{EmbedGHLiveSample("learning-area/javascript/apis/drawing-graphics/loops\_animation/7\_canvas\_walking\_animation.html", '100%', 260)}}
 
-**Note**: The finished code is available on GitHub as [7\_canvas\_walking\_animation.html](https://github.com/mdn/learning-area/blob/master/javascript/apis/drawing-graphics/loops_animation/7_canvas_walking_animation.html).
+**Note**: The finished code is available on GitHub as [7_canvas_walking_animation.html](https://github.com/mdn/learning-area/blob/master/javascript/apis/drawing-graphics/loops_animation/7_canvas_walking_animation.html).
 
 ### A simple drawing application
 
 As a final animation example, we'd like to show you a very simple drawing application, to illustrate how the animation loop can be combined with user input (like mouse movement, in this case). We won't get you to walk through and build this one; we'll just explore the most interesting parts of the code.
 
-The example can be found on GitHub as [8\_canvas\_drawing\_app.html](https://github.com/mdn/learning-area/blob/master/javascript/apis/drawing-graphics/loops_animation/8_canvas_drawing_app.html), and you can play with it live below:
+The example can be found on GitHub as [8_canvas_drawing_app.html](https://github.com/mdn/learning-area/blob/master/javascript/apis/drawing-graphics/loops_animation/8_canvas_drawing_app.html), and you can play with it live below:
 
 {{EmbedGHLiveSample("learning-area/javascript/apis/drawing-graphics/loops\_animation/8\_canvas\_drawing\_app.html", '100%', 600)}}
 
@@ -587,8 +583,7 @@ The drawing loop is pretty simple this time around — if pressed is `true`, we 
 
 **Note**: The {{htmlelement("input")}} `range` and `color` types are supported fairly well across browsers, with the exception of Internet Explorer versions less than 10; also Safari doesn't yet support `color`. If your browser doesn't support these inputs, they will fall back to simple text fields and you'll just have to enter valid color/number values yourself.
 
-WebGL
------
+## WebGL
 
 It's now time to leave 2D behind, and take a quick look at 3D canvas. 3D canvas content is specified using the [WebGL API](/en-US/docs/Web/API/WebGL_API), which is a completely separate API from the 2D canvas API, even though they both render onto {{htmlelement("canvas")}} elements.
 
@@ -623,10 +618,10 @@ Let's look at a simple example of how to create something with a WebGL library. 
 
     The `PerspectiveCamera()` constructor takes four arguments:
 
-    -   The field of view: How wide the area in front of the camera is that should be visible onscreen, in degrees.
-    -   The aspect ratio: Usually, this is the ratio of the scene's width divided by the scene's height. Using another value will distort the scene (which might be what you want, but usually isn't).
-    -   The near plane: How close to the camera objects can be before we stop rendering them to the screen. Think about how when you move your fingertip closer and closer to the space between your eyes, eventually you can't see it anymore.
-    -   The far plane: How far away things are from the camera before they are no longer rendered.
+    - The field of view: How wide the area in front of the camera is that should be visible onscreen, in degrees.
+    - The aspect ratio: Usually, this is the ratio of the scene's width divided by the scene's height. Using another value will distort the scene (which might be what you want, but usually isn't).
+    - The near plane: How close to the camera objects can be before we stop rendering them to the screen. Think about how when you move your fingertip closer and closer to the space between your eyes, eventually you can't see it anymore.
+    - The far plane: How far away things are from the camera before they are no longer rendered.
 
     We also set the camera's position to be 5 distance units out of the Z axis, which, like in CSS, is out of the screen towards you, the viewer.
 
@@ -659,10 +654,10 @@ Let's look at a simple example of how to create something with a WebGL library. 
 
     There's a bit more to take in here, so let's go through it in stages:
 
-    -   We first create a `cube` global variable so we can access our cube from anywhere in the code.
-    -   Next, we create a new `TextureLoader` object, then call `load()` on it. `load()` takes two parameters in this case (although it can take more): the texture we want to load (our PNG), and a function that will run when the texture has loaded.
-    -   Inside this function we use properties of the `texture` object to specify that we want a 2 x 2 repeat of the image wrapped around all sides of the cube. Next, we create a new `BoxGeometry` object and a new `MeshLambertMaterial` object, and bring them together in a `Mesh` to create our cube. An object typically requires a geometry (what shape it is) and a material (what its surface looks like).
-    -   Last of all, we add our cube to the scene, then call our `draw()` function to start off the animation.
+    - We first create a `cube` global variable so we can access our cube from anywhere in the code.
+    - Next, we create a new `TextureLoader` object, then call `load()` on it. `load()` takes two parameters in this case (although it can take more): the texture we want to load (our PNG), and a function that will run when the texture has loaded.
+    - Inside this function we use properties of the `texture` object to specify that we want a 2 x 2 repeat of the image wrapped around all sides of the cube. Next, we create a new `BoxGeometry` object and a new `MeshLambertMaterial` object, and bring them together in a `Mesh` to create our cube. An object typically requires a geometry (what shape it is) and a material (what its surface looks like).
+    - Last of all, we add our cube to the scene, then call our `draw()` function to start off the animation.
 
 8.  Before we get to defining `draw()`, we'll add a couple of lights to the scene, to liven things up a bit; add the following blocks next:
 
@@ -696,36 +691,32 @@ You can [find the finished code on GitHub](https://github.com/mdn/learning-area/
 
 **Note**: In our GitHub repo you can also find another interesting 3D cube example — [Three.js Video Cube](https://github.com/mdn/learning-area/tree/master/javascript/apis/drawing-graphics/threejs-video-cube) ([see it live also](https://mdn.github.io/learning-area/javascript/apis/drawing-graphics/threejs-video-cube/)). This uses {{domxref("MediaDevices.getUserMedia", "getUserMedia()")}} to take a video stream from a computer web cam and project it onto the side of the cube as a texture!
 
-Summary
--------
+## Summary
 
 At this point, you should have a useful idea of the basics of graphics programming using Canvas and WebGL and what you can do with these APIs, as well as a good idea of where to go for further information. Have fun!
 
-See also
---------
+## See also
 
 Here we have covered only the real basics of canvas — there is so much more to learn! The below articles will take you further.
 
--   [Canvas tutorial](/en-US/docs/Web/API/Canvas_API/Tutorial) — A very detailed tutorial series explaining what you should know about 2D canvas in much more detail than was covered here. Essential reading.
--   [WebGL tutorial](/en-US/docs/Web/API/WebGL_API/Tutorial) — A series that teaches the basics of raw WebGL programming.
--   [Building up a basic demo with Three.js](/en-US/docs/Games/Techniques/3D_on_the_web/Building_up_a_basic_demo_with_Three.js) — basic Three.js tutorial. We also have equivalent guides for [PlayCanvas](/en-US/docs/Games/Techniques/3D_on_the_web/Building_up_a_basic_demo_with_PlayCanvas) or [Babylon.js](/en-US/docs/Games/Techniques/3D_on_the_web/Building_up_a_basic_demo_with_Babylon.js).
--   [Game development](/en-US/docs/Games) — the landing page for web games development on MDN. There are some really useful tutorials and techniques available here related to 2D and 3D canvas — see the Techniques and Tutorials menu options.
+- [Canvas tutorial](/en-US/docs/Web/API/Canvas_API/Tutorial) — A very detailed tutorial series explaining what you should know about 2D canvas in much more detail than was covered here. Essential reading.
+- [WebGL tutorial](/en-US/docs/Web/API/WebGL_API/Tutorial) — A series that teaches the basics of raw WebGL programming.
+- [Building up a basic demo with Three.js](/en-US/docs/Games/Techniques/3D_on_the_web/Building_up_a_basic_demo_with_Three.js) — basic Three.js tutorial. We also have equivalent guides for [PlayCanvas](/en-US/docs/Games/Techniques/3D_on_the_web/Building_up_a_basic_demo_with_PlayCanvas) or [Babylon.js](/en-US/docs/Games/Techniques/3D_on_the_web/Building_up_a_basic_demo_with_Babylon.js).
+- [Game development](/en-US/docs/Games) — the landing page for web games development on MDN. There are some really useful tutorials and techniques available here related to 2D and 3D canvas — see the Techniques and Tutorials menu options.
 
-Examples
---------
+## Examples
 
--   [Violent theramin](https://github.com/mdn/violent-theremin) — Uses the Web Audio API to generate sound, and canvas to generate a pretty visualization to go along with it.
--   [Voice change-o-matic](https://github.com/mdn/voice-change-o-matic) — Uses a canvas to visualize real-time audio data from the Web Audio API.
+- [Violent theramin](https://github.com/mdn/violent-theremin) — Uses the Web Audio API to generate sound, and canvas to generate a pretty visualization to go along with it.
+- [Voice change-o-matic](https://github.com/mdn/voice-change-o-matic) — Uses a canvas to visualize real-time audio data from the Web Audio API.
 
 {{PreviousMenuNext("Learn/JavaScript/Client-side\_web\_APIs/Third\_party\_APIs", "Learn/JavaScript/Client-side\_web\_APIs/Video\_and\_audio\_APIs", "Learn/JavaScript/Client-side\_web\_APIs")}}
 
-In this module
---------------
+## In this module
 
--   [Introduction to web APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Introduction)
--   [Manipulating documents](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Manipulating_documents)
--   [Fetching data from the server](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Fetching_data)
--   [Third party APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Third_party_APIs)
--   [Drawing graphics](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Drawing_graphics)
--   [Video and audio APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Video_and_audio_APIs)
--   [Client-side storage](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Client-side_storage)
+- [Introduction to web APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Introduction)
+- [Manipulating documents](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Manipulating_documents)
+- [Fetching data from the server](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Fetching_data)
+- [Third party APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Third_party_APIs)
+- [Drawing graphics](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Drawing_graphics)
+- [Video and audio APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Video_and_audio_APIs)
+- [Client-side storage](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Client-side_storage)

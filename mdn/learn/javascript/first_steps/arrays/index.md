@@ -1,4 +1,4 @@
---- title: Arrays slug: Learn/JavaScript/First\_steps/Arrays tags: - Arrays - Article - Beginner - CodingScripting - JavaScript - Join - Learn - Pop - Push - l10n:priority - shift - split - unshift ---
+--- title: Arrays slug: Learn/JavaScript/First_steps/Arrays tags: - Arrays - Article - Beginner - CodingScripting - JavaScript - Join - Learn - Pop - Push - l10n:priority - shift - split - unshift ---
 
 {{LearnSidebar}}
 
@@ -8,8 +8,7 @@ In the final article of this module, we'll look at arrays — a neat way of stor
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, a basic understanding of HTML and CSS, an understanding of what JavaScript is.</td></tr><tr class="even"><td>Objective:</td><td>To understand what arrays are and how to manipulate them in JavaScript.</td></tr></tbody></table>
 
-What is an array?
------------------
+## What is an array?
 
 Arrays are generally described as "list-like objects"; they are basically single objects that contain multiple values stored in a list. Array objects can be stored in variables and dealt with in much the same way as any other type of value, the difference being that we can access each value inside the list individually, and do super useful and efficient things with the list, like loop through it and do the same thing to every value. Maybe we've got a series of product items and their prices stored in an array, and we want to loop through them all and print them out on an invoice, while totaling all the prices together and printing out the total price at the bottom.
 
@@ -19,7 +18,7 @@ As in previous articles, let's learn about the real basics of arrays by entering
 
 ### Creating arrays
 
-Arrays consist of square brackets and elements that are separated by commas. 
+Arrays consist of square brackets and elements that are separated by commas.
 
 1.  Suppose we want to store a shopping list in an array. Paste the following code into the console:
 
@@ -76,8 +75,7 @@ You'll learn about loops properly later on (in our [Looping code](/en-US/docs/Le
 2.  Stop looping at the item number equal to the length of the array. This works for an array of any length, but in this case it stops looping at item number 7 (this is good, as the last item — which we want the loop to include — is item 6).
 3.  For each item, print it out to the browser console with `console.log()`.
 
-Some useful array methods
--------------------------
+## Some useful array methods
 
 In this section we'll look at some rather useful array-related methods that allow us to split strings into array items and vice versa, and add new items into arrays.
 
@@ -157,8 +155,7 @@ First of all, to add or remove an item at the end of an array we can use {{jsxre
         myArray;
         removedItem;
 
-Active learning: Printing those products!
------------------------------------------
+## Active learning: Printing those products!
 
 Let's return to the example we described earlier — printing out product names and prices on an invoice, then totaling the prices and printing them at the bottom. In the editable example below there are comments containing numbers — each of these marks a place where you have to add something to the code. They are as follows:
 
@@ -320,8 +317,7 @@ Let's return to the example we described earlier — printing out product names 
 
 {{ EmbedLiveSample('Playable\_code', '100%', 730, "", "", "hide-codepen-jsfiddle") }}
 
-Active learning: Top 5 searches
--------------------------------
+## Active learning: Top 5 searches
 
 A good use for array methods like {{jsxref("Array.prototype.push()","push()")}} and {{jsxref("Array.prototype.pop()","pop()")}} is when you are maintaining a record of currently active items in a web app. In an animated scene for example, you might have an array of objects representing the background graphics currently displayed, and you might only want 50 displayed at once, for performance or clutter reasons. As new objects are created and added to the array, older ones can be deleted from the array to maintain the desired number.
 
@@ -494,35 +490,31 @@ To complete the app, we need you to:
 
 {{ EmbedLiveSample('Playable\_code\_2', '100%', 700, "", "", "hide-codepen-jsfiddle") }}
 
-Test your skills!
------------------
+## Test your skills!
 
 You've reached the end of this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: Arrays](/en-US/docs/Learn/JavaScript/First_steps/Test_your_skills:_Arrays).
 
-Conclusion
-----------
+## Conclusion
 
 After reading through this article, we are sure you will agree that arrays seem pretty darn useful; you'll see them crop up everywhere in JavaScript, often in association with loops in order to do the same thing to every item in an array. We'll be teaching you all the useful basics there are to know about loops in the next module, but for now you should give yourself a clap and take a well-deserved break; you've worked through all the articles in this module!
 
 The only thing left to do is work through this module's assessment, which will test your understanding of the articles that came before it.
 
-See also
---------
+## See also
 
--   [Indexed collections](/en-US/docs/Web/JavaScript/Guide/Indexed_collections) — an advanced level guide to arrays and their cousins, typed arrays.
--   {{jsxref("Array")}} — the `Array` object reference page — for a detailed reference guide to the features discussed in this page, and many more.
+- [Indexed collections](/en-US/docs/Web/JavaScript/Guide/Indexed_collections) — an advanced level guide to arrays and their cousins, typed arrays.
+- {{jsxref("Array")}} — the `Array` object reference page — for a detailed reference guide to the features discussed in this page, and many more.
 
 {{PreviousMenuNext("Learn/JavaScript/First\_steps/Useful\_string\_methods", "Learn/JavaScript/First\_steps/Silly\_story\_generator", "Learn/JavaScript/First\_steps")}}
 
-In this module
---------------
+## In this module
 
--   [What is JavaScript?](/en-US/docs/Learn/JavaScript/First_steps/What_is_JavaScript)
--   [A first splash into JavaScript](/en-US/docs/Learn/JavaScript/First_steps/A_first_splash)
--   [What went wrong? Troubleshooting JavaScript](/en-US/docs/Learn/JavaScript/First_steps/What_went_wrong)
--   [Storing the information you need — Variables](/en-US/docs/Learn/JavaScript/First_steps/Variables)
--   [Basic math in JavaScript — numbers and operators](/en-US/docs/Learn/JavaScript/First_steps/Math)
--   [Handling text — strings in JavaScript](/en-US/docs/Learn/JavaScript/First_steps/Strings)
--   [Useful string methods](/en-US/docs/Learn/JavaScript/First_steps/Useful_string_methods)
--   [Arrays](/en-US/docs/Learn/JavaScript/First_steps/Arrays)
--   [Assessment: Silly story generator](/en-US/docs/Learn/JavaScript/First_steps/Silly_story_generator)
+- [What is JavaScript?](/en-US/docs/Learn/JavaScript/First_steps/What_is_JavaScript)
+- [A first splash into JavaScript](/en-US/docs/Learn/JavaScript/First_steps/A_first_splash)
+- [What went wrong? Troubleshooting JavaScript](/en-US/docs/Learn/JavaScript/First_steps/What_went_wrong)
+- [Storing the information you need — Variables](/en-US/docs/Learn/JavaScript/First_steps/Variables)
+- [Basic math in JavaScript — numbers and operators](/en-US/docs/Learn/JavaScript/First_steps/Math)
+- [Handling text — strings in JavaScript](/en-US/docs/Learn/JavaScript/First_steps/Strings)
+- [Useful string methods](/en-US/docs/Learn/JavaScript/First_steps/Useful_string_methods)
+- [Arrays](/en-US/docs/Learn/JavaScript/First_steps/Arrays)
+- [Assessment: Silly story generator](/en-US/docs/Learn/JavaScript/First_steps/Silly_story_generator)

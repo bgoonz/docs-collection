@@ -1,4 +1,4 @@
---- title: Useful string methods slug: Learn/JavaScript/First\_steps/Useful\_string\_methods tags: - Article - Beginner - CodingScripting - JavaScript - Learn - case - indexof - "l10n:priority" - length - lower - replace - split - upper ---
+--- title: Useful string methods slug: Learn/JavaScript/First_steps/Useful_string_methods tags: - Article - Beginner - CodingScripting - JavaScript - Learn - case - indexof - "l10n:priority" - length - lower - replace - split - upper ---
 
 {{LearnSidebar}}
 
@@ -8,8 +8,7 @@ Now that we've looked at the very basics of strings, let's move up a gear and st
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, a basic understanding of HTML and CSS, an understanding of what JavaScript is.</td></tr><tr class="even"><td>Objective:</td><td>To understand that strings are objects, and learn how to use some of the basic methods available on those objects to manipulate strings.</td></tr></tbody></table>
 
-Strings as objects
-------------------
+## Strings as objects
 
 Most things are objects in JavaScript. When you create a string, for example by using
 
@@ -17,7 +16,7 @@ Most things are objects in JavaScript. When you create a string, for example by 
 
 your variable becomes a string object instance, and as a result has a large number of properties and methods available to it. You can see this if you go to the {{jsxref("String")}} object page and look down the list on the side of the page!
 
-**Now, before your brain starts melting, don't worry!** You really don't need to know about most of these early on in your learning journey. But there are a few that you'll potentially use quite often that we'll look at here. 
+**Now, before your brain starts melting, don't worry!** You really don't need to know about most of these early on in your learning journey. But there are a few that you'll potentially use quite often that we'll look at here.
 
 Let's enter some examples into the [browser developer console](/en-US/docs/Learn/Common_questions/What_are_browser_developer_tools).
 
@@ -38,7 +37,7 @@ On a related note, you can return any character inside a string by using **squar
 
 Remember: computers count from 0, not 1! You could use this to, for example, find the first letter of a series of strings and order them alphabetically.
 
-To retrieve the last character of *any* string, we could use the following line, combining this technique with the `length` property we looked at above:
+To retrieve the last character of _any_ string, we could use the following line, combining this technique with the `length` property we looked at above:
 
     browserType[browserType.length-1];
 
@@ -46,9 +45,9 @@ The length of the string "mozilla" is 7, but because the count starts at 0, the 
 
 ### Finding a substring inside a string and extracting it
 
-Sometimes you'll want to find if a smaller string is present inside a larger one (we generally say *if a substring is present inside a string*). This can be done using the {{jsxref("String.prototype.indexOf()", "indexOf()")}} method, which takes a single {{glossary("parameter")}} — the substring you want to search for.
+Sometimes you'll want to find if a smaller string is present inside a larger one (we generally say _if a substring is present inside a string_). This can be done using the {{jsxref("String.prototype.indexOf()", "indexOf()")}} method, which takes a single {{glossary("parameter")}} — the substring you want to search for.
 
-If the substring *is* found inside the main string, it returns a number representing the index position of the substring — which character number of the main string the substring starts at. If the substring is *not found* inside the main string, it returns a value of `-1`.
+If the substring _is_ found inside the main string, it returns a number representing the index position of the substring — which character number of the main string the substring starts at. If the substring is _not found_ inside the main string, it returns a value of `-1`.
 
 1.  Try this:
 
@@ -60,8 +59,8 @@ If the substring *is* found inside the main string, it returns a number represen
 
         browserType.indexOf('vanilla');
 
-    This should give you a result of `-1` — this is returned when the substring, in this case 'vanilla', is not found in the main string.  
-      
+    This should give you a result of `-1` — this is returned when the substring, in this case 'vanilla', is not found in the main string.
+
     You could use this to find all instances of strings that **don't** contain the substring 'mozilla' (or **do,** if you use the negation operator, `!==`):
 
         if(browserType.indexOf('mozilla') === -1) {
@@ -78,14 +77,15 @@ If the substring *is* found inside the main string, it returns a number represen
 
         browserType.slice(0,3);
 
-    This returns "moz" — the first parameter is the character position to start extracting at, and the second parameter is the character position after the last one to be extracted. So the slice happens from the first position, up to, but not including, the last position. In this example, since the starting index is 0, the second parameter is equal to the length of the string being returned.  
-     
+    This returns "moz" — the first parameter is the character position to start extracting at, and the second parameter is the character position after the last one to be extracted. So the slice happens from the first position, up to, but not including, the last position. In this example, since the starting index is 0, the second parameter is equal to the length of the string being returned.
+
+
 
 4.  Also, if you know that you want to extract all of the remaining characters in a string after a certain character, you don't have to include the second parameter! Instead, you only need to include the character position from where you want to extract the remaining characters in a string. Try the following:
 
         browserType.slice(2);
 
-    This returns "zilla" — this is because the character position of 2 is the letter z, and because you didn't include a second parameter, the substring that was returned was all of the remaining characters in the string. 
+    This returns "zilla" — this is because the character position of 2 is the letter z, and because you didn't include a second parameter, the substring that was returned was all of the remaining characters in the string.
 
 **Note**: The second parameter of `slice()` is optional: if you don't include it, the slice ends at the end of the original string. There are other options too; study the {{jsxref("String.prototype.slice()", "slice()")}} page to see what else you can find out.
 
@@ -109,8 +109,7 @@ It takes two parameters — the string you want to replace, and the string you w
 
 This returns "vanilla" in the console. But if you check the value of `browserType`, it is still "mozilla". To actually update the value of the `browserType` variable in a real program, you'd have to set the variable value to be the result of the operation; it doesn't just update the substring value automatically. So you'd have to actually write this: `browserType = browserType.replace('moz','van');`
 
-Active learning examples
-------------------------
+## Active learning examples
 
 In this section we'll get you to try your hand at writing some string manipulation code. In each exercise below, we have an array of strings, and a loop that processes each value in the array and displays it in a bulleted list. You don't need to understand arrays or loops right now — these will be explained in future articles. All you need to do in each case is write the code that will output the strings in the format that we want them in.
 
@@ -121,8 +120,8 @@ Each example comes with a "Reset" button, which you can use to reset the code if
 In the first exercise we'll start you off simple — we have an array of greeting card messages, but we want to sort them to list just the Christmas messages. We want you to fill in a conditional test inside the `if( ... )` structure, to test each string and only print it in the list if it is a Christmas message.
 
 1.  First think about how you could test whether the message in each case is a Christmas message. What string is present in all of those messages, and what method could you use to test whether it is present?
-2.  You'll then need to write a conditional test of the form *operand1 operator operand2*. Is the thing on the left equal to the thing on the right? Or in this case, does the method call on the left return the result on the right?
-3.  Hint: In this case it is probably more useful to test whether the method call *isn't* equal to a certain result.
+2.  You'll then need to write a conditional test of the form _operand1 operator operand2_. Is the thing on the left equal to the thing on the right? Or in this case, does the method call on the left return the result on the right?
+3.  Hint: In this case it is probably more useful to test whether the method call _isn't_ equal to a certain result.
 
 ###### Playable code
 
@@ -617,27 +616,24 @@ We'd recommend doing it like this:
 
 {{ EmbedLiveSample('Playable\_code\_3', '100%', 585, "", "", "hide-codepen-jsfiddle") }}
 
-Test your skills!
------------------
+## Test your skills!
 
 You've reached the end of this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: Strings](/en-US/docs/Learn/JavaScript/First_steps/Test_your_skills:_Strings).
 
-Conclusion
-----------
+## Conclusion
 
 You can't escape the fact that being able to handle words and sentences in programming is very important — particularly in JavaScript, as websites are all about communicating with people. This article has given you the basics that you need to know about manipulating strings for now. This should serve you well as you go into more complex topics in the future. Next, we're going to look at the last major type of data we need to focus on in the short term — arrays.
 
 {{PreviousMenuNext("Learn/JavaScript/First\_steps/Strings", "Learn/JavaScript/First\_steps/Arrays", "Learn/JavaScript/First\_steps")}}
 
-In this module
---------------
+## In this module
 
--   [What is JavaScript?](/en-US/docs/Learn/JavaScript/First_steps/What_is_JavaScript)
--   [A first splash into JavaScript](/en-US/docs/Learn/JavaScript/First_steps/A_first_splash)
--   [What went wrong? Troubleshooting JavaScript](/en-US/docs/Learn/JavaScript/First_steps/What_went_wrong)
--   [Storing the information you need — Variables](/en-US/docs/Learn/JavaScript/First_steps/Variables)
--   [Basic math in JavaScript — numbers and operators](/en-US/docs/Learn/JavaScript/First_steps/Math)
--   [Handling text — strings in JavaScript](/en-US/docs/Learn/JavaScript/First_steps/Strings)
--   [Useful string methods](/en-US/docs/Learn/JavaScript/First_steps/Useful_string_methods)
--   [Arrays](/en-US/docs/Learn/JavaScript/First_steps/Arrays)
--   [Assessment: Silly story generator](/en-US/docs/Learn/JavaScript/First_steps/Silly_story_generator)
+- [What is JavaScript?](/en-US/docs/Learn/JavaScript/First_steps/What_is_JavaScript)
+- [A first splash into JavaScript](/en-US/docs/Learn/JavaScript/First_steps/A_first_splash)
+- [What went wrong? Troubleshooting JavaScript](/en-US/docs/Learn/JavaScript/First_steps/What_went_wrong)
+- [Storing the information you need — Variables](/en-US/docs/Learn/JavaScript/First_steps/Variables)
+- [Basic math in JavaScript — numbers and operators](/en-US/docs/Learn/JavaScript/First_steps/Math)
+- [Handling text — strings in JavaScript](/en-US/docs/Learn/JavaScript/First_steps/Strings)
+- [Useful string methods](/en-US/docs/Learn/JavaScript/First_steps/Useful_string_methods)
+- [Arrays](/en-US/docs/Learn/JavaScript/First_steps/Arrays)
+- [Assessment: Silly story generator](/en-US/docs/Learn/JavaScript/First_steps/Silly_story_generator)

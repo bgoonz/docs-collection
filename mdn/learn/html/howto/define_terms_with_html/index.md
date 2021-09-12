@@ -1,30 +1,29 @@
---- title: Define terms with HTML slug: Learn/HTML/Howto/Define\_terms\_with\_HTML tags: - Beginner - Guide - HTML - Learn ---
+--- title: Define terms with HTML slug: Learn/HTML/Howto/Define_terms_with_HTML tags: - Beginner - Guide - HTML - Learn ---
 
 HTML provides several ways to convey description semantics,  whether inline or as structured glossaries. In this article, we'll cover how to properly mark up keywords when you're defining them.
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>You need to be familiar with how to <a href="/en-US/docs/Learn/Getting_started_with_the_web">create a basic HTML document</a>.</td></tr><tr class="even"><td>Objective:</td><td>Learn how to introduce new keywords and how to build description lists.</td></tr></tbody></table>
 
-When you need a term defined, you probably go straight to a dictionary or glossary. Dictionaries and glossaries *formally* associate keywords with one or more descriptions, as in this case:
+When you need a term defined, you probably go straight to a dictionary or glossary. Dictionaries and glossaries _formally_ associate keywords with one or more descriptions, as in this case:
 
-> Blue (*Adjective*)  
+> Blue (_Adjective_)  
 > Of a color like the sky in a sunny day.  
-> *“The clear blue sky”*
+> _“The clear blue sky”_
 >
 > Of a subtle sadness, melancholy.  
-> *“I'm feeling blue”*
+> _“I'm feeling blue”_
 
 But we're constantly defining keywords informally, as here:
 
-> *Firefox* is the web browser created by the Mozilla Foundation.
+> _Firefox_ is the web browser created by the Mozilla Foundation.
 
 To deal with these use cases, {{Glossary("HTML")}} provides {{Glossary("tag","tags")}} to mark descriptions and words described, so that your meaning gets across properly to your readers.
 
-How to mark informal description
---------------------------------
+## How to mark informal description
 
 In textbooks, the first time a keyword occurs, it's common to put the keyword in bold and define it right away.
 
-We do that in HTML too, except HTML is not a visual medium and so we don't use bold. We use {{htmlelement("dfn")}}, which is a special element just for marking the first occurrence of keywords. Note that `<dfn>` tags go around the *word to be defined,* not the definition (the definition consists of the entire paragraph):
+We do that in HTML too, except HTML is not a visual medium and so we don't use bold. We use {{htmlelement("dfn")}}, which is a special element just for marking the first occurrence of keywords. Note that `<dfn>` tags go around the _word to be defined,_ not the definition (the definition consists of the entire paragraph):
 
     <p><dfn>Firefox</dfn> is the web browser created by the Mozilla Foundation.</p>
 
@@ -55,8 +54,7 @@ The HTML spec does indeed [set aside the `title` attribute](https://www.w3.org/T
 
 Assistive technology can often use this attribute to find a text alternative to a given term. You can use `aria-describedby` on any tag enclosing a keyword to be defined (not just the `<dfn>` element). `aria-describedby` references the {{htmlattrxref('id')}} of the element containing the description.
 
-How to build a description list
--------------------------------
+## How to build a description list
 
 Description lists are just what they claim to be: a list of terms and their matching descriptions (e.g., definition lists, dictionary entries, FAQs, and key-value pairs).
 
@@ -105,11 +103,10 @@ This produces the slightly more readable result below:
 
 {{EmbedLiveSample("How\_to\_build\_a\_description\_list", 600, 180)}}
 
-Learn more
-----------
+## Learn more
 
--   {{htmlelement("dfn")}}
--   {{htmlelement("dl")}}
--   {{htmlelement("dt")}}
--   {{htmlelement("dd")}}
--   [How to use the aria-describedby attribute](/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-describedby_attribute)
+- {{htmlelement("dfn")}}
+- {{htmlelement("dl")}}
+- {{htmlelement("dt")}}
+- {{htmlelement("dd")}}
+- [How to use the aria-describedby attribute](/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-describedby_attribute)

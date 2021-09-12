@@ -1,9 +1,8 @@
---- title: Book list page slug: Learn/Server-side/Express\_Nodejs/Displaying\_data/Book\_list\_page tags: - Express - Node - displaying data - part 5 - server-side ---
+--- title: Book list page slug: Learn/Server-side/Express_Nodejs/Displaying_data/Book_list_page tags: - Express - Node - displaying data - part 5 - server-side ---
 
 Next we'll implement our book list page. This page needs to display a list of all books in the database along with their author, with each book title being a hyperlink to its associated book detail page.
 
-<span class="highlight-span">Controller</span>
-----------------------------------------------
+## <span class="highlight-span">Controller</span>
 
 The book list controller function needs to get a list of all `Book` objects in the database, and then pass these to the template for rendering.
 
@@ -24,12 +23,11 @@ Open **/controllers/bookController.js**. Find the exported `book_list()` control
 
 The method uses the model's `find()` function to return all `Book` objects, selecting to return only the `title` and `author` as we don't need the other fields (it will also return the `_id` and virtual fields). Here we also call `populate()` on `Book`, specifying the `author` field—this will replace the stored book author id with the full author details.
 
-On success, the callback passed to the query renders the **book\_list**(.pug) template, passing the `title` and `book_list` (list of books with authors) as variables.
+On success, the callback passed to the query renders the **book_list**(.pug) template, passing the `title` and `book_list` (list of books with authors) as variables.
 
-<span class="highlight-span">View</span>
-----------------------------------------
+## <span class="highlight-span">View</span>
 
-Create **/views/book\_list.pug** and copy in the text below.
+Create **/views/book_list.pug** and copy in the text below.
 
     extends layout
 
@@ -52,15 +50,13 @@ The view extends the **layout.pug** base template and overrides the `block` name
 
 Of interest here is that each book is defined as two lines, using the pipe for the second line. This approach is needed because if the author name were on the previous line then it would be part of the hyperlink.
 
-<span class="highlight-span">What does it look like?</span>
------------------------------------------------------------
+## <span class="highlight-span">What does it look like?</span>
 
-Run the application (see [Testing the routes](/en-US/docs/Learn/Server-side/Express_Nodejs/routes#testing_the_routes) for the relevant commands) and open your browser to <a href="http://localhost:3000/" class="external external-icon">http://localhost:3000/</a>. Then select the *All books* link. If everything is set up correctly, your site should look something like the following screenshot.
+Run the application (see [Testing the routes](/en-US/docs/Learn/Server-side/Express_Nodejs/routes#testing_the_routes) for the relevant commands) and open your browser to <a href="http://localhost:3000/" class="external external-icon">http://localhost:3000/</a>. Then select the _All books_ link. If everything is set up correctly, your site should look something like the following screenshot.
 
 ![Book List Page - Express Local Library site](new_book_list.png)
 
-Next steps
-----------
+## Next steps
 
--   Return to [Express Tutorial Part 5: Displaying library data](/en-US/docs/Learn/Server-side/Express_Nodejs/Displaying_data).
--   Proceed to the next subarticle of part 5: [BookInstance list page](/en-US/docs/Learn/Server-side/Express_Nodejs/Displaying_data/BookInstance_list_page).
+- Return to [Express Tutorial Part 5: Displaying library data](/en-US/docs/Learn/Server-side/Express_Nodejs/Displaying_data).
+- Proceed to the next subarticle of part 5: [BookInstance list page](/en-US/docs/Learn/Server-side/Express_Nodejs/Displaying_data/BookInstance_list_page).

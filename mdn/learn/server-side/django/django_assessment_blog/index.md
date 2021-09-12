@@ -1,4 +1,4 @@
---- title: "Assessment: DIY Django mini blog" slug: Learn/Server-side/Django/django\_assessment\_blog tags: - Assessment - Beginner - CodingScripting - Learn - Server-side programming - blog - django - server-side ---
+--- title: "Assessment: DIY Django mini blog" slug: Learn/Server-side/Django/django_assessment_blog tags: - Assessment - Beginner - CodingScripting - Learn - Server-side programming - blog - django - server-side ---
 
 {{LearnSidebar}}
 
@@ -8,8 +8,7 @@ In this assessment you'll use the Django knowledge you've picked up in the [Djan
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Before attempting this assessment you should have already worked through all the articles in this module.</td></tr><tr class="even"><td>Objective:</td><td>To test comprehension of Django fundamentals, including URL configurations, models, views, forms, and templates.</td></tr></tbody></table>
 
-Project brief
--------------
+## Project brief
 
 The pages that need to be displayed, their URLs, and other requirements, are listed below:
 
@@ -17,13 +16,13 @@ The pages that need to be displayed, their URLs, and other requirements, are lis
 
 In addition you should write some basic tests to verify:
 
--   All model fields have the correct label and length.
--   All models have the expected object name (e.g.` __str__()` returns the expected value).
--   Models have the expected URL for individual Blog and Comment records (e.g. `get_absolute_url()` returns the expected URL).
--   The BlogListView (all-blog page) is accessible at the expected location (e.g. /blog/blogs)
--   The BlogListView (all-blog page) is accessible at the expected named url (e.g. 'blogs')
--   The BlogListView (all-blog page) uses the expected template (e.g. the default)
--   The BlogListView paginates records by 5 (at least on the first page)
+- All model fields have the correct label and length.
+- All models have the expected object name (e.g.` __str__()` returns the expected value).
+- Models have the expected URL for individual Blog and Comment records (e.g. `get_absolute_url()` returns the expected URL).
+- The BlogListView (all-blog page) is accessible at the expected location (e.g. /blog/blogs)
+- The BlogListView (all-blog page) is accessible at the expected named url (e.g. 'blogs')
+- The BlogListView (all-blog page) uses the expected template (e.g. the default)
+- The BlogListView paginates records by 5 (at least on the first page)
 
 #### Note
 
@@ -31,8 +30,7 @@ There are of course many other tests you can run. Use your discretion, but we'll
 
 The following section shows [screenshots](#screenshots) of a site that implements the requirements above.
 
-Screenshots
------------
+## Screenshots
 
 The following screenshots provide an example of what the finished program should output.
 
@@ -40,10 +38,10 @@ The following screenshots provide an example of what the finished program should
 
 This displays the list of all blog posts (accessible from the "All blogs" link in the sidebar). Things to note:
 
--   The sidebar also lists the logged in user.
--   Individual blog posts and bloggers are accessible as links in the page.
--   Pagination is enabled (in groups of 5)
--   Ordering is newest to oldest.
+- The sidebar also lists the logged in user.
+- Individual blog posts and bloggers are accessible as links in the page.
+- Pagination is enabled (in groups of 5)
+- Ordering is newest to oldest.
 
 ![List of all blogs](diyblog_allblogs.png)
 
@@ -59,7 +57,7 @@ This shows the detail page for a particular blog.
 
 ![Blog detail with add comment link](diyblog_blog_detail_add_comment.png)
 
-Note that the comments have a date *and* time, and are ordered from oldest to newest (opposite of blog ordering). At the end we have a link for accessing the form to add a new comment. If a user is not logged in we'd instead see a suggestion to log in.
+Note that the comments have a date _and_ time, and are ordered from oldest to newest (opposite of blog ordering). At the end we have a link for accessing the form to add a new comment. If a user is not logged in we'd instead see a suggestion to log in.
 
 ![Comment link when not logged in](diyblog_blog_detail_not_logged_in.png)
 
@@ -75,25 +73,23 @@ This displays bio information for a blogger along with their blog posts list.
 
 ![Blogger detail page](diyblog_blogger_detail.png)
 
-Steps to complete
------------------
+## Steps to complete
 
 The following sections describe what you need to do.
 
 1.  Create a skeleton project and web application for the site (as described in [Django Tutorial Part 2: Creating a skeleton website](/en-US/docs/Learn/Server-side/Django/skeleton_website)). You might use 'diyblog' for the project name and 'blog' for the application name.
 2.  Create models for the Blog posts, Comments, and any other objects needed. When thinking about your design, remember:
-    -   Each comment will have only one blog, but a blog may have many comments.
-    -   Blog posts and comments must be sorted by post date.
-    -   Not every user will necessarily be a blog author though any user may be a commenter.
-    -   Blog authors must also include bio information.
+    - Each comment will have only one blog, but a blog may have many comments.
+    - Blog posts and comments must be sorted by post date.
+    - Not every user will necessarily be a blog author though any user may be a commenter.
+    - Blog authors must also include bio information.
 3.  Run migrations for your new models and create a superuser.
 4.  Use the admin site to create some example blog posts and blog comments.
 5.  Create views, templates, and URL configurations for blog post and blogger list pages.
 6.  Create views, templates, and URL configurations for blog post and blogger detail pages.
 7.  Create a page with a form for adding new comments (remember to make this only available to logged in users!)
 
-Hints and tips
---------------
+## Hints and tips
 
 This project is very similar to the [LocalLibrary](/en-US/docs/Learn/Server-side/Django/Tutorial_local_library_website) tutorial. You will be able to set up the skeleton, user login/logout behavior, support for static files, views, URLs, forms, base templates and admin site configuration using almost all the same approaches.
 
@@ -102,24 +98,25 @@ Some general hints:
 1.  The index page can be implemented as a basic function view and template (just like for the locallibrary).
 2.  The list view for blog posts and bloggers, and the detail view for blog posts can be created using the [generic list and detail views](/en-US/docs/Learn/Server-side/Django/Generic_views).
 3.  The list of blog posts for a particular author can be created by using a generic blog list view and filtering for blog objects that match the specified author.
-    -   You will have to implement `get_queryset(self)` to do the filtering (much like in our library class `LoanedBooksAllListView`) and get the author information from the URL.
-    -   You will also need to pass the name of the author to the page in the context. To do this in a class-based view you need to implement `get_context_data()` (discussed below).
-4.  The *add comment* form can be created using a function-based view (and associated model and form) or using a generic `CreateView`. If you use a `CreateView` (recommended) then:
-    -   You will also need to pass the name of the blog post to the comment page in the context (implement `get_context_data()` as discussed below).
-    -   The form should only display the comment "description" for user entry (date and associated blog post should not be editable). Since they won't be in the form itself, your code will need to set the comment's author in the` form_valid()` function so it can be saved into the model ([as described here](https://docs.djangoproject.com/en/3.1/topics/class-based-views/generic-editing/#models-and-request-user) — Django docs). In that same function we set the associated blog. A possible implementation is shown below (`pk` is a blog id passed in from the URL/URL configuration).
+    - You will have to implement `get_queryset(self)` to do the filtering (much like in our library class `LoanedBooksAllListView`) and get the author information from the URL.
+    - You will also need to pass the name of the author to the page in the context. To do this in a class-based view you need to implement `get_context_data()` (discussed below).
+4.  The _add comment_ form can be created using a function-based view (and associated model and form) or using a generic `CreateView`. If you use a `CreateView` (recommended) then:
 
-                def form_valid(self, form):
-                    """
-                    Add author and associated blog to form data before setting it as valid (so it is saved to model)
-                    """
-                    #Add logged-in user as author of comment
-                    form.instance.author = self.request.user
-                    #Associate comment with blog based on passed id
-                    form.instance.blog=get_object_or_404(Blog, pk = self.kwargs['pk'])
-                    # Call super-class form validation behavior
-                    return super(BlogCommentCreate, self).form_valid(form)
+    - You will also need to pass the name of the blog post to the comment page in the context (implement `get_context_data()` as discussed below).
+    - The form should only display the comment "description" for user entry (date and associated blog post should not be editable). Since they won't be in the form itself, your code will need to set the comment's author in the` form_valid()` function so it can be saved into the model ([as described here](https://docs.djangoproject.com/en/3.1/topics/class-based-views/generic-editing/#models-and-request-user) — Django docs). In that same function we set the associated blog. A possible implementation is shown below (`pk` is a blog id passed in from the URL/URL configuration).
 
-    -   You will need to provide a success URL to redirect to after the form validates; this should be the original blog. To do this you will need to override `get_success_url()` and "reverse" the URL for the original blog. You can get the required blog ID using the `self.kwargs` attribute, as shown in the `form_valid()` method above.
+              def form_valid(self, form):
+                  """
+                  Add author and associated blog to form data before setting it as valid (so it is saved to model)
+                  """
+                  #Add logged-in user as author of comment
+                  form.instance.author = self.request.user
+                  #Associate comment with blog based on passed id
+                  form.instance.blog=get_object_or_404(Blog, pk = self.kwargs['pk'])
+                  # Call super-class form validation behavior
+                  return super(BlogCommentCreate, self).form_valid(form)
+
+    - You will need to provide a success URL to redirect to after the form validates; this should be the original blog. To do this you will need to override `get_success_url()` and "reverse" the URL for the original blog. You can get the required blog ID using the `self.kwargs` attribute, as shown in the `form_valid()` method above.
 
 We briefly talked about passing a context to the template in a class-based view in the [Django Tutorial Part 6: Generic list and detail views](/en-US/docs/Learn/Server-side/Django/Generic_views#overriding_methods_in_class-based_views) topic. To do this you need to override `get_context_data()` (first getting the existing context, updating it with whatever additional variables you want to pass to the template, and then returning the updated context). For example, the code fragment below shows how you can add a blogger object to the context based on their `BlogAuthor` id.
 
@@ -133,8 +130,7 @@ We briefly talked about passing a context to the template in a class-based view 
             context['blogger'] = get_object_or_404(BlogAuthor, pk = self.kwargs['pk'])
             return context
 
-Assessment
-----------
+## Assessment
 
 The assessment for this task is [available on Github here](https://github.com/mdn/django-diy-blog/blob/master/MarkingGuide.md). This assessment is primarily based on how well your application meets the requirements we listed above, though there are some parts of the assessment that check your code uses appropriate models, and that you have written at least some test code. When you're done, you can check out our [the finished example](https://github.com/mdn/django-diy-blog) which reflects a "full marks" project.
 
@@ -142,21 +138,20 @@ Once you've completed this module you've also finished all the MDN content for l
 
 {{PreviousMenu("Learn/Server-side/Django/web\_application\_security", "Learn/Server-side/Django")}}
 
-In this module
---------------
+## In this module
 
--   [Django introduction](/en-US/docs/Learn/Server-side/Django/Introduction)
--   [Setting up a Django development environment](/en-US/docs/Learn/Server-side/Django/development_environment)
--   [Django Tutorial: The Local Library website](/en-US/docs/Learn/Server-side/Django/Tutorial_local_library_website)
--   [Django Tutorial Part 2: Creating a skeleton website](/en-US/docs/Learn/Server-side/Django/skeleton_website)
--   [Django Tutorial Part 3: Using models](/en-US/docs/Learn/Server-side/Django/Models)
--   [Django Tutorial Part 4: Django admin site](/en-US/docs/Learn/Server-side/Django/Admin_site)
--   [Django Tutorial Part 5: Creating our home page](/en-US/docs/Learn/Server-side/Django/Home_page)
--   [Django Tutorial Part 6: Generic list and detail views](/en-US/docs/Learn/Server-side/Django/Generic_views)
--   [Django Tutorial Part 7: Sessions framework](/en-US/docs/Learn/Server-side/Django/Sessions)
--   [Django Tutorial Part 8: User authentication and permissions](/en-US/docs/Learn/Server-side/Django/Authentication)
--   [Django Tutorial Part 9: Working with forms](/en-US/docs/Learn/Server-side/Django/Forms)
--   [Django Tutorial Part 10: Testing a Django web application](/en-US/docs/Learn/Server-side/Django/Testing)
--   [Django Tutorial Part 11: Deploying Django to production](/en-US/docs/Learn/Server-side/Django/Deployment)
--   [Django web application security](/en-US/docs/Learn/Server-side/Django/web_application_security)
--   **DIY Django mini blog**
+- [Django introduction](/en-US/docs/Learn/Server-side/Django/Introduction)
+- [Setting up a Django development environment](/en-US/docs/Learn/Server-side/Django/development_environment)
+- [Django Tutorial: The Local Library website](/en-US/docs/Learn/Server-side/Django/Tutorial_local_library_website)
+- [Django Tutorial Part 2: Creating a skeleton website](/en-US/docs/Learn/Server-side/Django/skeleton_website)
+- [Django Tutorial Part 3: Using models](/en-US/docs/Learn/Server-side/Django/Models)
+- [Django Tutorial Part 4: Django admin site](/en-US/docs/Learn/Server-side/Django/Admin_site)
+- [Django Tutorial Part 5: Creating our home page](/en-US/docs/Learn/Server-side/Django/Home_page)
+- [Django Tutorial Part 6: Generic list and detail views](/en-US/docs/Learn/Server-side/Django/Generic_views)
+- [Django Tutorial Part 7: Sessions framework](/en-US/docs/Learn/Server-side/Django/Sessions)
+- [Django Tutorial Part 8: User authentication and permissions](/en-US/docs/Learn/Server-side/Django/Authentication)
+- [Django Tutorial Part 9: Working with forms](/en-US/docs/Learn/Server-side/Django/Forms)
+- [Django Tutorial Part 10: Testing a Django web application](/en-US/docs/Learn/Server-side/Django/Testing)
+- [Django Tutorial Part 11: Deploying Django to production](/en-US/docs/Learn/Server-side/Django/Deployment)
+- [Django web application security](/en-US/docs/Learn/Server-side/Django/web_application_security)
+- **DIY Django mini blog**

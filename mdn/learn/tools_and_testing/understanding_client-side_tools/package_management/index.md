@@ -1,4 +1,4 @@
---- title: Package management basics slug: Learn/Tools\_and\_testing/Understanding\_client-side\_tools/Package\_management tags: - Beginner - Learn - Tools - dependency - npm - package manager - package repository - yarn ---
+--- title: Package management basics slug: Learn/Tools_and_testing/Understanding_client-side_tools/Package_management tags: - Beginner - Learn - Tools - dependency - npm - package manager - package repository - yarn ---
 
 {{LearnSidebar}}
 
@@ -8,8 +8,7 @@ In this article we'll look at package managers in some detail to understand how 
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Familiarity with the core <a href="/en-US/docs/Learn/HTML">HTML</a>, <a href="/en-US/docs/Learn/CSS">CSS</a>, and <a href="/en-US/docs/Learn/JavaScript">JavaScript</a> languages.</td></tr><tr class="even"><td>Objective:</td><td>To understand what package managers and package repositories are, why they are needed, and the basics of how to use them.</td></tr></tbody></table>
 
-A dependency in your project
-----------------------------
+## A dependency in your project
 
 A **dependency** is a third-party bit of software that was probably written by someone else and ideally solves a single problem for you. A web project can have any number of dependencies, ranging from none to many, and your dependencies might include sub-dependencies that you didn't explicitly install — your dependencies may have their own dependencies.
 
@@ -21,8 +20,7 @@ Without modern build tools, dependencies like this might be included in your pro
 
 In addition, what happens if you find a better tool that you want to use instead of the current one, or a new version of your dependency is released that you want to update to? This is not too painful for a couple of dependencies, but in larger projects with many dependencies this kind of thing can become really challenging to keep track of. It makes more sense to use a **package manager** such as npm, as this will guarantee that the code is added and removed cleanly, as well as a host of other advantages.
 
-What exactly is a package manager?
-----------------------------------
+## What exactly is a package manager?
 
 We've met [npm](https://www.npmjs.com/) already, but stepping back from npm itself, a package manager is a system that will manage your project dependencies.
 
@@ -30,12 +28,12 @@ The package manager will provide a method to install new dependencies (also refe
 
 In theory you may not need a package manager and you could manually download and store your project dependencies, but a package manager will seamlessly handle installing and uninstalling packages. If you didn't use one, you'd have to manually handle:
 
--   Finding all the correct package JavaScript files.
--   Checking them to make sure they don't have any known vulnerabilities.
--   Downloading them and putting them in the correct locations in your project.
--   Writing the code to include the package(s) in your application (this tends to be done using [JavaScript modules](/en-US/docs/Web/JavaScript/Guide/Modules), another subject that is worth reading up on and understanding).
--   Doing the same thing for all of the packages' sub-dependencies, of which there could be tens, or hundreds.
--   Removing all the files again if you want to remove the packages.
+- Finding all the correct package JavaScript files.
+- Checking them to make sure they don't have any known vulnerabilities.
+- Downloading them and putting them in the correct locations in your project.
+- Writing the code to include the package(s) in your application (this tends to be done using [JavaScript modules](/en-US/docs/Web/JavaScript/Guide/Modules), another subject that is worth reading up on and understanding).
+- Doing the same thing for all of the packages' sub-dependencies, of which there could be tens, or hundreds.
+- Removing all the files again if you want to remove the packages.
 
 In addition, package managers handle duplicate dependencies (something that becomes important and common in front-end development).
 
@@ -47,8 +45,7 @@ To see local dependencies really shine, all you need to do is try to download an
 
 **Note**: npm is not the only package manager available. A successful and popular alternative package manager is [Yarn](https://yarnpkg.com/). Yarn resolves the dependencies using a different algorithm that can mean a faster user experience. There are also a number of other emerging clients, such as [pnpm](https://pnpm.js.org/).
 
-Package registries
-------------------
+## Package registries
 
 For a package manager to work, it needs to know where to install packages from, and this comes in the form of a package registry. The registry is a central place that a package is published to and thus can be installed from. npm, as well as being a package manager, is also the name of the most commonly-used package registry for JavaScript packages. The npm registry exists at [npmjs.com](https://www.npmjs.com/).
 
@@ -56,8 +53,7 @@ npm is not the only option. You could manage your own package registry — produ
 
 What is important is that you ensure you've chosen the best registry for you. Many projects will use npm, and we’ll stick to this in our examples throughout the rest of the module.
 
-Using the package ecosystem
----------------------------
+## Using the package ecosystem
 
 Let’s run through an example to get you started with using a package manager and registry to install a command line utility.
 
@@ -80,13 +76,13 @@ Type the following command, making sure you are inside the `parcel-experiment` d
 
 You will now be asked some questions; npm will then create a default `package.json` file based on the answers:
 
--   `name`: A name to identify the app. Just press Return to accept the default `parcel-experiment`.
--   `version`: The starting version number for the app: Again, Just press Return to accept the default `1.0.0`.
--   `description`: A quick description of the app's purpose. Type in something really simple, like "A simple npm package to learn about using npm", then press Return.
--   `entry point`: This will be the top-level JavaScript file of the app. The default `index.js` is fine for now — press Return.
--   `test command`, `git repository`, and `keywords`: press Return to leave each of these blank for now.
--   `author`: The author of the project. Type your own name, and press Return.
--   `license`: The license to publish the package under: Press Return to accept the default for now.
+- `name`: A name to identify the app. Just press Return to accept the default `parcel-experiment`.
+- `version`: The starting version number for the app: Again, Just press Return to accept the default `1.0.0`.
+- `description`: A quick description of the app's purpose. Type in something really simple, like "A simple npm package to learn about using npm", then press Return.
+- `entry point`: This will be the top-level JavaScript file of the app. The default `index.js` is fine for now — press Return.
+- `test command`, `git repository`, and `keywords`: press Return to leave each of these blank for now.
+- `author`: The author of the project. Type your own name, and press Return.
+- `license`: The license to publish the package under: Press Return to accept the default for now.
 
 Press Return one more time to accept these settings.
 
@@ -112,7 +108,7 @@ Run the following command to install Parcel locally:
 
     npm install parcel-bundler
 
-Once that's done *All The Things*, we're now ready for some "modern client-side development" (which really means using build tools to make the developer experience a little easier). First of all however, take another look at your package.json file. You'll see that npm has added a new field, dependencies:
+Once that's done _All The Things_, we're now ready for some "modern client-side development" (which really means using build tools to make the developer experience a little easier). First of all however, take another look at your package.json file. You'll see that npm has added a new field, dependencies:
 
     "dependencies": {
       "parcel-bundler": "^1.12.4"
@@ -154,7 +150,7 @@ You should see something like this printed to your terminal:
     Server running at http://localhost:1234
     ✨  Built in 193ms.
 
-**Note**: If you have trouble with the terminal returning a "command not found" type error, try running the above command with the `npx` utility, i.e. `npx parcel index.html`.
+**Note**: If you have trouble with the terminal returning a "command not found" type error, try running the above command with the `npx` utility, i.e. `npx parcel index.html`.
 
 Now we're ready to benefit from the full JavaScript package ecosystem. For a start, there is now a local web server running at `http://localhost:1234`. Go there now and you’ll not see anything for now, but what is cool is that when you do make changes to your app, Parcel will rebuild it and refresh the server automatically so you can instantly see the effect your update had.
 
@@ -178,8 +174,8 @@ What's particularly special about the code above is that it is using the `format
 
 Parcel has also added the files required for someone else to pick up this project and install any dependencies that we’ve used. If you take a look in the directory you ran the `parcel` command in, you’ll find a number of new files; the most interesting of which are:
 
--   `node_modules`: The dependency files of Parcel and date-fns.
--   `dist`: The distribution directory — these are the automatically packaged, minified files Parcel has built for us, and the files it is serving at `localhost:1234`. These are the files you would upload to your web server when releasing the site online for public consumption.
+- `node_modules`: The dependency files of Parcel and date-fns.
+- `dist`: The distribution directory — these are the automatically packaged, minified files Parcel has built for us, and the files it is serving at `localhost:1234`. These are the files you would upload to your web server when releasing the site online for public consumption.
 
 So long as we know the package name, we can use it in our code and Parcel will go off, fetch, and install (actually "copy") the package into our local directory (under `node_modules`).
 
@@ -219,15 +215,15 @@ This makes a lot of sense as we want to reduce file size and thus make our app l
 
 Although the list grows by the month, there are three main offerings for tools that generate bundles from our source code: Webpack, [Rollup](https://rollupjs.org/guide/en/), and Parcel. There will be more available than this, but these are popular ones:
 
--   The RollUp tool offers tree shaking and code splitting as it’s core features.
--   Webpack requires some configuration (though “some” might be understating the complexity of some developers’ Webpack configurations).
--   In the case of Parcel (prior to Parcel version 2), there's a special flag required — `--experimental-scope-hoisting` — which will tree shake while building.
+- The RollUp tool offers tree shaking and code splitting as it’s core features.
+- Webpack requires some configuration (though “some” might be understating the complexity of some developers’ Webpack configurations).
+- In the case of Parcel (prior to Parcel version 2), there's a special flag required — `--experimental-scope-hoisting` — which will tree shake while building.
 
 Let’s stick with Parcel for now, given that we’ve already got it installed. Try running the following command:
 
     parcel build index.html --experimental-scope-hoisting
 
-You’ll see that this makes a huge difference:                                                         
+You’ll see that this makes a huge difference:
 
     ✨  Built in 7.87s.
 
@@ -242,16 +238,15 @@ If we were to release this project to a server, we would only release the files 
 
 There's a lot of tools available and the JavaScript package ecosystem is growing at an unprecedented rate, which has pros and cons. There's improvements being made all the time and the choice, for better or worse, is constantly increasing. Faced with the overwhelming choice of tooling, probably the most important lesson is to learn what the tool you select is capable of.
 
-A rough guide to package manager clients
-----------------------------------------
+## A rough guide to package manager clients
 
 This tutorial installed the Parcel package using npm, but as mentioned earlier on there are some alternatives and it's worth at least knowing they exist and having some vague idea of the common commands across the tools. You've already seen some in action, but lets look at the others.
 
 The list will grow over time, but at time of writing, the following main package managers are available:
 
--   npm at [npmjs.org](https://www.npmjs.com/)
--   pnpm at [pnpm.js.org](https://pnpm.js.org/)
--   yarn at [yarnpkg.com](https://yarnpkg.com/)
+- npm at [npmjs.org](https://www.npmjs.com/)
+- pnpm at [pnpm.js.org](https://pnpm.js.org/)
+- yarn at [yarnpkg.com](https://yarnpkg.com/)
 
 npm and pnpm are similar from a command line point of view — in fact pnpm aims to have full parity over the argument options that npm offers. It differs in that it uses a different method for downloading and storing the packages on your computer, aiming to reduce the overall disk space required.
 
@@ -314,8 +309,7 @@ Although the package manager will do it’s best to deduplicate packages you may
 
 You can find out more about the individual commands for [npm](https://docs.npmjs.com/cli-documentation/) and [yarn](https://yarnpkg.com/en/docs/cli/) online. Again, [pnpm](https://pnpm.js.org/en/cli/add) commands will have parity with npm, with a handful of additions.
 
-Making your own commands
-------------------------
+## Making your own commands
 
 The package managers also support creating your own commands and executing them from the command line. For instance, we could create the following command:
 
@@ -358,24 +352,21 @@ In addition, the npm (and yarn) commands are clever in that they will search for
 
 You can add all kinds of things to the `scripts` property that help you do your job. We certainly have, and [others have too](https://github.com/facebook/create-react-app/blob/c5b96c2853671baa3f1f297ec3b36d7358898304/package.json#L6).
 
-Summary
--------
+## Summary
 
 This brings us to the end of our tour of package managers. Our next move is to build up a sample toolchain, putting all that we've learnt so far into practice.
 
 {{PreviousMenuNext("Learn/Tools\_and\_testing/Understanding\_client-side\_tools/Command\_line","Learn/Tools\_and\_testing/Understanding\_client-side\_tools/Introducing\_complete\_toolchain", "Learn/Tools\_and\_testing/Understanding\_client-side\_tools")}}
 
-See also
---------
+## See also
 
--   [Introduction to npm scripts](https://www.freecodecamp.org/news/introduction-to-npm-scripts-1dbb2ae01633/)
--   [package.json reference](https://docs.npmjs.com/files/package.json)
+- [Introduction to npm scripts](https://www.freecodecamp.org/news/introduction-to-npm-scripts-1dbb2ae01633/)
+- [package.json reference](https://docs.npmjs.com/files/package.json)
 
-In this module
---------------
+## In this module
 
--   [Client-side tooling overview](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Overview)
--   [Command line crash course](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Command_line)
--   [Package management basics](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Package_management)
--   [Introducing a complete toolchain](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Introducing_complete_toolchain)
--   [Deploying our app](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Deployment)
+- [Client-side tooling overview](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Overview)
+- [Command line crash course](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Command_line)
+- [Package management basics](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Package_management)
+- [Introducing a complete toolchain](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Introducing_complete_toolchain)
+- [Deploying our app](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Deployment)

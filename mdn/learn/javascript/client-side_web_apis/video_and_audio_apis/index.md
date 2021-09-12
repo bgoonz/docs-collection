@@ -1,4 +1,4 @@
---- title: Video and Audio APIs slug: Learn/JavaScript/Client-side\_web\_APIs/Video\_and\_audio\_APIs tags: - API - Article - Audio - Beginner - CodingScripting - Guide - JavaScript - Learn - Video ---
+--- title: Video and Audio APIs slug: Learn/JavaScript/Client-side_web_APIs/Video_and_audio_APIs tags: - API - Article - Audio - Beginner - CodingScripting - Guide - JavaScript - Learn - Video ---
 
 {{LearnSidebar}}
 
@@ -8,8 +8,7 @@ HTML5 comes with elements for embedding rich media in documents — {{htmlelemen
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>JavaScript basics (see <a href="/en-US/docs/Learn/JavaScript/First_steps">first steps</a>, <a href="/en-US/docs/Learn/JavaScript/Building_blocks">building blocks</a>, <a href="/en-US/docs/Learn/JavaScript/Objects">JavaScript objects</a>), the <a href="/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Introduction">basics of Client-side APIs</a></td></tr><tr class="even"><td>Objective:</td><td>To learn how to use browser APIs to control video and audio playback.</td></tr></tbody></table>
 
-HTML5 video and audio
----------------------
+## HTML5 video and audio
 
 The {{htmlelement("video")}} and {{htmlelement("audio")}} elements allow us to embed video and audio into web pages. As we showed in [Video and audio content](/en-US/docs/Learn/HTML/Multimedia_and_embedding/Video_and_audio_content), a typical implementation looks like this:
 
@@ -31,8 +30,7 @@ This is not as immediately useful for video playback, but it does have advantage
 
 You can solve both these problems by hiding the native controls (by removing the `controls` attribute), and programming your own with HTML, CSS, and JavaScript. In the next section we'll look at the basic tools we have available to do this.
 
-The HTMLMediaElement API
-------------------------
+## The HTMLMediaElement API
 
 Part of the HTML5 spec, the {{domxref("HTMLMediaElement")}} API provides features to allow you to control video and audio players programmatically — for example {{domxref("HTMLMediaElement.play()")}}, {{domxref("HTMLMediaElement.pause()")}}, etc. This interface is available to both {{htmlelement("audio")}} and {{htmlelement("video")}} elements, as the features you'll want to implement are nearly identical. Let's go through an example, adding features as we go.
 
@@ -68,12 +66,12 @@ Open the HTML index file. You'll see a number of features; the HTML is dominated
       </div>
     </div>
 
--   The whole player is wrapped in a {{htmlelement("div")}} element, so it can all be styled as one unit if needed.
--   The {{htmlelement("video")}} element contains two {{htmlelement("source")}} elements so that different formats can be loaded depending on the browser viewing the site.
--   The controls HTML is probably the most interesting:
-    -   We have four {{htmlelement("button")}}s — play/pause, stop, rewind, and fast forward.
-    -   Each `<button>` has a `class` name, a `data-icon` attribute for defining what icon should be shown on each button (we'll show how this works in the below section), and an `aria-label` attribute to provide an understandable description of each button, since we're not providing a human-readable label inside the tags. The contents of `aria-label` attributes are read out by screenreaders when their users focus on the elements that contain them.
-    -   There is also a timer {{htmlelement("div")}}, which will report the elapsed time when the video is playing. Just for fun, we are providing two reporting mechanisms — a {{htmlelement("span")}} containing the elapsed time in minutes and seconds, and an extra `<div>` that we will use to create a horizontal indicator bar that gets longer as the time elapses. To get an idea of what the finished product will look like, [check out our finished version](https://mdn.github.io/learning-area/javascript/apis/video-audio/finished/).
+- The whole player is wrapped in a {{htmlelement("div")}} element, so it can all be styled as one unit if needed.
+- The {{htmlelement("video")}} element contains two {{htmlelement("source")}} elements so that different formats can be loaded depending on the browser viewing the site.
+- The controls HTML is probably the most interesting:
+  - We have four {{htmlelement("button")}}s — play/pause, stop, rewind, and fast forward.
+  - Each `<button>` has a `class` name, a `data-icon` attribute for defining what icon should be shown on each button (we'll show how this works in the below section), and an `aria-label` attribute to provide an understandable description of each button, since we're not providing a human-readable label inside the tags. The contents of `aria-label` attributes are read out by screenreaders when their users focus on the elements that contain them.
+  - There is also a timer {{htmlelement("div")}}, which will report the elapsed time when the video is playing. Just for fun, we are providing two reporting mechanisms — a {{htmlelement("span")}} containing the elapsed time in minutes and seconds, and an extra `<div>` that we will use to create a horizontal indicator bar that gets longer as the time elapses. To get an idea of what the finished product will look like, [check out our finished version](https://mdn.github.io/learning-area/javascript/apis/video-audio/finished/).
 
 #### Exploring the CSS
 
@@ -98,9 +96,9 @@ Now open the CSS file and have a look inside. The CSS for the example is not too
       opacity: 1;
     }
 
--   We start off with the {{cssxref("visibility")}} of the custom controls set to `hidden`. In our JavaScript later on, we will set the controls to `visible`, and remove the `controls` attribute from the `<video>` element. This is so that, if the JavaScript doesn't load for some reason, users can still use the video with the native controls.
--   We give the controls an {{cssxref("opacity")}} of 0.5 by default, so that they are less distracting when you are trying to watch the video. Only when you are hovering/focusing over the player do the controls appear at full opacity.
--   We lay out the buttons inside the control bar using Flexbox ({{cssxref("display")}}: flex), to make things easier.
+- We start off with the {{cssxref("visibility")}} of the custom controls set to `hidden`. In our JavaScript later on, we will set the controls to `visible`, and remove the `controls` attribute from the `<video>` element. This is so that, if the JavaScript doesn't load for some reason, users can still use the video with the native controls.
+- We give the controls an {{cssxref("opacity")}} of 0.5 by default, so that they are less distracting when you are trying to watch the video. Only when you are hovering/focusing over the player do the controls appear at full opacity.
+- We lay out the buttons inside the control bar using Flexbox ({{cssxref("display")}}: flex), to make things easier.
 
 Next, let's look at our button icons:
 
@@ -127,9 +125,9 @@ First of all, at the top of the CSS we use a {{cssxref("@font-face")}} block to 
 
 Next we use generated content to display an icon on each button:
 
--   We use the {{cssxref("::before")}} selector to display the content before each {{htmlelement("button")}} element.
--   We use the {{cssxref("content")}} property to set the content to be displayed in each case to be equal to the contents of the `data-icon` attribute. In the case of our play button, `data-icon` contains a capital "P".
--   We apply the custom web font to our buttons using {{cssxref("font-family")}}. In this font, "P" is actually a "play" icon, so therefore the play button has a "play" icon displayed on it.
+- We use the {{cssxref("::before")}} selector to display the content before each {{htmlelement("button")}} element.
+- We use the {{cssxref("content")}} property to set the content to be displayed in each case to be equal to the contents of the `data-icon` attribute. In the case of our play button, `data-icon` contains a capital "P".
+- We apply the custom web font to our buttons using {{cssxref("font-family")}}. In this font, "P" is actually a "play" icon, so therefore the play button has a "play" icon displayed on it.
 
 Icon fonts are very cool for many reasons — cutting down on HTTP requests because you don't need to download those icons as image files, great scalability, and the fact that you can use text properties to style them — like {{cssxref("color")}} and {{cssxref("text-shadow")}}.
 
@@ -161,10 +159,10 @@ Last but not least, let's look at the CSS for the timer:
       left: 19px;
     }
 
--   We set the outer `.timer` `<div>` to have flex: 5, so it takes up most of the width of the controls bar. We also give it {{cssxref("position")}}`: relative`, so that we can position elements inside it conveniently according to it's boundaries, and not the boundaries of the {{htmlelement("body")}} element.
--   The inner `<div>` is absolutely positioned to sit directly on top of the outer `<div>`. It is also given an initial width of 0, so you can't see it at all. As the video plays, the width will be increased via JavaScript as the video elapses.
--   The `<span>` is also absolutely positioned to sit near the left hand side of the timer bar.
--   We also give our inner `<div>` and `<span>` the right amount of {{cssxref("z-index")}} so that the timer will be displayed on top, and the inner `<div>` below that. This way, we make sure we can see all the information — one box is not obscuring another.
+- We set the outer `.timer` `<div>` to have flex: 5, so it takes up most of the width of the controls bar. We also give it {{cssxref("position")}}`: relative`, so that we can position elements inside it conveniently according to it's boundaries, and not the boundaries of the {{htmlelement("body")}} element.
+- The inner `<div>` is absolutely positioned to sit directly on top of the outer `<div>`. It is also given an initial width of 0, so you can't see it at all. As the video plays, the width will be increased via JavaScript as the video elapses.
+- The `<span>` is also absolutely positioned to sit near the left hand side of the timer bar.
+- We also give our inner `<div>` and `<span>` the right amount of {{cssxref("z-index")}} so that the timer will be displayed on top, and the inner `<div>` below that. This way, we make sure we can see all the information — one box is not obscuring another.
 
 ### Implementing the JavaScript
 
@@ -188,9 +186,9 @@ We've got a fairly complete HTML and CSS interface already; now we just need to 
 
     Here we are creating constants to hold references to all the objects we want to manipulate. We have three groups:
 
-    -   The `<video>` element, and the controls bar.
-    -   The play/pause, stop, rewind, and fast forward buttons.
-    -   The outer timer wrapper `<div>`, the digital timer readout `<span>`, and the inner `<div>` that gets wider as the time elapses.
+    - The `<video>` element, and the controls bar.
+    - The play/pause, stop, rewind, and fast forward buttons.
+    - The outer timer wrapper `<div>`, the digital timer readout `<span>`, and the inner `<div>` that gets wider as the time elapses.
 
 3.  Next, insert the following at the bottom of your code:
 
@@ -386,8 +384,7 @@ At this point, you could delete the equivalent lines from the `windBackward()` a
 
 Note: You could also further improve the efficiency of the code by creating a separate function that runs these lines, then calling that anywhere it is needed, rather than repeating the lines multiple times in the code. But we'll leave that one up to you.
 
-Summary
--------
+## Summary
 
 I think we've taught you enough in this article. The {{domxref("HTMLMediaElement")}} API makes a wealth of functionality available for creating simple video and audio players, and that's only the tip of the iceberg. See the "See also" section below for links to more complex and interesting functionality.
 
@@ -403,25 +400,23 @@ Here are some suggestions for ways you could enhance the existing example we've 
           console.log(e.x) + ',' + console.log(e.y)
         }
 
-See also
---------
+## See also
 
--   {{domxref("HTMLMediaElement")}}
--   [Video and audio content](/en-US/docs/Learn/HTML/Multimedia_and_embedding/Video_and_audio_content) — simple guide to `<video>` and `<audio>` HTML.
--   [Audio and video delivery](/en-US/docs/Web/Guide/Audio_and_video_delivery) — detailed guide to delivering media inside the browser, with many tips, tricks, and links to further more advanced tutorials.
--   [Audio and video manipulation](/en-US/docs/Web/Guide/Audio_and_video_manipulation) — detailed guide to manipulating audio and video, e.g. with [Canvas API](/en-US/docs/Web/API/Canvas_API), [Web Audio API](/en-US/docs/Web/API/Web_Audio_API), and more.
--   {{htmlelement("video")}} and {{htmlelement("audio")}} reference pages.
--   [Guide to media types and formats on the web](/en-US/docs/Web/Media/Formats)
+- {{domxref("HTMLMediaElement")}}
+- [Video and audio content](/en-US/docs/Learn/HTML/Multimedia_and_embedding/Video_and_audio_content) — simple guide to `<video>` and `<audio>` HTML.
+- [Audio and video delivery](/en-US/docs/Web/Guide/Audio_and_video_delivery) — detailed guide to delivering media inside the browser, with many tips, tricks, and links to further more advanced tutorials.
+- [Audio and video manipulation](/en-US/docs/Web/Guide/Audio_and_video_manipulation) — detailed guide to manipulating audio and video, e.g. with [Canvas API](/en-US/docs/Web/API/Canvas_API), [Web Audio API](/en-US/docs/Web/API/Web_Audio_API), and more.
+- {{htmlelement("video")}} and {{htmlelement("audio")}} reference pages.
+- [Guide to media types and formats on the web](/en-US/docs/Web/Media/Formats)
 
 {{PreviousMenuNext("Learn/JavaScript/Client-side\_web\_APIs/Drawing\_graphics", "Learn/JavaScript/Client-side\_web\_APIs/Client-side\_storage", "Learn/JavaScript/Client-side\_web\_APIs")}}
 
-In this module
---------------
+## In this module
 
--   [Introduction to web APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Introduction)
--   [Manipulating documents](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Manipulating_documents)
--   [Fetching data from the server](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Fetching_data)
--   [Third party APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Third_party_APIs)
--   [Drawing graphics](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Drawing_graphics)
--   [Video and audio APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Video_and_audio_APIs)
--   [Client-side storage](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Client-side_storage)
+- [Introduction to web APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Introduction)
+- [Manipulating documents](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Manipulating_documents)
+- [Fetching data from the server](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Fetching_data)
+- [Third party APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Third_party_APIs)
+- [Drawing graphics](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Drawing_graphics)
+- [Video and audio APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Video_and_audio_APIs)
+- [Client-side storage](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Client-side_storage)

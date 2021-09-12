@@ -1,4 +1,4 @@
---- title: Handling common HTML and CSS problems slug: Learn/Tools\_and\_testing/Cross\_browser\_testing/HTML\_and\_CSS tags: - Article - Beginner - CSS - CodingScripting - HTML - Learn - Selectors - Testing - cross browser - linting ---
+--- title: Handling common HTML and CSS problems slug: Learn/Tools_and_testing/Cross_browser_testing/HTML_and_CSS tags: - Article - Beginner - CSS - CodingScripting - HTML - Learn - Selectors - Testing - cross browser - linting ---
 
 {{LearnSidebar}}
 
@@ -8,15 +8,13 @@ With the scene set, we'll now look specifically at the common cross-browser prob
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Familiarity with the core <a href="/en-US/docs/Learn/HTML">HTML</a>, <a href="/en-US/docs/Learn/CSS">CSS</a>, and <a href="/en-US/docs/Learn/JavaScript">JavaScript</a> languages; an idea of the high level <a href="/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Introduction">principles of cross browser testing</a>.</td></tr><tr class="even"><td>Objective:</td><td>To be able to diagnose common HTML and CSS cross browser problems, and use appropriate tools and techniques to fix them.</td></tr></tbody></table>
 
-The trouble with HTML and CSS
------------------------------
+## The trouble with HTML and CSS
 
 Some of the trouble with HTML and CSS lies with the fact that both languages are fairly simple, and often developers don't take them seriously, in terms of making sure the code is well-crafted, efficient, and semantically describes the purpose of the features on the page. In the worst cases, JavaScript is used to generate the entire web page content and style, which makes your pages inaccessible, and less performant (generating DOM elements is expensive). In other cases, nascent features are not supported consistently across browsers, which can make some features and styles not work for some users. Responsive design problems are also common — a site that looks good in a desktop browser might provide a terrible experience on a mobile device, because the content is too small to read, or perhaps the site is slow because of expensive animations.
 
 Let's go forth and look at how we can reduce cross browser errors that result from HTML/CSS.
 
-First things first: fixing general problems
--------------------------------------------
+## First things first: fixing general problems
 
 We said in the [first article of this series](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Introduction#testingdiscovery) that a good strategy to begin with is to test in a couple of modern browsers on desktop/mobile, to make sure your code is working generally, before going on to concentrate on the cross browser issues.
 
@@ -38,7 +36,7 @@ CSS has a similar story — you need to check that your property names are spell
 
 Another good option to choose is a so-called Linter application, which not only points out errors, but can also flag up warnings about bad practices in your CSS, and other points besides. Linters can generally be customized to be stricter or more relaxed in their error/warning reporting.
 
-There are many online linter applications, the best of which are probably [Dirty Markup](https://www.10bestdesign.com/dirtymarkup/) (HTML, CSS, JavaScript), and [CSS Lint](http://csslint.net/) (CSS only). These allows you to paste your code into a window, and it will flag up any errors with crosses, which can then be hovered to get an error message informing you what the problem is. Dirty Markup also allows you to make fixes to your markup using the *Clean* button.
+There are many online linter applications, the best of which are probably [Dirty Markup](https://www.10bestdesign.com/dirtymarkup/) (HTML, CSS, JavaScript), and [CSS Lint](http://csslint.net/) (CSS only). These allows you to paste your code into a window, and it will flag up any errors with crosses, which can then be hovered to get an error message informing you what the problem is. Dirty Markup also allows you to make fixes to your markup using the _Clean_ button.
 
 ![](dirty-markup.png)
 
@@ -47,18 +45,18 @@ However, it is not very convenient to have to copy and paste your code over to a
 Many code editors have linter plugins. Github's [Atom](https://atom.io/) code editor for example has a rich plugin ecosystem available, with many linting options. To show you an example of how such plugins generally work:
 
 1.  Install Atom (if you haven't got an up-to-date version already installed) — download it from the Atom page linked above.
-2.  Go to Atom's *Preferences...* dialog (e.g. by Choosing *Atom &gt; Preferences...* on Mac, or *File &gt; Preferences...* on Windows/Linux) and choose the *Install* option in the left hand menu.
-3.  In the *Search packages* text field, type "lint" and press Enter/Return to search for linting-related packages.
-4.  You should see a package called **lint** at the top of the list. Install this first (using the *Install* button), as other linters rely on it to work. After that, install the **linter-csslint** plugin for linting CSS, and the **linter-tidy** plugin for linting HTML.
+2.  Go to Atom's _Preferences..._ dialog (e.g. by Choosing _Atom &gt; Preferences..._ on Mac, or _File &gt; Preferences..._ on Windows/Linux) and choose the _Install_ option in the left hand menu.
+3.  In the _Search packages_ text field, type "lint" and press Enter/Return to search for linting-related packages.
+4.  You should see a package called **lint** at the top of the list. Install this first (using the _Install_ button), as other linters rely on it to work. After that, install the **linter-csslint** plugin for linting CSS, and the **linter-tidy** plugin for linting HTML.
 5.  After the packages have finished installing, try loading up an HTML file and a CSS file: you'll see any issues highlighted with green (for warnings) and red (for errors) circles next to the line numbers, and a separate panel at the bottom provides line numbers, error messages, and sometimes suggested values or other fixes.
 
 ![](atom-htmltidy.png)![](atom-csslint.png)
 
 Other popular editors have similar linting packages available. For example, see:
 
--   [SublimeLinter](https://www.sublimelinter.com/) for Sublime Text
--   [Notepad++ linter](https://sourceforge.net/projects/notepad-linter/)
--   [VSCode linters](https://marketplace.visualstudio.com/search?target=vscode&category=Linters&sortBy=Installs)
+- [SublimeLinter](https://www.sublimelinter.com/) for Sublime Text
+- [Notepad++ linter](https://sourceforge.net/projects/notepad-linter/)
+- [VSCode linters](https://marketplace.visualstudio.com/search?target=vscode&category=Linters&sortBy=Installs)
 
 ### Browser developer tools
 
@@ -72,8 +70,7 @@ As an example, in Firefox the CSS inspector will show CSS declarations that aren
 
 Other browser devtools have similar features.
 
-Common cross browser problems
------------------------------
+## Common cross browser problems
 
 Now let's move on to look at some of the most common cross browser HTML and CSS problems. The main areas we'll look at are lack of support for modern features, and layout issues.
 
@@ -198,7 +195,7 @@ The button has a number of declarations that style, but the two we are most inte
                   inset -1px -1px 3px rgba(255,255,255,0.4);
     }
 
-Here we are providing an [RGBA](/en-US/docs/Web/CSS/color_value#rgba()) {{cssxref("background-color")}} that changes opacity on hover to give the user a hint that the button is interactive, and some semi-transparent inset {{cssxref("box-shadow")}} shades to give the button a bit of texture and depth. The trouble is that RGBA colors and box shadows don't work in IE versions older than 9 — in older versions the background just wouldn't show up at all so the text would be unreadable, no good at all!
+Here we are providing an [RGBA](</en-US/docs/Web/CSS/color_value#rgba()>) {{cssxref("background-color")}} that changes opacity on hover to give the user a hint that the button is interactive, and some semi-transparent inset {{cssxref("box-shadow")}} shades to give the button a bit of texture and depth. The trouble is that RGBA colors and box shadows don't work in IE versions older than 9 — in older versions the background just wouldn't show up at all so the text would be unreadable, no good at all!
 
 ![](unreadable-button.png)
 
@@ -265,9 +262,9 @@ If you try running this in an old version of IE, it should work fine.
 
 Another set of problems comes with CSS prefixes — these are a mechanism originally used to allow browser vendors to implement their own version of a CSS (or JavaScript) feature while the technology is in an experimental state, so they can play with it and get it right without conflicting with other browser's implementations, or the final unprefixed implementations. So for example:
 
--   Mozilla uses `-moz-`
--   Chrome/Opera/Safari use `-webkit-`
--   Microsoft uses `-ms-`
+- Mozilla uses `-moz-`
+- Chrome/Opera/Safari use `-webkit-`
+- Microsoft uses `-ms-`
 
 Here's some examples:
 
@@ -327,9 +324,9 @@ Autoprefixer can also be used in other, more convenient ways — see [Autoprefix
 
 You can also use a plugin for a text editor such as Atom or Sublime text. For example, in Atom:
 
-1.  You can install it by going to *Preferences &gt; Install*, searching for *Autoprefixer*, then hitting install.
-2.  You can set a browser query by pressing the Autoprefixer *Settings* button and entering the query in the text field in the *Settings* section on the page.
-3.  In your code, you can select sections of CSS you want to add prefixes to, open the command pallette (*Cmd/Ctrl + Shift + P*), then type in Autoprefixer and select the Autoprefixer result that autocompletes.
+1.  You can install it by going to _Preferences &gt; Install_, searching for _Autoprefixer_, then hitting install.
+2.  You can set a browser query by pressing the Autoprefixer _Settings_ button and entering the query in the text field in the _Settings_ section on the page.
+3.  In your code, you can select sections of CSS you want to add prefixes to, open the command pallette (_Cmd/Ctrl + Shift + P_), then type in Autoprefixer and select the Autoprefixer result that autocompletes.
 
 As an example, we entered the following code:
 
@@ -349,8 +346,8 @@ We highlighted it and ran the Autoprefixer command, and it replaced it with this
 
 Another problem that might come up is differences in layouts between browsers. Historically this used to be much more of a problem, but recently, with modern browsers tending to support CSS more consistently, layout issues tend to be more commonly associated with:
 
--   Lack of (or differences in) support for modern layout features.
--   Layouts not looking good in mobile browsers (i.e. responsive design problems).
+- Lack of (or differences in) support for modern layout features.
+- Layouts not looking good in mobile browsers (i.e. responsive design problems).
 
 **Note**: Historically web developers used to use CSS files called resets, which removed all the default browser styling applied to HTML, and then applied their own styles for everything over the top — this was done to make styling on a project more consistent, and reduce possible cross browser issues, especially for things like layout. However, it has more recently been seen as overkill. The best equivalent we have in modern times is [normalize.css](https://necolas.github.io/normalize.css/), a neat bit of CSS that builds slightly on the default browser styling to make things more consistent and fix some layout issues. You are advised to apply normalize.css to all your HTML pages.
 
@@ -362,8 +359,8 @@ Much of the layout work on the web today is done using [floats](/en-US/docs/Lear
 
 More recently, dedicated layout mechanisms have appeared, like [Flexbox](/en-US/docs/Learn/CSS/CSS_layout/Flexbox) and [CSS Grids](/en-US/docs/Learn/CSS/CSS_layout/Grids#native_css_grids_with_grid_layout), which make common layout tasks far easier and remove such shortcomings. These however are not as well-supported in browsers:
 
--   CSS grids are very new; at the time of writing, they were only [supported](https://gridbyexample.com/browsers/) in the very newest versions of modern browsers.
--   Flexbox is [well-supported](/en-US/docs/Learn/CSS/CSS_layout/Flexbox#cross_browser_compatibility) in modern browsers, but provides problems in older browsers. IE 9 doesn't support it at all, and IE 10 and old versions of iOS/desktop Safari respectively support incompatible old versions of the flexbox spec. This results in some interesting browser prefix juggling if you want to try to use flexbox across all these browsers (see [Advanced Cross-Browser Flexbox](https://dev.opera.com/articles/advanced-cross-browser-flexbox/) to get an idea).
+- CSS grids are very new; at the time of writing, they were only [supported](https://gridbyexample.com/browsers/) in the very newest versions of modern browsers.
+- Flexbox is [well-supported](/en-US/docs/Learn/CSS/CSS_layout/Flexbox#cross_browser_compatibility) in modern browsers, but provides problems in older browsers. IE 9 doesn't support it at all, and IE 10 and old versions of iOS/desktop Safari respectively support incompatible old versions of the flexbox spec. This results in some interesting browser prefix juggling if you want to try to use flexbox across all these browsers (see [Advanced Cross-Browser Flexbox](https://dev.opera.com/articles/advanced-cross-browser-flexbox/) to get an idea).
 
 Layout features aren't as easy to provide graceful fallbacks for as simple colors, shadows, or gradients. If layout properties are ignored, your entire design will likely fall to pieces. Because of this, you need to use feature detection to detect whether visiting browsers support those layout features, and selectively apply different layouts depending on the result (we will cover feature detection in detail in a later article).
 
@@ -379,8 +376,7 @@ Resolution is a big issue too — for example, mobile devices are less likely to
 
 Another difficulty that can present problems is browser support for the features that make the above techniques possible. media queries are not supported in IE 8 or less, so if you want to use a mobile first layout and have the desktop layout then apply to old IE versions, you'll have to apply a media query {{glossary("polyfill")}} to your page, like [css3-mediaqueries-js](https://code.google.com/archive/p/css3-mediaqueries-js/), or [Respond.js](https://github.com/scottjehl/Respond).
 
-Finding help
-------------
+## Finding help
 
 There are many other issues you'll encounter with HTML and CSS, making knowledge of how to find answers online invaluable.
 
@@ -388,9 +384,9 @@ Among the best sources of support information are the Mozilla Developer Network 
 
 To use the Mozilla Developer Network (MDN), most people do a search engine search of the technology they are trying to find information on, plus the term "mdn", for example "mdn HTML5 video". MDN contains several useful types of content:
 
--   Reference material with browser support information for client-side web technologies, e.g. the [&lt;video&gt; reference page](/en-US/docs/Web/HTML/Element/video).
--   Other supporting reference material, e.g. the [Guide to media types and formats on the web](/en-US/docs/Web/Media/Formats),
--   Useful tutorials that solve specific problems, for example, [Creating a cross-browser video player](/en-US/docs/Web/Guide/Audio_and_video_delivery/cross_browser_video_player).
+- Reference material with browser support information for client-side web technologies, e.g. the [&lt;video&gt; reference page](/en-US/docs/Web/HTML/Element/video).
+- Other supporting reference material, e.g. the [Guide to media types and formats on the web](/en-US/docs/Web/Media/Formats),
+- Useful tutorials that solve specific problems, for example, [Creating a cross-browser video player](/en-US/docs/Web/Guide/Audio_and_video_delivery/cross_browser_video_player).
 
 [caniuse.com](https://caniuse.com/) provides support information, along with a few useful external resource links. For example, see <https://caniuse.com/#search=video> (you just have to enter the feature you are searching for into the text box).
 
@@ -398,21 +394,19 @@ To use the Mozilla Developer Network (MDN), most people do a search engine searc
 
 Aside from that, try searching your favorite search engine for an answer to your problem. It is often useful to search for specific error messages if you have them — other developers will be likely to have had the same problems as you.
 
-Summary
--------
+## Summary
 
 Now you should be familiar with the main types of cross browser HTML and CSS problems that you'll meet in web development, and how to go about fixing them.
 
 {{PreviousMenuNext("Learn/Tools\_and\_testing/Cross\_browser\_testing/Testing\_strategies","Learn/Tools\_and\_testing/Cross\_browser\_testing/JavaScript", "Learn/Tools\_and\_testing/Cross\_browser\_testing")}}
 
-In this module
---------------
+## In this module
 
--   [Introduction to cross browser testing](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Introduction)
--   [Strategies for carrying out testing](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Testing_strategies)
--   [Handling common HTML and CSS problems](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/HTML_and_CSS)
--   [Handling common JavaScript problems](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/JavaScript)
--   [Handling common accessibility problems](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Accessibility)
--   [Implementing feature detection](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Feature_detection)
--   [Introduction to automated testing](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Automated_testing)
--   [Setting up your own test automation environment](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Your_own_automation_environment)
+- [Introduction to cross browser testing](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Introduction)
+- [Strategies for carrying out testing](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Testing_strategies)
+- [Handling common HTML and CSS problems](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/HTML_and_CSS)
+- [Handling common JavaScript problems](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/JavaScript)
+- [Handling common accessibility problems](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Accessibility)
+- [Implementing feature detection](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Feature_detection)
+- [Introduction to automated testing](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Automated_testing)
+- [Setting up your own test automation environment](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Your_own_automation_environment)

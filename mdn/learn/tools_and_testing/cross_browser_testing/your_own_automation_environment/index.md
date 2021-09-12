@@ -1,6 +1,5 @@
---- title: Setting up your own test automation environment slug: Learn/Tools\_and\_testing/Cross\_browser\_testing/Your\_own\_automation\_environment tags: - Article - Automation - Beginner - Browser - CodingScripting - Learn - Testing - Tools - cross browser - selenium ---
+--- title: Setting up your own test automation environment slug: Learn/Tools_and_testing/Cross_browser_testing/Your_own_automation_environment tags: - Article - Automation - Beginner - Browser - CodingScripting - Learn - Testing - Tools - cross browser - selenium ---
 
-  
 {{LearnSidebar}}
 
 {{PreviousMenu("Learn/Tools\_and\_testing/Cross\_browser\_testing/Automated\_testing", "Learn/Tools\_and\_testing/Cross\_browser\_testing")}}
@@ -9,8 +8,7 @@ In this article, we will teach you how to install your own automation environmen
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Familiarity with the core <a href="/en-US/docs/Learn/HTML">HTML</a>, <a href="/en-US/docs/Learn/CSS">CSS</a>, and <a href="/en-US/docs/Learn/JavaScript">JavaScript</a> languages; an idea of the high-level <a href="/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Introduction">principles of cross browser testing</a>, and <a href="/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Automated_testing">automated testing</a>.</td></tr><tr class="even"><td>Objective:</td><td>To show how to set up a Selenium testing environment locally and run tests with it, and how to integrate it with tools like LambdaTest, Sauce Labs, and BrowserStack.</td></tr></tbody></table>
 
-Selenium
---------
+## Selenium
 
 [Selenium](https://www.seleniumhq.org/) is the most popular browser automation tool. There are other ways, but the best way to use Selenium is via WebDriver, a powerful API that builds on top of Selenium and makes calls to a browser to automate it, carrying out actions such as "open this web page", "move over this element on the page", "click this link", "see whether the link opens this URL", etc. This is ideal for running automated tests.
 
@@ -97,8 +95,7 @@ OK, let's try a quick test to make sure everything is working.
 
 You should see an instance of Firefox automatically open up! Google should automatically be loaded in a tab, "webdriver" should be entered in the search box, and the search button will be clicked. WebDriver will then wait for 2 seconds; the document title is then accessed, and if it is "webdriver - Google Search", we will return a message to claim the test is passed. WebDriver will then close down the Firefox instance and stop.
 
-Testing in multiple browsers at once
-------------------------------------
+## Testing in multiple browsers at once
 
 There is also nothing to stop you running the test on multiple browsers simultaneously. Let's try this!
 
@@ -153,8 +150,7 @@ So here we've done the test as before, except that this time we've wrapped it in
 
 Fun huh? Let's move on, look at the basics of WebDriver syntax, in a bit more detail.
 
-WebDriver syntax crash course
------------------------------
+## WebDriver syntax crash course
 
 Let's have a look at a few key features of the webdriver syntax. For more complete details, you should consult the [selenium-webdriver JavaScript API reference](https://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/) for a detailed reference, and the Selenium main documentation's [Selenium WebDriver](https://www.seleniumhq.org/docs/03_webdriver.jsp) and [WebDriver: Advanced Usage](https://www.seleniumhq.org/docs/04_webdriver_advanced.jsp) pages, which contain multiple examples to learn from written in different languages.
 
@@ -208,7 +204,7 @@ or
 
     driver.get('http://localhost:8888/fake-div-buttons.html');
 
-But it is better to use a remote server location so the code is more flexible — when you start using a remote server to run your tests (see later on), your code will break if you try to use local paths. 
+But it is better to use a remote server location so the code is more flexible — when you start using a remote server to run your tests (see later on), your code will break if you try to use local paths.
 
 Add this line to the bottom of `quick_test.js` now:
 
@@ -312,8 +308,7 @@ After you've finished running a test, you should shut down any driver instances 
 
 <span class="p">When you run it, you should now see the test execute and the browser instance shut down again after the test is complete. This is useful for not cluttering up your computer with loads of browser instances, especially if you have so many that it is causing the computer to slow down.</span>
 
-Test best practices
--------------------
+## Test best practices
 
 There has been a lot written about best practices for writing tests. You can find some good background information at [Test Design Considerations](https://www.seleniumhq.org/docs/06_test_design_considerations.jsp). In general, you should make sure that your tests are:
 
@@ -336,8 +331,7 @@ In addition, we should mention test results/reporting — we've been reporting r
 
 **Note**: [saucelabs-sample-test-frameworks](https://github.com/saucelabs-sample-test-frameworks) contains several useful examples showing how to set up different combinations of test/assertion tools.
 
-Running remote tests
---------------------
+## Running remote tests
 
 It turns out that running tests on remote servers isn't that much more difficult than running them locally. You just need to create your driver instance, but with a few more features specified, including the capabilities of the browser you want to test on, the address of the server, and the user credentials you need (if any) to access it.
 
@@ -403,7 +397,7 @@ Let's write an example:
 
         searchTextOnGoogle();
 
-3.  Visit your [LambdaTest automation dashboard](https://www.lambdatest.com/selenium-automation), to fetch your LambdaTest's username and access key by clicking on the **key **icon on the top-right(see *Username and Access Keys*). Replace the `{username}` and `{accessKey}` placeholders in the code with your actual user name and access key values (and make sure you keep them secure).
+3.  Visit your [LambdaTest automation dashboard](https://www.lambdatest.com/selenium-automation), to fetch your LambdaTest's username and access key by clicking on the **key **icon on the top-right(see _Username and Access Keys_). Replace the `{username}` and `{accessKey}` placeholders in the code with your actual user name and access key values (and make sure you keep them secure).
 4.  Run the below command in your terminal to execute your test:
 
         node lambdatest_google_test
@@ -416,7 +410,7 @@ Let's write an example:
 
 **Note**: The *HELP*  button on LambdaTest Automation Dashboard will provide you with an ample amount of information to help you get started with LambdaTest automation. You can also follow our documentation about [running first Selenium script in Node JS](https://www.lambdatest.com/support/docs/quick-guide-to-run-node-js-tests-on-lambdatest-selenium-grid/).
 
-**Note**: If you don't want to write out the capabilities objects for your tests by hand, you can generate them using the [Selenium Desired Capabilities Generator](https://www.lambdatest.com/capabilities-generator/). 
+**Note**: If you don't want to write out the capabilities objects for your tests by hand, you can generate them using the [Selenium Desired Capabilities Generator](https://www.lambdatest.com/capabilities-generator/).
 
 #### Filling in test details on LambdaTest programmatically
 
@@ -482,7 +476,7 @@ Let's write an example:
 
         driver.quit();
 
-3.  From your [BrowserStack automation dashboard](https://www.browserstack.com/automate), get your user name and access key (see *Username and Access Keys*). Replace the `YOUR-USER-NAME` and `YOUR-ACCESS-KEY` placeholders in the code with your actual user name and access key values (and make sure you keep them secure).
+3.  From your [BrowserStack automation dashboard](https://www.browserstack.com/automate), get your user name and access key (see _Username and Access Keys_). Replace the `YOUR-USER-NAME` and `YOUR-ACCESS-KEY` placeholders in the code with your actual user name and access key values (and make sure you keep them secure).
 4.  Run your test with the following command:
 
         node bstack_google_test
@@ -494,7 +488,7 @@ Let's write an example:
 
 If you click on the link for your test, you'll get to a new screen where you will be able to see a video recording of the test, and multiple detailed logs of information pertaining to it.
 
-**Note**: The *Resources* menu option on the Browserstack automation dashboard contains a wealth of useful information on using it to run automated tests. See [Node JS Documentation for writing automate test scripts in Node JS](https://www.browserstack.com/automate/node) for the node-specific information. Explore the docs to find out all the useful things BrowserStack can do.
+**Note**: The _Resources_ menu option on the Browserstack automation dashboard contains a wealth of useful information on using it to run automated tests. See [Node JS Documentation for writing automate test scripts in Node JS](https://www.browserstack.com/automate/node) for the node-specific information. Explore the docs to find out all the useful things BrowserStack can do.
 
 **Note**: If you don't want to write out the capabilities objects for your tests by hand, you can generate them using the generators embedded in the docs. See [Run tests on mobile browsers](https://www.browserstack.com/automate/node#run-tests-on-mobile) and [Run tests on desktop browsers](https://www.browserstack.com/automate/node#setting-os-and-browser).
 
@@ -687,8 +681,7 @@ Now we've got the server running, let's create a demo test that will run on the 
 
 So this is pretty cool. We have tested this locally, but you could set this up on just about any server along with the relevant browser drivers, and then connect your scripts to it using the URL you choose to expose it at.
 
-Integrating Selenium with CI tools
-----------------------------------
+## Integrating Selenium with CI tools
 
 As another point, it is also possible to integrate Selenium and related tools like LambdaTest, and Sauce Labs with continuous integration (CI) tools — this is useful, as it means you can run your tests via a CI tool, and only commit new changes to your code repository if the tests pass.
 
@@ -696,30 +689,28 @@ It is out of scope to look at this area in detail in this article, but we'd sugg
 
 To get started, see for example:
 
--   [Travis CI for complete beginners](https://docs.travis-ci.com/user/for-beginners)
--   [Building a Node.js project](https://docs.travis-ci.com/user/languages/javascript-with-nodejs/) (with Travis)
--   [Using LambdaTest with Travis CI](https://www.lambdatest.com/support/docs/travis-ci-with-lambdatest/)
--   [Using LambdTest with CircleCI](https://www.lambdatest.com/support/docs/circleci-integration-with-lambdatest/)
--   [Using LambdaTest with Jenkins](https://www.lambdatest.com/support/docs/jenkins-with-lambdatest/)
--   [Using Sauce Labs with Travis CI](https://docs.travis-ci.com/user/sauce-connect/)
+- [Travis CI for complete beginners](https://docs.travis-ci.com/user/for-beginners)
+- [Building a Node.js project](https://docs.travis-ci.com/user/languages/javascript-with-nodejs/) (with Travis)
+- [Using LambdaTest with Travis CI](https://www.lambdatest.com/support/docs/travis-ci-with-lambdatest/)
+- [Using LambdTest with CircleCI](https://www.lambdatest.com/support/docs/circleci-integration-with-lambdatest/)
+- [Using LambdaTest with Jenkins](https://www.lambdatest.com/support/docs/jenkins-with-lambdatest/)
+- [Using Sauce Labs with Travis CI](https://docs.travis-ci.com/user/sauce-connect/)
 
 **Note**: If you wish to perform continuous testing with **codeless automation** then you can use [Endtest](https://endtest.io) or [TestingBot](https://testingbot.com).
 
-Summary
--------
+## Summary
 
 This module should have proven fun, and should have given you enough of an insight into writing and running automated tests for you to get going with writing your own automated tests.
 
 {{PreviousMenu("Learn/Tools\_and\_testing/Cross\_browser\_testing/Automated\_testing", "Learn/Tools\_and\_testing/Cross\_browser\_testing")}}
 
-In this module
---------------
+## In this module
 
--   [Introduction to cross browser testing](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Introduction)
--   [Strategies for carrying out testing](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Testing_strategies)
--   [Handling common HTML and CSS problems](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/HTML_and_CSS)
--   [Handling common JavaScript problems](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/JavaScript)
--   [Handling common accessibility problems](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Accessibility)
--   [Implementing feature detection](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Feature_detection)
--   [Introduction to automated testing](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Automated_testing)
--   [Setting up your own test automation environment](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Your_own_automation_environment)
+- [Introduction to cross browser testing](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Introduction)
+- [Strategies for carrying out testing](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Testing_strategies)
+- [Handling common HTML and CSS problems](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/HTML_and_CSS)
+- [Handling common JavaScript problems](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/JavaScript)
+- [Handling common accessibility problems](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Accessibility)
+- [Implementing feature detection](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Feature_detection)
+- [Introduction to automated testing](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Automated_testing)
+- [Setting up your own test automation environment](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Your_own_automation_environment)

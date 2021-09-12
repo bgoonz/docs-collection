@@ -1,4 +1,4 @@
---- title: Function return values slug: Learn/JavaScript/Building\_blocks/Return\_values tags: - Article - Beginner - CodingScripting - Functions - Guide - JavaScript - Learn - Return - Return values - l10n:priority ---
+--- title: Function return values slug: Learn/JavaScript/Building_blocks/Return_values tags: - Article - Beginner - CodingScripting - Functions - Guide - JavaScript - Learn - Return - Return values - l10n:priority ---
 
 {{LearnSidebar}}
 
@@ -8,8 +8,7 @@
 
 <table><colgroup><col style="width: 50%" /><col style="width: 50%" /></colgroup><tbody><tr class="odd"><td>Prerequisites:</td><td><p>Basic computer literacy, a basic understanding of HTML and CSS, <a href="/en-US/docs/Learn/JavaScript/First_steps">JavaScript first steps</a>, <a href="/en-US/docs/Learn/JavaScript/Building_blocks/Functions">Functions — reusable blocks of code</a>.</p></td></tr><tr class="even"><td>Objective:</td><td>To understand function return values, and how to make use of them.</td></tr></tbody></table>
 
-What are return values?
------------------------
+## What are return values?
 
 **Return values** are just what they sound like —  the values that a function returns when it has completed. You've already met return values a number of times, although you may not have thought about them explicitly.
 
@@ -49,7 +48,7 @@ To return a value from a custom function, you need to use the [return](/en-US/do
       }
     }
 
-Inside each loop iteration, three calls are made to the `random()` function, to generate a random value for the current circle's *x-coordinate*, *y-coordinate*, and *radius*, respectively. The `random()` function takes one parameter — a whole number — and it returns a whole random number between `0` and that number. It looks like this:
+Inside each loop iteration, three calls are made to the `random()` function, to generate a random value for the current circle's _x-coordinate_, _y-coordinate_, and _radius_, respectively. The `random()` function takes one parameter — a whole number — and it returns a whole random number between `0` and that number. It looks like this:
 
     function random(number) {
       return Math.floor(Math.random() * number);
@@ -76,8 +75,7 @@ If the three `random()` calls returned the values `500`, `200`, and `35`, respec
 
 The function calls on the line are run first, and their return values substituted for the function calls, before the line itself is then executed.
 
-Active learning: our own return value function
-----------------------------------------------
+## Active learning: our own return value function
 
 Let's have a go at writing our own functions featuring return values.
 
@@ -128,43 +126,38 @@ Let's have a go at writing our own functions featuring return values.
 
 **Note**: If you have trouble getting the example to work, feel free to check your code against the [finished version on GitHub](https://github.com/mdn/learning-area/blob/master/javascript/building-blocks/functions/function-library-finished.html) ([see it running live](https://mdn.github.io/learning-area/javascript/building-blocks/functions/function-library-finished.html) also), or ask us for help.
 
-Now it's your turn!
--------------------
+## Now it's your turn!
 
 At this point, we'd like you to have a go at writing out a couple of functions of your own and adding them to the library. How about the square or cube root of the number? Or the circumference of a circle with a given radius?
 
 Some extra function related tips:
 
--   Look at another example of writing *error handling* into functions. It is generally a good idea to check that any necessary parameters are validated, and that any optional parameters have some kind of default value provided. This way, your program will be less likely to throw errors.
--   Think about the idea of creating a *function library*. As you go further into your programming career, you'll start doing the same kinds of things over and over again. It is a good idea to create your own library of utility functions to do these sorts of things. You can copy them over to new code, or even just apply it to HTML pages wherever you need it.
+- Look at another example of writing _error handling_ into functions. It is generally a good idea to check that any necessary parameters are validated, and that any optional parameters have some kind of default value provided. This way, your program will be less likely to throw errors.
+- Think about the idea of creating a _function library_. As you go further into your programming career, you'll start doing the same kinds of things over and over again. It is a good idea to create your own library of utility functions to do these sorts of things. You can copy them over to new code, or even just apply it to HTML pages wherever you need it.
 
-Test your skills!
------------------
+## Test your skills!
 
 You've reached the end of this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: Functions](/en-US/docs/Learn/JavaScript/Building_blocks/Test_your_skills:_Functions).
 
-Conclusion
-----------
+## Conclusion
 
 So there we have it — functions are fun, very useful, and although there's a lot to talk about in regards to their syntax and functionality, they are fairly understandable.
 
 If there is anything you didn't understand, feel free to read through the article again, or [contact us](/en-US/docs/Learn#contact_us) to ask for help.
 
-See also
---------
+## See also
 
--   [Functions in-depth](/en-US/docs/Web/JavaScript/Reference/Functions) — a detailed guide covering more advanced functions-related information.
--   [Callback functions in JavaScript](https://www.impressivewebs.com/callback-functions-javascript/) — a common JavaScript pattern is to pass a function into another function *as an argument*. It is then called inside the first function. This is a little beyond the scope of this course, but worth studying before too long.
+- [Functions in-depth](/en-US/docs/Web/JavaScript/Reference/Functions) — a detailed guide covering more advanced functions-related information.
+- [Callback functions in JavaScript](https://www.impressivewebs.com/callback-functions-javascript/) — a common JavaScript pattern is to pass a function into another function _as an argument_. It is then called inside the first function. This is a little beyond the scope of this course, but worth studying before too long.
 
 {{PreviousMenuNext("Learn/JavaScript/Building\_blocks/Build\_your\_own\_function","Learn/JavaScript/Building\_blocks/Events", "Learn/JavaScript/Building\_blocks")}}
 
-In this module
---------------
+## In this module
 
--   [Making decisions in your code — conditionals](/en-US/docs/Learn/JavaScript/Building_blocks/conditionals)
--   [Looping code](/en-US/docs/Learn/JavaScript/Building_blocks/Looping_code)
--   [Functions — reusable blocks of code](/en-US/docs/Learn/JavaScript/Building_blocks/Functions)
--   [Build your own function](/en-US/docs/Learn/JavaScript/Building_blocks/Build_your_own_function)
--   **Function return values**
--   [Introduction to events](/en-US/docs/Learn/JavaScript/Building_blocks/Events)
--   [Image gallery](/en-US/docs/Learn/JavaScript/Building_blocks/Image_gallery)
+- [Making decisions in your code — conditionals](/en-US/docs/Learn/JavaScript/Building_blocks/conditionals)
+- [Looping code](/en-US/docs/Learn/JavaScript/Building_blocks/Looping_code)
+- [Functions — reusable blocks of code](/en-US/docs/Learn/JavaScript/Building_blocks/Functions)
+- [Build your own function](/en-US/docs/Learn/JavaScript/Building_blocks/Build_your_own_function)
+- **Function return values**
+- [Introduction to events](/en-US/docs/Learn/JavaScript/Building_blocks/Events)
+- [Image gallery](/en-US/docs/Learn/JavaScript/Building_blocks/Image_gallery)

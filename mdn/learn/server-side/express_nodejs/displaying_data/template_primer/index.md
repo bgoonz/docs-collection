@@ -1,20 +1,18 @@
---- title: Template primer slug: Learn/Server-side/Express\_Nodejs/Displaying\_data/Template\_primer tags: - Express - Node - displaying data - part 5 - server-side ---
+--- title: Template primer slug: Learn/Server-side/Express_Nodejs/Displaying_data/Template_primer tags: - Express - Node - displaying data - part 5 - server-side ---
 
-A template is a text file defining the *structure* or layout of an output file, with placeholders used to represent where data will be inserted when the template is rendered (in *Express*, templates are referred to as *views*).
+A template is a text file defining the _structure_ or layout of an output file, with placeholders used to represent where data will be inserted when the template is rendered (in _Express_, templates are referred to as _views_).
 
-Express template choices
-------------------------
+## Express template choices
 
-Express can be used with many different <a href="https://expressjs.com/en/guide/using-template-engines.html" class="external external-icon">template rendering engines</a>. In this tutorial we use <a href="https://pugjs.org/api/getting-started.html" class="external external-icon">Pug</a> (formerly known as *Jade*) for our templates. This is the most popular Node template language, and describes itself as a "clean, whitespace-sensitive syntax for writing HTML, heavily influenced by <a href="https://haml.info/" class="external external-icon">Haml</a>".
+Express can be used with many different <a href="https://expressjs.com/en/guide/using-template-engines.html" class="external external-icon">template rendering engines</a>. In this tutorial we use <a href="https://pugjs.org/api/getting-started.html" class="external external-icon">Pug</a> (formerly known as _Jade_) for our templates. This is the most popular Node template language, and describes itself as a "clean, whitespace-sensitive syntax for writing HTML, heavily influenced by <a href="https://haml.info/" class="external external-icon">Haml</a>".
 
-Different template languages use different approaches for defining layout and marking placeholders for data—some use HTML to define the layout while others use different markup formats that can be transpiled to HTML. Pug is of the second type; it uses a *representation* of HTML where the first word in any line usually represents an HTML element, and indentation on subsequent lines is used to represent nesting. The result is a page definition that translates directly to HTML, but is more concise and arguably easier to read.
+Different template languages use different approaches for defining layout and marking placeholders for data—some use HTML to define the layout while others use different markup formats that can be transpiled to HTML. Pug is of the second type; it uses a _representation_ of HTML where the first word in any line usually represents an HTML element, and indentation on subsequent lines is used to represent nesting. The result is a page definition that translates directly to HTML, but is more concise and arguably easier to read.
 
-**Note:** The downside of using *Pug* is that it is sensitive to indentation and whitespace (if you add an extra space in the wrong place you may get an unhelpful error code). Once you have your templates in place, however, they are very easy to read and maintain.
+**Note:** The downside of using _Pug_ is that it is sensitive to indentation and whitespace (if you add an extra space in the wrong place you may get an unhelpful error code). Once you have your templates in place, however, they are very easy to read and maintain.
 
-Template configuration
-----------------------
+## Template configuration
 
-The *LocalLibrary* was configured to use <a href="https://pugjs.org/api/getting-started.html" class="external external-icon">Pug</a> when we [created the skeleton website](/en-US/docs/Learn/Server-side/Express_Nodejs/skeleton_website). You should see the pug module included as a dependency in the website's **package.json** file, and the following configuration settings in the **app.js** file. The settings tell us that we're using pug as the view engine, and that *Express* should search for templates in the **/views** subdirectory.
+The _LocalLibrary_ was configured to use <a href="https://pugjs.org/api/getting-started.html" class="external external-icon">Pug</a> when we [created the skeleton website](/en-US/docs/Learn/Server-side/Express_Nodejs/skeleton_website). You should see the pug module included as a dependency in the website's **package.json** file, and the following configuration settings in the **app.js** file. The settings tell us that we're using pug as the view engine, and that _Express_ should search for templates in the **/views** subdirectory.
 
     // View engine setup.
     app.set('views', path.join(__dirname, 'views'));
@@ -28,8 +26,7 @@ If you look in the views directory you will see the .pug files for the project's
         index.pug
         layout.pug
 
-Template syntax
----------------
+## Template syntax
 
 The example template file below shows off many of Pug's most useful features.
 
@@ -73,12 +70,12 @@ The first thing to notice is that the file maps the structure of a typical HTML 
 
 Element attributes are defined in parentheses after their associated element. Inside the parentheses, the attributes are defined in comma- or whitespace- separated lists of the pairs of attribute names and attribute values, for example:
 
--   `script(type='text/javascript')`, `link(rel='stylesheet', href='/stylesheets/style.css')`
--   `meta(name='viewport' content='width=device-width initial-scale=1')`
+- `script(type='text/javascript')`, `link(rel='stylesheet', href='/stylesheets/style.css')`
+- `meta(name='viewport' content='width=device-width initial-scale=1')`
 
-The values of all attributes are *escaped* (e.g. characters like "`>`" are converted to their HTML code equivalents like "`&gt;"`) to prevent JavaScript injection or cross-site scripting attacks.
+The values of all attributes are _escaped_ (e.g. characters like "`>`" are converted to their HTML code equivalents like "`&gt;"`) to prevent JavaScript injection or cross-site scripting attacks.
 
-If a tag is followed by the equals sign, the following text is treated as a JavaScript *expression*. So for example, in the first line below, the content of the `h1` tag will be *variable* `title` (either defined in the file or passed into the template from Express). In the second line the paragraph content is a text string concatenated with the `title` variable. In both cases the default behavior is to *escape* the line.
+If a tag is followed by the equals sign, the following text is treated as a JavaScript _expression_. So for example, in the first line below, the content of the `h1` tag will be _variable_ `title` (either defined in the file or passed into the template from Express). In the second line the paragraph content is a text string concatenated with the `title` variable. In both cases the default behavior is to _escape_ the line.
 
     h1= title
     p= 'Evaluated and <em>escaped expression</em>:' + title
@@ -110,10 +107,9 @@ You can also perform loop/iteration operations using `each-in` or `while` syntax
 
 The syntax also supports comments (that can be rendered in the output—or not—as you choose), mixins to create reusable blocks of code, case statements, and many other features. For more detailed information see <a href="https://pugjs.org/api/getting-started.html" class="external external-icon">The Pug docs</a>.
 
-Extending templates
--------------------
+## Extending templates
 
-Across a site, it is usual for all pages to have a common structure, including standard HTML markup for the head, footer, navigation, etc. Rather than forcing developers to duplicate this "boilerplate" in every page, *Pug* allows you to declare a base template and then extend it, replacing just the bits that are different for each specific page.
+Across a site, it is usual for all pages to have a common structure, including standard HTML markup for the head, footer, navigation, etc. Rather than forcing developers to duplicate this "boilerplate" in every page, _Pug_ allows you to declare a base template and then extend it, replacing just the bits that are different for each specific page.
 
 For example, the base template **layout.pug** created in our [skeleton project](/en-US/docs/Learn/Server-side/Express_Nodejs/skeleton_website) looks like this:
 
@@ -135,8 +131,7 @@ The default **index.pug** (created for our skeleton project) shows how we overri
       h1= title
       p Welcome to #{title}
 
-Next steps
-----------
+## Next steps
 
--   Return to [Express Tutorial Part 5: Displaying library data](/en-US/docs/Learn/Server-side/Express_Nodejs/Displaying_data).
--   Proceed to the next subarticle of part 5: [The LocalLibrary base template](/en-US/docs/Learn/Server-side/Express_Nodejs/Displaying_data/LocalLibrary_base_template).
+- Return to [Express Tutorial Part 5: Displaying library data](/en-US/docs/Learn/Server-side/Express_Nodejs/Displaying_data).
+- Proceed to the next subarticle of part 5: [The LocalLibrary base template](/en-US/docs/Learn/Server-side/Express_Nodejs/Displaying_data/LocalLibrary_base_template).

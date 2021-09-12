@@ -1,11 +1,10 @@
---- title: Learning and getting help slug: Learn/Learning\_and\_getting\_help tags: - Beginner - Learn - Learning - Web Development - getting help ---
+--- title: Learning and getting help slug: Learn/Learning_and_getting_help tags: - Beginner - Learn - Learning - Web Development - getting help ---
 
 {{learnsidebar}}
 
 It is great that you are putting some time into learning a new set of skills, but there are good practices to employ that will make your learning more effective. There also are times when you'll get stuck and feel frustrated — even professional web developers feel like this regularly — and it pays to know about the most effective ways to try and get help so you can progress in your work. This article provides some hints and tips in both of these areas that will help you get more out of learning web development, as well as further reading so you can find out more information about each sub-topic should you wish..
 
-Effective learning
-------------------
+## Effective learning
 
 Let's move straight on and think about effective learning.
 
@@ -13,12 +12,12 @@ Let's move straight on and think about effective learning.
 
 It is interesting to consider that there are two main ways in which your brain learns things — **focused** and **diffuse** learning:
 
--   Focused learning is what you might more traditionally associate with academic subjects. You concentrate deeply on a low-level topic and solving the specific problems that it brings. You are focused on a narrow area.
--   Diffuse learning is more to do with high-level thinking around a wider area. You let your mind wander more widely, and seemingly make random connections between different things. This is more the kind of thinking you do while you are in the shower, or during a coffee break.
+- Focused learning is what you might more traditionally associate with academic subjects. You concentrate deeply on a low-level topic and solving the specific problems that it brings. You are focused on a narrow area.
+- Diffuse learning is more to do with high-level thinking around a wider area. You let your mind wander more widely, and seemingly make random connections between different things. This is more the kind of thinking you do while you are in the shower, or during a coffee break.
 
 From the studies that neuroscientists have done on brain activity, we have found out that you can't really engage in both ways of learning — or thinking — at once. So which one should you choose? You might think that focused learning is better for studying, but in reality, **both** are very important.
 
-Focused thinking is great for concentrating hard on specific subjects, getting into deep problem solving, and improving your mastery of the techniques required — strengthening the neural pathways in your brain where that information is stored. It isn't however very good at getting an understanding of "the big picture", and unlocking new neural pathways when you are trying to understand new subjects or solve new problems that you haven't come across before. 
+Focused thinking is great for concentrating hard on specific subjects, getting into deep problem solving, and improving your mastery of the techniques required — strengthening the neural pathways in your brain where that information is stored. It isn't however very good at getting an understanding of "the big picture", and unlocking new neural pathways when you are trying to understand new subjects or solve new problems that you haven't come across before.
 
 For that, you need diffuse thinking. This is the opposite of focus — you let your brain wander around the wider landscape, searching around for connections you didn't have before, touching on new things (or new combinations of things) that you can then focus on later, to strengthen them and start to really understand what they mean.
 
@@ -68,14 +67,14 @@ It is a good idea to create a plan to help you achieve what you want to achieve 
 
 It sounds silly, but why not start with a single sentence that says what you want to achieve? The following have different scopes, but are all realistic and achievable:
 
--   I want to become a professional web developer in two years' time.
--   I want to learn enough to build a website for my local amateur tennis club.
--   I want to learn HTML and CSS so I can expand my job role to take over updating the content on our company website.
+- I want to become a professional web developer in two years' time.
+- I want to learn enough to build a website for my local amateur tennis club.
+- I want to learn HTML and CSS so I can expand my job role to take over updating the content on our company website.
 
 The following are not quite as reasonable:
 
--   I want to go from a complete beginner to becoming a senior web developer in three months.
--   I want to start my own company and build a social network that will out-perform Facebook, in two years.
+- I want to go from a complete beginner to becoming a senior web developer in three months.
+- I want to start my own company and build a social network that will out-perform Facebook, in two years.
 
 #### What do you need to get there?
 
@@ -83,16 +82,16 @@ Once you've worked out your goal, it is a good idea to research what you'll need
 
 Materials I need:
 
--   A computer
--   Internet access
--   Pens and paper
+- A computer
+- Internet access
+- Pens and paper
 
 Knowledge I need:
 
--   How to use HTML, CSS, JavaScript, and associated tools and best practices to build web sites and web applications (we can definitely help you with this one!).
--   How to get a domain, hosting, and use them to put a web site or application online.
--   How to run a small business.
--   How to advertise my business and attract clients.
+- How to use HTML, CSS, JavaScript, and associated tools and best practices to build web sites and web applications (we can definitely help you with this one!).
+- How to get a domain, hosting, and use them to put a web site or application online.
+- How to run a small business.
+- How to advertise my business and attract clients.
 
 #### How much time and money will it take?
 
@@ -112,10 +111,10 @@ When you have worked out a weekly schedule then you should keep a record of wha
 
 Also, it might be a good idea to have some sub-goals worked out to allow you to keep track of where you are more easily. For example:
 
--   HTML and CSS basics learned by summer
--   JavaScript basics learned by December
--   Example website project built by next April
--   etc.
+- HTML and CSS basics learned by summer
+- JavaScript basics learned by December
+- Example website project built by next April
+- etc.
 
 Keep thinking about how much progress you are making, and adjust your plan if needs be.
 
@@ -123,11 +122,11 @@ Keep thinking about how much progress you are making, and adjust your plan if ne
 
 It is hard to stay motivated, especially if you are trying to learn a complex skill like programming or web development. What follows are some tips to stay motivated and keep working:
 
--   **Try to make your work environment as productive as possible**. Get a comfortable desk and chair to work in, make sure you have enough light to see what you are doing, and try to include things that help you concentrate (e.g. mellow music, fragrances, whatever else you need). Don't try to work in a room with distractions — for example a television on, with your friends watching football! Also, leave your mobile phone out of the room — most people are distracted by their phone a lot, so you should leave it somewhere else.
--   **Take regular breaks**. It is not good for your motivation to keep working away for hours with no break, especially if you are finding it hard or getting stuck on a problem. That just leads to frustration. It is often better to take a break, move around for a bit, then relax with a drink before getting back to work. And as we said earlier, the diffuse learning you do during that time can often help you to figure out a solution to the problem you were facing. It is also physically bad to work for too long without a break; looking at a monitor for too long can hurt your eyes, and sitting still for too long can be bad for your back or legs. We'd recommend taking a 15-minute break every hour to 90 minutes.
--   **Eat, exercise, and sleep**. Eat healthily, get regular exercise, and make sure you get enough sleep. This sounds obvious, but it is easy to forget when you get really into coding. Factor these essential ingredients into your schedule, and make sure you are not scheduling more learning time instead of these things.
--   **Give yourself rewards**. It's true that *all work and no play makes Jack a dull boy*. You should try to schedule fun things to do after each learning session, which you'll only have when the learning is over and complete. If you are really into gaming, for example, there is something quite motivating about saying "no gaming tonight unless I get through my 5 hours of learning". Now all you need is willpower. Good luck!
--   **Co-learning and demoing**. This won't be an option for everyone, but if at all possible try to learn alongside others. Again, this is easier if you are doing a college course on web development, but perhaps you could convince a friend to learn along with you, or find a local meetup or skill-sharing group? It is really useful and motivating to have someone to discuss ideas with and ask for help, and you should also take time to demo your work. Those shouts of appreciation will spur you on.
+- **Try to make your work environment as productive as possible**. Get a comfortable desk and chair to work in, make sure you have enough light to see what you are doing, and try to include things that help you concentrate (e.g. mellow music, fragrances, whatever else you need). Don't try to work in a room with distractions — for example a television on, with your friends watching football! Also, leave your mobile phone out of the room — most people are distracted by their phone a lot, so you should leave it somewhere else.
+- **Take regular breaks**. It is not good for your motivation to keep working away for hours with no break, especially if you are finding it hard or getting stuck on a problem. That just leads to frustration. It is often better to take a break, move around for a bit, then relax with a drink before getting back to work. And as we said earlier, the diffuse learning you do during that time can often help you to figure out a solution to the problem you were facing. It is also physically bad to work for too long without a break; looking at a monitor for too long can hurt your eyes, and sitting still for too long can be bad for your back or legs. We'd recommend taking a 15-minute break every hour to 90 minutes.
+- **Eat, exercise, and sleep**. Eat healthily, get regular exercise, and make sure you get enough sleep. This sounds obvious, but it is easy to forget when you get really into coding. Factor these essential ingredients into your schedule, and make sure you are not scheduling more learning time instead of these things.
+- **Give yourself rewards**. It's true that _all work and no play makes Jack a dull boy_. You should try to schedule fun things to do after each learning session, which you'll only have when the learning is over and complete. If you are really into gaming, for example, there is something quite motivating about saying "no gaming tonight unless I get through my 5 hours of learning". Now all you need is willpower. Good luck!
+- **Co-learning and demoing**. This won't be an option for everyone, but if at all possible try to learn alongside others. Again, this is easier if you are doing a college course on web development, but perhaps you could convince a friend to learn along with you, or find a local meetup or skill-sharing group? It is really useful and motivating to have someone to discuss ideas with and ask for help, and you should also take time to demo your work. Those shouts of appreciation will spur you on.
 
 ### Effective problem solving
 
@@ -139,22 +138,22 @@ For a start, when you are trying to implement something specific and it seems re
 
 For example, if you are looking at a task of "Build a simple two-column website", you could break it down as follows:
 
--   Create the HTML structure
--   Work out basic site typography
--   Work out a basic color scheme
--   Implement a high-level layout — header, horizontal navigation menu, main content area with main and side columns, and footer
--   Implement a horizontal navigation menu
--   etc.
+- Create the HTML structure
+- Work out basic site typography
+- Work out a basic color scheme
+- Implement a high-level layout — header, horizontal navigation menu, main content area with main and side columns, and footer
+- Implement a horizontal navigation menu
+- etc.
 
 Then you could break it down further. For example, "Implement horizontal navigation menu" could be written out as:
 
--   Make a list of menu items that sit horizontally in a line.
--   Remove unneeded defaults, like list spacing and bullet points.
--   Style hover/focus/active states of menu items appropriately.
--   Make the menu items equally spaced along the line.
--   Give the menu items enough vertical spacing.
--   Make sure the text is centered inside each menu item
--   etc.
+- Make a list of menu items that sit horizontally in a line.
+- Remove unneeded defaults, like list spacing and bullet points.
+- Style hover/focus/active states of menu items appropriately.
+- Make the menu items equally spaced along the line.
+- Give the menu items enough vertical spacing.
+- Make sure the text is centered inside each menu item
+- etc.
 
 Each of these problems doesn't seem nearly as difficult to solve as the one big problem you had initially. Now you've just got to go through and solve them all!
 
@@ -202,8 +201,7 @@ The more you practice solving a problem, the stronger your brain's neural pathwa
 
 Keep tinkering with code and getting more practice. If you run out of problems to solve, look up some tests online, do some more courses, or ask your friends and family (or local school or church) if there is anything they'd like you to build for them.
 
-Getting help
-------------
+## Getting help
 
 Web development requires you to learn a complex set of skills — you are bound to get stuck sometimes and need help. As we said before, even professional developers need regular help working out issues.
 
@@ -211,19 +209,19 @@ There are a variety of ways to get help, and what follows are some tips for doin
 
 ### Effective web searches
 
-One important skill to learn is the art of effective web searches — what search terms do you need to use in your favorite search engine to find the articles you need? 
+One important skill to learn is the art of effective web searches — what search terms do you need to use in your favorite search engine to find the articles you need?
 
 It is often fairly obvious what to search for. For example:
 
--   If you want to find out more about responsive web design, you could search for "responsive web design".
--   If you want to find out more about a specific technology feature, such as the HTML `<video>` element, or the CSS `background-color` or `opacity` properties, or the JavaScript `Date.setTime()` method, you should just search for the feature's name.
--   If you are looking for some more specific information, you can add other keywords as modifiers, for example "&lt;video&gt; element autoplay attribute", or "Date.setTime parameters".
+- If you want to find out more about responsive web design, you could search for "responsive web design".
+- If you want to find out more about a specific technology feature, such as the HTML `<video>` element, or the CSS `background-color` or `opacity` properties, or the JavaScript `Date.setTime()` method, you should just search for the feature's name.
+- If you are looking for some more specific information, you can add other keywords as modifiers, for example "&lt;video&gt; element autoplay attribute", or "Date.setTime parameters".
 
 If you want to search for something that has less obvious buzzwords, you need to think about what is most likely to return what you want.
 
--   Run code after several promises are fulfilled
--   Play a video stream from a webcam in the browser
--   Create a linear gradient in the background of your element
+- Run code after several promises are fulfilled
+- Play a video stream from a webcam in the browser
+- Create a linear gradient in the background of your element
 
 #### Error messages
 
@@ -235,8 +233,8 @@ If you are having a problem with some code and a specific error message is comin
 
 It is often a good idea to see if your problem is affecting all browsers, or whether it only occurs in one or a small number of browsers. If it is only affecting one browser, for example, you can use that browser to narrow down the search. Example searches might look like:
 
--   &lt;video&gt; playback doesn't work in the iOS browser.
--   Firefox doesn't seem to support the Beetlejuice API.
+- &lt;video&gt; playback doesn't work in the iOS browser.
+- Firefox doesn't seem to support the Beetlejuice API.
 
 ### Using MDN
 
@@ -252,9 +250,9 @@ We already mentioned Stack Overflow, but there are other online resources that c
 
 It is good to find a community to be part of, and you'll get a lot of respect if you try to help others answer their questions as well as asking your own. Other good examples include:
 
--   [MDN Discourse](https://discourse.mozilla.org/c/mdn)
--   [Sitepoint Forums](https://www.sitepoint.com/community/)
--   [webdeveloper.com Forums](https://www.webdeveloper.com/)
+- [MDN Discourse](https://discourse.mozilla.org/c/mdn)
+- [Sitepoint Forums](https://www.sitepoint.com/community/)
+- [webdeveloper.com Forums](https://www.webdeveloper.com/)
 
 However, it also makes sense to find useful groups on social networking sites such as Twitter or Facebook. Look for groups that discuss web development subjects you are interested in and join up. Follow people on twitter you know are influential, smart, or just plain seem to share lots of useful tips.
 
@@ -264,9 +262,8 @@ Lastly, you should try attending some physical meetups to meet other like-minded
 
 You could also try attending full-fledged web conferences. While these can be expensive, you could try volunteering at them, and many conferences offer reduced rate tickets, for example, student or diversity tickets.
 
-See also
---------
+## See also
 
--   [Coursera: Learning to learn](https://www.coursera.org/learn/learning-how-to-learn)
--   [Freecodecamp](https://www.freecodecamp.org/)
--   [Codecademy](https://www.codecademy.com/)
+- [Coursera: Learning to learn](https://www.coursera.org/learn/learning-how-to-learn)
+- [Freecodecamp](https://www.freecodecamp.org/)
+- [Codecademy](https://www.codecademy.com/)

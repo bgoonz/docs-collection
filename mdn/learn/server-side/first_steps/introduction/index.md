@@ -1,4 +1,4 @@
---- title: Introduction to the server side slug: Learn/Server-side/First\_steps/Introduction tags: - Beginner - CodingScripting - Guide - Intro - Learn - Server - Server-side programming ---
+--- title: Introduction to the server side slug: Learn/Server-side/First_steps/Introduction tags: - Beginner - CodingScripting - Guide - Intro - Learn - Server - Server-side programming ---
 
 {{LearnSidebar}}
 
@@ -8,7 +8,7 @@
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy. A basic understanding of what a web server is.</td></tr><tr class="even"><td>Objective:</td><td>To gain familiarity with what server-side programming is, what it can do, and how it differs from client-side programming.</td></tr></tbody></table>
 
-Most large-scale websites use server-side code to dynamically display different data when needed, generally pulled out of a database stored on a server and sent to the client to be displayed via some code (e.g. HTML and JavaScript). 
+Most large-scale websites use server-side code to dynamically display different data when needed, generally pulled out of a database stored on a server and sent to the client to be displayed via some code (e.g. HTML and JavaScript).
 
 Perhaps the most significant benefit of server-side code is that it allows you to tailor website content for individual users. Dynamic sites can highlight content that is more relevant based on user preferences and habits. It can also make sites easier to use by storing personal preferences and information — for example reusing stored credit card details to streamline subsequent payments.
 
@@ -16,14 +16,13 @@ It can even allow interaction with users of the site, sending notifications and 
 
 In the modern world of web development, learning about server-side development is highly recommended.
 
-What is server-side website programming?
-----------------------------------------
+## What is server-side website programming?
 
 Web browsers communicate with [web servers](/en-US/docs/Learn/Common_questions/What_is_a_web_server) using the **H**yper**T**ext **T**ransfer **P**rotocol ({{glossary("HTTP")}}). When you click a link on a web page, submit a form, or run a search, an **HTTP request** is sent from your browser to the target server.
 
 The request includes a URL identifying the affected resource, a method that defines the required action (for example to get, delete, or post the resource), and may include additional information encoded in URL parameters (the field-value pairs sent via a [query string](https://en.wikipedia.org/wiki/Query_string)), as POST data (data sent by the [HTTP POST method](/en-US/docs/Web/HTTP/Methods/POST)), or in associated {{glossary("Cookie", "cookies")}}.
 
-Web servers wait for client request messages, process them when they arrive, and reply to the web browser with an **HTTP response** message. The response contains a status line indicating whether or not the request succeeded (e.g. "HTTP/1.1 200 OK" for success). 
+Web servers wait for client request messages, process them when they arrive, and reply to the web browser with an **HTTP response** message. The response contains a status line indicating whether or not the request succeeded (e.g. "HTTP/1.1 200 OK" for success).
 
 The body of a successful response to a request would contain the requested resource (e.g. a new HTML page, or an image, etc...), which could then be displayed by the web browser.
 
@@ -37,28 +36,27 @@ The server retrieves the requested document from its file system and returns an
 
 ### Dynamic sites
 
-A dynamic website is one where some of the response content is generated *dynamically*, only when needed. On a dynamic website HTML pages are normally created by inserting data from a database into placeholders in HTML templates (this is a much more efficient way of storing large amounts of content than using static websites). 
+A dynamic website is one where some of the response content is generated _dynamically_, only when needed. On a dynamic website HTML pages are normally created by inserting data from a database into placeholders in HTML templates (this is a much more efficient way of storing large amounts of content than using static websites).
 
 A dynamic site can return different data for a URL based on information provided by the user or stored preferences and can perform other operations as part of returning a response (e.g. sending notifications).
 
 Most of the code to support a dynamic website must run on the server. Creating this code is known as "**server-side programming**" (or sometimes "**back-end scripting**").
 
-The diagram below shows a simple architecture for a *dynamic website*. As in the previous diagram, browsers send HTTP requests to the server, then the server processes the requests and returns appropriate HTTP responses.
+The diagram below shows a simple architecture for a _dynamic website_. As in the previous diagram, browsers send HTTP requests to the server, then the server processes the requests and returns appropriate HTTP responses.
 
-Requests for *static* resources are handled in the same way as for static sites (static resources are any files that don't change —typically: CSS, JavaScript, Images, pre-created PDF files etc). 
+Requests for _static_ resources are handled in the same way as for static sites (static resources are any files that don't change —typically: CSS, JavaScript, Images, pre-created PDF files etc).
 
 ![A simplified diagram of a web server that uses server-side programming to get information from a database and construct HTML from templates. This is the same diagram as is in the Client-Server overview.](web_application_with_html_and_steps.png)
 
-Requests for dynamic resources are instead forwarded (2) to server-side code (shown in the diagram as a *Web Application*). For "dynamic requests" the server interprets the request, reads required information from the database (3), combines the retrieved data with HTML templates (4), and sends back a response containing the generated HTML (5,6). 
+Requests for dynamic resources are instead forwarded (2) to server-side code (shown in the diagram as a _Web Application_). For "dynamic requests" the server interprets the request, reads required information from the database (3), combines the retrieved data with HTML templates (4), and sends back a response containing the generated HTML (5,6).
 
-Are server-side and client-side programming the same?
------------------------------------------------------
+## Are server-side and client-side programming the same?
 
 Let's now turn our attention to the code involved in server-side and client-side programming. In each case, the code is significantly different:
 
--   They have different purposes and concerns.
--   They generally don't use the same programming languages (the exception being JavaScript, which can be used on the server- and client-side).
--   They run inside different operating system environments.
+- They have different purposes and concerns.
+- They generally don't use the same programming languages (the exception being JavaScript, which can be used on the server- and client-side).
+- They run inside different operating system environments.
 
 Code running in the browser is known as **client-side code** and is primarily concerned with improving the appearance and behavior of a rendered web page. This includes selecting and styling UI components, creating layouts, navigation, form validation, etc. By contrast, server-side website programming mostly involves choosing *which content* is returned to the browser in response to requests. The server-side code handles tasks like validating submitted data and requests, using databases to store and retrieve data and sending the correct data to the client as required.
 
@@ -76,8 +74,7 @@ Again, while both client and server-side code use frameworks, the domains are ve
 
 In contrast, you would almost never consider writing the server-side component of a web app without a framework — implementing a vital feature like an HTTP server is really hard to do from scratch in say Python, but Python web frameworks like Django provide one out of the box, along with other very useful tools.
 
-What can you do on the server-side?
------------------------------------
+## What can you do on the server-side?
 
 Server-side programming is very useful because it allows us to *efficiently* deliver information tailored for individual users and thereby create a much better user experience.
 
@@ -100,7 +97,7 @@ Because the information is in a database, it can also more easily be shared and 
 **Note**: Your imagination doesn't have to work hard to see the benefit of server-side code for efficient storage and delivery of information:
 
 1.  Go to [Amazon](https://www.amazon.com) or some other e-commerce site.
-2.  Search for a number of keywords and note how the page structure doesn't change, even though the results do. 
+2.  Search for a number of keywords and note how the page structure doesn't change, even though the results do.
 3.  Open two or three different products. Note again how they have a common structure and layout, but the content for different products has been pulled from the database.
 
 For a common search term ("fish", say) you can see literally millions of returned values. Using a database allows these to be stored and shared efficiently, and it allows the presentation of the information to be controlled in just one place.
@@ -115,9 +112,9 @@ A deeper analysis of user habits can be used to anticipate their interests and 
 
 Google search results are optimized based on previous searches.
 
-1.   Go to [Google search](https://google.com).
-2.   Search for "football".
-3.   Now try typing "favourite" in the search box and observe the autocomplete search predictions.
+1.  Go to [Google search](https://google.com).
+2.  Search for "football".
+3.  Now try typing "favourite" in the search box and observe the autocomplete search predictions.
 
 Coincidence? Nada!
 
@@ -127,8 +124,8 @@ Server-side programming allows sites to restrict access to authorized users and 
 
 Real world examples include:
 
--   Social networks like Facebook allow users to fully control their own data but only allow their friends to view or comment on it. The user determines who can see their data, and by extension, whose data appears in their feed —  authorization is a central part of the user experience!
--   The site you are on right now controls access to content: articles are visible to everyone, but only users who have logged in can edit them. To try this, click on the **Edit** button at the top of this page — if you are logged in you will be shown the edit view; if you are not logged in you will be taken to the sign-up page.
+- Social networks like Facebook allow users to fully control their own data but only allow their friends to view or comment on it. The user determines who can see their data, and by extension, whose data appears in their feed —  authorization is a central part of the user experience!
+- The site you are on right now controls access to content: articles are visible to everyone, but only users who have logged in can edit them. To try this, click on the **Edit** button at the top of this page — if you are logged in you will be shown the edit view; if you are not logged in you will be taken to the sign-up page.
 
 **Note**: Consider other real examples where access to content is controlled. For example, what can you see if you go to the online site for your bank? Log in to your account — what additional information can you see and modify? What information can you see that only the bank can change?
 
@@ -146,9 +143,9 @@ Servers can send general or user-specific notifications through the website its
 
 A few examples include:
 
--   Facebook and Twitter send emails and SMS messages to notify you of new communications.
--   Amazon regularly sends product e-mails that suggest products similar to those already bought or viewed that you might be interested in.
--   A web server might send warning messages to site administrators alerting them to low memory on the server, or suspicious user activity.
+- Facebook and Twitter send emails and SMS messages to notify you of new communications.
+- Amazon regularly sends product e-mails that suggest products similar to those already bought or viewed that you might be interested in.
+- A web server might send warning messages to site administrators alerting them to low memory on the server, or suspicious user activity.
 
 **Note**: The most common type of notification is a "confirmation of registration". Pick almost any large site that you are interested in (Google, Amazon, Instagram, etc.) and create a new account using your email address. You will shortly receive an email confirming your registration, or requiring acknowledgment to activate your account.
 
@@ -162,25 +159,23 @@ For example, Amazon and Google both advertise products based on previous searche
 
 Also look at what kind of ads you are being shown — you might see ads for things you looked at on other sites. Facebook's algorithm for highlighting content and advertising can be a bit of a mystery, but it is clear that it does depend on your likes and viewing habits!
 
-Summary
--------
+## Summary
 
-Congratulations, you've reached the end of the first article about server-side programming. 
+Congratulations, you've reached the end of the first article about server-side programming.
 
 You've now learned that server-side code is run on a web server and that its main role is to control *what* information is sent to the user (while client-side code mainly handles the structure and presentation of that data to the user).
 
 You should also understand that it is useful because it allows us to create websites that *efficiently* deliver information tailored for individual users and have a good idea of some of the things you might be able to do when you're a server-side programmer.
 
-Lastly, you should understand that server-side code can be written in a number of programming languages and that you should use a web framework to make the whole process easier. 
+Lastly, you should understand that server-side code can be written in a number of programming languages and that you should use a web framework to make the whole process easier.
 
 In a future article we'll help you choose the best web framework for your first site. Here we'll take you through the main client-server interactions in just a little more detail.
 
 {{NextMenu("Learn/Server-side/First\_steps/Client-Server\_overview", "Learn/Server-side/First\_steps")}}
 
-In this module
---------------
+## In this module
 
--   [Introduction to the server side](/en-US/docs/Learn/Server-side/First_steps/Introduction)
--   [Client-Server overview](/en-US/docs/Learn/Server-side/First_steps/Client-Server_overview)
--   [Server-side web frameworks](/en-US/docs/Learn/Server-side/First_steps/Web_frameworks)
--   [Website security](/en-US/docs/Learn/Server-side/First_steps/Website_security)
+- [Introduction to the server side](/en-US/docs/Learn/Server-side/First_steps/Introduction)
+- [Client-Server overview](/en-US/docs/Learn/Server-side/First_steps/Client-Server_overview)
+- [Server-side web frameworks](/en-US/docs/Learn/Server-side/First_steps/Web_frameworks)
+- [Website security](/en-US/docs/Learn/Server-side/First_steps/Website_security)

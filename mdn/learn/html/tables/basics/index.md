@@ -8,8 +8,7 @@ This article gets you started with HTML tables, covering the very basics such as
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>The basics of HTML (see <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML">Introduction to HTML</a>).</td></tr><tr class="even"><td>Objective:</td><td>To gain basic familiarity with HTML tables.</td></tr></tbody></table>
 
-What is a table ?
------------------
+## What is a table ?
 
 A table is a structured set of data made up of rows and columns (**tabular data**). A table allows you to quickly and easily look up values that indicate some kind of connection between different types of data, for example a person and their age, or a day of the week, or the timetable for a local swimming pool.
 
@@ -251,8 +250,7 @@ In short, using tables for layout rather than [CSS layout techniques](/en-US/do
 2.  **Tables produce tag soup**: As mentioned above, table layouts generally involve more complex markup structures than proper layout techniques. This can result in the code being harder to write, maintain, and debug.
 3.  **Tables are not automatically responsive**: When you use proper layout containers (such as {{htmlelement("header")}}, {{htmlelement("section")}}, {{htmlelement("article")}}, or {{htmlelement("div")}}), their width defaults to 100% of their parent element. Tables on the other hand are sized according to their content by default, so extra measures are needed to get table layout styling to effectively work across a variety of devices.
 
-Active learning: Creating your first table
-------------------------------------------
+## Active learning: Creating your first table
 
 We've talked table theory enough, so, let's dive into a practical example and build up a simple table.
 
@@ -316,8 +314,7 @@ This should result in a table that looks something like the following:
 
 **Note**: You can also find this on GitHub as [simple-table.html](https://github.com/mdn/learning-area/blob/master/html/tables/basic/simple-table.html) ([see it live also](https://mdn.github.io/learning-area/html/tables/basic/simple-table.html)).
 
-Adding headers with &lt;th&gt; elements
----------------------------------------
+## Adding headers with &lt;th&gt; elements
 
 Now let's turn our attention to table headers — special cells that go at the start of a row or column and define the type of data that row or column contains (as an example, see the "Person" and "Age" cells in the first example shown in this article). To illustrate why they are useful, have a look at the following table example. First the source code:
 
@@ -391,8 +388,7 @@ We have already partially answered this question — it is easier to find the da
 
 Tables headers also have an added benefit — along with the `scope` attribute (which we'll learn about in the next article), they allow you to make tables more accessible by associating each header with all the data in the same row or column. Screenreaders are then able to read out a whole row or column of data at once, which is pretty useful.
 
-Allowing cells to span multiple rows and columns
-------------------------------------------------
+## Allowing cells to span multiple rows and columns
 
 Sometimes we want cells to span multiple rows or columns. Take the following simple example, which shows the names of common animals. In some cases, we want to show the names of the males and females next to the animal name. Sometimes we don't, and in such cases we just want the animal name to span the whole table.
 
@@ -447,12 +443,11 @@ Let's use `colspan` and `rowspan` to improve this table.
 
 **Note**: You can find our finished example at [animals-table-fixed.html](https://github.com/mdn/learning-area/blob/master/html/tables/basic/animals-table-fixed.html) on GitHub ([see it live also](https://mdn.github.io/learning-area/html/tables/basic/animals-table-fixed.html)).
 
-Providing common styling to columns
------------------------------------
+## Providing common styling to columns
 
 ### Styling without &lt;col&gt;
 
-There is one last feature we'll tell you about in this article before we move on. HTML has a method of defining styling information for an entire column of data all in one place — the **`<col>`** and **`<colgroup>`** elements. These exist because it can be a bit annoying and inefficient having to specify styling on columns — you generally have to specify your styling information on *every* `<td>` or `<th>` in the column, or use a complex selector such as {{cssxref(":nth-child")}}.
+There is one last feature we'll tell you about in this article before we move on. HTML has a method of defining styling information for an entire column of data all in one place — the **`<col>`** and **`<colgroup>`** elements. These exist because it can be a bit annoying and inefficient having to specify styling on columns — you generally have to specify your styling information on _every_ `<td>` or `<th>` in the column, or use a complex selector such as {{cssxref(":nth-child")}}.
 
 **Note**: Styling columns like this is [limited to a few properties](https://www.w3.org/TR/CSS22/tables.html#columns): `border`, `background`, `width`, and `visibility`. To set other properties you'll have to either style every `<td>` or `<th>` in the column, or use a complex selector such as {{cssxref(":nth-child")}}.
 
@@ -541,16 +536,14 @@ Recreate the table by following the steps below.
 
 See how you get on with the example. If you get stuck, or want to check your work, you can find our version on GitHub as [timetable-fixed.html](https://github.com/mdn/learning-area/blob/master/html/tables/basic/timetable-fixed.html) ([see it live also](https://mdn.github.io/learning-area/html/tables/basic/timetable-fixed.html)).
 
-Summary
--------
+## Summary
 
 That just about wraps up the basics of HTML Tables. In the next article we will look at some slightly more advanced table features, and start to think how accessible they are for visually impaired people.
 
 {{NextMenu("Learn/HTML/Tables/Advanced", "Learn/HTML/Tables")}}
 
-In this module
---------------
+## In this module
 
--   **HTML table basics**
--   [HTML table advanced features and accessibility](/en-US/docs/Learn/HTML/Tables/Advanced)
--   [Structuring planet data](/en-US/docs/Learn/HTML/Tables/Structuring_planet_data)
+- **HTML table basics**
+- [HTML table advanced features and accessibility](/en-US/docs/Learn/HTML/Tables/Advanced)
+- [Structuring planet data](/en-US/docs/Learn/HTML/Tables/Structuring_planet_data)
