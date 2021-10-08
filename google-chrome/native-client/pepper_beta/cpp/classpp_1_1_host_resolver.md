@@ -8,31 +8,27 @@ Inheritance diagram for pp::HostResolver:
 
 [List of all members.](/docs/native-client/pepper_beta/cpp/classpp_1_1_host_resolver-members/)
 
-Public Member Functions
------------------------
+## Public Member Functions
 
 <table><tbody><tr class="odd"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_host_resolver#a98885c5eb6ba873ee54cbb657f9e43f5" class="el">HostResolver</a> ()</td></tr><tr class="even"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_host_resolver#aea32a40269f4ad3dc9d9cbadc89bea4f" class="el">HostResolver</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance_handle/" class="el">InstanceHandle</a> &amp;instance)</td></tr><tr class="odd"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_host_resolver#adc4f2b44c8281920fbce2c4b93eddce2" class="el">HostResolver</a> (<a href="/docs/native-client/pepper_beta/cpp/namespacepp#a339083c1beec620267bf8b3c55decaa5" class="el">PassRef</a>, PP_Resource resource)</td></tr><tr class="even"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_host_resolver#a74ea3a85ad41ded8128b188c821cdb28" class="el">HostResolver</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_host_resolver/" class="el">HostResolver</a> &amp;other)</td></tr><tr class="odd"><td style="text-align: right;">virtual </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_host_resolver#ad4d39f4e863917bc881fc98c236c9f84" class="el">~HostResolver</a> ()</td></tr><tr class="even"><td style="text-align: right;"><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_host_resolver/" class="el">HostResolver</a> &amp; </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_host_resolver#ab773cb42d3130d6973a8743bc7aba7bd" class="el">operator=</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_host_resolver/" class="el">HostResolver</a> &amp;other)</td></tr><tr class="odd"><td style="text-align: right;">int32_t </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_host_resolver#a894d4ae712b4b30e639f6d838c2f9d98" class="el">Resolve</a> (const char *host, uint16_t port, const PP_HostResolver_Hint &amp;hint, const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback/" class="el">CompletionCallback</a> &amp;callback)</td></tr><tr class="even"><td style="text-align: right;"><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var/" class="el">Var</a> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_host_resolver#aaa2e0834d48b8356f8f3185bc615611d" class="el">GetCanonicalName</a> () const</td></tr><tr class="odd"><td style="text-align: right;">uint32_t </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_host_resolver#ace959e4cb6fd0a51669f6eff64e08ae3" class="el">GetNetAddressCount</a> () const</td></tr><tr class="even"><td style="text-align: right;"><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_net_address/" class="el">NetAddress</a> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_host_resolver#a3680cf97d53a80a536c5dc6441a4c6e7" class="el">GetNetAddress</a> (uint32_t index) const</td></tr></tbody></table>
 
-Static Public Member Functions
-------------------------------
+## Static Public Member Functions
 
 <table><tbody><tr class="odd"><td style="text-align: right;">static bool </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_host_resolver#ad56c139fa37d665cbb7e33f4d592b421" class="el">IsAvailable</a> ()</td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
 <span id="details" class="anchor" style="margin: 0;"></span>
 
-Detailed Description
---------------------
+## Detailed Description
 
 The `HostResolver` class supports host name resolution.
 
-Permissions: In order to run `Resolve()`, apps permission `socket` with subrule `resolve-host` is required. For more details about network communication permissions, please see: [/apps/app\_network.html](/apps/app_network.html)
+Permissions: In order to run `Resolve()`, apps permission `socket` with subrule `resolve-host` is required. For more details about network communication permissions, please see: [/apps/app_network.html](/apps/app_network.html)
 
-------------------------------------------------------------------------
+---
 
-Constructor & Destructor Documentation
---------------------------------------
+## Constructor & Destructor Documentation
 
 <span id="a98885c5eb6ba873ee54cbb657f9e43f5" class="anchor" style="margin: 0;"></span>
 
@@ -46,7 +42,8 @@ Default constructor for creating an <a href="/docs/native-client/pepper_beta/cpp
 
 A constructor used to create a `HostResolver` object.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance with which this resource will be associated.</td></tr></tbody></table>
 
 <span id="adc4f2b44c8281920fbce2c4b93eddce2" class="anchor" style="margin: 0;"></span>
@@ -55,7 +52,8 @@ A constructor used to create a `HostResolver` object.
 
 A constructor used when you have received a `PP_Resource` as a return value that has had 1 ref added for you.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PPB_HostResolver</code> resource.</td></tr></tbody></table>
 
 <span id="a74ea3a85ad41ded8128b188c821cdb28" class="anchor" style="margin: 0;"></span>
@@ -64,7 +62,8 @@ A constructor used when you have received a `PP_Resource` as a return value that
 
 The copy constructor for `HostResolver`.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A reference to another <code>HostResolver</code>.</td></tr></tbody></table>
 
 <span id="ad4d39f4e863917bc881fc98c236c9f84" class="anchor" style="margin: 0;"></span>
@@ -73,10 +72,9 @@ The copy constructor for `HostResolver`.
 
 The destructor.
 
-------------------------------------------------------------------------
+---
 
-Member Function Documentation
------------------------------
+## Member Function Documentation
 
 <span id="aaa2e0834d48b8356f8f3185bc615611d" class="anchor" style="margin: 0;"></span>
 
@@ -93,7 +91,8 @@ A string `Var` on success, which is an empty string if `PP_HOSTRESOLVER_FLAG_CAN
 
 Gets a network address.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>index</td><td>An index indicating which address to return.</td></tr></tbody></table>
 
 <!-- -->
@@ -125,7 +124,8 @@ true if the interface is available, false otherwise.
 
 The assignment operator for `HostResolver`.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A reference to another <code>HostResolver</code>.</td></tr></tbody></table>
 
 <!-- -->
@@ -141,16 +141,17 @@ Requests resolution of a host name.
 
 If the call completes successully, the results can be retrieved by `GetCanonicalName()`, `GetNetAddressCount()` and `GetNetAddress()`.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>host</td><td>The host name (or IP address literal) to resolve.</td></tr><tr class="even"><td>[in]</td><td>port</td><td>The port number to be set in the resulting network addresses.</td></tr><tr class="odd"><td>[in]</td><td>hint</td><td>A <code>PP_HostResolver_Hint</code> structure providing hints for host resolution.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
 <!-- -->
 
 **Returns:**  
-An int32\_t containing an error code from `pp_errors.h`. `PP_ERROR_NOACCESS` will be returned if the caller doesn't have required permissions. `PP_ERROR_NAME_NOT_RESOLVED` will be returned if the host name couldn't be resolved.
+An int32_t containing an error code from `pp_errors.h`. `PP_ERROR_NOACCESS` will be returned if the caller doesn't have required permissions. `PP_ERROR_NAME_NOT_RESOLVED` will be returned if the host name couldn't be resolved.
 
-------------------------------------------------------------------------
+---
 
 The documentation for this class was generated from the following file:
 
--   <a href="/docs/native-client/pepper_beta/cpp/host__resolver_8h/" class="el">host_resolver.h</a>
+- <a href="/docs/native-client/pepper_beta/cpp/host__resolver_8h/" class="el">host_resolver.h</a>

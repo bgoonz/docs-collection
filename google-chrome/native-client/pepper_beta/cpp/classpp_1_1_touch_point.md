@@ -2,24 +2,21 @@
 
 [List of all members.](/docs/native-client/pepper_beta/cpp/classpp_1_1_touch_point-members/)
 
-Public Member Functions
------------------------
+## Public Member Functions
 
 <table><tbody><tr class="odd"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_touch_point#a76b04de6cd756e80d3b039988faed697" class="el">TouchPoint</a> ()</td></tr><tr class="even"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_touch_point#affadca4389137e288a0a9a53019a2211" class="el">TouchPoint</a> (const PP_TouchPoint &amp;point)</td></tr><tr class="odd"><td style="text-align: right;">uint32_t </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_touch_point#a9bc0e1ce3579b52927da1104646b994b" class="el">id</a> () const</td></tr><tr class="even"><td style="text-align: right;"><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_float_point/" class="el">FloatPoint</a> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_touch_point#aa4a407b747e9c523844eba4aaf861773" class="el">position</a> () const</td></tr><tr class="odd"><td style="text-align: right;"><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_float_point/" class="el">FloatPoint</a> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_touch_point#a92f3376a9db010e20bed4a5fe3e42f0f" class="el">radii</a> () const</td></tr><tr class="even"><td style="text-align: right;">float </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_touch_point#a82c6f0f579e30d37d0f14cdbb3ca9177" class="el">rotation_angle</a> () const</td></tr><tr class="odd"><td style="text-align: right;">float </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_touch_point#a4e09d5e4a892da9f6b32c9986a25376c" class="el">pressure</a> () const</td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
 <span id="details" class="anchor" style="margin: 0;"></span>
 
-Detailed Description
---------------------
+## Detailed Description
 
-Wrapper class for PP\_TouchPoint.
+Wrapper class for PP_TouchPoint.
 
-------------------------------------------------------------------------
+---
 
-Constructor & Destructor Documentation
---------------------------------------
+## Constructor & Destructor Documentation
 
 <span id="a76b04de6cd756e80d3b039988faed697" class="anchor" style="margin: 0;"></span>
 
@@ -29,10 +26,9 @@ Constructor & Destructor Documentation
 
 <table><tbody><tr class="odd"><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_touch_point#a76b04de6cd756e80d3b039988faed697" class="el">pp::TouchPoint::TouchPoint</a></td><td>(</td><td>const PP_TouchPoint &amp; </td><td><em>point</em></td><td>)</td><td><code> [inline]</code></td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
-Member Function Documentation
------------------------------
+## Member Function Documentation
 
 <span id="a9bc0e1ce3579b52927da1104646b994b" class="anchor" style="margin: 0;"></span>
 
@@ -69,8 +65,8 @@ The elliptical radii, in screen pixels, in the x and y direction of this <a href
 **Returns:**  
 The angle of rotation of the elliptical model of this <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_touch_point/" class="el" title="Wrapper class for PP_TouchPoint.">TouchPoint</a> from the y-axis.
 
-------------------------------------------------------------------------
+---
 
 The documentation for this class was generated from the following file:
 
--   <a href="/docs/native-client/pepper_beta/cpp/touch__point_8h/" class="el">touch_point.h</a>
+- <a href="/docs/native-client/pepper_beta/cpp/touch__point_8h/" class="el">touch_point.h</a>

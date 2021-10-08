@@ -8,24 +8,21 @@ Inheritance diagram for pp::URLResponseInfo:
 
 [List of all members.](/docs/native-client/pepper_beta/cpp/classpp_1_1_u_r_l_response_info-members/)
 
-Public Member Functions
------------------------
+## Public Member Functions
 
 <table><tbody><tr class="odd"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_u_r_l_response_info#a239b1eb1076f2da6c75af416c8f02e6b" class="el">URLResponseInfo</a> ()</td></tr><tr class="even"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_u_r_l_response_info#a157bf323368bc4b7e63ce604ecc272c1" class="el">URLResponseInfo</a> (<a href="/docs/native-client/pepper_beta/cpp/namespacepp#a339083c1beec620267bf8b3c55decaa5" class="el">PassRef</a>, PP_Resource resource)</td></tr><tr class="odd"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_u_r_l_response_info#aa2fb382084c248e56dffb09e1191a6f1" class="el">URLResponseInfo</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_u_r_l_response_info/" class="el">URLResponseInfo</a> &amp;other)</td></tr><tr class="even"><td style="text-align: right;"><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var/" class="el">Var</a> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_u_r_l_response_info#ac30d83aa38148e6d90f3c22ab01b10dc" class="el">GetProperty</a> (PP_URLResponseProperty property) const</td></tr><tr class="odd"><td style="text-align: right;"><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_file_ref/" class="el">FileRef</a> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_u_r_l_response_info#a77debd316d7b575b6cae43cb1bb14cbc" class="el">GetBodyAsFileRef</a> () const</td></tr><tr class="even"><td style="text-align: right;"><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var/" class="el">Var</a> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_u_r_l_response_info#ad53acecc41062e0b60167b78c268a0bb" class="el">GetURL</a> () const</td></tr><tr class="odd"><td style="text-align: right;"><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var/" class="el">Var</a> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_u_r_l_response_info#a6c25ffe56f7d9da0817fd84346bbaf10" class="el">GetRedirectURL</a> () const</td></tr><tr class="even"><td style="text-align: right;"><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var/" class="el">Var</a> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_u_r_l_response_info#a3ae355f52b46a6d2e65fed19bfcec323" class="el">GetRedirectMethod</a> () const</td></tr><tr class="odd"><td style="text-align: right;">int32_t </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_u_r_l_response_info#aa7d27c0d6af582dc374461c8d0f868b3" class="el">GetStatusCode</a> () const</td></tr><tr class="even"><td style="text-align: right;"><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var/" class="el">Var</a> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_u_r_l_response_info#aa6b506dff751344d0b85f596ab1a41a8" class="el">GetStatusLine</a> () const</td></tr><tr class="odd"><td style="text-align: right;"><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var/" class="el">Var</a> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_u_r_l_response_info#ae1fbc3ec4025534fbbf7e152af8308c7" class="el">GetHeaders</a> () const</td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
 <span id="details" class="anchor" style="margin: 0;"></span>
 
-Detailed Description
---------------------
+## Detailed Description
 
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_u_r_l_response_info/" class="el" title="URLResponseInfo provides an API for examining URL responses.">URLResponseInfo</a> provides an API for examining URL responses.
 
-------------------------------------------------------------------------
+---
 
-Constructor & Destructor Documentation
---------------------------------------
+## Constructor & Destructor Documentation
 
 <span id="a239b1eb1076f2da6c75af416c8f02e6b" class="anchor" style="margin: 0;"></span>
 
@@ -41,7 +38,8 @@ This constructor creates an `is_null` resource.
 
 A constructor used when you have received a `PP_Resource` as a return value that has already been reference counted.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a resource.</td></tr></tbody></table>
 
 <span id="aa2fb382084c248e56dffb09e1191a6f1" class="anchor" style="margin: 0;"></span>
@@ -50,10 +48,9 @@ A constructor used when you have received a `PP_Resource` as a return value that
 
 The copy constructor for `URLResponseInfo`.
 
-------------------------------------------------------------------------
+---
 
-Member Function Documentation
------------------------------
+## Member Function Documentation
 
 <span id="a77debd316d7b575b6cae43cb1bb14cbc" class="anchor" style="margin: 0;"></span>
 
@@ -81,7 +78,8 @@ An `is_string Var` containing the response property value if successful, `is_und
 
 This function gets a response property.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>property</td><td>A <code>PP_URLResponseProperty</code> identifying the type of property in the response.</td></tr></tbody></table>
 
 <!-- -->
@@ -114,7 +112,7 @@ An `is_string Var` containing the response property value if successful, `is_und
 This function gets the `PP_URLRESPONSEPROPERTY_STATUSCODE` property for the response.
 
 **Returns:**  
-A int32\_t containing the response property value if successful, `is_undefined Var` if an input parameter is invalid.
+A int32_t containing the response property value if successful, `is_undefined Var` if an input parameter is invalid.
 
 <span id="aa6b506dff751344d0b85f596ab1a41a8" class="anchor" style="margin: 0;"></span>
 
@@ -134,8 +132,8 @@ This function gets the `PP_URLRESPONSEPROPERTY_URL` property for the response.
 **Returns:**  
 An `is_string Var` containing the response property value if successful, `is_undefined Var` if an input parameter is invalid.
 
-------------------------------------------------------------------------
+---
 
 The documentation for this class was generated from the following file:
 
--   <a href="/docs/native-client/pepper_beta/cpp/url__response__info_8h/" class="el">url_response_info.h</a>
+- <a href="/docs/native-client/pepper_beta/cpp/url__response__info_8h/" class="el">url_response_info.h</a>

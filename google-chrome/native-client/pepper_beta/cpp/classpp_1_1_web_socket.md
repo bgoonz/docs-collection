@@ -8,24 +8,21 @@ Inheritance diagram for pp::WebSocket:
 
 [List of all members.](/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket-members/)
 
-Public Member Functions
------------------------
+## Public Member Functions
 
 <table><tbody><tr class="odd"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket#aeaac3a412a9015a9378beec9f42d5809" class="el">WebSocket</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance_handle/" class="el">InstanceHandle</a> &amp;instance)</td></tr><tr class="even"><td style="text-align: right;">virtual </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket#aa4810e4b945c1fc92493dc206eb35c09" class="el">~WebSocket</a> ()</td></tr><tr class="odd"><td style="text-align: right;">int32_t </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket#ad8471399bfca7df23b87ded733d53141" class="el">Connect</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var/" class="el">Var</a> &amp;url, const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var/" class="el">Var</a> protocols[], uint32_t protocol_count, const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback/" class="el">CompletionCallback</a> &amp;callback)</td></tr><tr class="even"><td style="text-align: right;">int32_t </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket#ae7913ea4019cc2a10c9a0390c5959071" class="el">Close</a> (uint16_t code, const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var/" class="el">Var</a> &amp;reason, const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback/" class="el">CompletionCallback</a> &amp;callback)</td></tr><tr class="odd"><td style="text-align: right;">int32_t </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket#a1eb972115700589ebf6998db4f411c56" class="el">ReceiveMessage</a> (<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var/" class="el">Var</a> *message, const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback/" class="el">CompletionCallback</a> &amp;callback)</td></tr><tr class="even"><td style="text-align: right;">int32_t </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket#a276b1aae76ba9d899475aaf9c2cd4f28" class="el">SendMessage</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var/" class="el">Var</a> &amp;message)</td></tr><tr class="odd"><td style="text-align: right;">uint64_t </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket#aee920e33ef266c51ffdaeba8d6924e19" class="el">GetBufferedAmount</a> ()</td></tr><tr class="even"><td style="text-align: right;">uint16_t </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket#ab1bb565b7800fd3c147177e4e3a3466f" class="el">GetCloseCode</a> ()</td></tr><tr class="odd"><td style="text-align: right;"><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var/" class="el">Var</a> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket#a27c9cf6d130706fcc5e6fe2f9ed51a7b" class="el">GetCloseReason</a> ()</td></tr><tr class="even"><td style="text-align: right;">bool </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket#a092b63f716b3e02fc8ec0696ac58df84" class="el">GetCloseWasClean</a> ()</td></tr><tr class="odd"><td style="text-align: right;"><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var/" class="el">Var</a> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket#ab22093b22b7ceea6957047e1cb5967d2" class="el">GetExtensions</a> ()</td></tr><tr class="even"><td style="text-align: right;"><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var/" class="el">Var</a> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket#a1c4b81bb05d30fdef67a07ac904abf0f" class="el">GetProtocol</a> ()</td></tr><tr class="odd"><td style="text-align: right;">PP_WebSocketReadyState </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket#afa09ce5acb5f7f168f17b8b3f5939317" class="el">GetReadyState</a> ()</td></tr><tr class="even"><td style="text-align: right;"><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var/" class="el">Var</a> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket#ab76ccebfe20facff03464e71f4af7719" class="el">GetURL</a> ()</td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
 <span id="details" class="anchor" style="margin: 0;"></span>
 
-Detailed Description
---------------------
+## Detailed Description
 
 The `WebSocket` class providing bi-directional, full-duplex, communications over a single TCP socket.
 
-------------------------------------------------------------------------
+---
 
-Constructor & Destructor Documentation
---------------------------------------
+## Constructor & Destructor Documentation
 
 <span id="aeaac3a412a9015a9378beec9f42d5809" class="anchor" style="margin: 0;"></span>
 
@@ -33,7 +30,8 @@ Constructor & Destructor Documentation
 
 Constructs a <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket/" class="el" title="The WebSocket class providing bi-directional, full-duplex, communications over a single TCP socket...">WebSocket</a> object.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance with which this resource will be associated.</td></tr></tbody></table>
 
 <span id="aa4810e4b945c1fc92493dc206eb35c09" class="anchor" style="margin: 0;"></span>
@@ -42,10 +40,9 @@ Constructs a <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket
 
 Destructs a <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket/" class="el" title="The WebSocket class providing bi-directional, full-duplex, communications over a single TCP socket...">WebSocket</a> object.
 
-------------------------------------------------------------------------
+---
 
-Member Function Documentation
------------------------------
+## Member Function Documentation
 
 <span id="ae7913ea4019cc2a10c9a0390c5959071" class="anchor" style="margin: 0;"></span>
 
@@ -53,13 +50,14 @@ Member Function Documentation
 
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket#ae7913ea4019cc2a10c9a0390c5959071" class="el" title="Close() closes the specified WebSocket connection by specifying code and reason.">Close()</a> closes the specified <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket/" class="el" title="The WebSocket class providing bi-directional, full-duplex, communications over a single TCP socket...">WebSocket</a> connection by specifying `code` and `reason`.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>code</td><td>The <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket/" class="el" title="The WebSocket class providing bi-directional, full-duplex, communications over a single TCP socket...">WebSocket</a> close code. This is ignored if it is 0. <code>PP_WEBSOCKETSTATUSCODE_NORMAL_CLOSURE</code> must be used for the usual case. To indicate some specific error cases, codes in the range <code>PP_WEBSOCKETSTATUSCODE_USER_REGISTERED_MIN</code> to <code>PP_WEBSOCKETSTATUSCODE_USER_REGISTERED_MAX</code>, and in the range <code>PP_WEBSOCKETSTATUSCODE_USER_PRIVATE_MIN</code> to <code>PP_WEBSOCKETSTATUSCODE_USER_PRIVATE_MAX</code> are available.</td></tr><tr class="even"><td>[in]</td><td>reason</td><td>A <code>Var</code> of string type representing the close reason. This is ignored if it is an undefined type.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>CompletionCallback</code> called when the connection is closed or an error occurs in closing the connection.</td></tr></tbody></table>
 
 <!-- -->
 
 **Returns:**  
-An int32\_t containing an error code from `pp_errors.h`. Returns `PP_ERROR_BADARGUMENT` if `reason` contains an invalid character as a UTF-8 string, or is longer than 123 bytes. `PP_ERROR_BADARGUMENT` corresponds to a JavaScript SyntaxError in the <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket/" class="el" title="The WebSocket class providing bi-directional, full-duplex, communications over a single TCP socket...">WebSocket</a> API specification. Returns `PP_ERROR_NOACCESS` if the code is not an integer equal to 1000 or in the range 3000 to 4999. `PP_ERROR_NOACCESS` corresponds to an InvalidAccessError in the <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket/" class="el" title="The WebSocket class providing bi-directional, full-duplex, communications over a single TCP socket...">WebSocket</a> API specification. Returns `PP_ERROR_INPROGRESS` if a previous call to <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket#ae7913ea4019cc2a10c9a0390c5959071" class="el" title="Close() closes the specified WebSocket connection by specifying code and reason.">Close()</a> is not finished.
+An int32_t containing an error code from `pp_errors.h`. Returns `PP_ERROR_BADARGUMENT` if `reason` contains an invalid character as a UTF-8 string, or is longer than 123 bytes. `PP_ERROR_BADARGUMENT` corresponds to a JavaScript SyntaxError in the <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket/" class="el" title="The WebSocket class providing bi-directional, full-duplex, communications over a single TCP socket...">WebSocket</a> API specification. Returns `PP_ERROR_NOACCESS` if the code is not an integer equal to 1000 or in the range 3000 to 4999. `PP_ERROR_NOACCESS` corresponds to an InvalidAccessError in the <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket/" class="el" title="The WebSocket class providing bi-directional, full-duplex, communications over a single TCP socket...">WebSocket</a> API specification. Returns `PP_ERROR_INPROGRESS` if a previous call to <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket#ae7913ea4019cc2a10c9a0390c5959071" class="el" title="Close() closes the specified WebSocket connection by specifying code and reason.">Close()</a> is not finished.
 
 <span id="ad8471399bfca7df23b87ded733d53141" class="anchor" style="margin: 0;"></span>
 
@@ -69,13 +67,14 @@ An int32\_t containing an error code from `pp_errors.h`. Returns `PP_ERROR_BADAR
 
 You can call this function once for an object.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>url</td><td>A <code>Var</code> of string type representing a <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket/" class="el" title="The WebSocket class providing bi-directional, full-duplex, communications over a single TCP socket...">WebSocket</a> server URL.</td></tr><tr class="even"><td>[in]</td><td>protocols</td><td>A pointer to an array of <code>Var</code> of string type specifying sub-protocols. Each <code>Var</code> represents one sub-protocol. This argument can be null only if <code>protocol_count</code> is 0.</td></tr><tr class="odd"><td>[in]</td><td>protocol_count</td><td>The number of sub-protocols in <code>protocols</code>.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>CompletionCallback</code> called when a connection is established or an error occurs in establishing connection.</td></tr></tbody></table>
 
 <!-- -->
 
 **Returns:**  
-An int32\_t containing an error code from `pp_errors.h`. Returns `PP_ERROR_BADARGUMENT` if specified `url`, or `protocols` contains invalid string as defined in the <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket/" class="el" title="The WebSocket class providing bi-directional, full-duplex, communications over a single TCP socket...">WebSocket</a> API specification. `PP_ERROR_BADARGUMENT` corresponds to a SyntaxError in the <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket/" class="el" title="The WebSocket class providing bi-directional, full-duplex, communications over a single TCP socket...">WebSocket</a> API specification. Returns `PP_ERROR_NOACCESS` if the protocol specified in the `url` is not a secure protocol, but the origin of the caller has a secure scheme. Also returns `PP_ERROR_NOACCESS` if the port specified in the `url` is a port that the user agent is configured to block access to because it is a well-known port like SMTP. `PP_ERROR_NOACCESS` corresponds to a SecurityError of the specification. Returns `PP_ERROR_INPROGRESS` if this is not the first call to <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket#ad8471399bfca7df23b87ded733d53141" class="el" title="Connect() connects to the specified WebSocket server.">Connect()</a>.
+An int32_t containing an error code from `pp_errors.h`. Returns `PP_ERROR_BADARGUMENT` if specified `url`, or `protocols` contains invalid string as defined in the <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket/" class="el" title="The WebSocket class providing bi-directional, full-duplex, communications over a single TCP socket...">WebSocket</a> API specification. `PP_ERROR_BADARGUMENT` corresponds to a SyntaxError in the <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket/" class="el" title="The WebSocket class providing bi-directional, full-duplex, communications over a single TCP socket...">WebSocket</a> API specification. Returns `PP_ERROR_NOACCESS` if the protocol specified in the `url` is not a secure protocol, but the origin of the caller has a secure scheme. Also returns `PP_ERROR_NOACCESS` if the port specified in the `url` is a port that the user agent is configured to block access to because it is a well-known port like SMTP. `PP_ERROR_NOACCESS` corresponds to a SecurityError of the specification. Returns `PP_ERROR_INPROGRESS` if this is not the first call to <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket#ad8471399bfca7df23b87ded733d53141" class="el" title="Connect() connects to the specified WebSocket server.">Connect()</a>.
 
 <span id="aee920e33ef266c51ffdaeba8d6924e19" class="anchor" style="margin: 0;"></span>
 
@@ -129,7 +128,7 @@ Returns a `Var` of string type. If called before the connection is established, 
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket#a1c4b81bb05d30fdef67a07ac904abf0f" class="el" title="GetProtocol() returns the sub-protocol chosen by the server for the specified WebSocket connection...">GetProtocol()</a> returns the sub-protocol chosen by the server for the specified <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket/" class="el" title="The WebSocket class providing bi-directional, full-duplex, communications over a single TCP socket...">WebSocket</a> connection.
 
 **Returns:**  
-Returns a `Var` of string type. If called before the connection is established, the `Var` contains the empty string. Returns a code&gt;PP\_VARTYPE\_UNDEFINED if called on an invalid resource.
+Returns a `Var` of string type. If called before the connection is established, the `Var` contains the empty string. Returns a code&gt;PP_VARTYPE_UNDEFINED if called on an invalid resource.
 
 <span id="afa09ce5acb5f7f168f17b8b3f5939317" class="anchor" style="margin: 0;"></span>
 
@@ -157,13 +156,14 @@ Returns a `Var` of string type. If called before the connection is established, 
 
 This interface only returns a single message. That is, this interface must be called at least N times to receive N messages, no matter the size of each message.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[out]</td><td>message</td><td>The received message is copied to provided <code>message</code>. The <code>message</code> must remain valid until <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket#a1eb972115700589ebf6998db4f411c56" class="el" title="ReceiveMessage() receives a message from the WebSocket server.">ReceiveMessage()</a> completes. Its received <code>Var</code> will be of string or ArrayBuffer type.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>CompletionCallback</code> called when <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket#a1eb972115700589ebf6998db4f411c56" class="el" title="ReceiveMessage() receives a message from the WebSocket server.">ReceiveMessage()</a> completes. This callback is ignored if <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket#a1eb972115700589ebf6998db4f411c56" class="el" title="ReceiveMessage() receives a message from the WebSocket server.">ReceiveMessage()</a> completes synchronously and returns <code>PP_OK</code>.</td></tr></tbody></table>
 
 <!-- -->
 
 **Returns:**  
-An int32\_t containing an error code from `pp_errors.h`. If an error is detected or connection is closed, <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket#a1eb972115700589ebf6998db4f411c56" class="el" title="ReceiveMessage() receives a message from the WebSocket server.">ReceiveMessage()</a> returns `PP_ERROR_FAILED` after all buffered messages are received. Until buffered message become empty, <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket#a1eb972115700589ebf6998db4f411c56" class="el" title="ReceiveMessage() receives a message from the WebSocket server.">ReceiveMessage()</a> continues to return `PP_OK` as if connection is still established without errors.
+An int32_t containing an error code from `pp_errors.h`. If an error is detected or connection is closed, <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket#a1eb972115700589ebf6998db4f411c56" class="el" title="ReceiveMessage() receives a message from the WebSocket server.">ReceiveMessage()</a> returns `PP_ERROR_FAILED` after all buffered messages are received. Until buffered message become empty, <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket#a1eb972115700589ebf6998db4f411c56" class="el" title="ReceiveMessage() receives a message from the WebSocket server.">ReceiveMessage()</a> continues to return `PP_OK` as if connection is still established without errors.
 
 <span id="a276b1aae76ba9d899475aaf9c2cd4f28" class="anchor" style="margin: 0;"></span>
 
@@ -171,16 +171,17 @@ An int32\_t containing an error code from `pp_errors.h`. If an error is detected
 
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket#a276b1aae76ba9d899475aaf9c2cd4f28" class="el" title="SendMessage() sends a message to the WebSocket server.">SendMessage()</a> sends a message to the <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket/" class="el" title="The WebSocket class providing bi-directional, full-duplex, communications over a single TCP socket...">WebSocket</a> server.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>message</td><td>A message to send. The message is copied to an internal buffer, so the caller can free <code>message</code> safely after returning from the function. This <code>Var</code> must be of string or ArrayBuffer types.</td></tr></tbody></table>
 
 <!-- -->
 
 **Returns:**  
-An int32\_t containing an error code from `pp_errors.h`. Returns `PP_ERROR_FAILED` if the ReadyState is `PP_WEBSOCKETREADYSTATE_CONNECTING`. `PP_ERROR_FAILED` corresponds to a JavaScript InvalidStateError in the <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket/" class="el" title="The WebSocket class providing bi-directional, full-duplex, communications over a single TCP socket...">WebSocket</a> API specification. Returns `PP_ERROR_BADARGUMENT` if the provided `message` contains an invalid character as a UTF-8 string. `PP_ERROR_BADARGUMENT` corresponds to a JavaScript SyntaxError in the <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket/" class="el" title="The WebSocket class providing bi-directional, full-duplex, communications over a single TCP socket...">WebSocket</a> API specification. Otherwise, returns `PP_OK`, but it doesn't necessarily mean that the server received the message.
+An int32_t containing an error code from `pp_errors.h`. Returns `PP_ERROR_FAILED` if the ReadyState is `PP_WEBSOCKETREADYSTATE_CONNECTING`. `PP_ERROR_FAILED` corresponds to a JavaScript InvalidStateError in the <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket/" class="el" title="The WebSocket class providing bi-directional, full-duplex, communications over a single TCP socket...">WebSocket</a> API specification. Returns `PP_ERROR_BADARGUMENT` if the provided `message` contains an invalid character as a UTF-8 string. `PP_ERROR_BADARGUMENT` corresponds to a JavaScript SyntaxError in the <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket/" class="el" title="The WebSocket class providing bi-directional, full-duplex, communications over a single TCP socket...">WebSocket</a> API specification. Otherwise, returns `PP_OK`, but it doesn't necessarily mean that the server received the message.
 
-------------------------------------------------------------------------
+---
 
 The documentation for this class was generated from the following file:
 
--   <a href="/docs/native-client/pepper_beta/cpp/websocket_8h/" class="el">websocket.h</a>
+- <a href="/docs/native-client/pepper_beta/cpp/websocket_8h/" class="el">websocket.h</a>

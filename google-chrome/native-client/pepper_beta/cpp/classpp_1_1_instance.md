@@ -2,120 +2,117 @@
 
 [List of all members.](/docs/native-client/pepper_beta/cpp/classpp_1_1_instance-members/)
 
-Public Member Functions
------------------------
+## Public Member Functions
 
- 
 
-<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a398b1946805872334781dac993cfe704" class="el">Instance</a> (PP\_Instance instance)
 
-virtual 
+<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a398b1946805872334781dac993cfe704" class="el">Instance</a> (PP_Instance instance)
+
+virtual
 
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a5e475ef135a235029bc0515e9e3ff832" class="el">~Instance</a> ()
 
-PP\_Instance 
+PP_Instance
 
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#aeb29ff4201f9ae0e356c5ed0bb4a2679" class="el">pp_instance</a> () const
 
-virtual bool 
+virtual bool
 
-<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a4f915e70caaef514a49ef8afcddde30f" class="el">Init</a> (uint32\_t argc, const char \*argn\[\], const char \*argv\[\])
+<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a4f915e70caaef514a49ef8afcddde30f" class="el">Init</a> (uint32_t argc, const char \*argn\[\], const char \*argv\[\])
 
-void 
+void
 
-<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a9773263ee281405030548fc224eeec08" class="el">AddPerInstanceObject</a> (const std::string &interface\_name, void \*object)
+<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a9773263ee281405030548fc224eeec08" class="el">AddPerInstanceObject</a> (const std::string &interface_name, void \*object)
 
-void 
+void
 
-<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a33c633189c7c321dac8e0c5dc6e67f5b" class="el">RemovePerInstanceObject</a> (const std::string &interface\_name, void \*object)
+<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a33c633189c7c321dac8e0c5dc6e67f5b" class="el">RemovePerInstanceObject</a> (const std::string &interface_name, void \*object)
 
-PPP\_Instance methods for the module to override:
+PPP_Instance methods for the module to override:
 
-virtual void 
+virtual void
 
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#ad952f05e42f0e036157beb216f12f3f3" class="el">DidChangeView</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_view/" class="el">View</a> &view)
 
-virtual void 
+virtual void
 
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a72ac4ec0b62c4cd8dedae3cf0fc577c2" class="el">DidChangeView</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_rect/" class="el">Rect</a> &position, const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_rect/" class="el">Rect</a> &clip)
 
-virtual void 
+virtual void
 
-<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a42c67b21f11bef29c5b341c78926bad3" class="el">DidChangeFocus</a> (bool has\_focus)
+<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a42c67b21f11bef29c5b341c78926bad3" class="el">DidChangeFocus</a> (bool has_focus)
 
-virtual bool 
+virtual bool
 
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a46aa2feb657fa14263a29375fe458b00" class="el">HandleInputEvent</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_input_event/" class="el">pp::InputEvent</a> &event)
 
-virtual bool 
+virtual bool
 
-<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a6cd99065ef0a55555647253442563225" class="el">HandleDocumentLoad</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_u_r_l_loader/" class="el">URLLoader</a> &url\_loader)
+<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a6cd99065ef0a55555647253442563225" class="el">HandleDocumentLoad</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_u_r_l_loader/" class="el">URLLoader</a> &url_loader)
 
-virtual void 
+virtual void
 
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a5dce8c8b36b1df7cfcc12e42397a35e8" class="el">HandleMessage</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var/" class="el">Var</a> &message)
 
-PPB\_Instance methods for querying the browser:
+PPB_Instance methods for querying the browser:
 
-bool 
+bool
 
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a147a1c1817a7a1fb2b76f5c87ab08899" class="el">BindGraphics</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics2_d/" class="el">Graphics2D</a> &graphics)
 
-bool 
+bool
 
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#abcfd0eb0995e6273271b4ff4c3df16ae" class="el">BindGraphics</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics3_d/" class="el">Graphics3D</a> &graphics)
 
-bool 
+bool
 
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a845a8736f87b78538c73c9f8d192b77a" class="el">BindGraphics</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_compositor/" class="el">Compositor</a> &compositor)
 
-bool 
+bool
 
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a451fb956e64fd3db891608148a044c01" class="el">IsFullFrame</a> ()
 
-int32\_t 
+int32_t
 
-<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a2e2d63280786c0cc41b7c6f656cc81b5" class="el">RequestInputEvents</a> (uint32\_t event\_classes)
+<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a2e2d63280786c0cc41b7c6f656cc81b5" class="el">RequestInputEvents</a> (uint32_t event_classes)
 
-int32\_t 
+int32_t
 
-<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a6341c14fc54427e45349f5158483e017" class="el">RequestFilteringInputEvents</a> (uint32\_t event\_classes)
+<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a6341c14fc54427e45349f5158483e017" class="el">RequestFilteringInputEvents</a> (uint32_t event_classes)
 
-void 
+void
 
-<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a286bc22174e2f7b6e917c56aa5c7de86" class="el">ClearInputEventRequest</a> (uint32\_t event\_classes)
+<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a286bc22174e2f7b6e917c56aa5c7de86" class="el">ClearInputEventRequest</a> (uint32_t event_classes)
 
-void 
+void
 
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a67e888a4e4e23effe7a09625e73ecae9" class="el">PostMessage</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var/" class="el">Var</a> &message)
 
-int32\_t 
+int32_t
 
-<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a5b5b1a66eda2d0e6884de8f7e25e2346" class="el">RegisterMessageHandler</a> (<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_message_handler/" class="el">MessageHandler</a> \*message\_handler, const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_message_loop/" class="el">MessageLoop</a> &message\_loop)
+<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a5b5b1a66eda2d0e6884de8f7e25e2346" class="el">RegisterMessageHandler</a> (<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_message_handler/" class="el">MessageHandler</a> \*message_handler, const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_message_loop/" class="el">MessageLoop</a> &message_loop)
 
-void 
+void
 
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a5e37f26ebc58915574819542a41a6329" class="el">UnregisterMessageHandler</a> ()
 
-PPB\_Console methods for logging to the console:
+PPB_Console methods for logging to the console:
 
-void 
+void
 
-<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a192ab89f4acf2e1e25df14e22d0cff43" class="el">LogToConsole</a> (PP\_LogLevel level, const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var/" class="el">Var</a> &value)
+<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a192ab89f4acf2e1e25df14e22d0cff43" class="el">LogToConsole</a> (PP_LogLevel level, const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var/" class="el">Var</a> &value)
 
-void 
+void
 
-<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a48286ccf1217b3ae02138049d00af48f" class="el">LogToConsoleWithSource</a> (PP\_LogLevel level, const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var/" class="el">Var</a> &source, const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var/" class="el">Var</a> &value)
+<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a48286ccf1217b3ae02138049d00af48f" class="el">LogToConsoleWithSource</a> (PP_LogLevel level, const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var/" class="el">Var</a> &source, const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var/" class="el">Var</a> &value)
 
-Static Public Member Functions
-------------------------------
+## Static Public Member Functions
 
 <table><tbody><tr class="odd"><td style="text-align: right;">static void </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#ad1b6c19954ff9446349a6fa5684eea2d" class="el">RemovePerInstanceObject</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance_handle/" class="el">InstanceHandle</a> &amp;instance, const std::string &amp;interface_name, void *object)</td></tr><tr class="even"><td style="text-align: right;">static void * </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a6dec498f1d49571be9fd40e23745327f" class="el">GetPerInstanceObject</a> (PP_Instance instance, const std::string &amp;interface_name)</td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
-Constructor & Destructor Documentation
---------------------------------------
+## Constructor & Destructor Documentation
 
 <span id="a398b1946805872334781dac993cfe704" class="anchor" style="margin: 0;"></span>
 
@@ -139,10 +136,9 @@ The `PP_Instance` identifier will still be valid during this call so the instanc
 
 **Note:** This function may be skipped in certain call so the instance can perform cleanup-related tasks. Once this function returns, the `PP_Instance` handle will be invalid. This means that you can't do any asynchronous operations such as network requests or file writes from this destructor since they will be immediately canceled.
 
-------------------------------------------------------------------------
+---
 
-Member Function Documentation
------------------------------
+## Member Function Documentation
 
 <span id="a9773263ee281405030548fc224eeec08" class="anchor" style="margin: 0;"></span>
 
@@ -150,9 +146,9 @@ Member Function Documentation
 
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a9773263ee281405030548fc224eeec08" class="el" title="AddPerInstanceObject() associates an instance with an interface, creating an object.">AddPerInstanceObject()</a> associates an instance with an interface, creating an object.
 
-Many optional interfaces are associated with a plugin instance. For example, the find in PPP\_Find interface receives updates on a per-instance basis. This "per-instance" tracking allows such objects to associate themselves with an instance as "the" handler for that interface name.
+Many optional interfaces are associated with a plugin instance. For example, the find in PPP_Find interface receives updates on a per-instance basis. This "per-instance" tracking allows such objects to associate themselves with an instance as "the" handler for that interface name.
 
-In the case of the find example, the find object registers with its associated instance in its constructor and unregisters in its destructor. Then whenever it gets updates with a PP\_Instance parameter, it can map back to the find object corresponding to that given PP\_Instance by calling GetPerInstanceObject.
+In the case of the find example, the find object registers with its associated instance in its constructor and unregisters in its destructor. Then whenever it gets updates with a PP_Instance parameter, it can map back to the find object corresponding to that given PP_Instance by calling GetPerInstanceObject.
 
 This lookup is done on a per-interface-name basis. This means you can only have one object of a given interface name associated with an instance.
 
@@ -160,7 +156,8 @@ If you are adding a handler for an additional interface, be sure to register wit
 
 Refer to <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a33c633189c7c321dac8e0c5dc6e67f5b" class="el" title="Refer to AddPerInstanceObject() for further information.">RemovePerInstanceObject()</a> and <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a6dec498f1d49571be9fd40e23745327f" class="el" title="Look up an object previously associated with an instance.">GetPerInstanceObject()</a> for further information.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>interface_name</td><td>The name of the interface to associate with the instance</td></tr><tr class="even"><td>[in]</td><td>object</td><td></td></tr></tbody></table>
 
 <span id="a147a1c1817a7a1fb2b76f5c87ab08899" class="anchor" style="margin: 0;"></span>
@@ -177,7 +174,8 @@ Any previously-bound device will be released. It is an error to bind a device wh
 
 Binding a device will invalidate that portion of the web page to flush the contents of the new device to the screen.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>graphics</td><td>A <code>Graphics2D</code> to bind.</td></tr></tbody></table>
 
 <!-- -->
@@ -193,7 +191,8 @@ Binds the given <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphic
 
 Refer to `BindGraphics(const Graphics2D& graphics)` for further information.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>graphics</td><td>A <code>Graphics3D</code> to bind.</td></tr></tbody></table>
 
 <!-- -->
@@ -209,7 +208,8 @@ Binds the given <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_composi
 
 Refer to `BindGraphics(const Graphics2D& graphics)` for further information.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>compositor</td><td>A <code>Compositor</code> to bind.</td></tr></tbody></table>
 
 <!-- -->
@@ -227,7 +227,8 @@ By default, no input events are delivered. If you have previously requested inpu
 
 **Note:** You may still get some input events after clearing the flag if they were dispatched before the request was cleared. For example, if there are 3 mouse move events waiting to be delivered, and you clear the mouse event class during the processing of the first one, you'll still receive the next two. You just won't get more events generated.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>event_classes</td><td>A combination of flags from <code>PP_InputEvent_Class</code> that identifies the classes of events the instance is no longer interested in.</td></tr></tbody></table>
 
 <span id="a42c67b21f11bef29c5b341c78926bad3" class="anchor" style="margin: 0;"></span>
@@ -240,11 +241,12 @@ Having focus means that keyboard events will be sent to the instance. An instanc
 
 The focus flag takes into account both browser tab and window focus as well as focus of the plugin element on the page. In order to be deemed to have focus, the browser window must be topmost, the tab must be selected in the window, and the instance must be the focused element on the page.
 
-**Note:**Clicks on instances will give focus only if you handle the click event. Return `true` from `HandleInputEvent` in `PPP_InputEvent` (or use unfiltered events) to signal that the click event was handled. Otherwise, the browser will bubble the event and give focus to the element on the page that actually did end up consuming it. If you're not getting focus, check to make sure you're either requesting them via `RequestInputEvents()`` (which implicitly marks all input events as consumed) or via ``RequestFilteringInputEvents()` and returning true from your event handler.
+**Note:**Clicks on instances will give focus only if you handle the click event. Return `true` from `HandleInputEvent` in `PPP_InputEvent` (or use unfiltered events) to signal that the click event was handled. Otherwise, the browser will bubble the event and give focus to the element on the page that actually did end up consuming it. If you're not getting focus, check to make sure you're either requesting them via ` RequestInputEvents()`` (which implicitly marks all input events as consumed) or via ``RequestFilteringInputEvents() ` and returning true from your event handler.
 
 ``` `
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>has_focus</td><td>Indicates the new focused state of the instance.</td></tr></tbody></table>
 
 <span id="ad952f05e42f0e036157beb216f12f3f3" class="anchor" style="margin: 0;"></span>
@@ -269,7 +271,8 @@ New code should derive from the version that takes a `ViewChanged` object rather
 
 A typical implementation will check the size of the `position` argument and reallocate the graphics context when a different size is received. Note that this function will be called for scroll events where the size doesn't change, so you should always check that the size is actually different before doing any reallocations.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>position</td><td>The location on the page of the instance. The position is relative to the top left corner of the viewport, which changes as the page is scrolled. Generally the size of this value will be used to create a graphics device, and the position is ignored (most things are relative to the instance so the absolute position isn't useful in most cases).</td></tr><tr class="even"><td>[in]</td><td>clip</td><td>The visible region of the instance. This is relative to the top left of the instance's coordinate system (not the page). If the instance is invisible, <code>clip</code> will be (0, 0, 0, 0).</td></tr></tbody></table>
 
 It's recommended to check for invisible instances and to stop generating graphics updates in this case to save system resources. It's not usually worthwhile, however, to generate partial updates according to the clip when the instance is partially visible. Instead, update the entire region. The time saved doing partial paints is usually not significant and it can create artifacts when scrolling (this notification is sent asynchronously from scrolling so there can be flashes of old content in the exposed regions).
@@ -284,7 +287,8 @@ Returns NULL if the instance is invalid or there is no object for the given inte
 
 Refer to <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a9773263ee281405030548fc224eeec08" class="el" title="AddPerInstanceObject() associates an instance with an interface, creating an object.">AddPerInstanceObject()</a> for further information.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td></td></tr><tr class="even"><td>[in]</td><td>interface_name</td><td>The name of the interface to associate with the instance.</td></tr></tbody></table>
 
 <span id="a6cd99065ef0a55555647253442563225" class="anchor" style="margin: 0;"></span>
@@ -295,11 +299,12 @@ Refer to <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a9773
 
 This situation only applies to modules that are pre-registered to handle certain MIME types. If you haven't specifically registered to handle a MIME type or aren't positive this applies to you, your implementation of this function can just return false.
 
-The given url\_loader corresponds to a `URLLoader` object that is already opened. Its response headers may be queried using GetResponseInfo(). If you want to use the `URLLoader` to read data, you will need to save a copy of it or the underlying resource will be freed when this function returns and the load will be canceled.
+The given url_loader corresponds to a `URLLoader` object that is already opened. Its response headers may be queried using GetResponseInfo(). If you want to use the `URLLoader` to read data, you will need to save a copy of it or the underlying resource will be freed when this function returns and the load will be canceled.
 
 This method returns false if the module cannot handle the data. In response to this method, the module should call ReadResponseBody() to read the incoming data.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>url_loader</td><td>An open <code>URLLoader</code> instance.</td></tr></tbody></table>
 
 <!-- -->
@@ -329,7 +334,8 @@ The caller of this function will maintain a reference to the input event resourc
 
 Refer to `RequestInputEvents` and `RequestFilteringInputEvents` for further information.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>event</td><td>The event to handle.</td></tr></tbody></table>
 
 <!-- -->
@@ -363,7 +369,8 @@ The following JavaScript code invokes `HandleMessage`, passing the instance on w
 
 Refer to <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a67e888a4e4e23effe7a09625e73ecae9" class="el" title="PostMessage() asynchronously invokes any listeners for message events on the DOM element for the give...">PostMessage()</a> for sending messages to JavaScript.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>message</td><td>A <code>Var</code> which has been converted from a JavaScript value. JavaScript array/object types are supported from Chrome M29 onward. All JavaScript values are copied when passing them to the plugin.</td></tr></tbody></table>
 
 <span id="a4f915e70caaef514a49ef8afcddde30f" class="anchor" style="margin: 0;"></span>
@@ -374,7 +381,8 @@ Refer to <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a67e8
 
 This function will be called immediately after the instance object is constructed.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>argc</td><td>The number of arguments contained in <code>argn</code> and <code>argv</code>.</td></tr><tr class="even"><td>[in]</td><td>argn</td><td>An array of argument names. These argument names are supplied in the &lt;embed&gt; tag, for example: <code>&lt;embed id="nacl_module" dimensions="2"&gt;</code> will produce two argument names: "id" and "dimensions".</td></tr><tr class="odd"><td>[in]</td><td>argv</td><td>An array of argument values. These are the values of the arguments listed in the &lt;embed&gt; tag, for example <code>&lt;embed id="nacl_module" dimensions="2"&gt;</code> will produce two argument values: "nacl_module" and "2". The indices of these values match the indices of the corresponding names in <code>argn</code>.</td></tr></tbody></table>
 
 <!-- -->
@@ -448,7 +456,8 @@ This messaging system is similar to the system used for listening for messages f
 
 Refer to <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a5dce8c8b36b1df7cfcc12e42397a35e8" class="el" title="HandleMessage() is a function that the browser calls when PostMessage() is invoked on the DOM element...">HandleMessage()</a> for receiving events from JavaScript.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>message</td><td>A <code>Var</code> containing the data to be sent to JavaScript. Message can have a numeric, boolean, or string value. Array/Dictionary types are supported from Chrome M29 onward. All var types are copied when passing them to JavaScript.</td></tr></tbody></table>
 
 <span id="aeb29ff4201f9ae0e356c5ed0bb4a2679" class="anchor" style="margin: 0;"></span>
@@ -468,17 +477,18 @@ Dev-Channel Only.
 
 Registers a handler for receiving messages from JavaScript. If a handler is registered this way, it will replace the <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance/" class="el">Instance</a>'s HandleMessage method, and all messages sent from JavaScript via postMessage and postMessageAndAwaitResponse will be dispatched to `message_handler`.
 
-The function calls will be dispatched via `message_loop`. This means that the functions will be invoked on the thread to which `message_loop` is attached, when `message_loop` is run. It is illegal to pass the main thread message loop; RegisterMessageHandler will return PP\_ERROR\_WRONG\_THREAD in that case. If you quit `message_loop` before calling Unregister(), the browser will not be able to call functions in the plugin's message handler any more. That could mean missing some messages or could cause a leak if you depend on Destroy() to free hander data. So you should, whenever possible, Unregister() the handler prior to quitting its event loop.
+The function calls will be dispatched via `message_loop`. This means that the functions will be invoked on the thread to which `message_loop` is attached, when `message_loop` is run. It is illegal to pass the main thread message loop; RegisterMessageHandler will return PP_ERROR_WRONG_THREAD in that case. If you quit `message_loop` before calling Unregister(), the browser will not be able to call functions in the plugin's message handler any more. That could mean missing some messages or could cause a leak if you depend on Destroy() to free hander data. So you should, whenever possible, Unregister() the handler prior to quitting its event loop.
 
 Attempting to register a message handler when one is already registered will cause the current <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_message_handler/" class="el" title="MessageHandler is an abstract base class that the plugin may implement if it wants to receive message...">MessageHandler</a> to be unregistered and replaced. In that case, no messages will be sent to the "default" message handler (<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a5dce8c8b36b1df7cfcc12e42397a35e8" class="el" title="HandleMessage() is a function that the browser calls when PostMessage() is invoked on the DOM element...">pp::Instance::HandleMessage()</a>). Messages will stop arriving at the prior message handler and will begin to be dispatched at the new message handler.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>message_handler</td><td>The plugin-provided object for handling messages. The instance does not take ownership of the pointer; it is up to the plugin to ensure that |message_handler| lives until its WasUnregistered() function is invoked.</td></tr><tr class="even"><td>[in]</td><td>message_loop</td><td>Represents the message loop on which <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_message_handler/" class="el" title="MessageHandler is an abstract base class that the plugin may implement if it wants to receive message...">MessageHandler</a>'s functions should be invoked.</td></tr></tbody></table>
 
 <!-- -->
 
 **Returns:**  
-PP\_OK on success, or an error from pp\_errors.h.
+PP_OK on success, or an error from pp_errors.h.
 
 <span id="a33c633189c7c321dac8e0c5dc6e67f5b" class="anchor" style="margin: 0;"></span>
 
@@ -486,7 +496,8 @@ PP\_OK on success, or an error from pp\_errors.h.
 
 Refer to <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance#a9773263ee281405030548fc224eeec08" class="el" title="AddPerInstanceObject() associates an instance with an interface, creating an object.">AddPerInstanceObject()</a> for further information.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>interface_name</td><td>The name of the interface to associate with the instance</td></tr><tr class="even"><td>[in]</td><td>object</td><td></td></tr></tbody></table>
 
 <span id="ad1b6c19954ff9446349a6fa5684eea2d" class="anchor" style="margin: 0;"></span>
@@ -513,7 +524,8 @@ Filtering input events requires significantly more overhead than just delivering
        RequestFilteringInputEvents(
            PP_INPUTEVENT_CLASS_WHEEL | PP_INPUTEVENT_CLASS_KEYBOARD);
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>event_classes</td><td>A combination of flags from <code>PP_InputEvent_Class</code> that identifies the classes of events the instance is requesting. The flags are combined by logically ORing their values.</td></tr></tbody></table>
 
 <!-- -->
@@ -531,7 +543,7 @@ By default, no input events are delivered. Call this function with the classes o
 
 Input events may have high overhead, so you should only request input events that your plugin will actually handle. For example, the browser may do optimizations for scroll or touch events that can be processed substantially faster if it knows there are no non-default receivers for that message. Requesting that such messages be delivered, even if they are processed very quickly, may have a noticeable effect on the performance of the page.
 
-When requesting input events through this function, the events will be delivered and *not* bubbled to the page. This means that even if you aren't interested in the message, no other parts of the page will get the message.
+When requesting input events through this function, the events will be delivered and _not_ bubbled to the page. This means that even if you aren't interested in the message, no other parts of the page will get the message.
 
 **Example:**
 
@@ -539,7 +551,8 @@ When requesting input events through this function, the events will be delivered
        RequestFilteringInputEvents(
            PP_INPUTEVENT_CLASS_WHEEL | PP_INPUTEVENT_CLASS_KEYBOARD);
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>event_classes</td><td>A combination of flags from <code>PP_InputEvent_Class</code> that identifies the classes of events the instance is requesting. The flags are combined by logically ORing their values.</td></tr></tbody></table>
 
 <!-- -->
@@ -557,8 +570,8 @@ After this call, the message handler (if one was registered) will have "WasUnreg
 
 Attempting to unregister a message handler when none is registered has no effect.
 
-------------------------------------------------------------------------
+---
 
 The documentation for this class was generated from the following file:
 
--   <a href="/docs/native-client/pepper_beta/cpp/instance_8h/" class="el">instance.h</a>
+- <a href="/docs/native-client/pepper_beta/cpp/instance_8h/" class="el">instance.h</a>

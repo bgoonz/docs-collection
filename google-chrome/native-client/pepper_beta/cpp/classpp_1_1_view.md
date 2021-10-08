@@ -8,24 +8,21 @@ Inheritance diagram for pp::View:
 
 [List of all members.](/docs/native-client/pepper_beta/cpp/classpp_1_1_view-members/)
 
-Public Member Functions
------------------------
+## Public Member Functions
 
 <table><tbody><tr class="odd"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_view#aebcd4ab8818a6e1dfe68e2c435823ad9" class="el">View</a> ()</td></tr><tr class="even"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_view#a89cc79b6731f0e67d0821fe83b3e64fb" class="el">View</a> (PP_Resource view_resource)</td></tr><tr class="odd"><td style="text-align: right;"><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_rect/" class="el">Rect</a> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_view#a37996c51fa6cc2dc25783461ecde0bb9" class="el">GetRect</a> () const</td></tr><tr class="even"><td style="text-align: right;">bool </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_view#a2ae3a19ade644199982a2d09c6dd5c11" class="el">IsFullscreen</a> () const</td></tr><tr class="odd"><td style="text-align: right;">bool </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_view#aff1f9900e594167a276a624e52e5ac4c" class="el">IsVisible</a> () const</td></tr><tr class="even"><td style="text-align: right;">bool </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_view#a30a0919ba5e4209ef52207375c5fc5f6" class="el">IsPageVisible</a> () const</td></tr><tr class="odd"><td style="text-align: right;"><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_rect/" class="el">Rect</a> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_view#aff9a53367325d9138ab7d9cd39e40ce2" class="el">GetClipRect</a> () const</td></tr><tr class="even"><td style="text-align: right;">float </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_view#a52759c57da28a6c06a5da23d28519287" class="el">GetDeviceScale</a> () const</td></tr><tr class="odd"><td style="text-align: right;">float </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_view#a42d5b4ab4ffed3f020d3fd303a14a9dd" class="el">GetCSSScale</a> () const</td></tr><tr class="even"><td style="text-align: right;"><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" class="el">Point</a> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_view#abdad2f4e5b9b07376d590785c91ea356" class="el">GetScrollOffset</a> () const</td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
 <span id="details" class="anchor" style="margin: 0;"></span>
 
-Detailed Description
---------------------
+## Detailed Description
 
 This class represents the state of the view for an instance and contains functions for retrieving the current state of that view.
 
-------------------------------------------------------------------------
+---
 
-Constructor & Destructor Documentation
---------------------------------------
+## Constructor & Destructor Documentation
 
 <span id="aebcd4ab8818a6e1dfe68e2c435823ad9" class="anchor" style="margin: 0;"></span>
 
@@ -39,10 +36,9 @@ Default constructor for creating an <a href="/docs/native-client/pepper_beta/cpp
 
 Creates a <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_view/" class="el" title="This class represents the state of the view for an instance and contains functions for retrieving the...">View</a> resource, taking and holding an additional reference to the given resource handle.
 
-------------------------------------------------------------------------
+---
 
-Member Function Documentation
------------------------------
+## Member Function Documentation
 
 <span id="aff9a53367325d9138ab7d9cd39e40ce2" class="anchor" style="margin: 0;"></span>
 
@@ -52,7 +48,7 @@ Member Function Documentation
 
 This rectangle indicates the portions of the module instance that are scrolled into view.
 
-If the module instance is scrolled off the view, the return value will be (0, 0, 0, 0). This clip rectangle does *not* take into account page visibility. Therefore, if the module instance is scrolled into view, but the page itself is on a tab that is not visible, the return rectangle will contain the visible rectangle as though the page were visible. Refer to <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_view#a30a0919ba5e4209ef52207375c5fc5f6" class="el" title="IsPageVisible() determines if the page that contains the module instance is visible.">IsPageVisible()</a> and <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_view#aff1f9900e594167a276a624e52e5ac4c" class="el" title="IsVisible() determines whether the module instance might be visible to the user.">IsVisible()</a> if you want to account for page visibility.
+If the module instance is scrolled off the view, the return value will be (0, 0, 0, 0). This clip rectangle does _not_ take into account page visibility. Therefore, if the module instance is scrolled into view, but the page itself is on a tab that is not visible, the return rectangle will contain the visible rectangle as though the page were visible. Refer to <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_view#a30a0919ba5e4209ef52207375c5fc5f6" class="el" title="IsPageVisible() determines if the page that contains the module instance is visible.">IsPageVisible()</a> and <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_view#aff1f9900e594167a276a624e52e5ac4c" class="el" title="IsVisible() determines whether the module instance might be visible to the user.">IsVisible()</a> if you want to account for page visibility.
 
 Most applications will not need to worry about the clip rectangle. The recommended behavior is to do full updates if the module instance is visible, as determined by <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_view#aff1f9900e594167a276a624e52e5ac4c" class="el" title="IsVisible() determines whether the module instance might be visible to the user.">IsVisible()</a>, and do no updates if it is not visible.
 
@@ -148,8 +144,8 @@ This function performs the duties of <a href="/docs/native-client/pepper_beta/cp
 **Returns:**  
 `true` if the instance might be visible to the user, `false` if it is definitely not visible.
 
-------------------------------------------------------------------------
+---
 
 The documentation for this class was generated from the following file:
 
--   <a href="/docs/native-client/pepper_beta/cpp/view_8h/" class="el">view.h</a>
+- <a href="/docs/native-client/pepper_beta/cpp/view_8h/" class="el">view.h</a>

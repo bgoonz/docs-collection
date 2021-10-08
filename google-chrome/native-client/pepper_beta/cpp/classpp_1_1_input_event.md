@@ -8,17 +8,15 @@ Inheritance diagram for pp::InputEvent:
 
 [List of all members.](/docs/native-client/pepper_beta/cpp/classpp_1_1_input_event-members/)
 
-Public Member Functions
------------------------
+## Public Member Functions
 
 <table><tbody><tr class="odd"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_input_event#ac7581e4321abe8de6f3b48d70f4aa65d" class="el">InputEvent</a> ()</td></tr><tr class="even"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_input_event#a1d4f7d3fb88de3cccc60ab26b92ccf23" class="el">InputEvent</a> (PP_Resource input_event_resource)</td></tr><tr class="odd"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_input_event#a2492183af4fecec44a423a5b7eae6faf" class="el">~InputEvent</a> ()</td></tr><tr class="even"><td style="text-align: right;">PP_InputEvent_Type </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_input_event#a73ca79c06ff9a39304e3b390090f03dc" class="el">GetType</a> () const</td></tr><tr class="odd"><td style="text-align: right;">PP_TimeTicks </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_input_event#acc79ecdcf19f5b8a8a7268fc8ff51531" class="el">GetTimeStamp</a> () const</td></tr><tr class="even"><td style="text-align: right;">uint32_t </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_input_event#a6f94a5cd8453f1b69e55aadde73354e7" class="el">GetModifiers</a> () const</td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
 <span id="details" class="anchor" style="margin: 0;"></span>
 
-Detailed Description
---------------------
+## Detailed Description
 
 This class represents an input event resource.
 
@@ -38,10 +36,9 @@ Typically you would check the type of the event and then create the appropriate 
            return false;
      }
 
-------------------------------------------------------------------------
+---
 
-Constructor & Destructor Documentation
---------------------------------------
+## Constructor & Destructor Documentation
 
 <span id="ac7581e4321abe8de6f3b48d70f4aa65d" class="anchor" style="margin: 0;"></span>
 
@@ -57,17 +54,17 @@ This constructor constructs an input event from the provided input event resourc
 
 The <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_input_event/" class="el" title="This class represents an input event resource.">InputEvent</a> object will be <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_resource#a859068e34cdc2dc0b78754c255323aa9" class="el" title="This functions determines if this resource is invalid or uninitialized.">is_null()</a> if the given resource is not a valid input event.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>input_event_resource</td><td>A input event resource ID.</td></tr></tbody></table>
 
 <span id="a2492183af4fecec44a423a5b7eae6faf" class="anchor" style="margin: 0;"></span>
 
 <table><tbody><tr class="odd"><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_input_event#a2492183af4fecec44a423a5b7eae6faf" class="el">pp::InputEvent::~InputEvent</a></td><td>(</td><td></td><td>)</td><td></td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
-Member Function Documentation
------------------------------
+## Member Function Documentation
 
 <span id="a6f94a5cd8453f1b69e55aadde73354e7" class="anchor" style="margin: 0;"></span>
 
@@ -100,10 +97,10 @@ A `PP_TimeTicks` containing the time the event was generated.
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_input_event#a73ca79c06ff9a39304e3b390090f03dc" class="el" title="GetType() returns the type of input event for this input event object.">GetType()</a> returns the type of input event for this input event object.
 
 **Returns:**  
-A `PP_InputEvent_Type` if successful, PP\_INPUTEVENT\_TYPE\_UNDEFINED if the resource is invalid.
+A `PP_InputEvent_Type` if successful, PP_INPUTEVENT_TYPE_UNDEFINED if the resource is invalid.
 
-------------------------------------------------------------------------
+---
 
 The documentation for this class was generated from the following file:
 
--   <a href="/docs/native-client/pepper_beta/cpp/input__event_8h/" class="el">input_event.h</a>
+- <a href="/docs/native-client/pepper_beta/cpp/input__event_8h/" class="el">input_event.h</a>

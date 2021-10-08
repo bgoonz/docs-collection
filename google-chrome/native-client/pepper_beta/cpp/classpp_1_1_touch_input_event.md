@@ -8,15 +8,13 @@ Inheritance diagram for pp::TouchInputEvent:
 
 [List of all members.](/docs/native-client/pepper_beta/cpp/classpp_1_1_touch_input_event-members/)
 
-Public Member Functions
------------------------
+## Public Member Functions
 
 <table><tbody><tr class="odd"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_touch_input_event#a29020b28f060c5ce45ae5c3fc7512e43" class="el">TouchInputEvent</a> ()</td></tr><tr class="even"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_touch_input_event#a601fab40cbb3e8f2f1824f655192b541" class="el">TouchInputEvent</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_input_event/" class="el">InputEvent</a> &amp;event)</td></tr><tr class="odd"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_touch_input_event#a4a14ab4999f452f368e61c815c976eb3" class="el">TouchInputEvent</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance_handle/" class="el">InstanceHandle</a> &amp;instance, PP_InputEvent_Type type, PP_TimeTicks time_stamp, uint32_t modifiers)</td></tr><tr class="even"><td style="text-align: right;">void </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_touch_input_event#a0a323b8bd08e02d816b6fffa9b6299c0" class="el">AddTouchPoint</a> (PP_TouchListType list, PP_TouchPoint point)</td></tr><tr class="odd"><td style="text-align: right;">uint32_t </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_touch_input_event#a5bdc7a4cd409586cab33e509dad43461" class="el">GetTouchCount</a> (PP_TouchListType list) const</td></tr><tr class="even"><td style="text-align: right;"><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_touch_point/" class="el">TouchPoint</a> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_touch_input_event#ac68cc82bbf2fcc88d449c5430cc02505" class="el">GetTouchByIndex</a> (PP_TouchListType list, uint32_t index) const</td></tr><tr class="odd"><td style="text-align: right;"><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_touch_point/" class="el">TouchPoint</a> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_touch_input_event#a66228762dbdfbb3404853a87c37b1736" class="el">GetTouchById</a> (PP_TouchListType list, uint32_t id) const</td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
-Constructor & Destructor Documentation
---------------------------------------
+## Constructor & Destructor Documentation
 
 <span id="a29020b28f060c5ce45ae5c3fc7512e43" class="anchor" style="margin: 0;"></span>
 
@@ -38,13 +36,13 @@ If the given event is itself <a href="/docs/native-client/pepper_beta/cpp/classp
 
 Constructs a touch input even from the given parameters.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance for which this event occurred.</td></tr><tr class="even"><td>[in]</td><td>type</td><td>A <code>PP_InputEvent_Type</code> identifying the type of input event.</td></tr><tr class="odd"><td>[in]</td><td>time_stamp</td><td>A <code>PP_TimeTicks</code> indicating the time when the event occurred.</td></tr><tr class="even"><td>[in]</td><td>modifiers</td><td>A bit field combination of the <code>PP_InputEvent_Modifier</code> flags.</td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
-Member Function Documentation
------------------------------
+## Member Function Documentation
 
 <span id="a0a323b8bd08e02d816b6fffa9b6299c0" class="anchor" style="margin: 0;"></span>
 
@@ -73,8 +71,8 @@ The <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_touch_point/" class
 **Returns:**  
 The number of TouchPoints in this TouchList.
 
-------------------------------------------------------------------------
+---
 
 The documentation for this class was generated from the following file:
 
--   <a href="/docs/native-client/pepper_beta/cpp/input__event_8h/" class="el">input_event.h</a>
+- <a href="/docs/native-client/pepper_beta/cpp/input__event_8h/" class="el">input_event.h</a>

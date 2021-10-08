@@ -8,15 +8,13 @@ Inheritance diagram for pp::Graphics2D:
 
 [List of all members.](/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics2_d-members/)
 
-Public Member Functions
------------------------
+## Public Member Functions
 
 <table><tbody><tr class="odd"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics2_d#aef2cf8f0798d4980309f9bc888a73463" class="el">Graphics2D</a> ()</td></tr><tr class="even"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics2_d#a144e483e91d77dd7314698a87d57c7ca" class="el">Graphics2D</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics2_d/" class="el">Graphics2D</a> &amp;other)</td></tr><tr class="odd"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics2_d#a193584685783cfcf3ab4bd01a5ca6e14" class="el">Graphics2D</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance_handle/" class="el">InstanceHandle</a> &amp;instance, const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_size/" class="el">Size</a> &amp;<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics2_d#ad623f80db2c0cc679619303a0c0b9eff" class="el">size</a>, bool is_always_opaque)</td></tr><tr class="even"><td style="text-align: right;">virtual </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics2_d#aa40a889094d345add38f16d559ae0ebd" class="el">~Graphics2D</a> ()</td></tr><tr class="odd"><td style="text-align: right;"><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics2_d/" class="el">Graphics2D</a> &amp; </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics2_d#ad19b4539e1c1fdacc6ff41383b6cd3ba" class="el">operator=</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics2_d/" class="el">Graphics2D</a> &amp;other)</td></tr><tr class="even"><td style="text-align: right;">const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_size/" class="el">Size</a> &amp; </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics2_d#ad623f80db2c0cc679619303a0c0b9eff" class="el">size</a> () const</td></tr><tr class="odd"><td style="text-align: right;">void </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics2_d#ab61e3018d1f5c4301f71ad0001d3ad8e" class="el">PaintImageData</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_image_data/" class="el">ImageData</a> &amp;image, const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" class="el">Point</a> &amp;top_left)</td></tr><tr class="even"><td style="text-align: right;">void </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics2_d#af779f51bfb0c4064535ea91b2470ddc7" class="el">PaintImageData</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_image_data/" class="el">ImageData</a> &amp;image, const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" class="el">Point</a> &amp;top_left, const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_rect/" class="el">Rect</a> &amp;src_rect)</td></tr><tr class="odd"><td style="text-align: right;">void </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics2_d#a6a4256bb84cab71909821699d7aea369" class="el">Scroll</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_rect/" class="el">Rect</a> &amp;clip, const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" class="el">Point</a> &amp;amount)</td></tr><tr class="even"><td style="text-align: right;">void </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics2_d#a73185e278ea87d33cfec2f00a56314d9" class="el">ReplaceContents</a> (<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_image_data/" class="el">ImageData</a> *image)</td></tr><tr class="odd"><td style="text-align: right;">int32_t </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics2_d#a3c1e23ad48ad62860a125d471b7664a4" class="el">Flush</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback/" class="el">CompletionCallback</a> &amp;cc)</td></tr><tr class="even"><td style="text-align: right;">bool </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics2_d#a96a91958227a7e42a829033241fac6b1" class="el">SetScale</a> (float scale)</td></tr><tr class="odd"><td style="text-align: right;">float </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics2_d#a5b927eaabdd78b1a0094aa1a3695bae2" class="el">GetScale</a> ()</td></tr><tr class="even"><td style="text-align: right;">bool </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics2_d#a3babd6bb9c922a650b3c7c57d1e36d8c" class="el">SetLayerTransform</a> (float scale, const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" class="el">Point</a> &amp;origin, const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" class="el">Point</a> &amp;translate)</td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
-Constructor & Destructor Documentation
---------------------------------------
+## Constructor & Destructor Documentation
 
 <span id="aef2cf8f0798d4980309f9bc888a73463" class="anchor" style="margin: 0;"></span>
 
@@ -32,7 +30,8 @@ The copy constructor for <a href="/docs/native-client/pepper_beta/cpp/classpp_1_
 
 The underlying 2D context is not copied; this constructor creates another reference to the original 2D context.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A pointer to a <code>Graphics2D</code> context.</td></tr></tbody></table>
 
 <span id="a193584685783cfcf3ab4bd01a5ca6e14" class="anchor" style="margin: 0;"></span>
@@ -41,7 +40,8 @@ The underlying 2D context is not copied; this constructor creates another refere
 
 A constructor allocating a new 2D graphics context with the given size in the browser, resulting object will be <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_resource#a859068e34cdc2dc0b78754c255323aa9" class="el" title="This functions determines if this resource is invalid or uninitialized.">is_null()</a> if the allocation failed.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance with which this resource will be associated.</td></tr><tr class="even"><td>[in]</td><td>size</td><td>The size of the 2D graphics context in the browser, measured in pixels. See <code>SetScale()</code> for more information.</td></tr><tr class="odd"><td>[in]</td><td>is_always_opaque</td><td>Set the <code>is_always_opaque</code> flag to true if you know that you will be painting only opaque data to this context. This option will disable blending when compositing the module with the web page, which might give higher performance on some computers.</td></tr></tbody></table>
 
 If you set `is_always_opaque`, your alpha channel should always be set to 0xFF or there may be painting artifacts. The alpha values overwrite the destination alpha values without blending when `is_always_opaque` is true.
@@ -54,10 +54,9 @@ A destructor that decrements the reference count of a `Graphics2D` object made u
 
 It is possible that the destructor does not totally destroy the underlying 2D context if there are outstanding references to it.
 
-------------------------------------------------------------------------
+---
 
-Member Function Documentation
------------------------------
+## Member Function Documentation
 
 <span id="a3c1e23ad48ad62860a125d471b7664a4" class="anchor" style="margin: 0;"></span>
 
@@ -81,7 +80,8 @@ Because the callback is executed (or thread unblocked) only when the module's im
 
 **Shutdown** If a module instance is removed when a Flush is pending, the callback will not be executed.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>cc</td><td>A <code>CompletionCallback</code> to be called when the image has been painted on the screen.</td></tr></tbody></table>
 
 <!-- -->
@@ -106,7 +106,8 @@ This function assigns one 2D graphics context to this 2D graphics context.
 
 This function increases the reference count of the 2D resource of the other 2D graphics context while decrementing the reference counter of this 2D graphics context.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>An other 2D graphics context.</td></tr></tbody></table>
 
 <!-- -->
@@ -128,7 +129,8 @@ The painted area of the source bitmap must fall entirely within the context. Att
 
 There are two methods most modules will use for painting. The first method is to generate a new `ImageData` and then paint it. In this case, you'll set the location of your painting to `top_left` and set `src_rect` to `NULL`. The second is that you're generating small invalid regions out of a larger bitmap representing your entire module's image.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>image</td><td>The <code>ImageData</code> to be painted.</td></tr><tr class="even"><td>[in]</td><td>top_left</td><td>A <code>Point</code> representing the <code>top_left</code> location where the <code>ImageData</code> will be painted.</td></tr></tbody></table>
 
 <span id="af779f51bfb0c4064535ea91b2470ddc7" class="anchor" style="margin: 0;"></span>
@@ -147,7 +149,8 @@ The painted area of the source bitmap must fall entirely within the context. Att
 
 There are two methods most modules will use for painting. The first method is to generate a new `ImageData` and then paint it. In this case, you'll set the location of your painting to `top_left` and set `src_rect` to `NULL`. The second is that you're generating small invalid regions out of a larger bitmap representing your entire module. In this case, you would set the location of your image to (0,0) and then set `src_rect` to the pixels you changed.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>image</td><td>The <code>ImageData</code> to be painted.</td></tr><tr class="even"><td>[in]</td><td>top_left</td><td>A <code>Point</code> representing the <code>top_left</code> location where the <code>ImageData</code> will be painted.</td></tr><tr class="odd"><td>[in]</td><td>src_rect</td><td>The rectangular area where the <code>ImageData</code> will be painted.</td></tr></tbody></table>
 
 <span id="a73185e278ea87d33cfec2f00a56314d9" class="anchor" style="margin: 0;"></span>
@@ -166,7 +169,8 @@ After this call, you should take care to release your references to the image. I
 
 In the case of an animation, you will want to allocate a new image for the next frame. It is best if you wait until the flush callback has executed before allocating this bitmap. This gives the browser the option of caching the previous backing store and handing it back to you (assuming the sizes match). In the optimal case, this means no bitmaps are allocated during the animation, and the backing store and "front buffer" (which the module is painting into) are just being swapped back and forth.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>image</td><td>The <code>ImageData</code> to be painted.</td></tr></tbody></table>
 
 <span id="a6a4256bb84cab71909821699d7aea369" class="anchor" style="margin: 0;"></span>
@@ -181,7 +185,8 @@ This function will result in some exposed region which will have undefined conte
 
 The scroll can be larger than the area of the clipping rectangle, which means the current image will be scrolled out of the rectangle. This scenario is not an error but will result in a no-op.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>clip</td><td>The clipping rectangle.</td></tr><tr class="even"><td>[in]</td><td>amount</td><td>The amount the area in the clipping rectangle will shifted.</td></tr></tbody></table>
 
 <span id="a3babd6bb9c922a650b3c7c57d1e36d8c" class="anchor" style="margin: 0;"></span>
@@ -196,7 +201,8 @@ The scroll can be larger than the area of the clipping rectangle, which means th
 
 Typically, if rendering at device resolution is desired, the context would be created with the width and height scaled up by the view's GetDeviceScale and SetScale called with a scale of 1.0 / GetDeviceScale(). For example, if the view resource passed to DidChangeView has a rectangle of (w=200, h=100) and a device scale of 2.0, one would call Create with a size of (w=400, h=200) and then call SetScale with 0.5. One would then treat each pixel in the context as a single device pixel.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>scale</td><td>The scale to apply when painting.</td></tr></tbody></table>
 
 <!-- -->
@@ -213,8 +219,8 @@ Getter function for returning size of the 2D graphics context.
 **Returns:**  
 The size of the 2D graphics context measured in pixels.
 
-------------------------------------------------------------------------
+---
 
 The documentation for this class was generated from the following file:
 
--   <a href="/docs/native-client/pepper_beta/cpp/graphics__2d_8h/" class="el">graphics_2d.h</a>
+- <a href="/docs/native-client/pepper_beta/cpp/graphics__2d_8h/" class="el">graphics_2d.h</a>

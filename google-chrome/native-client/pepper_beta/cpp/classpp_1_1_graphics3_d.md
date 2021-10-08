@@ -8,24 +8,21 @@ Inheritance diagram for pp::Graphics3D:
 
 [List of all members.](/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics3_d-members/)
 
-Public Member Functions
------------------------
+## Public Member Functions
 
 <table><tbody><tr class="odd"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics3_d#a36b6d8c818d0af11128d9522dd7f8bc2" class="el">Graphics3D</a> ()</td></tr><tr class="even"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics3_d#a072a5e20977e193d02b2e509ad72d11e" class="el">Graphics3D</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance_handle/" class="el">InstanceHandle</a> &amp;instance, const int32_t attrib_list[])</td></tr><tr class="odd"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics3_d#a53586ebd53025ff6e1e0c4b89e471f68" class="el">Graphics3D</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance_handle/" class="el">InstanceHandle</a> &amp;instance, const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics3_d/" class="el">Graphics3D</a> &amp;share_context, const int32_t attrib_list[])</td></tr><tr class="even"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics3_d#a134128672575294aeb17c263189b9da0" class="el">~Graphics3D</a> ()</td></tr><tr class="odd"><td style="text-align: right;">int32_t </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics3_d#ae4527f4526a090c05ab7d9ce9fafb3de" class="el">GetAttribs</a> (int32_t attrib_list[]) const</td></tr><tr class="even"><td style="text-align: right;">int32_t </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics3_d#a504e04ec5f21e324439fe8edc3622957" class="el">SetAttribs</a> (const int32_t attrib_list[])</td></tr><tr class="odd"><td style="text-align: right;">int32_t </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics3_d#a21b887529bdba99089ff3c1fa16d3d7c" class="el">ResizeBuffers</a> (int32_t width, int32_t height)</td></tr><tr class="even"><td style="text-align: right;">int32_t </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics3_d#ae1d1c071bf2737ab310a32558ec5f507" class="el">SwapBuffers</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback/" class="el">CompletionCallback</a> &amp;cc)</td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
 <span id="details" class="anchor" style="margin: 0;"></span>
 
-Detailed Description
---------------------
+## Detailed Description
 
 This class represents a 3D rendering context in the browser.
 
-------------------------------------------------------------------------
+---
 
-Constructor & Destructor Documentation
---------------------------------------
+## Constructor & Destructor Documentation
 
 <span id="a36b6d8c818d0af11128d9522dd7f8bc2" class="anchor" style="margin: 0;"></span>
 
@@ -41,7 +38,8 @@ A constructor for creating and initializing a 3D rendering context.
 
 The returned context is created off-screen and must be attached to a module instance using `Instance::BindGraphics` to draw on the web page.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance with which this resource will be associated.</td></tr><tr class="even"><td>[in]</td><td>attrib_list</td><td>The list of attributes (name=value pairs) for the context. The list is terminated with <code>PP_GRAPHICS3DATTRIB_NONE</code>. The <code>attrib_list</code> may be <code>NULL</code> or empty (first attribute is <code>PP_GRAPHICS3DATTRIB_NONE</code>). If an attribute is not specified in <code>attrib_list</code>, then the default value is used.</td></tr></tbody></table>
 
 Attributes are classified into two categories:
@@ -68,7 +66,8 @@ The returned context is created off-screen. It must be attached to a module inst
 
 This constructor is identical to the 2-argument version except that this version allows sharing of resources with another context.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance that will own the new <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics3_d/" class="el" title="This class represents a 3D rendering context in the browser.">Graphics3D</a>.</td></tr><tr class="even"><td>[in]</td><td>share_context</td><td>Specifies the context with which all shareable data will be shared. The shareable data is defined by the client API (note that for OpenGL and OpenGL ES, shareable data excludes texture objects named 0). An arbitrary number of <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics3_d/" class="el" title="This class represents a 3D rendering context in the browser.">Graphics3D</a> resources can share data in this fashion.</td></tr><tr class="odd"><td>[in]</td><td>attrib_list</td><td>The list of attributes for the context. See the 2-argument version of this constructor for more information.</td></tr></tbody></table>
 
 On failure, the object will be <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_resource#a859068e34cdc2dc0b78754c255323aa9" class="el" title="This functions determines if this resource is invalid or uninitialized.">is_null()</a>.
@@ -79,10 +78,9 @@ On failure, the object will be <a href="/docs/native-client/pepper_beta/cpp/clas
 
 Destructor.
 
-------------------------------------------------------------------------
+---
 
-Member Function Documentation
------------------------------
+## Member Function Documentation
 
 <span id="ae4527f4526a090c05ab7d9ce9fafb3de" class="anchor" style="margin: 0;"></span>
 
@@ -92,12 +90,13 @@ Member Function Documentation
 
 The list has the same structure as described for the constructor. All attribute values specified in `pp_graphics_3d.h` can be retrieved.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in,out]</td><td>attrib_list</td><td>The list of attributes (name=value pairs) for the context. The list is terminated with <code>PP_GRAPHICS3DATTRIB_NONE</code>.</td></tr></tbody></table>
 
 The following error codes may be returned on failure:
 
-PP\_ERROR\_BADRESOURCE if context is invalid. PP\_ERROR\_BADARGUMENT if `attrib_list` is NULL or any attribute in the `attrib_list` is not a valid attribute.
+PP_ERROR_BADRESOURCE if context is invalid. PP_ERROR_BADARGUMENT if `attrib_list` is NULL or any attribute in the `attrib_list` is not a valid attribute.
 
 **Example:**
 
@@ -118,13 +117,14 @@ This example retrieves the values for rgb bits in the color buffer.
 
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics3_d#a21b887529bdba99089ff3c1fa16d3d7c" class="el" title="ResizeBuffers() resizes the backing surface for the context.">ResizeBuffers()</a> resizes the backing surface for the context.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>width</td><td>The width of the backing surface.</td></tr><tr class="even"><td>[in]</td><td>height</td><td>The height of the backing surface.</td></tr></tbody></table>
 
 <!-- -->
 
 **Returns:**  
-An int32\_t containing `PP_ERROR_BADRESOURCE` if context is invalid or `PP_ERROR_BADARGUMENT` if the value specified for width or height is less than zero. `PP_ERROR_NOMEMORY` might be returned on the next <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics3_d#ae1d1c071bf2737ab310a32558ec5f507" class="el" title="SwapBuffers() makes the contents of the color buffer available for compositing.">SwapBuffers()</a> callback if the surface could not be resized due to insufficient resources.
+An int32_t containing `PP_ERROR_BADRESOURCE` if context is invalid or `PP_ERROR_BADARGUMENT` if the value specified for width or height is less than zero. `PP_ERROR_NOMEMORY` might be returned on the next <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics3_d#ae1d1c071bf2737ab310a32558ec5f507" class="el" title="SwapBuffers() makes the contents of the color buffer available for compositing.">SwapBuffers()</a> callback if the surface could not be resized due to insufficient resources.
 
 <span id="a504e04ec5f21e324439fe8edc3622957" class="anchor" style="margin: 0;"></span>
 
@@ -136,12 +136,12 @@ The list has the same structure as the list used in the constructors.
 
 Attributes that can be specified are:
 
--   PP\_GRAPHICS3DATTRIB\_SWAP\_BEHAVIOR
+- PP_GRAPHICS3DATTRIB_SWAP_BEHAVIOR
 
 On failure the following error codes may be returned:
 
--   PP\_ERROR\_BADRESOURCE if context is invalid.
--   PP\_ERROR\_BADARGUMENT if attrib\_list is NULL or any attribute in the attrib\_list is not a valid attribute.
+- PP_ERROR_BADRESOURCE if context is invalid.
+- PP_ERROR_BADARGUMENT if attrib_list is NULL or any attribute in the attrib_list is not a valid attribute.
 
 <span id="ae1d1c071bf2737ab310a32558ec5f507" class="anchor" style="margin: 0;"></span>
 
@@ -164,10 +164,10 @@ Note that the same error code may also be obtained by calling GetError().
 param\[in\] cc A `CompletionCallback` to be called upon completion of <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics3_d#ae1d1c071bf2737ab310a32558ec5f507" class="el" title="SwapBuffers() makes the contents of the color buffer available for compositing.">SwapBuffers()</a>.
 
 **Returns:**  
-An int32\_t containing `PP_ERROR_BADRESOURCE` if context is invalid or `PP_ERROR_BADARGUMENT` if callback is invalid.
+An int32_t containing `PP_ERROR_BADRESOURCE` if context is invalid or `PP_ERROR_BADARGUMENT` if callback is invalid.
 
-------------------------------------------------------------------------
+---
 
 The documentation for this class was generated from the following file:
 
--   <a href="/docs/native-client/pepper_beta/cpp/graphics__3d_8h/" class="el">graphics_3d.h</a>
+- <a href="/docs/native-client/pepper_beta/cpp/graphics__3d_8h/" class="el">graphics_3d.h</a>
