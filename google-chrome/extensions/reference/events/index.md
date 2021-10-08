@@ -6,14 +6,10 @@ An `Event` is an object that allows you to be notified when something interestin
 example of using the `chrome.alarms.onAlarm` event to be notified whenever an alarm has elapsed:
 
 ```js
-chrome.alarms.onAlarm.addListener(function (alarm) {
-  appendToLog(
-    "alarms.onAlarm --" +
-      " name: " +
-      alarm.name +
-      " scheduledTime: " +
-      alarm.scheduledTime
-  );
+chrome.alarms.onAlarm.addListener(function(alarm) {
+  appendToLog('alarms.onAlarm --'
+              + ' name: '          + alarm.name
+              + ' scheduledTime: ' + alarm.scheduledTime);
 });
 ```
 
@@ -42,12 +38,8 @@ The simplest possible rule consists of one or more conditions and one or more ac
 
 ```js
 var rule = {
-  conditions: [
-    /* my conditions */
-  ],
-  actions: [
-    /* my actions */
-  ],
+  conditions: [ /* my conditions */ ],
+  actions: [ /* my actions */ ]
 };
 ```
 
@@ -60,14 +52,10 @@ order. Actions are executed in descending order of the priority of their rules.
 
 ```js
 var rule = {
-  id: "my rule", // optional, will be generated if not set.
-  priority: 100, // optional, defaults to 100.
-  conditions: [
-    /* my conditions */
-  ],
-  actions: [
-    /* my actions */
-  ],
+  id: "my rule",  // optional, will be generated if not set.
+  priority: 100,  // optional, defaults to 100.
+  conditions: [ /* my conditions */ ],
+  actions: [ /* my actions */ ]
 };
 ```
 
@@ -164,16 +152,14 @@ To achieve maximum performance, you should keep the following guidelines in mind
 
   ```js
   var match = new chrome.declarativeWebRequest.RequestMatcher({
-    url: { urlMatches: "example.com/[^?]*foo" },
-  });
+      url: {urlMatches: "example.com/[^?]*foo" } });
   ```
 
   prefer to write
 
   ```js
   var match = new chrome.declarativeWebRequest.RequestMatcher({
-    url: { hostSuffix: "example.com", pathContains: "foo" },
-  });
+      url: {hostSuffix: "example.com", pathContains: "foo"} });
   ```
 
 - If you have many rules that all share the same actions, you may merge the rules into one because
@@ -184,29 +170,21 @@ To achieve maximum performance, you should keep the following guidelines in mind
 
   ```js
   var condition1 = new chrome.declarativeWebRequest.RequestMatcher({
-    url: { hostSuffix: "example.com" },
-  });
+      url: { hostSuffix: 'example.com' } });
   var condition2 = new chrome.declarativeWebRequest.RequestMatcher({
-    url: { hostSuffix: "foobar.com" },
-  });
-  var rule1 = {
-    conditions: [condition1],
-    actions: [new chrome.declarativeWebRequest.CancelRequest()],
-  };
-  var rule2 = {
-    conditions: [condition2],
-    actions: [new chrome.declarativeWebRequest.CancelRequest()],
-  };
+      url: { hostSuffix: 'foobar.com' } });
+  var rule1 = { conditions: [condition1],
+                actions: [new chrome.declarativeWebRequest.CancelRequest()]};
+  var rule2 = { conditions: [condition2],
+                actions: [new chrome.declarativeWebRequest.CancelRequest()]};
   chrome.declarativeWebRequest.onRequest.addRules([rule1, rule2]);
   ```
 
   prefer to write
 
   ```js
-  var rule = {
-    conditions: [condition1, condition2],
-    actions: [new chrome.declarativeWebRequest.CancelRequest()],
-  };
+  var rule = { conditions: [condition1, condition2],
+                actions: [new chrome.declarativeWebRequest.CancelRequest()]};
   chrome.declarativeWebRequest.onRequest.addRules([rule]);
   ```
 
@@ -220,11 +198,9 @@ need not be woken up to handle events it doesn't care about.
 Filtered events are intended to allow a transition from manual filtering code like this:
 
 ```js
-chrome.webNavigation.onCommitted.addListener(function (e) {
-  if (
-    hasHostSuffix(e.url, "google.com") ||
-    hasHostSuffix(e.url, "google.com.au")
-  ) {
+chrome.webNavigation.onCommitted.addListener(function(e) {
+  if (hasHostSuffix(e.url, 'google.com') ||
+      hasHostSuffix(e.url, 'google.com.au')) {
     // ...
   }
 });
@@ -233,12 +209,10 @@ chrome.webNavigation.onCommitted.addListener(function (e) {
 into this:
 
 ```js
-chrome.webNavigation.onCommitted.addListener(
-  function (e) {
-    // ...
-  },
-  { url: [{ hostSuffix: "google.com" }, { hostSuffix: "google.com.au" }] }
-);
+chrome.webNavigation.onCommitted.addListener(function(e) {
+  // ...
+}, {url: [{hostSuffix: 'google.com'},
+          {hostSuffix: 'google.com.au'}]});
 ```
 
 Events support specific filters that are meaningful to that event. The list of filters that an event

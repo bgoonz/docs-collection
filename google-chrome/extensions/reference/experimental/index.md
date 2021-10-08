@@ -34,7 +34,6 @@ Pay special attention to the following APIs, which we expect to finalize soon: *
     ```
 
 3.  Enable the experimental API in your browser. You can do this in either of two ways:
-
     - Go to **chrome://flags**, find "Experimental Extension APIs", click its "Enable" link, and
       restart Chrome. From now on, unless you return to that page and disable experimental APIs,
       you'll be able to run extensions and apps that use experimental APIs.
