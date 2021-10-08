@@ -2,21 +2,20 @@
 
 {% include 'partials/nacl-warning.njk' %}
 
-------------------------------------------------------------------------
+---
 
-Introduction
-------------
+## Introduction
 
 Learn how you can use client-side Python on your webpage. Use the python [difflib](https://docs.python.org/2/library/difflib.html) module to generate attractive online textual diffs. Develop inside Google Chrome, using a hot off the presses version of our NaCl Dev Environment, running on a webpage, powered by Portable Native Client. The techniques in this codelab also apply to other interpreted languages we’ve ported to PNaCl, including: Python, Lua, Ruby, Tcl, Bash, and Forth.
 
-Requirements:  
--   A Desktop / Laptop Windows, Mac, Linux, or ChromeOS browser  
-    <span id="python_compat" style="color: #cccc00">Checking browser compatibility...</span>  
--   A fast broadband connection (500MB download)
--   Can read and write Python
+Requirements:
 
-Setup
------
+- A Desktop / Laptop Windows, Mac, Linux, or ChromeOS browser  
+  <span id="python_compat" style="color: #cccc00">Checking browser compatibility...</span>
+- A fast broadband connection (500MB download)
+- Can read and write Python
+
+## Setup
 
 For this codelab, you will need to point your web browser at the Beta preview of our in-browser NaCl Dev Environment.
 
@@ -45,9 +44,9 @@ The NaCl Dev Environment behaves like a mini-UNIX system. You start-up in bash c
 
 There are 3 locations mounted by the environment:
 
--   /tmp mounts the HTML5 Filesystem temporary storage area.
--   /mnt/html5 mounts the HTML5 Filesystem persistent storage area.
--   Your home directory ~/, located in /home/user, mounts a portion of the HTML5 Filsystem persistent storage area that corresponds to the /mnt/html5/home directory.
+- /tmp mounts the HTML5 Filesystem temporary storage area.
+- /mnt/html5 mounts the HTML5 Filesystem persistent storage area.
+- Your home directory ~/, located in /home/user, mounts a portion of the HTML5 Filsystem persistent storage area that corresponds to the /mnt/html5/home directory.
 
 ### Clipboard
 
@@ -55,26 +54,26 @@ Many of the steps in this tutorial will be easier to copy and paste into the Dev
 
 On your platform use:
 
--   <span id="copy_key">Loading...</span>
-    to Copy
--   <span id="paste_key">Loading...</span>
-    to Paste
+- <span id="copy_key">Loading...</span>
+  to Copy
+- <span id="paste_key">Loading...</span>
+  to Paste
 
 #### Editing
 
 To follow along in this codelab, you’ll need to use a text editor to modify various files in our development environment. There are currently two editor options, nano or vim. We have an Emacs port, but it is not yet available in the Dev Environment (coming soon). If you’re unsure what to pick, nano is simpler to start with and has on-screen help.
 
--   You can open **nano** like this:
+- You can open **nano** like this:
 
-        $ nano <filename>
+      $ nano <filename>
 
-    Here’s an online <a href="http://mintaka.sdsu.edu/reu/nano.html" class="reference external">nano tutorial</a>.
+  Here’s an online <a href="http://mintaka.sdsu.edu/reu/nano.html" class="reference external">nano tutorial</a>.
 
--   You can open **vim** like this:
+- You can open **vim** like this:
 
-        $ vim <filename>
+      $ vim <filename>
 
-    Here’s an online <a href="http://www.openvim.com/tutorial.html" class="reference external">vim tutorial</a>.
+  Here’s an online <a href="http://www.openvim.com/tutorial.html" class="reference external">vim tutorial</a>.
 
 ### Git Setup
 
@@ -85,8 +84,7 @@ Run these commands (with your info) to setup your ~/.gitconfig for use:
     git config --global user.name "John Doe"
     git config --global user.email johndoe@example.com
 
-Get the Code!
--------------
+## Get the Code!
 
 Rather than start from nothing, for this codelab we’ve provided you with a zip file containing a starting point.
 
@@ -118,8 +116,7 @@ While working, you can see what you’ve changed by running:
 
     git diff
 
-Your challenge, should you choose to accept it...
--------------------------------------------------
+## Your challenge, should you choose to accept it...
 
 Javascript has many wonderful features out of the box. Unfortunately, generating textual diffs is not one of them. Python on the other hand has the [difflib](https://docs.python.org/2/library/difflib.html) module in its standard library.
 
@@ -133,7 +130,7 @@ This will attempt to open the sample, but will be blocked by a popup blocker the
 
 As you can see, this isn’t quite what we’re going for.
 
-You’ll want to modify diff.py, using the editor you selected earlier. You’ll probably want to consult the [difflib](https://docs.python.org/2/library/difflib.html) documentation. I would suggest you check out the HtmlDiff class and make use of the make\_file member function. Note our goal is to create a full HTML diff, so the make\_table function is insufficient. The splitlines function may also come in handy.
+You’ll want to modify diff.py, using the editor you selected earlier. You’ll probably want to consult the [difflib](https://docs.python.org/2/library/difflib.html) documentation. I would suggest you check out the HtmlDiff class and make use of the make_file member function. Note our goal is to create a full HTML diff, so the make_table function is insufficient. The splitlines function may also come in handy.
 
 You can test diff.py manually as you would in a normal UNIX environment. It can be run like this:
 
@@ -143,8 +140,7 @@ Once everything is working, diff.html will contain an html diff. After the initi
 
 Now get to it, and good luck!
 
-What you’ve learned
--------------------
+## What you’ve learned
 
 While the details of building and packaging Python have been insulated from you for the purpose of this exercise, the key take-home lesson is how easy it is to leverage Python using PNaCl. As you’ve likely experienced, the initial start time is non-trivial. We’re working on improving this, both by improving PNaCl, and our Python port.
 
@@ -158,7 +154,6 @@ Send us comments and feedback on the <a href="https://groups.google.com/forum/#!
 
 Bring your interpreted app to PNaCl today!
 
-Cleanup
--------
+## Cleanup
 
 The Web-based version of the Chrome Dev Environment installs package data (&gt;800MB) into the HTML5 Filesystem storage associated with naclports.storage.googleapis.com . To recover this storage (i.e. uninstall), enter **chrome://settings/cookies** in the Chrome URL bar. In the cookies UI, search for “naclports”. Then click the “x” next to the naclports entry.

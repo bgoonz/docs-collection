@@ -1,7 +1,7 @@
 ---
-layout: 'layouts/doc-post.njk'
+layout: "layouts/doc-post.njk"
 title: Add a doc
-description: 'Add a doc to a documentation set.'
+description: "Add a doc to a documentation set."
 date: 2020-10-22
 ---
 
@@ -38,4 +38,3 @@ videos are served in a performant, responsive manner.
 
 Take a look at the guide on [uploading media](/docs/handbook/how-to/add-media)
 to learn how to add images and videos to your docs.
-

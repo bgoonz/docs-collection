@@ -22,8 +22,8 @@ Writes an [error][4] to the console when `expression` evaluates to `false`.
 ```js
 const x = 5;
 const y = 3;
-const reason = 'x is expected to be less than y';
-console.assert(x < y, {x, y, reason});
+const reason = "x is expected to be less than y";
+console.assert(x < y, { x, y, reason });
 ```
 
 {% Img src="image/admin/cS62AuHJfLVVaDYf3OEL.png", alt="The result of the console.assert() example above.", width="800", height="447" %}
@@ -51,7 +51,7 @@ Writes the number of times that `count()` has been invoked at the same line and 
 
 ```js
 console.count();
-console.count('coffee');
+console.count("coffee");
 console.count();
 console.count();
 ```
@@ -66,7 +66,7 @@ Resets a count.
 
 ```js
 console.countReset();
-console.countReset('coffee');
+console.countReset("coffee");
 ```
 
 ## console.debug(object \[, object, ...\]) {: #debug }
@@ -76,7 +76,7 @@ console.countReset('coffee');
 Identical to [`console.log(object [, object, ...])`][10] except different log level.
 
 ```js
-console.debug('debug');
+console.debug("debug");
 ```
 
 {% Img src="image/admin/GuN0auKEMAdVW9j8wW7J.png", alt="The result of the console.debug() example above.", width="800", height="526" %}
@@ -131,12 +131,12 @@ Visually groups messages together until `console.groupEnd(label)` is called. Use
 `console.groupCollapsed(label)` to collapse the group when it's initially logged to the Console.
 
 ```js
-const label = 'Adolescent Irradiated Espionage Tortoises';
+const label = "Adolescent Irradiated Espionage Tortoises";
 console.group(label);
-console.info('Leo');
-console.info('Mike');
-console.info('Don');
-console.info('Raph');
+console.info("Leo");
+console.info("Mike");
+console.info("Don");
+console.info("Raph");
 console.groupEnd(label);
 ```
 
@@ -160,7 +160,7 @@ Stops visually grouping messages. See [`console.group`][15].
 Identical to [`console.log(object [, object, ...])`][17].
 
 ```js
-console.info('info');
+console.info("info");
 ```
 
 {% Img src="image/admin/tIWshweM0G6hiTKzhfCw.png", alt="The result of the console.info() example above.", width="800", height="477" %}
@@ -174,7 +174,7 @@ console.info('info');
 Prints a message to the Console.
 
 ```js
-console.log('log');
+console.log("log");
 ```
 
 {% Img src="image/admin/4NsJDaAjDpipnzkmkfDU.png", alt="The result of the console.log() example above.", width="800", height="477" %}
@@ -189,19 +189,19 @@ Logs an array of objects as a table.
 
 ```js
 console.table([
-  {
-    first: 'René',
-    last: 'Magritte',
-  },
-  {
-    first: 'Chaim',
-    last: 'Soutine',
-    birthday: '18930113',
-  },
-  {
-    first: 'Henri',
-    last: 'Matisse',
-  }
+  {
+    first: "René",
+    last: "Magritte",
+  },
+  {
+    first: "Chaim",
+    last: "Soutine",
+    birthday: "18930113",
+  },
+  {
+    first: "Henri",
+    last: "Matisse",
+  },
 ]);
 ```
 
@@ -217,7 +217,7 @@ the Console.
 ```js
 console.time();
 for (var i = 0; i < 100000; i++) {
-  let square = i ** 2;
+  let square = i ** 2;
 }
 console.timeEnd();
 ```
@@ -239,10 +239,18 @@ Stops a timer. See [`console.time()`][21].
 Prints a stack trace to the Console.
 
 ```js
-const first = () => { second(); };
-const second = () => { third(); };
-const third = () => { fourth(); };
-const fourth = () => { console.trace(); };
+const first = () => {
+  second();
+};
+const second = () => {
+  third();
+};
+const third = () => {
+  fourth();
+};
+const fourth = () => {
+  console.trace();
+};
 first();
 ```
 
@@ -257,7 +265,7 @@ first();
 Prints a warning to the Console.
 
 ```js
-console.warn('warn');
+console.warn("warn");
 ```
 
 {% Img src="image/admin/CsGNmsnQn4GnJRaR339w.png", alt="The result of the console.warn() example above.", width="800", height="481" %}

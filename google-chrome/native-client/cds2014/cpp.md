@@ -2,21 +2,20 @@
 
 {% include 'partials/nacl-warning.njk' %}
 
-------------------------------------------------------------------------
+---
 
-Introduction
-------------
+## Introduction
 
 Learn the basics of using PPAPI to do 2D graphics from a C++ program running in Native Client. Modify our sample to turn fire into water. Develop inside Google Chrome, using our NaCl Development Environment Chrome App. While this codelab currently targets conventional Native Client using our GCC + GlibC based toolchain, the techniques involved are generally applicable.
 
-Requirements:  
--   An x86 (sorry no arm) Desktop / Laptop Windows, Mac, Linux, or ChromeOS browser  
-    <span id="cpp_compat" style="color: #cccc00">Checking browser compatibility...</span>  
--   A fast broadband connection (500MB download)
--   Can read and write C++
+Requirements:
 
-Setup
------
+- An x86 (sorry no arm) Desktop / Laptop Windows, Mac, Linux, or ChromeOS browser  
+  <span id="cpp_compat" style="color: #cccc00">Checking browser compatibility...</span>
+- A fast broadband connection (500MB download)
+- Can read and write C++
+
+## Setup
 
 For this codelab, you will need to install the our Beta NaCl Dev Environment App in your web browser.
 
@@ -44,9 +43,9 @@ The NaCl Dev Environment behaves like a mini-UNIX system. You start-up in bash c
 
 There are 3 locations mounted by the environment:
 
--   /tmp mounts the HTML5 Filesystem temporary storage area.
--   /mnt/html5 mounts the HTML5 Filesystem persistent storage area.
--   Your home directory ~/, located in /home/user, mounts a portion of the HTML5 Filsystem persistent storage area that corresponds to the /mnt/html5/home directory.
+- /tmp mounts the HTML5 Filesystem temporary storage area.
+- /mnt/html5 mounts the HTML5 Filesystem persistent storage area.
+- Your home directory ~/, located in /home/user, mounts a portion of the HTML5 Filsystem persistent storage area that corresponds to the /mnt/html5/home directory.
 
 ### Clipboard
 
@@ -54,26 +53,26 @@ Many of the steps in this tutorial will be easier to copy and paste into the Dev
 
 On your platform use:
 
--   <span id="copy_key">Loading...</span>
-    to Copy
--   <span id="paste_key">Loading...</span>
-    to Paste
+- <span id="copy_key">Loading...</span>
+  to Copy
+- <span id="paste_key">Loading...</span>
+  to Paste
 
 #### Editing
 
 To follow along in this codelab, you’ll need to use a text editor to modify various files in our development environment. There are currently two editor options, nano or vim. We have an Emacs port, but it is not yet available in the Dev Environment (coming soon). If you’re unsure what to pick, nano is simpler to start with and has on-screen help.
 
--   You can open **nano** like this:
+- You can open **nano** like this:
 
-        $ nano <filename>
+      $ nano <filename>
 
-    Here’s an online <a href="http://mintaka.sdsu.edu/reu/nano.html" class="reference external">nano tutorial</a>.
+  Here’s an online <a href="http://mintaka.sdsu.edu/reu/nano.html" class="reference external">nano tutorial</a>.
 
--   You can open **vim** like this:
+- You can open **vim** like this:
 
-        $ vim <filename>
+      $ vim <filename>
 
-    Here’s an online <a href="http://www.openvim.com/tutorial.html" class="reference external">vim tutorial</a>.
+  Here’s an online <a href="http://www.openvim.com/tutorial.html" class="reference external">vim tutorial</a>.
 
 ### Git Setup
 
@@ -84,8 +83,7 @@ Run these commands (with your info) to setup your ~/.gitconfig for use:
     git config --global user.name "John Doe"
     git config --global user.email johndoe@example.com
 
-Get the Code!
--------------
+## Get the Code!
 
 Rather than start from nothing, for this codelab we’ve provided you with a zip file containing a starting point.
 
@@ -117,8 +115,7 @@ While working, you can see what you’ve changed by running:
 
     git diff
 
-Fire is cool, let’s burn some stuff...
---------------------------------------
+## Fire is cool, let’s burn some stuff...
 
 Indulging your inner child, lets make some virtual fire! Use the following shockingly intuitive incantation:
 
@@ -126,8 +123,7 @@ Indulging your inner child, lets make some virtual fire! Use the following shock
 
 You should now see a small popup window, smoldering away. If you click, you can make more fire! I think that’s pretty cool, but then I selected the institution of higher learning I attended based on the integral role fire played in its campus life.
 
-Water
------
+## Water
 
 Remarkably, not everyone enjoys the primal illusion of fire.
 
@@ -143,9 +139,9 @@ For this codelab, you’ll only need to change water.cc.
 
 The task of turning fire into water involves two key challenges:
 
--   Alter the red-yellow palette of fire into a blue-green one.
--   Reverse upward rising flame into downward falling water.
--   Seed the waterfall from the top instead of the bottom.
+- Alter the red-yellow palette of fire into a blue-green one.
+- Reverse upward rising flame into downward falling water.
+- Seed the waterfall from the top instead of the bottom.
 
 At this point you’ll want to open up water.cc in the editor you picked earlier.
 
@@ -173,8 +169,7 @@ While you can now use the mouse to inject a trickle of water. The small line of 
 
 Hint: You’ll want to change the area that the UpdateCoals function mutates.
 
-What you’ve learned
--------------------
+## What you’ve learned
 
 In addition to learning a new appreciation for fire, you’ve also made water... And while dusting off your C/C++ image manipulation skills, you’ve discovered how easy it is to modify, build, and run a NaCl application that uses PPAPI.
 
@@ -186,7 +181,6 @@ Send us comments and feedback on the <a href="https://groups.google.com/forum/#!
 
 I hope this codelab has lit a fire in you to go out there, and bring an awesome C/C++ application to NaCl or PNaCl today!
 
-Cleanup
--------
+## Cleanup
 
 The Chrome Dev Environment App installs &gt;800MB into HTML5 Filesystem storage on your device. To recover this storage, uninstall the app from the [Chrome Web Store](https://chrome.google.com/webstore).

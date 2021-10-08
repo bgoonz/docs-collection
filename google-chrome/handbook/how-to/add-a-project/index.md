@@ -1,7 +1,7 @@
 ---
-layout: 'layouts/doc-post.njk'
+layout: "layouts/doc-post.njk"
 title: Add a project
-description: 'Add a project to the /docs/ section.'
+description: "Add a project to the /docs/ section."
 date: 2020-10-22
 ---
 
@@ -65,7 +65,7 @@ The `toc.yml` supports these fields:
 - `sections`—a collection of more urls, nested under a `title`.
 
 ```yml
-- url: /docs/cheese/what-is-cheese  # a single doc
+- url: /docs/cheese/what-is-cheese # a single doc
 - title: i18n.docs.cheese.overview # a title for a section of docs
   sections: # a grouping of docs under a title
     - url: /docs/cheese/overview/hard-cheese
@@ -87,7 +87,7 @@ For example:
 
 ```yml
 # Color (CSS theme variable) to use for this project page
-project_icon_color: 'color-project-handbook'
+project_icon_color: "color-project-handbook"
 ```
 
 This color will be drawn from `_theme.scss`. (The default color used without a
@@ -114,8 +114,8 @@ If you have the title "Overview" you would add it to your `.yml` file like so:
 
 ```yml
 overview:
-  en: 'Overview'
-  es: 'Visión General'
+  en: "Overview"
+  es: "Visión General"
 ```
 
 If you aren't ready to translate your docs yet that's OK!. Just add an `en`

@@ -21,9 +21,9 @@ Note: Trusted Web Activity is available in [Chrome on Android][6], version 72 an
 
 _Looking for the code?_
 
-* [android-browser-helper library on GitHub][9]
-* [Trusted Web Activity demos][10]
-* [Bubblewrap, a NodeJs library / CLI to generate and build Trusted Web Activity projects][11]
+- [android-browser-helper library on GitHub][9]
+- [Trusted Web Activity demos][10]
+- [Bubblewrap, a NodeJs library / CLI to generate and build Trusted Web Activity projects][11]
 
 There are a few things that make Trusted Web Activity different from other
 ways to open web content from your Android app:
@@ -44,7 +44,7 @@ ways to open web content from your Android app:
 1. The host app doesn't have direct access to web content in a Trusted Web
    Activity or any other kind of web state, like cookies and `localStorage`.
    Nevertheless, you can coordinate with the web content by passing data to and
-   from the page in URLs (e.g. through query parameters and 
+   from the page in URLs (e.g. through query parameters and
    [intent URIs](/docs/multidevice/android/intents).)
 1. Transitions between web and native content are between **activities**. Each
    activity (i.e. screen) of your app is either completely provided by the web,
@@ -55,8 +55,8 @@ opened in the preview of Trusted Web activities. You can expect, however, that
 Trusted Web activities will need to meet the same
 [Add to Home Screen](https://web.dev/customize-install/#criteria)
 requirements. You can audit your site for these requirements using the
-[Lighthouse][13] "*user can be prompted to Add to Home
-screen*" audit.
+[Lighthouse][13] "_user can be prompted to Add to Home
+screen_" audit.
 
 Today, if the user's version of Chrome doesn't support Trusted Web activities,
 Chrome will fall back to a simple toolbar using a Custom Tab. It

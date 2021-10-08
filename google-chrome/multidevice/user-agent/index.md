@@ -1,7 +1,7 @@
 ---
 layout: "layouts/doc-post.njk"
 title: User Agent Strings
-date: 2014-02-28 
+date: 2014-02-28
 description: >
   Reference information about the user agent string that Chrome sends in Android, iOS,
   and WebView contexts.
@@ -35,8 +35,8 @@ Chrome/{Chrome Rev} Safari/{WebKit Rev}</code></pre>
 Here's an example of the Chrome user agent string on a Galaxy Nexus:
 
 ```text
-Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) 
-AppleWebKit/535.19 (KHTML, like Gecko) 
+Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B)
+AppleWebKit/535.19 (KHTML, like Gecko)
 Chrome/18.0.1025.133 Mobile Safari/535.19
 ```
 

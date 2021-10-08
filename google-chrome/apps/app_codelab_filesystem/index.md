@@ -1,5 +1,5 @@
 ---
-layout: 'layouts/doc-post.njk'
+layout: "layouts/doc-post.njk"
 title: "Step 6: Export Todos to the Filesystem"
 date: 2014-10-17
 #updated: TODO
@@ -55,12 +55,12 @@ permission:
 
 ```json/6
 "permissions": [
-  "storage", 
-  "alarms", 
-  "notifications", 
+  "storage",
+  "alarms",
+  "notifications",
   "webview",
-  "<all_urls>", 
-  { "fileSystem": ["write"] } 
+  "<all_urls>",
+  { "fileSystem": ["write"] }
 ],
 ```
 
@@ -90,23 +90,20 @@ Also in _index.html_, load the _export.js_ script:
 Create a new JavaScript file named _export.js_ using the code below. Save it in the _js_ folder.
 
 ```js
-(function() {
-
-  var dbName = 'todos-vanillajs';
+(function () {
+  var dbName = "todos-vanillajs";
 
   var savedFileEntry, fileDisplayPath;
 
-  function getTodosAsText(callback) {
-  }
+  function getTodosAsText(callback) {}
 
-  function exportToFileEntry(fileEntry) {
-  }
+  function exportToFileEntry(fileEntry) {}
 
-  function doExportToDisk() {
-  }
+  function doExportToDisk() {}
 
-  document.getElementById('exportToDisk').addEventListener('click', doExportToDisk);
-
+  document
+    .getElementById("exportToDisk")
+    .addEventListener("click", doExportToDisk);
 })();
 ```
 
@@ -120,23 +117,25 @@ representation of them:
 
 ```js
 function getTodosAsText(callback) {
-  chrome.storage.local.get(dbName, function(storedData) {
-    var text = '';
+  chrome.storage.local.get(
+    dbName,
+    function (storedData) {
+      var text = "";
 
-    if ( storedData[dbName].todos ) {
-      storedData[dbName].todos.forEach(function(todo) {
-          text += '- ';
-          if ( todo.completed ) {
-            text += '[DONE] ';
+      if (storedData[dbName].todos) {
+        storedData[dbName].todos.forEach(function (todo) {
+          text += "- ";
+          if (todo.completed) {
+            text += "[DONE] ";
           }
           text += todo.title;
-          text += '\n';
-        }, '');
-    }
+          text += "\n";
+        }, "");
+      }
 
-    callback(text);
-
-  }.bind(this));
+      callback(text);
+    }.bind(this)
+  );
 }
 ```
 
@@ -147,21 +146,18 @@ file:
 
 ```js
 function doExportToDisk() {
-
   if (savedFileEntry) {
-
     exportToFileEntry(savedFileEntry);
-
   } else {
-
-    chrome.fileSystem.chooseEntry( {
-      type: 'saveFile',
-      suggestedName: 'todos.txt',
-      accepts: [ { description: 'Text files (*.txt)',
-                   extensions: ['txt']} ],
-      acceptsAllTypes: true
-    }, exportToFileEntry);
-
+    chrome.fileSystem.chooseEntry(
+      {
+        type: "saveFile",
+        suggestedName: "todos.txt",
+        accepts: [{ description: "Text files (*.txt)", extensions: ["txt"] }],
+        acceptsAllTypes: true,
+      },
+      exportToFileEntry
+    );
   }
 }
 ```
@@ -182,22 +178,20 @@ Update `exportToFileEntry()` to save the todos as text via the `FileEntry` Web A
 function exportToFileEntry(fileEntry) {
   savedFileEntry = fileEntry;
 
-  var status = document.getElementById('status');
+  var status = document.getElementById("status");
 
   // Use this to get a file path appropriate for displaying
-  chrome.fileSystem.getDisplayPath(fileEntry, function(path) {
+  chrome.fileSystem.getDisplayPath(fileEntry, function (path) {
     fileDisplayPath = path;
-    status.innerText = 'Exporting to '+path;
+    status.innerText = "Exporting to " + path;
   });
 
-  getTodosAsText( function(contents) {
-
-    fileEntry.createWriter(function(fileWriter) {
-
+  getTodosAsText(function (contents) {
+    fileEntry.createWriter(function (fileWriter) {
       var truncated = false;
       var blob = new Blob([contents]);
 
-      fileWriter.onwriteend = function(e) {
+      fileWriter.onwriteend = function (e) {
         if (!truncated) {
           truncated = true;
           // You need to explicitly set the file size to truncate
@@ -205,15 +199,14 @@ function exportToFileEntry(fileEntry) {
           this.truncate(blob.size);
           return;
         }
-        status.innerText = 'Export to '+fileDisplayPath+' completed';
+        status.innerText = "Export to " + fileDisplayPath + " completed";
       };
 
-      fileWriter.onerror = function(e) {
-        status.innerText = 'Export failed: '+e.toString();
+      fileWriter.onerror = function (e) {
+        status.innerText = "Export failed: " + e.toString();
       };
 
       fileWriter.write(blob);
-
     });
   });
 }
@@ -270,30 +263,18 @@ Ready to continue onto the next step? Go to [Step 7 - Publish your app »][26]
 [9]: https://developer.mozilla.org/en-US/docs/Web/API/FileEntry
 [10]: /apps/fileSystem#method-restoreEntry
 [11]: /apps/fileSystem#method-retainEntry
-[12]:
-  /apps/app_storage#filesystem
-  "Read 'Using the Chrome Filesystem API' in the Chrome developer docs"
+[12]: /apps/app_storage#filesystem "Read 'Using the Chrome Filesystem API' in the Chrome developer docs"
 [13]: #export-todos "This feature mentioned in 'Export todos'"
 [14]: /apps/declare_permissions "Read 'Declare Permissions' in the Chrome developer docs"
 [15]: #update-permissions "This feature mentioned in 'Update permissions'"
-[16]:
-  /apps/storage#method-StorageArea-get
-  "Read 'chrome.storage.local.get()' in the Chrome developer docs"
+[16]: /apps/storage#method-StorageArea-get "Read 'chrome.storage.local.get()' in the Chrome developer docs"
 [17]: #get-todos-as-text "This feature mentioned in 'Get todo items as text'"
-[18]:
-  /apps/fileSystem#method-chooseEntry
-  "Read 'chrome.fileSystem.chooseEntry()' in the Chrome developer docs"
+[18]: /apps/fileSystem#method-chooseEntry "Read 'chrome.fileSystem.chooseEntry()' in the Chrome developer docs"
 [19]: #choose-file "This feature mentioned in 'Choose a file'"
-[20]:
-  /apps/fileSystem#method-getDisplayPath
-  "Read 'chrome.fileSystem.getDisplayPath()' in the Chrome developer docs"
+[20]: /apps/fileSystem#method-getDisplayPath "Read 'chrome.fileSystem.getDisplayPath()' in the Chrome developer docs"
 [21]: #use-fileentry "This feature mentioned in 'Use FileEntry to write todos items to disk'"
-[22]:
-  /apps/fileSystem#method-restoreEntry
-  "Read 'chrome.fileSystem.restoreEntry()' in the Chrome developer docs"
+[22]: /apps/fileSystem#method-restoreEntry "Read 'chrome.fileSystem.restoreEntry()' in the Chrome developer docs"
 [23]: #persistance "This feature mentioned in 'Persist FileEntry objects'"
-[24]:
-  /apps/fileSystem#method-retainEntry
-  "Read 'chrome.fileSystem.retainEntry()' in the Chrome developer docs"
+[24]: /apps/fileSystem#method-retainEntry "Read 'chrome.fileSystem.retainEntry()' in the Chrome developer docs"
 [25]: #persistance "This feature mentioned in 'Persist FileEntry objects'"
 [26]: ../app_codelab_publish

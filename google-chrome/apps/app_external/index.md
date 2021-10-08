@@ -52,10 +52,14 @@ Fetch the remote URL into the app and serve its contents as a `blob:` URL:
 
 ```js
 var xhr = new XMLHttpRequest();
-xhr.open('GET', 'https://supersweetdomainbutnotcspfriendly.com/image.png', true);
-xhr.responseType = 'blob';
-xhr.onload = function(e) {
-  var img = document.createElement('img');
+xhr.open(
+  "GET",
+  "https://supersweetdomainbutnotcspfriendly.com/image.png",
+  true
+);
+xhr.responseType = "blob";
+xhr.onload = function (e) {
+  var img = document.createElement("img");
   img.src = window.URL.createObjectURL(this.response);
   document.body.appendChild(img);
 };
@@ -94,11 +98,11 @@ To dynamically change the `src`, `width` and `height` properties of a `webview` 
 set those properties directly on the JavaScript object, or use the `setAttribute` DOM function.
 
 ```js
-document.querySelector('#mywebview').src =
-    'http://blog.chromium.org/';
+document.querySelector("#mywebview").src = "http://blog.chromium.org/";
 // or
-document.querySelector('#mywebview').setAttribute(
-    'src', 'http://blog.chromium.org/');
+document
+  .querySelector("#mywebview")
+  .setAttribute("src", "http://blog.chromium.org/");
 ```
 
 ## Sandbox local content {: #sandboxing }
@@ -119,7 +123,7 @@ Here's a sample sandboxed page which uses an inline script and `eval()`:
   <body>
     <h1>Woot</h1>
     <script>
-      eval('console.log(\'I am an eval-ed inline script.\')');
+      eval("console.log('I am an eval-ed inline script.')");
     </script>
   </body>
 </html>
@@ -150,23 +154,23 @@ app.window.create it will be run, but will not have the sandboxed window provide
 {% endAside %}
 
 ```js
-chrome.app.runtime.onLaunched.addListener(function() {
-  chrome.app.window.create('window.html', {
-    'bounds': {
-      'width': 400,
-      'height': 400,
-      'left': 0,
-      'top': 0
-    }
+chrome.app.runtime.onLaunched.addListener(function () {
+  chrome.app.window.create("window.html", {
+    bounds: {
+      width: 400,
+      height: 400,
+      left: 0,
+      top: 0,
+    },
   });
 
-  chrome.app.window.create('sandboxed.html', {
-    'bounds': {
-      'width': 400,
-      'height': 400,
-      'left': 400,
-      'top': 0
-    }
+  chrome.app.window.create("sandboxed.html", {
+    bounds: {
+      width: 400,
+      height: 400,
+      left: 400,
+      top: 0,
+    },
   });
 });
 ```
@@ -178,8 +182,7 @@ Sandboxed pages can also be embedded within another app page using an `iframe`:
 ```html
 <!DOCTYPE html>
 <html>
-<head>
-</head>
+  <head> </head>
   <body>
     <p>I am normal app window.</p>
 
@@ -201,16 +204,20 @@ background script that posts a message to the sandboxed page it opens:
 ```js
 var myWin = null;
 
-chrome.app.runtime.onLaunched.addListener(function() {
-  chrome.app.window.create('sandboxed.html', {
-    'bounds': {
-      'width': 400,
-      'height': 400
+chrome.app.runtime.onLaunched.addListener(function () {
+  chrome.app.window.create(
+    "sandboxed.html",
+    {
+      bounds: {
+        width: 400,
+        height: 400,
+      },
+    },
+    function (win) {
+      myWin = win;
+      myWin.contentWindow.postMessage("Just wanted to say hey.", "*");
     }
-  }, function(win) {
-       myWin = win;
-       myWin.contentWindow.postMessage('Just wanted to say hey.', '*');
-     });
+  );
 });
 ```
 
@@ -225,15 +232,17 @@ but since Chrome Apps content is contained, it isn't necessary. To find out more
 Here's a sample message receiver that gets added to your sandboxed page:
 
 ```js
-var messageHandler = function(event) {
-  console.log('Background script says hello.', event.data);
+var messageHandler = function (event) {
+  console.log("Background script says hello.", event.data);
 
   // Send a reply
   event.source.postMessage(
-      {'reply': 'Sandbox received: ' + event.data}, event.origin);
+    { reply: "Sandbox received: " + event.data },
+    event.origin
+  );
 };
 
-window.addEventListener('message', messageHandler);
+window.addEventListener("message", messageHandler);
 ```
 
 For more details, check out the [sandbox][11] sample.

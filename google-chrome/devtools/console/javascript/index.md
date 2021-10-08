@@ -68,8 +68,8 @@ features you're not familiar with. The Console is a perfect place for these kind
     than copy-pasting it.
 
     ```js
-    function add(a, b=20) {
-      return a + b;
+    function add(a, b = 20) {
+      return a + b;
     }
     ```
 

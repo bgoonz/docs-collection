@@ -1,5 +1,5 @@
 ---
-layout: 'layouts/doc-post.njk'
+layout: "layouts/doc-post.njk"
 title: "Step 4: Open External Links With a Webview"
 date: 2014-10-17
 updated: 2014-10-20
@@ -70,12 +70,12 @@ basic webpage with one `<webview>` tag:
 ```html
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-</head>
-<body>
-  <webview style="width: 100%; height: 100%;"></webview>
-</body>
+  <head>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <webview style="width: 100%; height: 100%;"></webview>
+  </body>
 </html>
 ```
 
@@ -263,8 +263,6 @@ Ready to continue onto the next step? Go to [Step 5 - Add images from the web »
 [9]: #update-permissions "This feature mentioned in 'Update app permissions'"
 [10]: /docs/extensions/reference/webviewTag "Read '<webview> Tag' in the Chrome developer docs"
 [11]: #overview "This feature mentioned in 'Learn about the webview tag'"
-[12]:
-  /docs/extensions/reference/app_window#method-create
-  "Read 'chrome.app.window.create()' in the Chrome developer docs"
+[12]: /docs/extensions/reference/app_window#method-create "Read 'chrome.app.window.create()' in the Chrome developer docs"
 [13]: #open-webview "This feature mentioned in 'Open new window containing webview'"
 [14]: ../app_codelab_images

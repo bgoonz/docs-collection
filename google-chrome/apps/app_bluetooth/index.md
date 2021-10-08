@@ -64,7 +64,7 @@ only the entry itself is required:
 To obtain the state of the Bluetooth adapter, use the [bluetooth.getAdapterState][9] method:
 
 ```js
-chrome.bluetooth.getAdapterState(function(adapter) {
+chrome.bluetooth.getAdapterState(function (adapter) {
   console.log("Adapter " + adapter.address + ": " + adapter.name);
 });
 ```
@@ -76,21 +76,20 @@ be used, for example, to determine when the adapter radio is powered on or off.
 
 ```js
 var powered = false;
-chrome.bluetooth.getAdapterState(function(adapter) {
+chrome.bluetooth.getAdapterState(function (adapter) {
   powered = adapter.powered;
 });
 
-chrome.bluetooth.onAdapterStateChanged.addListener(
-  function(adapter) {
-    if (adapter.powered != powered) {
-      powered = adapter.powered;
-      if (powered) {
-        console.log("Adapter radio is on");
-      } else {
-        console.log("Adapter radio is off");
-      }
+chrome.bluetooth.onAdapterStateChanged.addListener(function (adapter) {
+  if (adapter.powered != powered) {
+    powered = adapter.powered;
+    if (powered) {
+      console.log("Adapter radio is on");
+    } else {
+      console.log("Adapter radio is off");
     }
-  });
+  }
+});
 ```
 
 ## Device information {: #device_info }
@@ -101,7 +100,7 @@ To get a list of the devices known to the Bluetooth adapter, use the [bluetooth.
 method:
 
 ```js
-chrome.bluetooth.getDevices(function(devices) {
+chrome.bluetooth.getDevices(function (devices) {
   for (var i = 0; i < devices.length; i++) {
     console.log(devices[i].address);
   }
@@ -121,7 +120,7 @@ The [bluetooth.onDeviceAdded][17] event is sent whenever a device is discovered 
 makes a connection to the adapter:
 
 ```js
-chrome.bluetooth.onDeviceAdded.addListener(function(device) {
+chrome.bluetooth.onDeviceAdded.addListener(function (device) {
   console.log(device.address);
 });
 ```
@@ -133,7 +132,7 @@ Changes to devices, including previously discovered devices becoming paired, are
 [bluetooth.onDeviceChanged][19] event:
 
 ```js
-chrome.bluetooth.onDeviceChanged.addListener(function(device) {
+chrome.bluetooth.onDeviceChanged.addListener(function (device) {
   console.log(device.address);
 });
 ```
@@ -142,7 +141,7 @@ Finally the [bluetooth.onDeviceRemoved][20] event is sent whenever a paired devi
 the system, or a discovered device has not been seen recently:
 
 ```js
-chrome.bluetooth.onDeviceRemoved.addListener(function(device) {
+chrome.bluetooth.onDeviceRemoved.addListener(function (device) {
   console.log(device.address);
 });
 ```
@@ -167,12 +166,12 @@ Example:
 
 ```js
 var device_names = {};
-var updateDeviceName = function(device) {
+var updateDeviceName = function (device) {
   device_names[device.address] = device.name;
 };
-var removeDeviceName = function(device) {
+var removeDeviceName = function (device) {
   delete device_names[device.address];
-}
+};
 
 // Add listeners to receive newly found devices and updates
 // to the previously known devices.
@@ -183,17 +182,17 @@ chrome.bluetooth.onDeviceRemoved.addListener(removeDeviceName);
 // With the listeners in place, get the list of devices found in
 // previous discovery sessions, or any currently active ones,
 // along with paired devices.
-chrome.bluetooth.getDevices(function(devices) {
+chrome.bluetooth.getDevices(function (devices) {
   for (var i = 0; i < devices.length; i++) {
     updateDeviceName(devices[i]);
   }
 });
 
 // Now begin the discovery process.
-chrome.bluetooth.startDiscovery(function() {
+chrome.bluetooth.startDiscovery(function () {
   // Stop discovery after 30 seconds.
-  setTimeout(function() {
-    chrome.bluetooth.stopDiscovery(function() {});
+  setTimeout(function () {
+    chrome.bluetooth.stopDiscovery(function () {});
   }, 30000);
 });
 ```
@@ -213,14 +212,20 @@ If the device supports the Bluetooth [Device ID specification][31], several prop
 the Device object containing the fields defined by that specification. Example:
 
 ```js
-chrome.bluetooth.getDevices(function(devices) {
+chrome.bluetooth.getDevices(function (devices) {
   for (var i = 0; i < devices.length; i++) {
     if (devices[0].vendorIdSource != undefined) {
-      console.log(devices[0].address + ' = ' +
-                  devices[0].vendorIdSource + ':' +
-                  devices[0].vendorId.toString(16) + ':' +
-                  devices[0].productId.toString(16) + ':' +
-                  devices[0].deviceId.toString(16));
+      console.log(
+        devices[0].address +
+          " = " +
+          devices[0].vendorIdSource +
+          ":" +
+          devices[0].vendorId.toString(16) +
+          ":" +
+          devices[0].productId.toString(16) +
+          ":" +
+          devices[0].deviceId.toString(16)
+      );
     }
   }
 });
@@ -235,11 +240,12 @@ the [Baseband Assigned Numbers][32] document. This bit-field is available in the
 property.
 
 ```js
-chrome.bluetooth.getDevices(function(devices) {
+chrome.bluetooth.getDevices(function (devices) {
   for (var i = 0; i < devices.length; i++) {
     if (devices[0].vendorIdSource != undefined) {
-      console.log(devices[0].address + ' = ' +
-                  devices[0].deviceClass.toString(16));
+      console.log(
+        devices[0].address + " = " + devices[0].deviceClass.toString(16)
+      );
     }
   }
 });
@@ -250,10 +256,10 @@ sets the `type` field. Where this is not available, or insufficient for your nee
 parse the `deviceClass` yourself.
 
 ```js
-chrome.bluetooth.getDevices(function(devices) {
+chrome.bluetooth.getDevices(function (devices) {
   for (var i = 0; i < devices.length; i++) {
     if (devices[0].vendorIdSource != undefined) {
-      console.log(devices[0].address + ' = ' + devices[0].type);
+      console.log(devices[0].address + " = " + devices[0].type);
     }
   }
 });
@@ -280,8 +286,8 @@ device.
 Example:
 
 ```js
-var uuid = '1105';
-var onConnectedCallback = function() {
+var uuid = "1105";
+var onConnectedCallback = function () {
   if (chrome.runtime.lastError) {
     console.log("Connection failed: " + chrome.runtime.lastError.message);
   } else {
@@ -289,9 +295,13 @@ var onConnectedCallback = function() {
   }
 };
 
-chrome.bluetoothSocket.create(function(createInfo) {
-  chrome.bluetoothSocket.connect(createInfo.socketId,
-    device.address, uuid, onConnectedCallback);
+chrome.bluetoothSocket.create(function (createInfo) {
+  chrome.bluetoothSocket.connect(
+    createInfo.socketId,
+    device.address,
+    uuid,
+    onConnectedCallback
+  );
 });
 ```
 
@@ -307,13 +317,13 @@ to and from String][37].
 To send data you have in `arrayBuffer` use [bluetoothSocket.send][38]:
 
 ```js
-chrome.bluetoothSocket.send(socketId, arrayBuffer, function(bytes_sent) {
+chrome.bluetoothSocket.send(socketId, arrayBuffer, function (bytes_sent) {
   if (chrome.runtime.lastError) {
     console.log("Send failed: " + chrome.runtime.lastError.message);
   } else {
-    console.log("Sent " + bytes_sent + " bytes")
+    console.log("Sent " + bytes_sent + " bytes");
   }
-})
+});
 ```
 
 In contrast to the method to send data, data is received in an event
@@ -322,9 +332,8 @@ so the listener for this event is typically added between [bluetoothSocket.creat
 [bluetoothSocket.connect][42].
 
 ```js
-chrome.bluetoothSocket.onRecieve.addListener(function(receiveInfo) {
-  if (receiveInfo.socketId != socketId)
-    return;
+chrome.bluetoothSocket.onRecieve.addListener(function (receiveInfo) {
+  if (receiveInfo.socketId != socketId) return;
   // receiveInfo.data is an ArrayBuffer.
 });
 ```
@@ -335,7 +344,7 @@ To be notified of socket errors, including disconnection, add a listener to the
 [bluetoothSocket.onReceiveError][43] event.
 
 ```js
-chrome.bluetoothSocket.onReceiveError.addListener(function(errorInfo) {
+chrome.bluetoothSocket.onReceiveError.addListener(function (errorInfo) {
   // Cause is in errorInfo.error.
   console.log(errorInfo.errorMessage);
 });
@@ -360,10 +369,13 @@ Two types of published service are supported. RFCOMM is the most commonly used a
 majority of devices and profiles:
 
 ```js
-var uuid = '1105';
-chrome.bluetoothSocket.create(function(createInfo) {
-  chrome.bluetoothSocket.listenUsingRfcomm(createInfo.socketId,
-    uuid, onListenCallback);
+var uuid = "1105";
+chrome.bluetoothSocket.create(function (createInfo) {
+  chrome.bluetoothSocket.listenUsingRfcomm(
+    createInfo.socketId,
+    uuid,
+    onListenCallback
+  );
 });
 ```
 
@@ -371,10 +383,13 @@ L2CAP is the other and covers other device types and vendor-specific uses such a
 uploading.
 
 ```js
-var uuid = '0b87367c-f188-47cd-bc20-a5f4f70973c6';
-chrome.bluetoothSocket.create(function(createInfo) {
-  chrome.bluetoothSocket.listenUsingL2cap(createInfo.socketId,
-    uuid, onListenCallback);
+var uuid = "0b87367c-f188-47cd-bc20-a5f4f70973c6";
+chrome.bluetoothSocket.create(function (createInfo) {
+  chrome.bluetoothSocket.listenUsingL2cap(
+    createInfo.socketId,
+    uuid,
+    onListenCallback
+  );
 });
 ```
 
@@ -389,13 +404,11 @@ Client connections are accepted and passed to your application through the
 [bluetoothSocket.onAccept][47] event.
 
 ```js
-chrome.bluetoothSocket.onAccept.addListener(function(acceptInfo) {
-  if (info.socketId != serverSocketId)
-    return;
+chrome.bluetoothSocket.onAccept.addListener(function (acceptInfo) {
+  if (info.socketId != serverSocketId) return;
 
   // Say hello...
-  chrome.bluetoothSocket.send(acceptInfo.clientSocketId,
-    data, onSendCallback);
+  chrome.bluetoothSocket.send(acceptInfo.clientSocketId, data, onSendCallback);
 
   // Accepted sockets are initially paused,
   // set the onReceive listener first.
@@ -580,12 +593,11 @@ services may get added and removed entirely. Chrome notifies apps of these chang
 [bluetoothLowEnergy.onServiceRemoved][72] events.
 
 ```js
-  chrome.bluetoothLowEnergy.onServiceChanged.addListener(function(service) {
-    if (service.instanceId != myService.instanceId)
-      return;
+chrome.bluetoothLowEnergy.onServiceChanged.addListener(function (service) {
+  if (service.instanceId != myService.instanceId) return;
 
-    updateMyService(service);
-  });
+  updateMyService(service);
+});
 ```
 
 ### Reading and writing a characteristic's value {: #gatt-read-write }

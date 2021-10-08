@@ -81,40 +81,40 @@ instead.
     Mac OS X:
 
     : For a specific user:
-      `~USERNAME/Library/Application Support/Google/Chrome/External Extensions/`
-      For all users: `/Library/Application Support/Google/Chrome/External Extensions/`
+    `~USERNAME/Library/Application Support/Google/Chrome/External Extensions/`
+    For all users: `/Library/Application Support/Google/Chrome/External Extensions/`
 
-      The external extension file for all users is read only if every directory in the path is owned
-      by the user `root`, has the group `admin` or `wheel`, and is not world writable. The path must
-      also be free of symbolic links. These restrictions prevent an unprivileged user from causing
-      extensions to be installed for all users. See [troubleshooting][11] for details.
+    The external extension file for all users is read only if every directory in the path is owned
+    by the user `root`, has the group `admin` or `wheel`, and is not world writable. The path must
+    also be free of symbolic links. These restrictions prevent an unprivileged user from causing
+    extensions to be installed for all users. See [troubleshooting][11] for details.
 
-      {% Aside %}
+    {% Aside %}
 
-      **Note:** The above path for all users was added in Chrome 16. Prior versions used a different
-      path:
-      `/Applications/Google Chrome.app/Contents/Extensions/` This path was deprecated in version 17.
-      Support was removed in version 20. Use one of the paths above instead.
+    **Note:** The above path for all users was added in Chrome 16. Prior versions used a different
+    path:
+    `/Applications/Google Chrome.app/Contents/Extensions/` This path was deprecated in version 17.
+    Support was removed in version 20. Use one of the paths above instead.
 
-      {% endAside %}
+    {% endAside %}
 
     Linux:
 
     : `/opt/google/chrome/extensions/`
 
-      `/usr/share/google-chrome/extensions/`
+    `/usr/share/google-chrome/extensions/`
 
-      **Note:** Use `chmod` if necessary to make sure that the `aaaaaaaaaabbbbbbbbbbcccccccccc.json`
-      files are world-readable.
+    **Note:** Use `chmod` if necessary to make sure that the `aaaaaaaaaabbbbbbbbbbcccccccccc.json`
+    files are world-readable.
 
 3.  Linux only: If you are installing from a file, specify the extension's location and version with
     fields named "external_crx" and "external_version" in the file created above.
     - Example:
     - ```json
-        {
-          "external_crx": "/home/share/extension.crx",
-          "external_version": "1.0"
-        }
+      {
+        "external_crx": "/home/share/extension.crx",
+        "external_version": "1.0"
+      }
       ```
     - **Note:** You need to escape each `\` character in the location. For example,
       `\\server\share\extension.crx` would be `"\\\\server\\share\\extension.crx"`.
@@ -122,15 +122,15 @@ instead.
     "external_update_url".
 5.  Example of installation from local .crx file (Linux only):
     1.  ```json
-          {
-            "external_update_url": "http://myhost.com/mytestextension/updates.xml"
-          }
+        {
+          "external_update_url": "http://myhost.com/mytestextension/updates.xml"
+        }
         ```
 6.  Example of installation from the Chrome Webstore (Mac and Linux):
     1.  ```json
-          {
-            "external_update_url": "https://clients2.google.com/service/update2/crx"
-          }
+        {
+          "external_update_url": "https://clients2.google.com/service/update2/crx"
+        }
         ```
 7.  If you would like to install extension only for some browser locales, you can list supported
     locales in field name "supported_locale". Locale may specify parent locale like "en", in this
@@ -140,10 +140,10 @@ instead.
     installed for any locale.
     - Example:
     - ```json
-        {
-          "external_update_url": "https://clients2.google.com/service/update2/crx",
-          "supported_locales": [ "en", "fr", "de" ]
-        }
+      {
+        "external_update_url": "https://clients2.google.com/service/update2/crx",
+        "supported_locales": ["en", "fr", "de"]
+      }
       ```
 8.  Save the JSON file.
 9.  Launch Google Chrome and go to **chrome://extensions**; you should see the extension listed.

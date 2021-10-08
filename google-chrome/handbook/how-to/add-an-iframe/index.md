@@ -1,7 +1,7 @@
 ---
-layout: 'layouts/doc-post.njk'
+layout: "layouts/doc-post.njk"
 title: Add an IFrame
-description: 'Add an IFrame to a post.'
+description: "Add an IFrame to a post."
 date: 2020-11-23
 ---
 
@@ -50,5 +50,11 @@ Keep in mind, for an attribute that has a boolean value, just set the value to
 The generated HTML will look like this:
 
 ```html
-<iframe style="height: 100%; width: 100%; border: 0;" title="IFrame content" src="https://example.com" allowfullscreen loading="lazy"></iframe>
+<iframe
+  style="height: 100%; width: 100%; border: 0;"
+  title="IFrame content"
+  src="https://example.com"
+  allowfullscreen
+  loading="lazy"
+></iframe>
 ```

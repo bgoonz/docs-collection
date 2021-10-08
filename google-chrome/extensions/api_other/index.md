@@ -20,38 +20,38 @@ ordinary web apps.
 XMLHttpRequest
 
 : Use [XMLHttpRequest][3] to request data from one or more servers. The [permissions][4] field of the
-  manifest specifies which hosts the extension can send requests to.
+manifest specifies which hosts the extension can send requests to.
 
 HTML and other emerging APIs
 
 : Google Chrome supports modern HTML features, along with other emerging APIs. Here are some of the
-  APIs you can use:
+APIs you can use:
 
-  - audio ([tutorial][5])
-  - application cache ([tutorial][6])
-  - canvas ([articles][7])
-  - geolocation ([tutorial][8])
-  - local storage ([tutorial][9])
-  - notifications ([tutorial][10])
-  - video ([tutorial][11])
-  - web database ([tutorial][12])
+- audio ([tutorial][5])
+- application cache ([tutorial][6])
+- canvas ([articles][7])
+- geolocation ([tutorial][8])
+- local storage ([tutorial][9])
+- notifications ([tutorial][10])
+- video ([tutorial][11])
+- web database ([tutorial][12])
 
-  See [html5rocks.com][13] for HTML5 information, tutorials, an interactive playground, and links to
-  other resources.
+See [html5rocks.com][13] for HTML5 information, tutorials, an interactive playground, and links to
+other resources.
 
 Web APIs
 
 : Your extension can use Web APIs. Especially useful are the CSS features such as filters,
-  animations, and transformations. Here's an example of using WebKit styles to make the UI spin:
+animations, and transformations. Here's an example of using WebKit styles to make the UI spin:
 
-  ```html
-  <style>
-    div:hover {
-      transform: rotate(360deg);
-      transition: all 1s ease-out;
-    }
-  </style>
-  ```
+```html
+<style>
+  div:hover {
+    transform: rotate(360deg);
+    transition: all 1s ease-out;
+  }
+</style>
+```
 
 V8 APIs, such as JSON
 

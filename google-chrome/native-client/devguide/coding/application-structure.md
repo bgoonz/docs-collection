@@ -2,33 +2,31 @@
 
 {% include 'partials/nacl-warning.njk' %}
 
-------------------------------------------------------------------------
+---
 
--   <a href="#application-components" id="id1" class="reference internal">Application components</a>
--   <a href="#html-file-and-the-embed-element" id="id2" class="reference internal">HTML file and the &lt;embed&gt; element</a>
--   <a href="#manifest-files" id="id3" class="reference internal">Manifest Files</a>
--   <a href="#modules-and-instances" id="id4" class="reference internal">Modules and instances</a>
--   <a href="#native-client-modules-a-closer-look" id="id5" class="reference internal">Native Client modules: A closer look</a>
+- <a href="#application-components" id="id1" class="reference internal">Application components</a>
+- <a href="#html-file-and-the-embed-element" id="id2" class="reference internal">HTML file and the &lt;embed&gt; element</a>
+- <a href="#manifest-files" id="id3" class="reference internal">Manifest Files</a>
+- <a href="#modules-and-instances" id="id4" class="reference internal">Modules and instances</a>
+- <a href="#native-client-modules-a-closer-look" id="id5" class="reference internal">Native Client modules: A closer look</a>
 
 This section of the Developer’s Guide describes the general structure of a Native Client application. The section assumes you are familiar with the material presented in the <a href="/docs/native-client/overview" class="reference internal"><em>Technical Overview</em></a>.
 
-The “Hello, World” example is used here to illustrate basic Native Client programming techniques. You can find this code in the */getting\_started/part1* directory in the Native Client SDK download.
+The “Hello, World” example is used here to illustrate basic Native Client programming techniques. You can find this code in the _/getting_started/part1_ directory in the Native Client SDK download.
 
-Application components
-----------------------
+## Application components
 
 A Native Client application typically contains the following components:
 
--   an HTML file;
--   JavaScript code, which can be included in the HTML file or contained in one or more separate .js files;
--   CSS styles, which can be included in the HTML file or contained in one or more separate .css files;
--   a Native Client manifest file (with a .nmf extension) that specifies how to load a Native Client module for different processors; and
--   a Native Client module, written in C or C++, and compiled into a portable executable file (with a .pexe extension) or (if using the Chrome Web Store), architecture-specific executable files (with .nexe extensions).
+- an HTML file;
+- JavaScript code, which can be included in the HTML file or contained in one or more separate .js files;
+- CSS styles, which can be included in the HTML file or contained in one or more separate .css files;
+- a Native Client manifest file (with a .nmf extension) that specifies how to load a Native Client module for different processors; and
+- a Native Client module, written in C or C++, and compiled into a portable executable file (with a .pexe extension) or (if using the Chrome Web Store), architecture-specific executable files (with .nexe extensions).
 
 Applications that are published in the <a href="https://chrome.google.com/webstore/search?q=%22Native+Client%22+OR+NativeClient+OR+NaCl" class="reference external">Chrome Web Store</a> also include a Chrome Web Store manifest file `(manifest.json)` and one or more icon files.
 
-<span id="html-file"></span>HTML file and the &lt;embed&gt; element
--------------------------------------------------------------------
+## <span id="html-file"></span>HTML file and the &lt;embed&gt; element
 
 The `<embed>` element in an HTML file triggers the loading of a Native Client module and specifies the rectangle on the web page that is managed by the module. Here is the &lt;embed&gt; element from the “Hello, World” application:
 
@@ -40,7 +38,7 @@ The `<embed>` element in an HTML file triggers the loading of a Native Client mo
 In the `<embed>` element:
 
 name  
-is the DOM name attribute for the Native Client module (“nacl\_module” is often used as a convention)
+is the DOM name attribute for the Native Client module (“nacl_module” is often used as a convention)
 
 id  
 specifies the DOM ID for the Native Client module
@@ -54,8 +52,7 @@ refers to the Native Client manifest file that is used to determine which versio
 type  
 specifies the MIME type of the embedded content; for Portable Native Client modules the type must be “application/x-pnacl”. For architecture-specific Native Client modules the type must be “application/x-nacl”
 
-<span id="manifest-file"></span>Manifest Files
-----------------------------------------------
+## <span id="manifest-file"></span>Manifest Files
 
 Native Client applications have two types of manifest files: a Chrome Web Store manifest file and a Native Client manifest file.
 
@@ -95,21 +92,19 @@ For applications that use the <a href="/docs/native-client/devguide/devcycle/dyn
 
 In most cases, you can simply use the Python script provided with the SDK, `create_nmf.py`, to create a manifest file for your application as part of the compilation step (see the Makefile in any of the SDK examples for an illustration of how to do so). The manifest file format is also <a href="/docs/native-client/reference/nacl-manifest-format" class="reference internal"><em>documented</em></a>.
 
-Modules and instances
----------------------
+## Modules and instances
 
 A Native Client **module** is C or C++ code compiled into a PNaCl .pexe file or a NaCl .nexe file.
 
 An **instance** is a rectangle on a web page that is managed by a module. An instance may have a dimension of width=0 and height=0, meaning that the instance does not have any visible component on the web page. An instance is created by including an `<embed>` element in a web page. The `<embed>` element references a Native Client manifest file that loads the appropriate version of the module (either portable, or specific to the end-user’s architecture). A module may be included in a web page multiple times by using multiple `<embed>` elements that refer to the module; in this case the Native Client runtime system loads the module once and creates multiple instances that are managed by the module.
 
-Native Client modules: A closer look
-------------------------------------
+## Native Client modules: A closer look
 
 A Native Client module must include three components:
 
--   a factory function called `CreateModule()`
--   a Module class (derived from the `pp::Module` class)
--   an Instance class (derived from the `pp:Instance` class)
+- a factory function called `CreateModule()`
+- a Module class (derived from the `pp::Module` class)
+- an Instance class (derived from the `pp:Instance` class)
 
 In the “Hello tutorial” example (in the `getting_started/part1` directory of the NaCl SDK), these three components are specified in the file `hello_tutorial.cc`. Here is the factory function:
 

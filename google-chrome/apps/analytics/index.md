@@ -64,8 +64,7 @@ For an illustration of how to use the CPA library to measure user interactions i
 [7]: http://www.google.com/analytics/index.html
 [8]: https://developers.google.com/analytics/devguides/collection/protocol/policy
 [9]: https://github.com/GoogleChrome/chrome-platform-analytics
-[10]:
-  https://github.com/GoogleChrome/chrome-platform-analytics/blob/master/google-analytics-bundle.js
+[10]: https://github.com/GoogleChrome/chrome-platform-analytics/blob/master/google-analytics-bundle.js
 [11]: https://github.com/GoogleChrome/chrome-platform-analytics/wiki#prerequisites
 [12]: https://github.com/GoogleChrome/chrome-platform-analytics/wiki#api-reference
 [13]: https://github.com/GoogleChrome/chrome-platform-analytics/wiki#how-to

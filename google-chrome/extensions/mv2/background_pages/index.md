@@ -80,11 +80,11 @@ Listen to the [`runtime.onInstalled`][6] event to initialize an extension on ins
 event to set a state or for one-time initialization, such as a [context menu][7].
 
 ```js
-chrome.runtime.onInstalled.addListener(function() {
+chrome.runtime.onInstalled.addListener(function () {
   chrome.contextMenus.create({
-    "id": "sampleContextMenu",
-    "title": "Sample Context Menu",
-    "contexts": ["selection"]
+    id: "sampleContextMenu",
+    title: "Sample Context Menu",
+    contexts: ["selection"],
   });
 });
 ```
@@ -98,16 +98,16 @@ extension from missing important triggers.
 Listeners must be registered synchronously from the start of the page.
 
 ```js
-chrome.runtime.onInstalled.addListener(function() {
+chrome.runtime.onInstalled.addListener(function () {
   chrome.contextMenus.create({
-    "id": "sampleContextMenu",
-    "title": "Sample Context Menu",
-    "contexts": ["selection"]
+    id: "sampleContextMenu",
+    title: "Sample Context Menu",
+    contexts: ["selection"],
   });
 });
 
 // This will run when a bookmark is created.
-chrome.bookmarks.onCreated.addListener(function() {
+chrome.bookmarks.onCreated.addListener(function () {
   // do something
 });
 ```
@@ -115,10 +115,10 @@ chrome.bookmarks.onCreated.addListener(function() {
 Do not register listeners asynchronously, as they will not be properly triggered.
 
 ```js
-chrome.runtime.onInstalled.addListener(function() {
+chrome.runtime.onInstalled.addListener(function () {
   // ERROR! Events must be registered synchronously from the start of
   // the page.
-  chrome.bookmarks.onCreated.addListener(function() {
+  chrome.bookmarks.onCreated.addListener(function () {
     // do something
   });
 });
@@ -129,8 +129,8 @@ listeners for an event are removed, Chrome will no longer load the extension's b
 that event.
 
 ```js
-chrome.runtime.onMessage.addListener(function(message, sender, reply) {
-    chrome.runtime.onMessage.removeListener(event);
+chrome.runtime.onMessage.addListener(function (message, sender, reply) {
+  chrome.runtime.onMessage.removeListener(event);
 });
 ```
 
@@ -142,9 +142,12 @@ about. If an extension is listening for the [`tabs.onUpdated`][9] event, try usi
 filters.
 
 ```js
-chrome.webNavigation.onCompleted.addListener(function() {
+chrome.webNavigation.onCompleted.addListener(
+  function () {
     alert("This is my favorite website!");
-}, {url: [{urlMatches : 'https://www.google.com/'}]});
+  },
+  { url: [{ urlMatches: "https://www.google.com/" }] }
+);
 ```
 
 ## React to listeners {: #react }
@@ -153,15 +156,16 @@ Listeners exist to trigger functionality once an event has fired. To react to an
 the desired reaction inside of the listener event.
 
 ```js
-chrome.runtime.onMessage.addListener(function(message, callback) {
+chrome.runtime.onMessage.addListener(function (message, callback) {
   if (message.data == "setAlarm") {
-    chrome.alarms.create({delayInMinutes: 5})
+    chrome.alarms.create({ delayInMinutes: 5 });
   } else if (message.data == "runLogic") {
-    chrome.tabs.executeScript({file: 'logic.js'});
+    chrome.tabs.executeScript({ file: "logic.js" });
   } else if (message.data == "changeColor") {
-    chrome.tabs.executeScript(
-        {code: 'document.body.style.backgroundColor="orange"'});
-  };
+    chrome.tabs.executeScript({
+      code: 'document.body.style.backgroundColor="orange"',
+    });
+  }
 });
 ```
 
@@ -171,7 +175,7 @@ Data should be persisted periodically so that important information is not lost 
 crashes without receiving `onSuspend`. Use the [storage][11] API to assist with this.
 
 ```js
-chrome.storage.local.set({variable: variableInformation});
+chrome.storage.local.set({ variable: variableInformation });
 ```
 
 If an extension uses [message passing][12], ensure all ports are closed. The background script will
@@ -180,10 +184,10 @@ will give insight to when open ports are closing. Manually close them with
 [runtime.Port.disconnect][14].
 
 ```js
-chrome.runtime.onMessage.addListener(function(message, callback) {
-  if (message == 'hello') {
-    sendResponse({greeting: 'welcome!'})
-  } else if (message == 'goodbye') {
+chrome.runtime.onMessage.addListener(function (message, callback) {
+  if (message == "hello") {
+    sendResponse({ greeting: "welcome!" });
+  } else if (message == "goodbye") {
     chrome.runtime.Port.disconnect();
   }
 });
@@ -202,9 +206,9 @@ Background scripts unload on their own after a few seconds of inactivity. If any
 is required, listen to the [`runtime.onSuspend`][15] event.
 
 ```js
-chrome.runtime.onSuspend.addListener(function() {
+chrome.runtime.onSuspend.addListener(function () {
   console.log("Unloading.");
-  chrome.browserAction.setBadgeText({text: ""});
+  chrome.browserAction.setBadgeText({ text: "" });
 });
 ```
 
@@ -226,4 +230,3 @@ allow for as much cleanup as may be needed and will not help in case of a crash.
 [13]: /docs/extensions/reference/runtime#property-Port-onDisconnect
 [14]: /docs/extensions/reference/runtime#property-Port-disconnect
 [15]: /docs/extensions/reference/runtime#event-onSuspend
-

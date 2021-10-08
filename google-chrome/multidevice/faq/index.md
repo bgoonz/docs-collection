@@ -1,7 +1,7 @@
 ---
 layout: "layouts/doc-post.njk"
 title: FAQ
-date: 2014-02-28 
+date: 2014-02-28
 description: Frequently asked questions about Chrome for Android.
 ---
 

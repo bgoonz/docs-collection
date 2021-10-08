@@ -2,21 +2,20 @@
 
 {% include 'partials/nacl-warning.njk' %}
 
-------------------------------------------------------------------------
+---
 
--   <a href="#module-loading-and-progress-events" id="id3" class="reference internal">Module loading and progress events</a>
--   <a href="#handling-progress-events" id="id4" class="reference internal">Handling progress events</a>
--   <a href="#displaying-load-status" id="id5" class="reference internal">Displaying load status</a>
--   <a href="#the-lasterror-attribute" id="id6" class="reference internal">The <code>lastError</code> attribute</a>
--   <a href="#the-readystate-attribute" id="id7" class="reference internal">The <code>readyState</code> attribute</a>
--   <a href="#the-exitstatus-attribute" id="id8" class="reference internal">The <code>exitStatus</code> attribute</a>
+- <a href="#module-loading-and-progress-events" id="id3" class="reference internal">Module loading and progress events</a>
+- <a href="#handling-progress-events" id="id4" class="reference internal">Handling progress events</a>
+- <a href="#displaying-load-status" id="id5" class="reference internal">Displaying load status</a>
+- <a href="#the-lasterror-attribute" id="id6" class="reference internal">The <code>lastError</code> attribute</a>
+- <a href="#the-readystate-attribute" id="id7" class="reference internal">The <code>readyState</code> attribute</a>
+- <a href="#the-exitstatus-attribute" id="id8" class="reference internal">The <code>exitStatus</code> attribute</a>
 
 There are five types of events that developers can respond to in Native Client: progress, message, view change, focus, and input events (each described in the glossary below). This section describes how to monitor progress events (events that occur during the loading and execution of a Native Client module). This section assumes you are familiar with the material presented in the <a href="/docs/native-client/overview" class="reference internal"><em>Technical Overview</em></a>.
 
-The load\_progress example illustrates progress event handling. You can find this code in the `/pepper_<version>/examples/tutorial/load_progress/` directory in the Native Client SDK download.
+The load_progress example illustrates progress event handling. You can find this code in the `/pepper_<version>/examples/tutorial/load_progress/` directory in the Native Client SDK download.
 
-Module loading and progress events
-----------------------------------
+## Module loading and progress events
 
 The Native Client runtime reports a set of state changes during the module loading process by means of DOM progress events. This set of events is a direct port of the proposed W3C <a href="http://www.w3.org/TR/progress-events/" class="reference external">Progress Events</a> standard (except for the `crash` event which is an extension of the W3C standard). The following table lists the events types reported by the Native Client runtime:
 
@@ -28,8 +27,7 @@ The sequence of events for a successful module load is as follows:
 
 Errors that occur during loading are logged to the JavaScript console in Google Chrome (select the menu icon ![menu-icon](/docs/native-client/images/menu-icon.png) &gt; Tools &gt; JavaScript console).
 
-Handling progress events
-------------------------
+## Handling progress events
 
 You should add event listeners in a `<script>` element to listen for these events before the `<embed>` element is parsed. For example, the following code adds a listener for the `load` event to a parent `<div>` element that also contains the Native Client `<embed>` element. First, the listener is attached. Then, when the listener `<div>` receives the `load` event, the JavaScript `moduleDidLoad()` function is called. The following code is excerpted from the example in `getting_started/part1/`:
 
@@ -61,10 +59,9 @@ You should add event listeners in a `<script>` element to listen for these event
 
 Event listeners can be added to any DOM object. Since listeners set at the outermost scope capture events for their contained elements, you can set listeners on outer elements (including the `<body>` element) to handle events from inner elements. For more information, see the W3 specifications for <a href="http://www.w3.org/TR/DOM-Level-2-Events/events.html#Events-flow-capture" class="reference external">event flow capture</a> and <a href="http://www.w3.org/TR/DOM-Level-2-Events/events.html#Events-registration" class="reference external">event listener registration</a>.
 
-Displaying load status
-----------------------
+## Displaying load status
 
-One common response to progress events is to display the percentage of the module that has been loaded. In the load\_progress example, when the `progress` event is triggered the `moduleLoadProgress` function is called. This function uses the `lengthComputable`, `loaded`, and `total` attributes (described in the proposed W3C <a href="http://www.w3.org/TR/progress-events/" class="reference external">Progress Events</a> standard) of the event to calculate the percentage of the module that has loaded.
+One common response to progress events is to display the percentage of the module that has been loaded. In the load_progress example, when the `progress` event is triggered the `moduleLoadProgress` function is called. This function uses the `lengthComputable`, `loaded`, and `total` attributes (described in the proposed W3C <a href="http://www.w3.org/TR/progress-events/" class="reference external">Progress Events</a> standard) of the event to calculate the percentage of the module that has loaded.
 
     function moduleLoadProgress(event) {
       var loadPercent = 0.0;
@@ -80,8 +77,7 @@ One common response to progress events is to display the percentage of the modul
       }
     }
 
-The `lastError` attribute
--------------------------
+## The `lastError` attribute
 
 The `<embed>` element has a `lastError` attribute that is set to an informative string whenever a load failure (an `error` or `abort` event) occurs.
 
@@ -99,8 +95,7 @@ The following code adds an event listener before the `<embed>` element to captur
       common.logMessage('error: ' + common.naclModule.lastError);
     }
 
-The `readyState` attribute
---------------------------
+## The `readyState` attribute
 
 You can use the `readyState` attribute to monitor the loading process. This attribute is particularly useful if you don’t care about the details of individual progress events or when you want to poll for current load state without registering listeners. The value of `readyState` progresses as follows for a successful load:
 
@@ -137,10 +132,9 @@ The following code demonstrates how to monitor the loading process using the `re
       </body>
     </html>
 
-The `exitStatus` attribute
---------------------------
+## The `exitStatus` attribute
 
 This read-only attribute is set if the application calls `exit(n)`, `abort()`, or crashes. Since NaCl modules are event handlers, there is no need to call `exit(n)` in normal execution. If the module does exit or crash, the `crash` progress event is issued and the `exitStatus` attribute will contain the numeric value of the exit status:
 
--   In the case of explicit calls to `exit(n)`, the numeric value will be `n` (between 0 and 255).
--   In the case of crashes and calls to `abort()`, the numeric value will be non-zero, but the exact value will depend on the chosen libc and the target architecture, and may change in the future. Applications should not rely on the `exitStatus` value being stable in these cases, but the value may nevertheless be useful for temporary debugging.
+- In the case of explicit calls to `exit(n)`, the numeric value will be `n` (between 0 and 255).
+- In the case of crashes and calls to `abort()`, the numeric value will be non-zero, but the exact value will depend on the chosen libc and the target architecture, and may change in the future. Applications should not rely on the `exitStatus` value being stable in these cases, but the value may nevertheless be useful for temporary debugging.

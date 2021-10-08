@@ -46,11 +46,12 @@ browser version that has Custom Tabs enabled.
 default browser or using your own [WebView][4] implementation.
 
 ## Add your app as the referrer
+
 It's usually very important for websites to track where their traffic is coming from. Make sure you
 let them know you are sending them users by setting the referrer when launching your Custom Tab:
 
 ```java
-intent.putExtra(Intent.EXTRA_REFERRER, 
+intent.putExtra(Intent.EXTRA_REFERRER,
         Uri.parse("android-app://" + context.getPackageName()));
 ```
 
@@ -67,8 +68,8 @@ intentBuilder.setStartAnimations(this, R.anim.slide_in_right, R.anim.slide_out_l
 intentBuilder.setExitAnimations(this, android.R.anim.slide_in_left,
     android.R.anim.slide_out_right);
 
-//Open the Custom Tab        
-intentBuilder.build().launchUrl(context, Uri.parse("https://developer.chrome.com/"));        
+//Open the Custom Tab
+intentBuilder.build().launchUrl(context, Uri.parse("https://developer.chrome.com/"));
 ```
 
 ## Choosing an icon for the Action Button
@@ -87,24 +88,24 @@ Bitmap icon = BitmapFactory.decodeResource(getResources(),
 //Create a PendingIntent to your BroadCastReceiver implementation
 Intent actionIntent = new Intent(
         this.getApplicationContext(), ShareBroadcastReceiver.class);
-PendingIntent pendingIntent = 
-        PendingIntent.getBroadcast(getApplicationContext(), 0, actionIntent, 0);	        
+PendingIntent pendingIntent =
+        PendingIntent.getBroadcast(getApplicationContext(), 0, actionIntent, 0);
 
-//Set the pendingIntent as the action to be performed when the button is clicked.            
+//Set the pendingIntent as the action to be performed when the button is clicked.
 intentBuilder.setActionButton(icon, shareLabel, pendingIntent);
 ```
 
 ## Preparing for other browsers
 
-Remember the user may have more than one browser installed that supports 
-Custom Tabs. If there's more than one browser that supports Custom Tabs and 
-none if them is the preferred browser, ask the user how they want to open 
+Remember the user may have more than one browser installed that supports
+Custom Tabs. If there's more than one browser that supports Custom Tabs and
+none if them is the preferred browser, ask the user how they want to open
 the link:
 
 ```java
 /**
   * Returns a list of packages that support Custom Tabs.
-  */	
+  */
 public static ArrayList<ResolveInfo> getCustomTabsPackages(Context context) {
     PackageManager pm = context.getPackageManager();
     // Get default VIEW intent handler.
@@ -179,12 +180,13 @@ static boolean launchNativeApi30(Context context, Uri uri) {
 ```
 
 The solution is to try to launch the Intent and use `FLAG_ACTIVITY_REQUIRE_NON_BROWSER` to ask
-Android to avoid browsers when launching. 
+Android to avoid browsers when launching.
 
 If a native app that is capable of handling this Intent is not found, an
 `ActivityNotFoundException` will be thrown.
 
 ### Before Android 11
+
 Even though the application may target Android 11, or API level 30, previous Android versions will
 not understand the `FLAG_ACTIVITY_REQUIRE_NON_BROWSER` flag, so we need to resort to querying the
 Package Manager in those cases:
@@ -237,7 +239,7 @@ the intent for the native handler.
 
 ### Putting it all together
 
-We need to ensure using the right method for each occasion: 
+We need to ensure using the right method for each occasion:
 
 ```java
 static void launchUri(Context context, Uri uri) {
@@ -320,8 +322,8 @@ webView.setWebViewClient(new WebViewClient() {
             Uri uri = Uri.parse(url);
             CustomTabsIntent.Builder intentBuilder =
                     new CustomTabsIntent.Builder(mCustomTabActivityHelper.getSession());
-           //Open the Custom Tab        
-            intentBuilder.build().launchUrl(context, url));                            
+           //Open the Custom Tab
+            intentBuilder.build().launchUrl(context, url));
         }
     }
 });
@@ -331,7 +333,7 @@ webView.setWebViewClient(new WebViewClient() {
 
 If you need to do any processing between the user clicking on a link and opening the Custom Tab,
 make sure it runs in under 100ms. Otherwise users will see the unresponsiveness and may try to
-click multiple times on the  link.
+click multiple times on the link.
 
 If it's not possible to avoid the delay, make sure you application is prepared for when a user
 clicks multiple times on the same link and does not open a Custom Tab multiple times.

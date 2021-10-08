@@ -67,14 +67,14 @@ local_path:
 container:
 
 : The value "panel" makes the app appear in an app panel. By default, or when you specify "tab", the
-  app appears in a tab.
+app appears in a tab.
 
 height:
 
 : If the container is set to "panel", this integer specifies the height of the panel in pixels. For
-  example, you might specify `"height":400`. Note that you don't use quotation marks in the value.
-  This field specifies the height of the area to display contents in; window decorations add a few
-  more pixels to the total height. If the container isn't a panel, this field is ignored.
+example, you might specify `"height":400`. Note that you don't use quotation marks in the value.
+This field specifies the height of the area to display contents in; window decorations add a few
+more pixels to the total height. If the container isn't a panel, this field is ignored.
 
 width:
 

@@ -1,7 +1,7 @@
 ---
-layout: 'layouts/doc-post.njk'
+layout: "layouts/doc-post.njk"
 title: Add a blog post
-description: 'Add a new post to /blog'
+description: "Add a new post to /blog"
 date: 2021-01-27
 ---
 

@@ -2,54 +2,50 @@
 
 {% include 'partials/nacl-warning.njk' %}
 
-------------------------------------------------------------------------
+---
 
--   <a href="#introduction" id="id1" class="reference internal">Introduction</a>
--   <a href="#reference-information" id="id2" class="reference internal">Reference information</a>
--   <a href="#background" id="id3" class="reference internal">Background</a>
--   <a href="#the-url-loader-example" id="id4" class="reference internal">The <code>url_loader</code> example</a>
+- <a href="#introduction" id="id1" class="reference internal">Introduction</a>
+- <a href="#reference-information" id="id2" class="reference internal">Reference information</a>
+- <a href="#background" id="id3" class="reference internal">Background</a>
+- <a href="#the-url-loader-example" id="id4" class="reference internal">The <code>url_loader</code> example</a>
 
-    -   <a href="#url-loading-overview" id="id5" class="reference internal">URL loading overview</a>
+  - <a href="#url-loading-overview" id="id5" class="reference internal">URL loading overview</a>
 
--   <a href="#url-loader-deep-dive" id="id6" class="reference internal"><code>url_loader</code> deep dive</a>
+- <a href="#url-loader-deep-dive" id="id6" class="reference internal"><code>url_loader</code> deep dive</a>
 
-    -   <a href="#setting-up-the-request" id="id7" class="reference internal">Setting up the request</a>
-    -   <a href="#downloading-the-data" id="id8" class="reference internal">Downloading the data</a>
-    -   <a href="#displaying-a-result" id="id9" class="reference internal">Displaying a result</a>
+  - <a href="#setting-up-the-request" id="id7" class="reference internal">Setting up the request</a>
+  - <a href="#downloading-the-data" id="id8" class="reference internal">Downloading the data</a>
+  - <a href="#displaying-a-result" id="id9" class="reference internal">Displaying a result</a>
 
-Introduction
-------------
+## Introduction
 
 This section describes how to use the <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_u_r_l_loader" class="reference external">URLLoader API</a> to load resources such as images and sound files from a server into your application.
 
 The example discussed in this section is included in the SDK in the directory `examples/api/url_loader`.
 
-Reference information
----------------------
+## Reference information
 
 For reference information related to loading data from URLs, see the following documentation:
 
--   <a href="/docs/native-client/pepper_stable/cpp/url__loader_8h" class="reference external">url_loader.h</a> - Contains `URLLoader` class for loading data from URLs
--   <a href="/docs/native-client/pepper_stable/cpp/url__request__info_8h" class="reference external">url_request_info.h</a> - Contains `URLRequest` class for creating and manipulating URL requests
--   <a href="/docs/native-client/pepper_stable/cpp/url__response__info_8h" class="reference external">url_response_info.h</a> - Contains `URLResponse` class for examaning URL responses
+- <a href="/docs/native-client/pepper_stable/cpp/url__loader_8h" class="reference external">url_loader.h</a> - Contains `URLLoader` class for loading data from URLs
+- <a href="/docs/native-client/pepper_stable/cpp/url__request__info_8h" class="reference external">url_request_info.h</a> - Contains `URLRequest` class for creating and manipulating URL requests
+- <a href="/docs/native-client/pepper_stable/cpp/url__response__info_8h" class="reference external">url_response_info.h</a> - Contains `URLResponse` class for examaning URL responses
 
-Background
-----------
+## Background
 
 When a user launches your Native Client web application, Chrome downloads and caches your application’s HTML file, manifest file (.nmf), and Native Client module (.pexe or .nexe). If your application needs additional assets, such as images and sound files, it must explicitly load those assets. You can use the Pepper APIs described in this section to load assets from a URL into your application.
 
 After you’ve loaded assets into your application, Chrome will cache those assets. To avoid being at the whim of the Chrome cache, however, you may want to use the <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_file_i_o" class="reference external">Pepper FileIO API</a> to write those assets to a persistent, sandboxed location on the user’s file system.
 
-The `url_loader` example
-------------------------
+## The `url_loader` example
 
 The SDK includes an example called `url_loader` demonstrating downloading files from a server. This example has these primary files:
 
--   `index.html` - The HTML code that launches the Native Client module.
--   `example.js` - The JavaScript file for index.html. It has code that sends a PostMessage request to the Native Client module when the “Get URL” button is clicked.
--   `url_loader_success.html` - An HTML file on the server whose contents are being retrieved using the `URLLoader` API.
--   `url_loader.cc` - The code that sets up and provides and entry point into the Native client module.
--   `url_loader_handler.cc` - The code that retrieves the contents of the url\_loader\_success.html file and returns the results (this is where the bulk of the work is done).
+- `index.html` - The HTML code that launches the Native Client module.
+- `example.js` - The JavaScript file for index.html. It has code that sends a PostMessage request to the Native Client module when the “Get URL” button is clicked.
+- `url_loader_success.html` - An HTML file on the server whose contents are being retrieved using the `URLLoader` API.
+- `url_loader.cc` - The code that sets up and provides and entry point into the Native client module.
+- `url_loader_handler.cc` - The code that retrieves the contents of the url_loader_success.html file and returns the results (this is where the bulk of the work is done).
 
 The remainder of this document covers the code in the `url_loader.cc` and `url_loader_handler.cc` files.
 
@@ -67,8 +63,7 @@ Following are the high-level steps involved in URL loading.
 
 The remainder of this document demonstrates how the previous steps are implemented in the `url_loader` example.
 
-`url_loader` deep dive
-----------------------
+## `url_loader` deep dive
 
 ### Setting up the request
 

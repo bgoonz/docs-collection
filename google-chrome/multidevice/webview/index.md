@@ -74,28 +74,28 @@ For the most part, features that work in Chrome for Android should work in the n
 
 Chrome for Android supports a few features which aren't enabled in the WebView, including:
 
-| Feature | WebView v30 | WebView v33 | WebView v36 |
-| ------- | ----------- | ----------- | ----------- |
-| [WebGL][8] | x | x | ✓ |
-| [WebRTC][9] | x | x | ✓ |
-| [WebAudio][10] | x | x | ✓ |
-| [Fullscreen API][11] | x | x | x |
-| [Form validation][12] | x | ✓ | ✓ |
-| [Filesystem API][13] | x | x | x |
-| [File input type][14] | x | x | x |
-| [`<datalist>`][15] | x | ✓ | ✓ |
+| Feature               | WebView v30 | WebView v33 | WebView v36 |
+| --------------------- | ----------- | ----------- | ----------- |
+| [WebGL][8]            | x           | x           | ✓           |
+| [WebRTC][9]           | x           | x           | ✓           |
+| [WebAudio][10]        | x           | x           | ✓           |
+| [Fullscreen API][11]  | x           | x           | x           |
+| [Form validation][12] | x           | ✓           | ✓           |
+| [Filesystem API][13]  | x           | x           | x           |
+| [File input type][14] | x           | x           | x           |
+| [`<datalist>`][15]    | x           | ✓           | ✓           |
 
 ### What hardware sensor APIs are available to the new WebView?
 
 Some HTML5 APIs can be used to access the hardware sensors on an Android device. Chrome for Android
 supports a few of these APIs but not all of them are currently enabled in the WebView.
 
-| API | WebView v30 | WebView v33 |
-| --- | ----------- | ----------- |
-| [Geolocation API][16] (requires `android.permission.ACCESS_COARSE_LOCATION` and/or `android.permission.ACCESS_FINE_LOCATION` permissions) | ✓ | ✓ |
-| [Device Orientation API][17] | x | x |
-| [Media Capture and Streams][18] | x | x |
-| [Vibration API][19] (requires `android.permission.VIBRATE` permission) | x | ✓ |
+| API                                                                                                                                       | WebView v30 | WebView v33 |
+| ----------------------------------------------------------------------------------------------------------------------------------------- | ----------- | ----------- |
+| [Geolocation API][16] (requires `android.permission.ACCESS_COARSE_LOCATION` and/or `android.permission.ACCESS_FINE_LOCATION` permissions) | ✓           | ✓           |
+| [Device Orientation API][17]                                                                                                              | x           | x           |
+| [Media Capture and Streams][18]                                                                                                           | x           | x           |
+| [Vibration API][19] (requires `android.permission.VIBRATE` permission)                                                                    | x           | ✓           |
 
 ### What does the new WebView mean for developers?
 
@@ -130,8 +130,7 @@ of Android you should try enabling it for KitKat based devices and see if it imp
 [4]: /devtools/docs/remote-debugging
 [5]: http://developer.android.com/preview/
 [6]: /docs/multidevice/user-agent/#webview_user_agent
-[7]:
-  http://developer.android.com/reference/android/webkit/WebSettings.html#setUserAgentString(java.lang.String)
+[7]: http://developer.android.com/reference/android/webkit/WebSettings.html#setUserAgentString(java.lang.String)
 [8]: http://www.html5rocks.com/en/tutorials/webgl/webgl_fundamentals/
 [9]: http://www.html5rocks.com/en/tutorials/webrtc/basics/
 [10]: http://www.html5rocks.com/en/tutorials/webaudio/intro/

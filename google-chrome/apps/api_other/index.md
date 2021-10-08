@@ -23,55 +23,55 @@ Here's a sampling of the APIs that extensions can use:
 Standard JavaScript APIs
 
 : These are the same core JavaScript and [Document Object Model][4] (DOM) APIs that you can use in
-  ordinary web apps.
+ordinary web apps.
 
 XMLHttpRequest
 
 : Use [XMLHttpRequest][5] to request data from one or more servers. The [permissions][6] field of the
-  manifest specifies which hosts the extension can send requests to.
+manifest specifies which hosts the extension can send requests to.
 
 HTML and other emerging APIs
 
 : Google Chrome supports modern HTML features, along with other emerging APIs. Here are some of the
-  APIs you can use:
+APIs you can use:
 
-  - audio ([tutorial][7])
-  - application cache ([tutorial][8])
-  - canvas ([articles][9])
-  - fullscreen ([article][10])
-    - In Chrome Apps, fullscreen is entered without prompting the user or providing exit instructions.
-      HTML5 fullscreen requires the `app.window.fullscreen` permission in the manifest. In normal
-      webpages, the browser intercepts the ESC key to exit pointer lock ensuring a consistent escape
-      method for users. That is also the behavior in Chrome Apps unless the
-      `app.window.fullscreen.overrideEsc` permission is used to enable the app to call
-      `preventDefault` on keydown and keyup events.
-  - geolocation ([tutorial][11])
-  - local storage ([tutorial][12])
-  - notifications ([tutorial][13])
-  - pointer lock ([tutorial][14])
-    - In Chrome Apps, pointer lock is entered without requiring a user gesture, prompting the user, or
-      providing exit instructions. Pointer lock requires the `pointerlock` permission in the manifest.
-      Also, there is no default exit behavior. In normal webpages, the browser intercepts the ESC key
-      to exit pointer lock. This behavior is not present in Chrome Apps.
-  - video ([tutorial][15])
-  - web database ([tutorial][16])
+- audio ([tutorial][7])
+- application cache ([tutorial][8])
+- canvas ([articles][9])
+- fullscreen ([article][10])
+  - In Chrome Apps, fullscreen is entered without prompting the user or providing exit instructions.
+    HTML5 fullscreen requires the `app.window.fullscreen` permission in the manifest. In normal
+    webpages, the browser intercepts the ESC key to exit pointer lock ensuring a consistent escape
+    method for users. That is also the behavior in Chrome Apps unless the
+    `app.window.fullscreen.overrideEsc` permission is used to enable the app to call
+    `preventDefault` on keydown and keyup events.
+- geolocation ([tutorial][11])
+- local storage ([tutorial][12])
+- notifications ([tutorial][13])
+- pointer lock ([tutorial][14])
+  - In Chrome Apps, pointer lock is entered without requiring a user gesture, prompting the user, or
+    providing exit instructions. Pointer lock requires the `pointerlock` permission in the manifest.
+    Also, there is no default exit behavior. In normal webpages, the browser intercepts the ESC key
+    to exit pointer lock. This behavior is not present in Chrome Apps.
+- video ([tutorial][15])
+- web database ([tutorial][16])
 
-  See [html5rocks.com][17] for HTML5 information, tutorials, an interactive playground, and links to
-  other resources.
+See [html5rocks.com][17] for HTML5 information, tutorials, an interactive playground, and links to
+other resources.
 
 Web APIs
 
 : Your extension can use Web APIs. Especially useful are the CSS features such as filters,
-  animations, and transformations. Here's an example of using WebKit styles to make the UI spin:
+animations, and transformations. Here's an example of using WebKit styles to make the UI spin:
 
-  ```html
-  <style>
-    div:hover {
-      transform: rotate(360deg);
-      transition: all 1s ease-out;
-    }
-  </style>
-  ```
+```html
+<style>
+  div:hover {
+    transform: rotate(360deg);
+    transition: all 1s ease-out;
+  }
+</style>
+```
 
 V8 APIs, such as JSON
 
@@ -80,8 +80,8 @@ V8 APIs, such as JSON
 APIs in bundled libraries
 
 : If you want to use a library that the browser doesn't provide (for example, jQuery), you can bundle
-  that library's JavaScript files with your extension. Bundled libraries work in extensions just as
-  they do in other web pages.
+that library's JavaScript files with your extension. Bundled libraries work in extensions just as
+they do in other web pages.
 
 [1]: https://blog.chromium.org/2020/08/changes-to-chrome-app-support-timeline.html
 [2]: /apps/migration

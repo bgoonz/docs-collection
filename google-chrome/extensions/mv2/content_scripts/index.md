@@ -53,9 +53,13 @@ An extension may run in a web page with code similar to the example below.
     var greeting = "hello, ";
     var button = document.getElementById("mybutton");
     button.person_name = "Bob";
-    button.addEventListener("click", function() {
-      alert(greeting + button.person_name + ".");
-    }, false);
+    button.addEventListener(
+      "click",
+      function () {
+        alert(greeting + button.person_name + ".");
+      },
+      false
+    );
   </script>
 </html>
 ```
@@ -66,9 +70,13 @@ That extension could inject the following content script.
 var greeting = "hola, ";
 var button = document.getElementById("mybutton");
 button.person_name = "Roberto";
-button.addEventListener("click", function() {
-  alert(greeting + button.person_name + ".");
-}, false);
+button.addEventListener(
+  "click",
+  function () {
+    alert(greeting + button.person_name + ".");
+  },
+  false
+);
 ```
 
 Both alerts would appear if the button was pressed.
@@ -106,27 +114,25 @@ permission, enabling the content script to run on the current active tab without
 Content scripts can be injected as code.
 
 ```js
-chrome.runtime.onMessage.addListener(
-  function(message, callback) {
-    if (message == "changeColor"){
-      chrome.tabs.executeScript({
-        code: 'document.body.style.backgroundColor="orange"'
-      });
-    }
-  });
+chrome.runtime.onMessage.addListener(function (message, callback) {
+  if (message == "changeColor") {
+    chrome.tabs.executeScript({
+      code: 'document.body.style.backgroundColor="orange"',
+    });
+  }
+});
 ```
 
 Or an entire file can be injected.
 
 ```js
-chrome.runtime.onMessage.addListener(
-  function(message, callback) {
-    if (message == "runContentScript"){
-      chrome.tabs.executeScript({
-        file: 'contentScript.js'
-      });
-    }
-  });
+chrome.runtime.onMessage.addListener(function (message, callback) {
+  if (message == "runContentScript") {
+    chrome.tabs.executeScript({
+      file: "contentScript.js",
+    });
+  }
+});
 ```
 
 ### Inject declaratively {: #declaratively }
@@ -152,23 +158,23 @@ They can include JavaScript files, CSS files or both. All auto-run content scrip
 }
 ```
 
-| Name | Type | Description |
-| --- | --- | --- |
-| `matches` {: #matches } | <nobr>array of strings</nobr> | _Required._ Specifies which pages this content script will be injected into. See [Match Patterns](/docs/extensions/mv2/match_patterns) for more details on the  syntax of these strings and [Match patterns and globs](#matchAndGlob) for information on how to exclude URLs. |
-| `css` {: #css } | <nobr>array of strings</nobr> | _Optional._ The list of CSS files to be injected into matching pages. These are injected in the order they appear in this array, before any DOM is constructed or displayed for the page. |
-| `js` {: #js } | <nobr>array of strings</nobr> | _Optional._ The list of JavaScript files to be injected into matching pages. These are injected in the order they appear in this array. |
-| `match_about_blank` {: #match_about_blank } | boolean | _Optional._ Whether the script should inject into an `about:blank` frame where the parent or opener frame matches one of the patterns declared in `matches`. Defaults to `false`. |
+| Name                                        | Type                          | Description                                                                                                                                                                                                                                                                  |
+| ------------------------------------------- | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `matches` {: #matches }                     | <nobr>array of strings</nobr> | _Required._ Specifies which pages this content script will be injected into. See [Match Patterns](/docs/extensions/mv2/match_patterns) for more details on the syntax of these strings and [Match patterns and globs](#matchAndGlob) for information on how to exclude URLs. |
+| `css` {: #css }                             | <nobr>array of strings</nobr> | _Optional._ The list of CSS files to be injected into matching pages. These are injected in the order they appear in this array, before any DOM is constructed or displayed for the page.                                                                                    |
+| `js` {: #js }                               | <nobr>array of strings</nobr> | _Optional._ The list of JavaScript files to be injected into matching pages. These are injected in the order they appear in this array.                                                                                                                                      |
+| `match_about_blank` {: #match_about_blank } | boolean                       | _Optional._ Whether the script should inject into an `about:blank` frame where the parent or opener frame matches one of the patterns declared in `matches`. Defaults to `false`.                                                                                            |
 
 #### Exclude matches and globs {: #matchAndGlob }
 
 Specified page matching is customizable by including the following fields in the manifest
 registration.
 
-| Name | Type | Description |
-| --- | --- | --- |
-| `exclude_matches` {: #exclude_matches } | <nobr>array of strings</nobr> | _Optional._ Excludes pages that this content script would otherwise be injected into. See [Match Patterns](/docs/extensions/mv2/match_patterns) for more details on the syntax of these strings. |
-| `include_globs` {: #include_globs } | <nobr>array of strings</nobr> | _Optional._ Applied after `matches` to include only those URLs that also match this glob. Intended to emulate the [`@include`](http://wiki.greasespot.net/Metadata_Block#.40include) Greasemonkey keyword. |
-| `exclude_globs` {: #exclude_globs } | <nobr>array of string</nobr> | _Optional._ Applied after `matches` to exclude URLs that match this glob. Intended to emulate the [`@exclude`](http://wiki.greasespot.net/Metadata_Block#.40include)Greasemonkey keyword. |
+| Name                                    | Type                          | Description                                                                                                                                                                                                |
+| --------------------------------------- | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `exclude_matches` {: #exclude_matches } | <nobr>array of strings</nobr> | _Optional._ Excludes pages that this content script would otherwise be injected into. See [Match Patterns](/docs/extensions/mv2/match_patterns) for more details on the syntax of these strings.           |
+| `include_globs` {: #include_globs }     | <nobr>array of strings</nobr> | _Optional._ Applied after `matches` to include only those URLs that also match this glob. Intended to emulate the [`@include`](http://wiki.greasespot.net/Metadata_Block#.40include) Greasemonkey keyword. |
+| `exclude_globs` {: #exclude_globs }     | <nobr>array of string</nobr>  | _Optional._ Applied after `matches` to exclude URLs that match this glob. Intended to emulate the [`@exclude`](http://wiki.greasespot.net/Metadata_Block#.40include)Greasemonkey keyword.                  |
 
 The content script will be injected into a page if its URL matches any `matches` pattern and any
 `include_globs` pattern, as long as the URL doesn't also match an `exclude_matches` or
@@ -289,11 +295,11 @@ preffered and default field is `"document_idle"`, but can also be specified as `
 }
 ```
 
-| Name | Type | Description |
-| --- | --- | --- |
-| `document_idle` {: #document_idle } | string | _Preferred._ Use `"document_idle"` whenever possible.<br><br>The browser chooses a time to inject scripts between `"document_end"` and immediately after the [`windowonload`](http://www.whatwg.org/specs/web-apps/current-work/#handler-onload) event fires. The exact moment of injection depends on how complex the document is and how long it is taking to load, and is optimized for page load speed.<br><br>Content scripts running at `"document_idle"` do not need to listen for the `window.onload` event, they are guaranteed to run after the DOM is complete. If a script definitely needs to run after `window.onload`, the extension can check if `onload` has already fired by using the [`document.readyState`](http://www.whatwg.org/specs/web-apps/current-work/#dom-document-readystate) property. |
-| `document_start` {: #document_start } | string | Scripts are injected after any files from `css`, but before any other DOM is constructed or any other script is run. |
-| `document_end` {: #document_end } | string | Scripts are injected immediately after the DOM is complete, but before subresources like images and frames have loaded. |
+| Name                                  | Type   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| ------------------------------------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `document_idle` {: #document_idle }   | string | _Preferred._ Use `"document_idle"` whenever possible.<br><br>The browser chooses a time to inject scripts between `"document_end"` and immediately after the [`windowonload`](http://www.whatwg.org/specs/web-apps/current-work/#handler-onload) event fires. The exact moment of injection depends on how complex the document is and how long it is taking to load, and is optimized for page load speed.<br><br>Content scripts running at `"document_idle"` do not need to listen for the `window.onload` event, they are guaranteed to run after the DOM is complete. If a script definitely needs to run after `window.onload`, the extension can check if `onload` has already fired by using the [`document.readyState`](http://www.whatwg.org/specs/web-apps/current-work/#dom-document-readystate) property. |
+| `document_start` {: #document_start } | string | Scripts are injected after any files from `css`, but before any other DOM is constructed or any other script is run.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `document_end` {: #document_end }     | string | Scripts are injected immediately after the DOM is complete, but before subresources like images and frames have loaded.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 
 #### Specify frames {: #frames }
 
@@ -316,8 +322,8 @@ tab.
 }
 ```
 
-| Name | Type | Description |
-| --- | --- | --- |
+| Name                          | Type    | Description                                                                                                                                                                                                                                                                                                                         |
+| ----------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `all_frames` {: #all_frames } | boolean | _Optional._ Defaults to `false`, meaning that only the top frame is matched.<br><br>If specified `true`, it will inject into all frames, even if the frame is not the topmost frame in the tab. Each frame is checked independently for URL requirements, it will not inject into child frames if the URL requirements are not met. |
 
 ## Communication with the embedding page {: #host-page-communication }
@@ -331,23 +337,32 @@ An example can be accomplished using [`window.postMessage`][27]:
 ```js
 var port = chrome.runtime.connect();
 
-window.addEventListener("message", function(event) {
-  // We only accept messages from ourselves
-  if (event.source != window)
-    return;
+window.addEventListener(
+  "message",
+  function (event) {
+    // We only accept messages from ourselves
+    if (event.source != window) return;
 
-  if (event.data.type && (event.data.type == "FROM_PAGE")) {
-    console.log("Content script received: " + event.data.text);
-    port.postMessage(event.data.text);
-  }
-}, false);
+    if (event.data.type && event.data.type == "FROM_PAGE") {
+      console.log("Content script received: " + event.data.text);
+      port.postMessage(event.data.text);
+    }
+  },
+  false
+);
 ```
 
 ```js
-document.getElementById("theButton").addEventListener("click",
-    function() {
-  window.postMessage({ type: "FROM_PAGE", text: "Hello from the webpage!" }, "*");
-}, false);
+document.getElementById("theButton").addEventListener(
+  "click",
+  function () {
+    window.postMessage(
+      { type: "FROM_PAGE", text: "Hello from the webpage!" },
+      "*"
+    );
+  },
+  false
+);
 ```
 
 The non-extension page, example.html, posts messages to itself. This message is intercepted and
@@ -366,9 +381,9 @@ scripting][29] attacks before injecting it. Only communicate over HTTPS in order
 Be sure to filter for malicious web pages. For example, the following patterns are dangerous:
 
 ```js
-var data = document.getElementById("json-data")
+var data = document.getElementById("json-data");
 // WARNING! Might be evaluating an evil script!
-var parsed = eval("(" + data + ")")
+var parsed = eval("(" + data + ")");
 ```
 
 ```js
@@ -380,7 +395,7 @@ window.setTimeout("animate(" + elmt_id + ")", 200);
 Instead, prefer safer APIs that do not run scripts:
 
 ```js
-var data = document.getElementById("json-data")
+var data = document.getElementById("json-data");
 // JSON.parse does not evaluate the attacker's scripts.
 var parsed = JSON.parse(data);
 ```

@@ -1,7 +1,7 @@
 ---
-layout: 'layouts/doc-post.njk'
+layout: "layouts/doc-post.njk"
 title: Add an API
-description: 'Add an API to the reference area.'
+description: "Add an API to the reference area."
 date: 2020-12-17
 ---
 

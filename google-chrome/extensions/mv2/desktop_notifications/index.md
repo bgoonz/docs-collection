@@ -61,14 +61,14 @@ Then, use `webkitNotifications` object to create notifications:
 
 // Create a simple text notification:
 var notification = webkitNotifications.createNotification(
-  '48.png',  // icon url - can be relative
-  'Hello!',  // notification title
-  'Lorem ipsum...'  // notification body text
+  "48.png", // icon url - can be relative
+  "Hello!", // notification title
+  "Lorem ipsum..." // notification body text
 );
 
 // Or create an HTML notification:
 var notification = webkitNotifications.createHTMLNotification(
-  'notification.html'  // html url - can be relative
+  "notification.html" // html url - can be relative
 );
 
 // Then show the notification.
@@ -89,7 +89,7 @@ chrome.extension.getBackgroundPage().doThing();
 ```
 
 ```js
-chrome.extension.getViews({type:"notification"}).forEach(function(win) {
+chrome.extension.getViews({ type: "notification" }).forEach(function (win) {
   win.doOtherThing();
 });
 ```

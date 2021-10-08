@@ -33,6 +33,7 @@ The UI Customizations are done by using the [`CustomTabsIntent`][3] and the
 which urls will be opened.
 
 ## Opening a Custom Tab
+
 A [`CustomTabsIntent.Builder`][4] can be used to configure a Custom Tab. Once ready, call
 [`CustomTabsIntent.Builder.build`][22] to create a [`CustomTabsIntent`][3] and launch the desired
 Url with [`CustomTabsIntent.launchUrl`][7].
@@ -68,8 +69,6 @@ builder.setActionButton(icon, description, pendingIntent, tint);
 
 {% Img src="image/Vww75TFpThOgTNuASFM6UYfBAp53/wBbdC6mX8P6moJRJekjL.png", alt="Screenshot of the Action Button in the Tumblr app", width="800", height="1422" %}
 
-
-
 As the developer of your app, you have full control over the Action Button that is presented to
 your users inside the browser tab.
 
@@ -82,12 +81,12 @@ The icon is currenlty 24dp in height and 24-48 dp in width.
 
 It can be customized by calling [`CustomTabsIntentBuilder#setActionButton`][30]:
 
- - `icon` is a [`Bitmap`][23] to be used as the [image source][24] for the action button.
- - `description` is a [`String`][25] be used as an accessible description for the button.
- - `pendingIntent` is a [`PendingIntent`][26] to launch when the action button or menu item was
- tapped. The browser will be calling [`PendingIntent#send`][27] on taps after adding the url
- as data. The client app can call [`Intent#getDataString`][28] to get the url.
- - `tint` is a [boolean][29] that defines if the Action Button should be tinted.
+- `icon` is a [`Bitmap`][23] to be used as the [image source][24] for the action button.
+- `description` is a [`String`][25] be used as an accessible description for the button.
+- `pendingIntent` is a [`PendingIntent`][26] to launch when the action button or menu item was
+  tapped. The browser will be calling [`PendingIntent#send`][27] on taps after adding the url
+  as data. The client app can call [`Intent#getDataString`][28] to get the url.
+- `tint` is a [boolean][29] that defines if the Action Button should be tinted.
 
 ## Configure a custom menu
 
@@ -139,15 +138,15 @@ The process for warming up the browser is as follows:
 
 - Use [`CustomTabsClient#bindCustomTabsService`][8] to connect to the service.
 - Once the service is connected, call [`CustomTabsClient#warmup`][9] to start the browser behind the
-scenes.
+  scenes.
 - Call [`CustomTabsClient#newSession`][10] to create a new session. This session is used for all
-requests to the API.
+  requests to the API.
 - Optionally, attach a [`CustomTabsCallback`][11] as a parameter when creating a new session, so
-that you know a page was loaded.
+  that you know a page was loaded.
 - Tell the browser which pages the user is likely to load with
-[`CustomTabsSession#mayLaunchUrl`][12]
+  [`CustomTabsSession#mayLaunchUrl`][12]
 - Call the [`CustomTabsIntent.Builder`][4] constructor passing the created
-[`CustomTabsSession`][12] as a parameter.
+  [`CustomTabsSession`][12] as a parameter.
 
 ## Connect to the Custom Tabs Service
 
@@ -192,7 +191,7 @@ Returns `true` if successful.
 
 ## Create a new tab session
 
-[`boolean newSession(CustomTabsCallback  callback)`][17]
+[`boolean newSession(CustomTabsCallback callback)`][17]
 
 Session is used in subsequent calls to link mayLaunchUrl call, the CustomTabsIntent and the tab
 generated to each other. The callback provided here is associated with the created session. Any
@@ -216,7 +215,7 @@ completed successfully.
 [`void onNavigationEvent(int navigationEvent, Bundle extras)`][19]
 
 Will be called when a navigation event happens in the custom tab. The `navigationEvent int`
-is one of 6 values that defines the state of the page is in.  See below for more information.
+is one of 6 values that defines the state of the page is in. See below for more information.
 
 ```java
 /**

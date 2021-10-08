@@ -8,8 +8,6 @@ Know an application that should be featured here? [Let us know!](mailto:salty@go
 
 A number of the applications below were produced using [middleware and other software packages that support Native Client](/docs/native-client/community/middleware/).
 
-  
-
 <table><tbody><tr class="odd"><td><a href="https://chrome.google.com/webstore/detail/lara-croft-and-the-guardi/dcfdbmpeeihbpddkneaploeinlbaaodn"><img src="/docs/native-client/images/lara-croft-guardian.png" /><br />
 Lara Croft and the Guardian of Light</a></td><td><a href="https://chrome.google.com/webstore/detail/crimson-steam-pirates/glfbkgkceahodalogdpenjoekbacjfcj?utm_source=chrome-ntp-icon&amp;gl=CA"><img src="/docs/native-client/images/pirates.png" /><br />
 Crimson: Steam Pirates</a></td><td><a href="https://chrome.google.com/webstore/detail/hiledapehlkhdehbhppgmekfalnlfajc"><img src="/docs/native-client/images/dontstarve.png" /><br />

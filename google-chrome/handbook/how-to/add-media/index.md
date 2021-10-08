@@ -1,7 +1,7 @@
 ---
-layout: 'layouts/doc-post.njk'
+layout: "layouts/doc-post.njk"
 title: Add an image or video
-description: 'Upload media to our CDN.'
+description: "Upload media to our CDN."
 date: 2020-10-23
 updated: 2021-03-11
 ---

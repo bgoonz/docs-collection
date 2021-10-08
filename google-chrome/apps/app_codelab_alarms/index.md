@@ -1,5 +1,5 @@
 ---
-layout: 'layouts/doc-post.njk'
+layout: "layouts/doc-post.njk"
 title: "Step 3: Add Alarms and Notifications"
 date: 2014-10-17
 updated: 2015-01-06
@@ -101,41 +101,43 @@ clicked.
 
 ```js
 (function () {
-  'use strict';
-   var alarmName = 'remindme';
-   function checkAlarm(callback) {
-     chrome.alarms.getAll(function(alarms) {
-       var hasAlarm = alarms.some(function(a) {
-         return a.name == alarmName;
-       });
-       var newLabel;
-       if (hasAlarm) {
-         newLabel = 'Cancel alarm';
-       } else {
-         newLabel = 'Activate alarm';
-       }
-       document.getElementById('toggleAlarm').innerText = newLabel;
-       if (callback) callback(hasAlarm);
-     })
-   }
-   function createAlarm() {
-     chrome.alarms.create(alarmName, {
-       delayInMinutes: 0.1, periodInMinutes: 0.1});
-   }
-   function cancelAlarm() {
-     chrome.alarms.clear(alarmName);
-   }
-   function doToggleAlarm() {
-     checkAlarm( function(hasAlarm) {
-       if (hasAlarm) {
-         cancelAlarm();
-       } else {
-         createAlarm();
-       }
-       checkAlarm();
-     });
-   }
-  $$('#toggleAlarm').addEventListener('click', doToggleAlarm);
+  "use strict";
+  var alarmName = "remindme";
+  function checkAlarm(callback) {
+    chrome.alarms.getAll(function (alarms) {
+      var hasAlarm = alarms.some(function (a) {
+        return a.name == alarmName;
+      });
+      var newLabel;
+      if (hasAlarm) {
+        newLabel = "Cancel alarm";
+      } else {
+        newLabel = "Activate alarm";
+      }
+      document.getElementById("toggleAlarm").innerText = newLabel;
+      if (callback) callback(hasAlarm);
+    });
+  }
+  function createAlarm() {
+    chrome.alarms.create(alarmName, {
+      delayInMinutes: 0.1,
+      periodInMinutes: 0.1,
+    });
+  }
+  function cancelAlarm() {
+    chrome.alarms.clear(alarmName);
+  }
+  function doToggleAlarm() {
+    checkAlarm(function (hasAlarm) {
+      if (hasAlarm) {
+        cancelAlarm();
+      } else {
+        createAlarm();
+      }
+      checkAlarm();
+    });
+  }
+  $$("#toggleAlarm").addEventListener("click", doToggleAlarm);
   checkAlarm();
 })();
 ```
@@ -177,7 +179,7 @@ In `createAlarm()`, use the [`chrome.alarms.create()`][8] API to create an alarm
 alarm** is toggled.
 
 ```js
-chrome.alarms.create(alarmName, {delayInMinutes: 0.1, periodInMinutes: 0.1});
+chrome.alarms.create(alarmName, { delayInMinutes: 0.1, periodInMinutes: 0.1 });
 ```
 
 The first parameter is an optional string identifying an unique name for your alarm, for example,
@@ -215,7 +217,7 @@ in order to update the UI state of the toggle button.
 an `Alarm`, you can inspect running alarms in the DevTools Console like so:
 
 ```js
-chrome.alarms.getAll(function(alarms) {
+chrome.alarms.getAll(function (alarms) {
   console.log(alarms);
   console.log(alarms[0]);
 });
@@ -272,13 +274,13 @@ At the top of the _background.js_, add a variable for a database name that's use
 listener:
 
 ```js
-var dbName = 'todos-vanillajs';
+var dbName = "todos-vanillajs";
 ```
 
 The value of `dbName` is the same database name set in line 17 of _js/app.js_:
 
 ```js
-var todo = new Todo('todos-vanillajs');
+var todo = new Todo("todos-vanillajs");
 ```
 
 ### Create a notification {: #create-notification }
@@ -348,7 +350,7 @@ Open the Todo app when the user clicks on the notification. At the end of _backg
 [`chrome.notifications.onClicked`][14] event handler:
 
 ```js
-chrome.notifications.onClicked.addListener(function() {
+chrome.notifications.onClicked.addListener(function () {
   launch();
 });
 ```
@@ -405,8 +407,7 @@ Ready to continue onto the next step? Go to [Step 4 - Open external links with a
 [12]: /apps/notifications#method-create
 [13]: /apps/notifications#type-NotificationOptions
 [14]: /apps/notifications#event-onClicked
-[15]:
-  https://github.com/mangini/io13-codelab/blob/master/cheat_code/solution_for_step3/background.js
+[15]: https://github.com/mangini/io13-codelab/blob/master/cheat_code/solution_for_step3/background.js
 [16]: /apps/declare_permissions "Read 'Declare Permissions' in the Chrome developer docs"
 [17]: #update-permissions-alarms "This feature mentioned in 'Update app permissions for alarms'"
 [18]: /docs/extensions/reference/alarms "Read 'chrome.alarms' in the Chrome developer docs"
@@ -421,16 +422,10 @@ Ready to continue onto the next step? Go to [Step 4 - Open external links with a
 [27]: #get-alarms "This feature mentioned in 'Get alarms'"
 [28]: /apps/notifications "Read 'chrome.notifications' in the Chrome developer docs"
 [29]: #notifications "This feature mentioned in 'Add notifications'"
-[30]:
-  /apps/notifications#method-create
-  "Read 'chrome.notifications.create()' in the Chrome developer docs"
+[30]: /apps/notifications#method-create "Read 'chrome.notifications.create()' in the Chrome developer docs"
 [31]: #create-notification "This feature mentioned in 'Create a notification'"
-[32]:
-  /apps/notifications#type-NotificationOptions
-  "Read 'NotificationOptions' in the Chrome developer docs"
+[32]: /apps/notifications#type-NotificationOptions "Read 'NotificationOptions' in the Chrome developer docs"
 [33]: #create-notification "This feature mentioned in 'Create a notification'"
-[34]:
-  /apps/notifications#event-onClicked
-  "Read 'chrome.notifications.onClicked' in the Chrome developer docs"
+[34]: /apps/notifications#event-onClicked "Read 'chrome.notifications.onClicked' in the Chrome developer docs"
 [35]: #interact-with-notification "This feature mentioned in 'Handle notification interactions'"
 [36]: ../app_codelab_webview/

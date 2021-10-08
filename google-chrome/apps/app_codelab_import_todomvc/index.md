@@ -1,5 +1,5 @@
 ---
-layout: 'layouts/doc-post.njk'
+layout: "layouts/doc-post.njk"
 title: "Step 2: Import an Existing Web App"
 date: 2014-10-17
 updated: 2016-12-16
@@ -128,9 +128,12 @@ The [set()][12] method accepts an object of key-value pairs as its first paramet
 callback function is the second parameter. For example:
 
 ```js
-chrome.storage.local.set({secretMessage:'Psst!',timeSet:Date.now()}, function() {
-  console.log("Secret message saved");
-});
+chrome.storage.local.set(
+  { secretMessage: "Psst!", timeSet: Date.now() },
+  function () {
+    console.log("Secret message saved");
+  }
+);
 ```
 
 The [get()][13] method accepts an optional first parameter for the datastore keys you wish to
@@ -141,8 +144,13 @@ The second parameter, which is required, is a callback function. In the returned
 keys requested in the first parameter to access the stored values. For example:
 
 ```js
-chrome.storage.local.get(['secretMessage','timeSet'], function(data) {
-  console.log("The secret message:", data.secretMessage, "saved at:", data.timeSet);
+chrome.storage.local.get(["secretMessage", "timeSet"], function (data) {
+  console.log(
+    "The secret message:",
+    data.secretMessage,
+    "saved at:",
+    data.timeSet
+  );
 });
 ```
 
@@ -150,7 +158,7 @@ If you want to `get()` everything that is currently in `chrome.storage.local`, o
 parameter:
 
 ```js
-chrome.storage.local.get(function(data) {
+chrome.storage.local.get(function (data) {
   console.log(data);
 });
 ```
@@ -194,7 +202,7 @@ The key differences between `localStorage` and `chrome.storage` come from the as
   ```js
   var storage = {};
   storage[dbName] = { todos: [] };
-  chrome.storage.local.set( storage, function() {
+  chrome.storage.local.set(storage, function () {
     // optional callback
   });
   ```
@@ -210,7 +218,7 @@ The key differences between `localStorage` and `chrome.storage` come from the as
   versus
 
   ```js
-  chrome.storage.local.get(dbName, function(storage) {
+  chrome.storage.local.get(dbName, function (storage) {
     var todos = storage[dbName].todos;
   });
   ```
@@ -221,8 +229,8 @@ The key differences between `localStorage` and `chrome.storage` come from the as
 
   ```js
   function Store() {
-    this.scope = 'inside Store';
-    chrome.storage.local.set( {}, function() {
+    this.scope = "inside Store";
+    chrome.storage.local.set({}, function () {
       console.log(this.scope); // outputs: 'undefined'
     });
   }
@@ -474,28 +482,31 @@ moving `filter()` to be inside the `update()`, instead of outside.
 ```js
 Controller.prototype.toggleComplete = function (ids, checkbox, silent) {
   var completed = checkbox.checked ? 1 : 0;
-  this.model.update(ids, { completed: completed }, function () {
-    if ( ids.constructor != Array ) {
-      ids = [ ids ];
-    }
-    ids.forEach( function(id) {
-      var listItem = $$('[data-id="' + id + '"]');
-      
-      if (!listItem) {
-        return;
+  this.model.update(
+    ids,
+    { completed: completed },
+    function () {
+      if (ids.constructor != Array) {
+        ids = [ids];
       }
-      
-      listItem.className = completed ? 'completed' : '';
-      
-      // In case it was toggled from an event and not by clicking the checkbox
-      listItem.querySelector('input').checked = completed;
-    });
+      ids.forEach(function (id) {
+        var listItem = $$('[data-id="' + id + '"]');
 
-    if (!silent) {
-      this._filter();
-    }
+        if (!listItem) {
+          return;
+        }
 
-  }.bind(this));
+        listItem.className = completed ? "completed" : "";
+
+        // In case it was toggled from an event and not by clicking the checkbox
+        listItem.querySelector("input").checked = completed;
+      });
+
+      if (!silent) {
+        this._filter();
+      }
+    }.bind(this)
+  );
 };
 ```
 
@@ -565,20 +576,23 @@ a) To start off, wrap everything already inside `remove()` with a `get()` callba
 
 ```js
 Store.prototype.remove = function (id, callback) {
-  chrome.storage.local.get(this._dbName, function(storage) {
-    var data = JSON.parse(localStorage[this._dbName]);
-    var todos = data.todos;
+  chrome.storage.local.get(
+    this._dbName,
+    function (storage) {
+      var data = JSON.parse(localStorage[this._dbName]);
+      var todos = data.todos;
 
-    for (var i = 0; i < todos.length; i++) {
-      if (todos[i].id == id) {
-        todos.splice(i, 1);
-        break;
+      for (var i = 0; i < todos.length; i++) {
+        if (todos[i].id == id) {
+          todos.splice(i, 1);
+          break;
+        }
       }
-    }
 
-    localStorage[this._dbName] = JSON.stringify(data);
-    callback.call(this, JSON.parse(localStorage[this._dbName]).todos);
-  }.bind(this));
+      localStorage[this._dbName] = JSON.stringify(data);
+      callback.call(this, JSON.parse(localStorage[this._dbName]).todos);
+    }.bind(this)
+  );
 };
 ```
 
@@ -676,7 +690,7 @@ There is one more method in _store.js_ using `localStorage`:
 
 ```js
 Store.prototype.drop = function (callback) {
-  localStorage[this._dbName] = JSON.stringify({todos: []});
+  localStorage[this._dbName] = JSON.stringify({ todos: [] });
   callback.call(this, JSON.parse(localStorage[this._dbName]).todos);
 };
 ```
@@ -721,39 +735,23 @@ Ready to continue onto the next step? Go to [Step 3 - Add alarms and notificatio
 [9]: /apps/contentSecurityPolicy
 [10]: http://dev.w3.org/html5/webstorage/#the-localstorage-attribute
 [11]: /docs/extensions/reference/storage "Read 'chrome.storage.local' in the Chrome developer docs"
-[12]:
-  /docs/extensions/reference/storage#method-StorageArea-set
-  "Read 'chrome.storage.local.set()' in the Chrome developer docs"
-[13]:
-  /docs/extensions/reference/storage#method-StorageArea-get
-  "Read 'chrome.storage.local.get()' in the Chrome developer docs"
+[12]: /docs/extensions/reference/storage#method-StorageArea-set "Read 'chrome.storage.local.set()' in the Chrome developer docs"
+[13]: /docs/extensions/reference/storage#method-StorageArea-get "Read 'chrome.storage.local.get()' in the Chrome developer docs"
 [14]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
 [15]: http://en.wikipedia.org/wiki/Hazard_(computer_architecture)#Read_After_Write_.28RAW.29
 [16]: /docs/extensions/reference/storage#method-StorageArea-remove
 [17]: /apps/contentSecurityPolicy "Read 'Content Security Policy' in the Chrome developer docs"
-[18]:
-  #csp-compliance
-  "This feature mentioned in 'Make scripts Content Security Policy (CSP) compliant'"
+[18]: #csp-compliance "This feature mentioned in 'Make scripts Content Security Policy (CSP) compliant'"
 [19]: /apps/declare_permissions "Read 'Declare Permissions' in the Chrome developer docs"
 [20]: #update-permissions "This feature mentioned in 'Update app permissions'"
 [21]: /docs/extensions/reference/storage "Read 'chrome.storage' in the Chrome developer docs"
-[22]:
-  #get-and-set
-  "This feature mentioned in 'Learn about local.storage.set() and local.storage.get()'"
-[23]:
-  /docs/extensions/reference/storage#method-StorageArea-get
-  "Read 'chrome.storage.local.get()' in the Chrome developer docs"
+[22]: #get-and-set "This feature mentioned in 'Learn about local.storage.set() and local.storage.get()'"
+[23]: /docs/extensions/reference/storage#method-StorageArea-get "Read 'chrome.storage.local.get()' in the Chrome developer docs"
 [24]: #retrieve-items "This feature mentioned in 'Retrieve todos items'"
-[25]:
-  /docs/extensions/reference/storage#method-StorageArea-set
-  "Read 'chrome.storage.local.set()' in the Chrome developer docs"
+[25]: /docs/extensions/reference/storage#method-StorageArea-set "Read 'chrome.storage.local.set()' in the Chrome developer docs"
 [26]: #save-items "This feature mentioned in 'Save todos items'"
-[27]:
-  /docs/extensions/reference/storage#method-StorageArea-remove
-  "Read 'chrome.storage.local.remove()' in the Chrome developer docs"
+[27]: /docs/extensions/reference/storage#method-StorageArea-remove "Read 'chrome.storage.local.remove()' in the Chrome developer docs"
 [28]: #remove-items "This feature mentioned in 'Remove todos items'"
-[29]:
-  /docs/extensions/reference/storage#method-StorageArea-remove
-  "Read 'chrome.storage.local.clear()' in the Chrome developer docs"
+[29]: /docs/extensions/reference/storage#method-StorageArea-remove "Read 'chrome.storage.local.clear()' in the Chrome developer docs"
 [30]: #remove-items "This feature mentioned in 'Drop all todo items'"
 [31]: ../app_codelab_alarms

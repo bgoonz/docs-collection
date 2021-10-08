@@ -1,5 +1,5 @@
 ---
-layout: 'layouts/doc-post.njk'
+layout: "layouts/doc-post.njk"
 title: "Step 1: Create and Run a Chrome App"
 date: 2014-10-17
 updated: 2014-10-20
@@ -84,10 +84,10 @@ Create the following file and save it as **_background.js_**:
  *
  * @see /apps/app.window.html
  */
-chrome.app.runtime.onLaunched.addListener(function() {
-  chrome.app.window.create('index.html', {
-    id: 'main',
-    bounds: { width: 620, height: 500 }
+chrome.app.runtime.onLaunched.addListener(function () {
+  chrome.app.window.create("index.html", {
+    id: "main",
+    bounds: { width: 620, height: 500 },
   });
 });
 ```
@@ -96,7 +96,7 @@ This background script simply waits for the [chrome.app.runtime.onLaunched][4] l
 application and executes the callback function:
 
 ```js
-chrome.app.runtime.onLaunched.addListener(function() {
+chrome.app.runtime.onLaunched.addListener(function () {
   //...
 });
 ```
@@ -105,9 +105,9 @@ When the Chrome App is launched, [chrome.app.window.create()][5] will create a n
 basic HTML page (_index.html_) as the source. You will create the HTML view in the next step.
 
 ```js
-chrome.app.window.create('index.html', {
-  id: 'main',
-  bounds: { width: 620, height: 500 }
+chrome.app.window.create("index.html", {
+  id: "main",
+  bounds: { width: 620, height: 500 },
 });
 ```
 
@@ -122,12 +122,12 @@ Create a simple web page to display a "Hello World" message to the screen and sa
 ```html
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-</head>
-<body>
-  <h1>Hello, let's code!</h1>
-</body>
+  <head>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <h1>Hello, let's code!</h1>
+  </body>
 </html>
 ```
 
@@ -222,12 +222,8 @@ Ready to continue onto the next step? Go to [Step 2 - Import an existing web app
 [11]: #app-icon "This feature mentioned in 'Add an app icon'"
 [12]: ../app_lifecycle "Read 'Manifest File Format' in the Chrome developer docs"
 [13]: #background-script "This feature mentioned in 'Create a background script'"
-[14]:
-  /docs/extensions/reference/app_runtime#event-onLaunched
-  "Read 'chrome.app.runtime.onLaunched' in the Chrome developer docs"
+[14]: /docs/extensions/reference/app_runtime#event-onLaunched "Read 'chrome.app.runtime.onLaunched' in the Chrome developer docs"
 [15]: #background-script "This feature mentioned in 'Create a background script'"
-[16]:
-  /docs/extensions/reference/app_window#method-create
-  "Read 'chrome.app.window.create()' in the Chrome developer docs"
+[16]: /docs/extensions/reference/app_window#method-create "Read 'chrome.app.window.create()' in the Chrome developer docs"
 [17]: #background-script "This feature mentioned in 'Create a background script'"
 [18]: ../app_codelab_import_todomvc

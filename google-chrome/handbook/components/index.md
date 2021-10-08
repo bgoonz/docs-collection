@@ -1,6 +1,6 @@
 ---
 title: Components
-layout: 'layouts/doc-post.njk'
+layout: "layouts/doc-post.njk"
 date: 2021-01-12
 updated: 2021-01-27
 ---
@@ -9,7 +9,7 @@ updated: 2021-01-27
 
 Use a details section to hide extra information from the user until it's needed. It can have an optional preview.
 
-````md
+```md
 {% raw %}{% Details %}
 {% DetailsSummary %}
 A brief summary goes here
@@ -18,7 +18,7 @@ A brief summary goes here
 The body of the Details component goes here, and **can** contain markdown.
 
 {% endDetails %}{% endraw %}
-````
+```
 
 {% Details %}
 {% DetailsSummary %}
@@ -31,20 +31,24 @@ The body of the Details component goes here, and **can** contain markdown.
 
 The details shortcode also supports using headers in the summary.
 
-````md
+```md
 {% raw %}{% Details %}
 {% DetailsSummary %}
+
 ### A normal heading goes here
+
 {% endDetailsSummary %}
 
 The body of the Details component goes here, and **can** contain markdown.
 
 {% endDetails %}{% endraw %}
-````
+```
 
 {% Details %}
 {% DetailsSummary %}
+
 ### A normal heading goes here
+
 {% endDetailsSummary %}
 
 The body of the Details component goes here, and **can** contain markdown.
@@ -54,7 +58,9 @@ The body of the Details component goes here, and **can** contain markdown.
 ````md
 {% raw %}{% Details %}
 {% DetailsSummary %}
+
 ### Details component summary
+
 This is an optional preview.
 {% endDetailsSummary %}
 
@@ -62,15 +68,18 @@ This is the body of the Details component.
 It **can** contain markdown.
 
 ```js
-const bar = 'foo';
+const bar = "foo";
 console.log(bar);
 ```
+
 {% endDetails %}{% endraw %}
 ````
 
 {% Details %}
 {% DetailsSummary %}
+
 ### Details component summary
+
 This is an optional preview.
 {% endDetailsSummary %}
 
@@ -78,12 +87,14 @@ This is the body of the Details component.
 It **can** contain markdown.
 
 ```js
-const bar = 'foo';
+const bar = "foo";
 console.log(bar);
 ```
+
 {% endDetails %}
 
 ## Asides
+
 Use asides to provide information that's related to but distinct from the
 content in the body of the post or codelab. Asides should generally be short—no
 more than 2–3 lines.
@@ -107,6 +118,7 @@ Asides can contain links and formatted text, including code.
 ````md
 {% raw %}{% Aside %}
 Here is some code:
+
 ```js
 const foo = 'bar';
 function() {
@@ -122,6 +134,7 @@ Here is a fancy [named markdown link][google].
 
 {% Aside %}
 Here is some code:
+
 ```js
 const foo = 'bar';
 function() {
@@ -215,6 +228,7 @@ Get started: [Measure your page performance with Lighthouse](#).
 {% endAside %}
 
 ## Blockquotes
+
 Use blockquotes to emphasize a quotation that's important to
 the main idea of a post. (For example, in a case study you might include
 a quotation from someone on the partner organization's management team.)
@@ -225,12 +239,10 @@ at the end of a block quote:
 ```html
 <blockquote>
   <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-    Proin dictum a massa sit amet ullamcorper.
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin dictum a
+    massa sit amet ullamcorper.
   </p>
-  <cite>
-    Jon Doe
-  </cite>
+  <cite> Jon Doe </cite>
 </blockquote>
 ```
 
@@ -250,9 +262,7 @@ In general, you shouldn't need to add buttons to your posts.
 These buttons are shown for reference.
 
 ```html
-<button class="material-button button-text color-primary">
-  Text button
-</button>
+<button class="material-button button-text color-primary">Text button</button>
 ```
 
 <button class="material-button button-text color-primary">
@@ -332,8 +342,8 @@ Flipped
 ```js
 // v1
 const config = {
-  foo: 'bar',
-  baz: 'qux',
+  foo: "bar",
+  baz: "qux",
 };
 ```
 
@@ -344,8 +354,8 @@ const config = {
 ```js
 // v2
 const config = {
-  up: 'down',
-  left: 'right',
+  up: "down",
+  left: "right",
 };
 ```
 
@@ -361,8 +371,8 @@ const config = {
 ```js
 // v1
 const config = {
-  foo: 'bar',
-  baz: 'qux',
+  foo: "bar",
+  baz: "qux",
 };
 ```
 
@@ -373,8 +383,8 @@ const config = {
 ```js
 // v2
 const config = {
-  up: 'down',
-  left: 'right',
+  up: "down",
+  left: "right",
 };
 ```
 
@@ -450,10 +460,10 @@ To support localization all custom labels will need to be added to the
 ```yml
 # site/_data/i18n/common.yml
 compare_unhelpful:
-  en: 'Unhelpful'
+  en: "Unhelpful"
 
 compare_helpful:
-  en: 'Helpful'
+  en: "Helpful"
 ```
 
 ```md
@@ -478,53 +488,57 @@ Lorem ipsum dolor sit amet.
 
 ````md
 {% raw %}{% Compare 'better' %}
+
 ```js
 const x = 0;
 ```
+
 {% endCompare %}
 
 {% Compare 'worse' %}
+
 ```js
 var x = 0;
 ```
+
 {% endCompare %}{% endraw %}
 ````
 
 {% Compare 'better' %}
+
 ```js
 const x = 0;
 ```
+
 {% endCompare %}
 
 {% Compare 'worse' %}
+
 ```js
 var x = 0;
 ```
+
 {% endCompare %}
 
 ## Glitches {: #glitches }
 
 ### Create a Glitch
 
-* Remix the [web-dev-hello-webpage](https://glitch.com/~web-dev-hello-webpage) or
+- Remix the [web-dev-hello-webpage](https://glitch.com/~web-dev-hello-webpage) or
   [web-dev-hello-express](https://glitch.com/~web-dev-hello-express) template.
-* Click **Project options** and update the description of the Glitch.
-* Update `README.md`.
-* Update `package.json` (if it exists).
-* Add the project to [the web.dev team on Glitch](https://glitch.com/@webdev).
-* Set the avatar of the project to the [web.dev logo](https://cdn.glitch.com/9b775a52-d700-4208-84e9-18578ee75266%2Ficon.jpeg?v=1585082912878).
+- Click **Project options** and update the description of the Glitch.
+- Update `README.md`.
+- Update `package.json` (if it exists).
+- Add the project to [the web.dev team on Glitch](https://glitch.com/@webdev).
+- Set the avatar of the project to the [web.dev logo](https://cdn.glitch.com/9b775a52-d700-4208-84e9-18578ee75266%2Ficon.jpeg?v=1585082912878).
 
 ### Embed a Glitch
 
 {% raw %}
 
 ```html
-{% Glitch {
-  id: 'tabindex-zero',
-  path: 'index.html',
-  previewSize: 0,
-  allow: []
-} %}
+{% Glitch { id: 'tabindex-zero', path: 'index.html', previewSize: 0, allow: [] }
+%}
 
 <!-- Or just the Glitch ID -->
 
@@ -543,12 +557,12 @@ if you need more or less space.
 
 Shortcode object fields allow for modifying how the embed is presented:
 
-* {`string | string[]`} `allow?` List of feature policies of an IFrame either as an array of strings, or as a `;` separated list. By default the following policies are enabled:
-  * `'camera', 'clipboard-read', 'clipboard-write', 'encrypted-media', 'geolocation', 'microphone', 'midi'`
-* {`string`} `id` ID of Glitch project.
-* {`string`} `path?` Lets you specify which source code file to show.
-* {`number`} `previewSize?` Defines what percentage of the embed should be dedicated to the preview, default is 100.
-* {`number`} `height?` Height, in pixels, of the Glitch wrapper element.
+- {`string | string[]`} `allow?` List of feature policies of an IFrame either as an array of strings, or as a `;` separated list. By default the following policies are enabled:
+  - `'camera', 'clipboard-read', 'clipboard-write', 'encrypted-media', 'geolocation', 'microphone', 'midi'`
+- {`string`} `id` ID of Glitch project.
+- {`string`} `path?` Lets you specify which source code file to show.
+- {`number`} `previewSize?` Defines what percentage of the embed should be dedicated to the preview, default is 100.
+- {`number`} `height?` Height, in pixels, of the Glitch wrapper element.
 
 ## Images
 
@@ -569,6 +583,7 @@ them a border so they don't appear to "float" on the page.
 {% raw %}{% Img src='image/BrQidfK9jaQyIHwdw91aVpkPiib2/TDNgfhI9byR4eeGQ0Xxv.png', alt='Screenshot', height="302", width="770", class="screenshot" %}{% endraw %}
 
 <!-- Add the .screenshot--filled modifier to give the screenshot padding and a grey background. -->
+
 {% raw %}{% Img src='image/BrQidfK9jaQyIHwdw91aVpkPiib2/TDNgfhI9byR4eeGQ0Xxv.png', alt='Screenshot', height="302", width="770", class="screenshot screenshot--filled" %}{% endraw %}
 ```
 
@@ -599,6 +614,7 @@ class.
 
 ```md
 <!-- !important: note the commas after each property -->
+
 {% raw %}{% Img
   class="float-right",
   src="image/foR0vJZKULb5AGJExlazy1xYDgI2/w9i7lEqGw5J5b3jx5fAu.jpg",
@@ -636,6 +652,7 @@ place the `Img` shortcode snippet inside:
 </figure>
 
 ## Lists
+
 See the [Lists section of the Grammar, mechanics, and usage post](https://web.dev/handbook/grammar/#lists)
 for information about when to use each list type.
 
@@ -695,25 +712,15 @@ Attribute `title` becomes the title of the corresponding tab panel.
     <p>I'm content of Tab 1</p>
   </web-tab>
   <web-tab title="Tab 2 (markdown)">
-
-    Here goes content of Tab 2. Now **with** some _markdown_.
-
-    You must include a line break between the html and markdown to get the
-    markdown to work (this is a limiation of markdown parsers).
-
+    Here goes content of Tab 2. Now **with** some _markdown_. You must include a
+    line break between the html and markdown to get the markdown to work (this
+    is a limiation of markdown parsers).
   </web-tab>
   <web-tab title="Tab 3 (with code)">
-
-    This is Tab 3. It has a code snippet inside.
-
-    You must include a line break between the html and teh markdown to get the
-    markdown to work. Also, be sure to unindent the markdown otherwise syntax
-    highlighting will not work.
-
-```js
-const hello = 'world';
-```
-
+    This is Tab 3. It has a code snippet inside. You must include a line break
+    between the html and teh markdown to get the markdown to work. Also, be sure
+    to unindent the markdown otherwise syntax highlighting will not work. ```js
+    const hello = 'world'; ```
   </web-tab>
 </web-tabs>
 ````
@@ -739,12 +746,11 @@ const hello = 'world';
     highlighting will not work.
 
 ```js
-const hello = 'world';
+const hello = "world";
 ```
 
   </web-tab>
 </web-tabs>
-
 
 ## Tables
 
@@ -1082,6 +1088,7 @@ Use the {% raw %}`{% YouTube %}`{% endraw %} shortcode to embed a YouTube video.
 {% raw %}{% YouTube id="qPD2yc8BoDk" %}
 
 <!-- You can pass an optional start time as well -->
+
 {% YouTube id="qPD2yc8BoDk", startTime="1678" %}{% endraw %}
 ```
 

@@ -17,7 +17,7 @@ given a larger width (typically 980px) and scales it to fit the WebView's width.
 result is a tiny overview version of the page that requires the user to pan and zoom to actually
 read content, like the image on the left.
 
-{% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/1604544745761.jpg", 
+{% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/1604544745761.jpg",
        alt="Screenshots of a page before and after using the viewport meta tag.",
        width="656",
        height="613" %}
@@ -26,7 +26,7 @@ If you want the width of your site to be 100% of the WebView's width, as shown o
 need to set the viewport meta tag:
 
 ```html
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 ```
 
 Setting width to the special value device-width will give you more control over the page layout.
@@ -51,7 +51,7 @@ In addition to doing this, you may want to use the new layout algorithm `TEXT_AU
 in Android 4.4, which increases the font size to make it more readable on a mobile device. See
 [setLayoutAlgorithm][3].
 
-{% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/1604544955630.jpg", 
+{% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/1604544955630.jpg",
        alt="An example of how a page looks before and after text autosizing.",
        width="656",
        height="616" %}
@@ -71,14 +71,14 @@ First, set CSS properties to default to portrait:
 
 ```css
 .page-container {
-    display: -webkit-box;
-    display: flex;
+  display: -webkit-box;
+  display: flex;
 
-    -webkit-box-orient: vertical;
-    flex-direction: column;
+  -webkit-box-orient: vertical;
+  flex-direction: column;
 
-    padding: 20px;
-    box-sizing: border-box;
+  padding: 20px;
+  box-sizing: border-box;
 }
 ```
 
@@ -98,11 +98,10 @@ the orientation:
 }
 ```
 
-{% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/1604545057377.jpg", 
+{% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/1604545057377.jpg",
        alt="A page that has different presentations in landscape and portrait modes.",
        width="656",
        height="488" %}
-       
 
 This technique can be used to change layout based on the width of the screen.
 
@@ -113,7 +112,7 @@ screen size gets larger.
 button {
   display: block;
   width: 100%;
-  ...
+  ...;
 }
 
 @media screen and (min-width: 500px) {
@@ -130,7 +129,7 @@ button {
 }
 ```
 
-{% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/1604545130107.jpg", 
+{% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/1604545130107.jpg",
        alt="Adjusting button size for different screen sizes.",
        width="656",
        height="769" %}
@@ -154,7 +153,7 @@ require less memory and are faster to load, but blur if you scale them up.
 The images below show the blurring that occurs when you scale a low-density image up for a
 high-denity screen, compared with the crisp display of an appropriately-sized image.
 
-{% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/1604545182932.png", 
+{% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/1604545182932.png",
        alt="Low-density and high-density versions of an image.",
        width="656",
        height="320" %}
@@ -212,12 +211,11 @@ query. The `dpi` unit represents dots per CSS inch, while `dppx` represents dots
 Looking at the table below you can see the relation between `dpi` and `dppx`. 1`dppx` is equivalent
 to 96`dpi`, 2`dppx` == 192`dpi` == 2 x 96`dpi`, and so on.
 
-
 | Device pixel ratio | Generalized screen density | Dots per CSS inch (`dpi`) | Dots per CSS pixel (`dppx`) |
 | ------------------ | -------------------------- | ------------------------- | --------------------------- |
-| 1x | MDPI | 96`dpi` | 1`dppx` |
-| 1.5x | HDPI | 144`dpi` | 1.5`dppx` |
-| 2 | XHDPI | 192`dpi` | 2`dppx` |
+| 1x                 | MDPI                       | 96`dpi`                   | 1`dppx`                     |
+| 1.5x               | HDPI                       | 144`dpi`                  | 1.5`dppx`                   |
+| 2                  | XHDPI                      | 192`dpi`                  | 2`dppx`                     |
 
 The generalized screen density buckets are defined by the Android native platform and are used in
 other places to express screen density (for example, [http://screensiz.es][11]).
@@ -237,7 +235,7 @@ rules:
   max-height: 256px;
   max-width: 256px;
 
-  background-image: url('../images/html5_256x256.png');
+  background-image: url("../images/html5_256x256.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -249,19 +247,19 @@ To swap this out for a larger image on devices with device pixel ratio of 1.5 (h
 
 ```css
 @media screen and (min-resolution: 1.5dppx) {
-  .welcome-header > h1{
-      background-image: url('../images/html5_384x384.png');
+  .welcome-header > h1 {
+    background-image: url("../images/html5_384x384.png");
   }
 }
 
 @media screen and (min-resolution: 2dppx) {
-  .welcome-header > h1{
-      background-image: url('../images/html5_512x512.png');
+  .welcome-header > h1 {
+    background-image: url("../images/html5_512x512.png");
   }
 }
 ```
 
-{% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/1604545224766.png", 
+{% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/1604545224766.png",
        alt="Using different images for different device pixel ratios.",
        width="656",
        height="619" %}
@@ -271,17 +269,17 @@ start to account for different form factors.
 
 ```css
 @media screen and (min-resolution: 2dppx) {
-  .welcome-header > h1{
-          background-image: url('../images/html5_512x512.png');
+  .welcome-header > h1 {
+    background-image: url("../images/html5_512x512.png");
   }
 }
 
 @media screen and (min-resolution: 2dppx) and (min-width: 1000px) {
-  .welcome-header > h1{
-          background-image: url('../images/html5_1024x1024.png');
+  .welcome-header > h1 {
+    background-image: url("../images/html5_1024x1024.png");
 
-          max-height: 512px;
-      max-width: 512px;
+    max-height: 512px;
+    max-width: 512px;
   }
 }
 ```
@@ -312,17 +310,17 @@ Then use the pixel ratio to try and pull the most appropriate image:
 
 ```js
 function getDensityDirectoryName() {
-  if(!window.devicePixelRatio) {
-    return 'mdpi';
+  if (!window.devicePixelRatio) {
+    return "mdpi";
   }
 
-  if(window.devicePixelRatio > 1.5) {
-    return 'xhdpi';
-  } else if(window.devicePixelRatio > 1.0) {
-    return 'hdpi';
+  if (window.devicePixelRatio > 1.5) {
+    return "xhdpi";
+  } else if (window.devicePixelRatio > 1.0) {
+    return "hdpi";
   }
 
-  return 'mdpi';
+  return "mdpi";
 }
 ```
 
@@ -330,47 +328,46 @@ The alternative to implementing the above in JS, is to alter the base URL of the
 relative URLs for images.
 
 ```html
-<!doctype html>
+<!DOCTYPE html>
 <html class="no-js">
-<head>
-  <script>
-    function getDensityDirectoryName() {
-      if(!window.devicePixelRatio) {
-          return 'mdpi';
+  <head>
+    <script>
+      function getDensityDirectoryName() {
+        if (!window.devicePixelRatio) {
+          return "mdpi";
+        }
+
+        if (window.devicePixelRatio > 1.5) {
+          return "xhdpi";
+        } else if (window.devicePixelRatio > 1.0) {
+          return "hdpi";
+        }
+
+        return "mdpi";
       }
 
-      if(window.devicePixelRatio > 1.5) {
-          return 'xhdpi';
-      } else if(window.devicePixelRatio > 1.0) {
-          return 'hdpi';
-      }
-
-      return 'mdpi';
-    }
-
-    var baseUrl =
-        'file:///android_asset/www/img-js-diff/ratiores/'+getDensityDirectoryName()+'/';
-    document.write('<base href="'+baseUrl+'">');
-  </script>
+      var baseUrl =
+        "file:///android_asset/www/img-js-diff/ratiores/" +
+        getDensityDirectoryName() +
+        "/";
+      document.write('<base href="' + baseUrl + '">');
+    </script>
 
     ...
-</head>
+  </head>
 
-<body>
+  <body>
     ...
-</body>
+  </body>
 </html>
 ```
 
 The major downsides to this are that it blocks the page load and forces you to use absolute paths
 for scripts, CSS files, links and so on, since the base URL points to a density-specific directory.
 
-[1]:
-  http://developer.android.com/reference/android/webkit/WebSettings.html#setUseWideViewPort(boolean)
-[2]:
-  http://developer.android.com/reference/android/webkit/WebSettings.html#setLoadWithOverviewMode(boolean)
-[3]:
-  http://developer.android.com/reference/android/webkit/WebSettings.html#setLayoutAlgorithm(android.webkit.WebSettings.LayoutAlgorithm)
+[1]: http://developer.android.com/reference/android/webkit/WebSettings.html#setUseWideViewPort(boolean)
+[2]: http://developer.android.com/reference/android/webkit/WebSettings.html#setLoadWithOverviewMode(boolean)
+[3]: http://developer.android.com/reference/android/webkit/WebSettings.html#setLayoutAlgorithm(android.webkit.WebSettings.LayoutAlgorithm)
 [4]: http://www.html5rocks.com/en/mobile/responsivedesign/
 [5]: http://www.html5rocks.com/en/mobile/
 [6]: http://www.html5rocks.com/en/tutorials/speed/css-paint-times/

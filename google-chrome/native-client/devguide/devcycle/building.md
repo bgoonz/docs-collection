@@ -2,44 +2,43 @@
 
 {% include 'partials/nacl-warning.njk' %}
 
-------------------------------------------------------------------------
+---
 
 Table Of Contents
 
--   <a href="#introduction" id="id4" class="reference internal">Introduction</a>
+- <a href="#introduction" id="id4" class="reference internal">Introduction</a>
 
-    -   <a href="#target-architectures" id="id5" class="reference internal">Target architectures</a>
-    -   <a href="#c-libraries" id="id6" class="reference internal">C libraries</a>
-    -   <a href="#c-standard-libraries" id="id7" class="reference internal">C++ standard libraries</a>
-    -   <a href="#sdk-toolchains" id="id8" class="reference internal">SDK toolchains</a>
-    -   <a href="#sdk-toolchains-versus-your-hosted-toolchain" id="id9" class="reference internal">SDK toolchains versus your hosted toolchain</a>
+  - <a href="#target-architectures" id="id5" class="reference internal">Target architectures</a>
+  - <a href="#c-libraries" id="id6" class="reference internal">C libraries</a>
+  - <a href="#c-standard-libraries" id="id7" class="reference internal">C++ standard libraries</a>
+  - <a href="#sdk-toolchains" id="id8" class="reference internal">SDK toolchains</a>
+  - <a href="#sdk-toolchains-versus-your-hosted-toolchain" id="id9" class="reference internal">SDK toolchains versus your hosted toolchain</a>
 
--   <a href="#the-pnacl-toolchain" id="id10" class="reference internal">The PNaCl toolchain</a>
--   <a href="#using-the-pnacl-tools-to-compile-link-debug-and-deploy" id="id11" class="reference internal">Using the PNaCl tools to compile, link, debug, and deploy</a>
+- <a href="#the-pnacl-toolchain" id="id10" class="reference internal">The PNaCl toolchain</a>
+- <a href="#using-the-pnacl-tools-to-compile-link-debug-and-deploy" id="id11" class="reference internal">Using the PNaCl tools to compile, link, debug, and deploy</a>
 
-    -   <a href="#compile" id="id12" class="reference internal">Compile</a>
-    -   <a href="#create-a-static-library" id="id13" class="reference internal">Create a static library</a>
-    -   <a href="#link-the-application" id="id14" class="reference internal">Link the application</a>
-    -   <a href="#finalizing-the-pexe-for-deployment" id="id15" class="reference internal">Finalizing the <strong>pexe</strong> for deployment</a>
-    -   <a href="#compressing-the-pexe-for-deployment" id="id16" class="reference internal">Compressing the <strong>pexe</strong> for deployment</a>
+  - <a href="#compile" id="id12" class="reference internal">Compile</a>
+  - <a href="#create-a-static-library" id="id13" class="reference internal">Create a static library</a>
+  - <a href="#link-the-application" id="id14" class="reference internal">Link the application</a>
+  - <a href="#finalizing-the-pexe-for-deployment" id="id15" class="reference internal">Finalizing the <strong>pexe</strong> for deployment</a>
+  - <a href="#compressing-the-pexe-for-deployment" id="id16" class="reference internal">Compressing the <strong>pexe</strong> for deployment</a>
 
--   <a href="#object-dumping-of-pnacl-bitcode-files" id="id17" class="reference internal">Object dumping of PNaCl bitcode files</a>
--   <a href="#the-gnu-based-toolchains" id="id18" class="reference internal">The GNU-based toolchains</a>
+- <a href="#object-dumping-of-pnacl-bitcode-files" id="id17" class="reference internal">Object dumping of PNaCl bitcode files</a>
+- <a href="#the-gnu-based-toolchains" id="id18" class="reference internal">The GNU-based toolchains</a>
 
-    -   <a href="#compiling" id="id19" class="reference internal">Compiling</a>
-    -   <a href="#creating-libraries-and-linking" id="id20" class="reference internal">Creating libraries and Linking</a>
-    -   <a href="#finalizing-a-nexe-for-deployment" id="id21" class="reference internal">Finalizing a <strong>nexe</strong> for deployment</a>
+  - <a href="#compiling" id="id19" class="reference internal">Compiling</a>
+  - <a href="#creating-libraries-and-linking" id="id20" class="reference internal">Creating libraries and Linking</a>
+  - <a href="#finalizing-a-nexe-for-deployment" id="id21" class="reference internal">Finalizing a <strong>nexe</strong> for deployment</a>
 
--   <a href="#using-make" id="id22" class="reference internal">Using make</a>
--   <a href="#libraries-and-header-files-provided-with-the-sdk" id="id23" class="reference internal">Libraries and header files provided with the SDK</a>
--   <a href="#troubleshooting" id="id24" class="reference internal">Troubleshooting</a>
+- <a href="#using-make" id="id22" class="reference internal">Using make</a>
+- <a href="#libraries-and-header-files-provided-with-the-sdk" id="id23" class="reference internal">Libraries and header files provided with the SDK</a>
+- <a href="#troubleshooting" id="id24" class="reference internal">Troubleshooting</a>
 
-    -   <a href="#undefined-reference-error" id="id25" class="reference internal">“Undefined reference” error</a>
-    -   <a href="#can-t-find-libraries-containing-necessary-symbols" id="id26" class="reference internal">Can’t find libraries containing necessary symbols</a>
-    -   <a href="#pnacl-abi-verification-errors" id="id27" class="reference internal">PNaCl ABI Verification errors</a>
+  - <a href="#undefined-reference-error" id="id25" class="reference internal">“Undefined reference” error</a>
+  - <a href="#can-t-find-libraries-containing-necessary-symbols" id="id26" class="reference internal">Can’t find libraries containing necessary symbols</a>
+  - <a href="#pnacl-abi-verification-errors" id="id27" class="reference internal">PNaCl ABI Verification errors</a>
 
-Introduction
-------------
+## Introduction
 
 This document describes how to build Native Client modules. It is intended for developers who have experience writing, compiling, and linking C and C++ code. If you haven’t read the Native Client <a href="/docs/native-client/overview" class="reference internal"><em>Technical Overview</em></a> and <a href="/docs/native-client/devguide/tutorial/index" class="reference internal"><em>Tutorial</em></a>, we recommend starting with those.
 
@@ -75,12 +74,11 @@ The compilers, linkers, and other tools are located in the `bin/` subdirectory i
 
 To build NaCl modules, you must use one of the Native Client toolchains included in the SDK. The SDK toolchains use a variety of techniques to ensure that your NaCl modules comply with the security constraints of the Native Client sandbox.
 
-During development, you have another choice: You can build modules using a *standard* toolchain, such as the hosted toolchain on your development machine. This can be Visual Studio’s standard compiler, XCode, LLVM, or GNU-based compilers on your development machine. These standard toolchains will not produce executables that comply with the Native Client sandbox security constraints. They are also not portable across operating systems and not portable across different processors. However, using a standard toolchain allows you to develop modules in your favorite IDE and use your favorite debugging and profiling tools. The drawback is that modules compiled in this manner can only run as Pepper (PPAPI) plugins in Chrome. To publish and distribute Native Client modules as part of a web application, you must eventually use a toolchain in the Native Client SDK.
+During development, you have another choice: You can build modules using a _standard_ toolchain, such as the hosted toolchain on your development machine. This can be Visual Studio’s standard compiler, XCode, LLVM, or GNU-based compilers on your development machine. These standard toolchains will not produce executables that comply with the Native Client sandbox security constraints. They are also not portable across operating systems and not portable across different processors. However, using a standard toolchain allows you to develop modules in your favorite IDE and use your favorite debugging and profiling tools. The drawback is that modules compiled in this manner can only run as Pepper (PPAPI) plugins in Chrome. To publish and distribute Native Client modules as part of a web application, you must eventually use a toolchain in the Native Client SDK.
 
 In the future, additional tools will be available to compile Native Client modules written in other programming languages, such as C\#. But this document covers only compiling C and C++ code, using the toolchains provided in the SDK.
 
-The PNaCl toolchain
--------------------
+## The PNaCl toolchain
 
 The PNaCl toolchain contains modified versions of the tools in the LLVM toolchain, as well as linkers and other tools from binutils. To determine which version of LLVM or binutils the tools are based upon, run the tool with the `--version` command line flag. These tools are used to compile and link applications into **.pexe** files. The toolchain also contains a tool to translate a **pexe** file into a architecture-specific **.nexe** (e.g., for debugging purposes).
 
@@ -124,8 +122,7 @@ Translates a **pexe** to a native architecture, outside of the browser
 
 For the full list of tools, see the `pepper_<version>/toolchain/<platform>_pnacl/bin` directory.
 
-Using the PNaCl tools to compile, link, debug, and deploy
----------------------------------------------------------
+## Using the PNaCl tools to compile, link, debug, and deploy
 
 To build an application with the PNaCl SDK toolchain, you must compile your code, link it, test and debug it, and then deploy it. This section goes over some examples of how to use the tools.
 
@@ -183,9 +180,9 @@ The `pnacl-clang++` tool is used to compile applications, but it can also be use
       -o hello_world.pexe hello_world.o -Lnacl_sdk/pepper_<version>/lib/pnacl/Debug \
       -lfoo -lppapi_cpp -lppapi
 
-This links the hello world bitcode with the `foo` library in the example as well as the *Debug* version of the Pepper libraries which are located in `nacl_sdk/pepper_<version>/lib/pnacl/Debug`. If you wish to link against the *Release* version of the Pepper libraries, change the `-Lnacl_sdk/pepper_<version>/lib/pnacl/Debug` to `-Lnacl_sdk/pepper_<version>/lib/pnacl/Release`.
+This links the hello world bitcode with the `foo` library in the example as well as the _Debug_ version of the Pepper libraries which are located in `nacl_sdk/pepper_<version>/lib/pnacl/Debug`. If you wish to link against the _Release_ version of the Pepper libraries, change the `-Lnacl_sdk/pepper_<version>/lib/pnacl/Debug` to `-Lnacl_sdk/pepper_<version>/lib/pnacl/Release`.
 
-In a release build you’ll want to pass `-O2` to the compiler *as well as to the linker* to enable link-time optimizations. This reduces the size and increases the performance of the final **pexe**, and leads to faster downloads and on-device translation.
+In a release build you’ll want to pass `-O2` to the compiler _as well as to the linker_ to enable link-time optimizations. This reduces the size and increases the performance of the final **pexe**, and leads to faster downloads and on-device translation.
 
     nacl_sdk/pepper_<version>/toolchain/win_pnacl/bin/pnacl-clang++ \
       -o hello_world.pexe hello_world.o -Lnacl_sdk/pepper_<version>/lib/pnacl/Release \
@@ -217,8 +214,7 @@ Currently, this tool will compress **pexe** files by about 25%. However, it is s
 
 This compression step doesn’t replace the gzip compression performed web servers configured for HTTP compression: both compressions are complementary. You’ll want to configure your web server to gzip **pexe** files: the gzipped version of a compressed **pexe** file is smaller than the corresponding uncompressed **pexe** file by 7.5% to 10%.
 
-<span id="pnacl-bcdis"></span>Object dumping of PNaCl bitcode files
--------------------------------------------------------------------
+## <span id="pnacl-bcdis"></span>Object dumping of PNaCl bitcode files
 
 Sometimes you may be interesting in the contents of a PNaCl bitcode file. The tool `pnacl-bcdis` object dumps the contents of a PNaCl bitcode file. For a description of the output produced by this tool, see <a href="/docs/native-client/reference/pnacl-bitcode-manual" class="reference internal"><em>Contents Of PNaCl Bitcode Files</em></a>.
 
@@ -227,44 +223,43 @@ Sometimes you may be interesting in the contents of a PNaCl bitcode file. The to
 
 The output is the corresponding contents of the given **pexe**.
 
-The GNU-based toolchains
-------------------------
+## The GNU-based toolchains
 
 Besides the PNaCl toolchain, the Native Client SDK also includes modified versions of the tools in the standard GNU toolchain, including the GCC compilers and the linkers and other tools from binutils. These tools only support building **nexe** files. Run the tool with the `--version` command line flag to determine the current version of the tools.
 
-Each tool in the toolchain is prefixed with the name of the target architecture. In the toolchain for the ARM target architecture, each tool’s name is preceded by the prefix “arm-nacl-”. In the toolchains for the x86 target architecture, there are actually two versions of each tool—one to build Native Client modules for the x86-32 target architecture, and one to build modules for the x86-64 target architecture. “i686-nacl-” is the prefix for tools used to build 32-bit **.nexes**, and “x86\_64-nacl-” is the prefix for tools used to build 64-bit **.nexes**.
+Each tool in the toolchain is prefixed with the name of the target architecture. In the toolchain for the ARM target architecture, each tool’s name is preceded by the prefix “arm-nacl-”. In the toolchains for the x86 target architecture, there are actually two versions of each tool—one to build Native Client modules for the x86-32 target architecture, and one to build modules for the x86-64 target architecture. “i686-nacl-” is the prefix for tools used to build 32-bit **.nexes**, and “x86_64-nacl-” is the prefix for tools used to build 64-bit **.nexes**.
 
 These prefixes conform to gcc naming standards and make it easy to use tools like autoconf. As an example, you can use `i686-nacl-gcc` to compile 32-bit **.nexes**, and `x86_64-nacl-gcc` to compile 64-bit **.nexes**. Note that you can typically override a tool’s default target architecture with command line flags, e.g., you can specify `x86_64-nacl-gcc -m32` to compile a 32-bit **.nexe**.
 
 The GNU-based SDK toolchains include the following tools:
 
--   &lt;prefix&gt;addr2line
--   &lt;prefix&gt;ar
--   &lt;prefix&gt;as
--   &lt;prefix&gt;c++
--   &lt;prefix&gt;c++filt
--   &lt;prefix&gt;cpp
--   &lt;prefix&gt;g++
--   &lt;prefix&gt;gcc
--   &lt;prefix&gt;gcc-4.4.3
--   &lt;prefix&gt;gccbug
--   &lt;prefix&gt;gcov
--   &lt;prefix&gt;gprof
--   &lt;prefix&gt;ld
--   &lt;prefix&gt;nm
--   &lt;prefix&gt;objcopy
--   &lt;prefix&gt;objdump
--   &lt;prefix&gt;ranlib
--   &lt;prefix&gt;readelf
--   &lt;prefix&gt;size
--   &lt;prefix&gt;strings
--   &lt;prefix&gt;strip
+- &lt;prefix&gt;addr2line
+- &lt;prefix&gt;ar
+- &lt;prefix&gt;as
+- &lt;prefix&gt;c++
+- &lt;prefix&gt;c++filt
+- &lt;prefix&gt;cpp
+- &lt;prefix&gt;g++
+- &lt;prefix&gt;gcc
+- &lt;prefix&gt;gcc-4.4.3
+- &lt;prefix&gt;gccbug
+- &lt;prefix&gt;gcov
+- &lt;prefix&gt;gprof
+- &lt;prefix&gt;ld
+- &lt;prefix&gt;nm
+- &lt;prefix&gt;objcopy
+- &lt;prefix&gt;objdump
+- &lt;prefix&gt;ranlib
+- &lt;prefix&gt;readelf
+- &lt;prefix&gt;size
+- &lt;prefix&gt;strings
+- &lt;prefix&gt;strip
 
 ### Compiling
 
 Compiling files with the GNU-based toolchain is similar to compiling files with the PNaCl-based toolchain, except that the output is architecture specific.
 
-For example, assuming you’re developing on a Windows machine, targeting the x86 architecture you can compile a 32-bit **.nexe** for the hello\_world example with the following command:
+For example, assuming you’re developing on a Windows machine, targeting the x86 architecture you can compile a 32-bit **.nexe** for the hello_world example with the following command:
 
     nacl_sdk/pepper_<version>/toolchain/win_x86_glibc/bin/i686-nacl-gcc \
       hello_world.c -Inacl_sdk/pepper_<version>/include \
@@ -283,32 +278,31 @@ Creating libraries and linking with the GNU-based toolchain is similar to doing 
 
 Unlike the PNaCl toolchain, no separate finalization step is required for **nexe** files. The **nexe** files are always in a **stable** format. However, the **nexe** file may contain debug information and symbol information which may make the **nexe** file larger than needed for distribution. To minimize the size of the distributed file, you can run the `<prefix>strip` tool to strip out debug information.
 
-Using make
-----------
+## Using make
 
 This document doesn’t cover how to use `make`, but if you want to use `make` to build your Native Client module, you can base your Makefile on the ones in the SDK examples.
 
 The Makefiles for the SDK examples build most of the examples in multiple configurations (using PNaCl vs NaCl, using different C libraries, targeting different architectures, and using different levels of optimization). To select a specific toolchain, set the **environment variable** `TOOLCHAIN` to either `pnacl`, `clang-newlib`, `glibc`, or `host`. To select a specific level of optimization set the **environment variable** `CONFIG` to either `Debug`, or `Release`. Running `make` in each example’s directory does **one** of the following, depending on the setting of the environment variables.
 
--   If `TOOLCHAIN=pnacl` creates a subdirectory called `pnacl`;
+- If `TOOLCHAIN=pnacl` creates a subdirectory called `pnacl`;
 
-    -   builds a **.pexe** (architecture-independent Native Client executable) using the newlib library
-    -   generates a Native Client manifest (.nmf) file for the pnacl version of the example
+  - builds a **.pexe** (architecture-independent Native Client executable) using the newlib library
+  - generates a Native Client manifest (.nmf) file for the pnacl version of the example
 
--   If `TOOLCHAIN=clang-newlib` creates a subdirectory called `clang-newlib`;
+- If `TOOLCHAIN=clang-newlib` creates a subdirectory called `clang-newlib`;
 
-    -   builds **.nexes** for the x86-32, x86-64, and ARM architectures using the nacl-clang toolchain and the newlib C library
-    -   generates a Native Client manifest (.nmf) file for the clang-newlib version of the example
+  - builds **.nexes** for the x86-32, x86-64, and ARM architectures using the nacl-clang toolchain and the newlib C library
+  - generates a Native Client manifest (.nmf) file for the clang-newlib version of the example
 
--   If `TOOLCHAIN=glibc` creates a subdirectory called `glibc`;
+- If `TOOLCHAIN=glibc` creates a subdirectory called `glibc`;
 
-    -   builds **.nexes** for the x86-32, x86-64 and ARM architectures using the glibc library
-    -   generates a Native Client manifest (.nmf) file for the glibc version of the example
+  - builds **.nexes** for the x86-32, x86-64 and ARM architectures using the glibc library
+  - generates a Native Client manifest (.nmf) file for the glibc version of the example
 
--   If `TOOLCHAIN=host` creates a subdirectory called `windows`, `linux`, or `mac` (depending on your development machine);
+- If `TOOLCHAIN=host` creates a subdirectory called `windows`, `linux`, or `mac` (depending on your development machine);
 
-    -   builds a Pepper plugin (.dll for Windows, .so for Linux/Mac) using the hosted toolchain on your development machine
-    -   generates a Native Client manifest (.nmf) file for the host Pepper plugin version of the example
+  - builds a Pepper plugin (.dll for Windows, .so for Linux/Mac) using the hosted toolchain on your development machine
+  - generates a Native Client manifest (.nmf) file for the host Pepper plugin version of the example
 
 The glibc library is not yet available for the ARM and PNaCl toolchains.
 
@@ -322,23 +316,22 @@ Your Makefile can be simpler since you will not likely want to build so many dif
 
 For details on how to use make, see the <a href="http://www.gnu.org/software/make/manual/make.html" class="reference external">GNU ‘make’ Manual</a>.
 
-Libraries and header files provided with the SDK
-------------------------------------------------
+## Libraries and header files provided with the SDK
 
 The Native Client SDK includes modified versions of standard toolchain-support libraries, such as libpthread and libc, plus the relevant header files. The standard libraries are located under the `/pepper_<version>` directory in the following locations:
 
--   PNaCl toolchain: `toolchain/<platform>_pnacl/usr/lib`
--   x86 toolchains: `toolchain/<platform>_x86_<c_library>/x86_64-nacl/lib32` and `/lib64` (for the 32-bit and 64-bit target architectures, respectively)
--   ARM toolchain: `toolchain/<platform>_arm_<c_library>/arm-nacl/lib`
+- PNaCl toolchain: `toolchain/<platform>_pnacl/usr/lib`
+- x86 toolchains: `toolchain/<platform>_x86_<c_library>/x86_64-nacl/lib32` and `/lib64` (for the 32-bit and 64-bit target architectures, respectively)
+- ARM toolchain: `toolchain/<platform>_arm_<c_library>/arm-nacl/lib`
 
 For example, on Windows, the libraries for the x86-64 architecture in the glibc toolchain are in `toolchain/win_x86_glibc/x86_64-nacl/lib64`.
 
 The header files are in:
 
--   PNaCl toolchain: `toolchain/<platform>_pnacl/le32-nacl/include`
--   clang newlib toolchains: `toolchain/<platform>_pnacl/<arch>-nacl/include`
--   x86 glibc toolchain: `toolchain/<platform>_x86_glibc/x86_64-nacl/include`
--   ARM glibc toolchain: `toolchain/<platform>_arm_glibc/arm-nacl/include`
+- PNaCl toolchain: `toolchain/<platform>_pnacl/le32-nacl/include`
+- clang newlib toolchains: `toolchain/<platform>_pnacl/<arch>-nacl/include`
+- x86 glibc toolchain: `toolchain/<platform>_x86_glibc/x86_64-nacl/include`
+- ARM glibc toolchain: `toolchain/<platform>_arm_glibc/arm-nacl/include`
 
 Many other libraries have been ported for use with Native Client; for more information, see the <a href="https://chromium.googlesource.com/webports" class="reference external">webports</a> project. If you port an open-source library for your own use, we recommend adding it to webports.
 
@@ -347,23 +340,22 @@ Besides the standard libraries, the SDK includes Pepper libraries. The PNaCl Pep
 libppapi.a  
 Implements the Pepper (PPAPI) C interface. Needed for all applications that use Pepper (even C++ applications).
 
-libppapi\_cpp.a  
+libppapi_cpp.a  
 Implements the Pepper (PPAPI) C++ interface. Needed by C++ applications that use Pepper.
 
-libppapi\_gles2.a  
+libppapi_gles2.a  
 Implements the Pepper (PPAPI) GLES interface. Needed by applications that use the 3D graphics API.
 
-libnacl\_io.a  
-Provides a POSIX layer for NaCl. In particular, the library provides a virtual file system and support for sockets. The virtual file system allows a module to “mount” a given directory tree. Once a module has mounted a file system, it can use standard C library file operations: `fopen`, `fread`, `fwrite`, `fseek`, and `fclose`. For more detail, see the header `include/nacl_io/nacl_io.h`. For an example of how to use nacl\_io, see `examples/demo/nacl_io_demo`.
+libnacl_io.a  
+Provides a POSIX layer for NaCl. In particular, the library provides a virtual file system and support for sockets. The virtual file system allows a module to “mount” a given directory tree. Once a module has mounted a file system, it can use standard C library file operations: `fopen`, `fread`, `fwrite`, `fseek`, and `fclose`. For more detail, see the header `include/nacl_io/nacl_io.h`. For an example of how to use nacl_io, see `examples/demo/nacl_io_demo`.
 
-libppapi\_simple.a  
-Provides a familiar C programming environment by letting a module have a simple `main()` entry point. The entry point is similar to the standard C `main()` function, complete with `argc` and `argv[]` parameters. For details see `include/ppapi_simple/ps.h`. For an example of how to use ppapi\_simple, `see examples/tutorial/using_ppapi_simple`.
+libppapi_simple.a  
+Provides a familiar C programming environment by letting a module have a simple `main()` entry point. The entry point is similar to the standard C `main()` function, complete with `argc` and `argv[]` parameters. For details see `include/ppapi_simple/ps.h`. For an example of how to use ppapi_simple, `see examples/tutorial/using_ppapi_simple`.
 
--   Since the Native Client toolchains use their own library and header search paths, the tools won’t find third-party libraries you use in your non-Native-Client development. If you want to use a specific third-party library for Native Client development, look for it in <a href="https://chromium.googlesource.com/webports" class="reference external">webports</a>, or port the library yourself.
--   The order in which you list libraries in your build commands is important, since the linker searches and processes libraries in the order in which they are specified. See the `\*_LDFLAGS` variables in the Makefiles of the SDK examples for the order in which specific libraries should be listed.
+- Since the Native Client toolchains use their own library and header search paths, the tools won’t find third-party libraries you use in your non-Native-Client development. If you want to use a specific third-party library for Native Client development, look for it in <a href="https://chromium.googlesource.com/webports" class="reference external">webports</a>, or port the library yourself.
+- The order in which you list libraries in your build commands is important, since the linker searches and processes libraries in the order in which they are specified. See the `\*_LDFLAGS` variables in the Makefiles of the SDK examples for the order in which specific libraries should be listed.
 
-Troubleshooting
----------------
+## Troubleshooting
 
 Some common problems, and how to fix them:
 
@@ -377,7 +369,7 @@ One common type of “undefined reference” error is with respect to certain sy
 2.  Find and remove use of the unsupported system calls.
 3.  Create your own implementation of the unsupported system calls to do something useful for your application.
 
-If your code uses mkdir or other file system calls, you might find the <a href="#devcycle-building-nacl-io" class="reference internal"><em>nacl_io</em></a> library useful. The nacl\_io library essentially does option (3) for you: It lets your code use POSIX-like file system calls, and implements the calls using various technologies (e.g., HTML5 file system, read-only filesystems that use URL loaders, or an in-memory filesystem).
+If your code uses mkdir or other file system calls, you might find the <a href="#devcycle-building-nacl-io" class="reference internal"><em>nacl_io</em></a> library useful. The nacl_io library essentially does option (3) for you: It lets your code use POSIX-like file system calls, and implements the calls using various technologies (e.g., HTML5 file system, read-only filesystems that use URL loaders, or an in-memory filesystem).
 
 ### Can’t find libraries containing necessary symbols
 

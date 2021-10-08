@@ -20,7 +20,7 @@ build.
 [Yeoman][2] is a tool which helps create web applications, generating boilerplate, bringing in
 libraries from [Bower][3] and [npm][4], and creating a Grunt file with predefined tasks.
 
-{% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/1604541751329.png", 
+{% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/1604541751329.png",
        alt="The Yeoman, Grunt, and Bower logos.",
        width="656",
        height="264" %}
@@ -253,7 +253,7 @@ Files** (on the top bar next to the **Run** button).
 Then view the **Build Variants** which are in the bottom left corner of Android Studio and
 essentially shows you what versions of your app you can build.
 
-{% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/1604541989518.png", 
+{% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/1604541989518.png",
        alt="LiveserverDebug",
        width="656",
        height="540" %}

@@ -95,7 +95,7 @@ The following example uses `$$()` to create an array of all `<img>` elements in 
 and displays the value of each element's `src` property:
 
 ```js
-let images = $$('img');
+let images = $$("img");
 for (let each of images) {
   console.log(each.src);
 }
@@ -110,7 +110,7 @@ This modified version of the previous example uses `$$()` to create an array of 
 that appear in the current document after the selected Node:
 
 ```js
-let images = $$('img', document.querySelector('.devsite-header-background'));
+let images = $$("img", document.querySelector(".devsite-header-background"));
 for (let each of images) {
   console.log(each.src);
 }
@@ -132,7 +132,7 @@ a new line without executing the script.
 For example, the following returns all the `<p>` elements on the page:
 
 ```js
-$x("//p")
+$x("//p");
 ```
 
 {% Img src="image/admin/8fIwlT9ZWd9109E9jyRb.png", alt="Example of using an XPath selector", width="800", height="282" %}
@@ -140,7 +140,7 @@ $x("//p")
 The following example returns all the `<p>` elements that contain `<a>` elements:
 
 ```js
-$x("//p[a]")
+$x("//p[a]");
 ```
 
 {% Img src="image/admin/qvqloRRfS4IU1WhDsJkP.png", alt="Example of using a more complicated XPath selector", width="800", height="251" %}
@@ -251,7 +251,7 @@ object. To get the associated values of the same properties, use `values()`.
 For example, suppose your application defined the following object:
 
 ```js
-let player1 = { "name": "Ted", "level": 42 };
+let player1 = { name: "Ted", level: 42 };
 ```
 
 Assuming `player1` was defined in the global namespace (for simplicity), typing `keys(player1)` and
@@ -292,7 +292,7 @@ monitorEvents(window, "resize");
 The following defines an array to monitor both "resize" and "scroll" events on the window object:
 
 ```js
-monitorEvents(window, ["resize", "scroll"])
+monitorEvents(window, ["resize", "scroll"]);
 ```
 
 You can also specify one of the available event "types", strings that map to predefined sets of
@@ -320,22 +320,22 @@ Execution][7].)
 To start profiling:
 
 ```js
-profile("My profile")
+profile("My profile");
 ```
 
 To stop profiling and display the results in the Profiles panel:
 
 ```js
-profileEnd("My profile")
+profileEnd("My profile");
 ```
 
 Profiles can also be nested. For example, this will work in any order:
 
 ```js
-profile('A');
-profile('B');
-profileEnd('A');
-profileEnd('B');
+profile("A");
+profile("B");
+profileEnd("A");
+profileEnd("B");
 ```
 
 Result in the profiles panel:

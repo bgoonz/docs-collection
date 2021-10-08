@@ -57,18 +57,17 @@ listeners, as below, will not allow them to be invoked because they are not regi
 synchronously.
 
 ```js
-chrome.storage.local.get('runtimeEvents', function (events) {
-  for (let event of events)
-    chrome.runtime[event].addListener(listener);
+chrome.storage.local.get("runtimeEvents", function (events) {
+  for (let event of events) chrome.runtime[event].addListener(listener);
 });
 ```
 
 Instead, keep listeners at top-level and unnested.
 
 ```js
-chrome.runtime.onStartup.addListener(function() {
+chrome.runtime.onStartup.addListener(function () {
   // run startup function
-})
+});
 ```
 
 ## Record state changes in storage {: #storage }
@@ -77,13 +76,13 @@ Use the [storage API][3] to set and return states and values. Use `local.set` to
 machine.
 
 ```js
-  chrome.storage.local.set({ variable: variableInformation });
+chrome.storage.local.set({ variable: variableInformation });
 ```
 
 Use `local.get` to grab the value of that variable.
 
 ```js
-chrome.storage.local.get(['variable'], function(result) {
+chrome.storage.local.get(["variable"], function (result) {
   let awesomeVariable = result.variable;
   // Do something with awesomeVariable
 });
@@ -95,23 +94,23 @@ DOM-based timers, such as `window.setTimeout()` or `window.setInterval()`, are n
 non-persistent background scripts if they trigger when the event page is dormant.
 
 ```js
-let timeout = 1000 * 60 * 3;  // 3 minutes in milliseconds
-window.setTimeout(function() {
-  alert('Hello, world!');
+let timeout = 1000 * 60 * 3; // 3 minutes in milliseconds
+window.setTimeout(function () {
+  alert("Hello, world!");
 }, timeout);
 ```
 
 Instead, use the [alarms API][4].
 
 ```js
-chrome.alarms.create({delayInMinutes: 3.0})
+chrome.alarms.create({ delayInMinutes: 3.0 });
 ```
 
 Then add a listener.
 
 ```js
-chrome.alarms.onAlarm.addListener(function() {
-  alert("Hello, world!")
+chrome.alarms.onAlarm.addListener(function () {
+  alert("Hello, world!");
 });
 ```
 
@@ -123,12 +122,12 @@ returning it.
 
 ```js
 function backgroundFunction() {
-  alert('Background, reporting for duty!')
+  alert("Background, reporting for duty!");
 }
 ```
 
 ```js
-document.getElementById('target').addEventListener('click', function(){
+document.getElementById("target").addEventListener("click", function () {
   chrome.extension.getBackgroundPage().backgroundFunction();
 });
 ```
@@ -138,10 +137,10 @@ non-persistent script. The newer method includes a callback function to ensure t
 has loaded.
 
 ```js
-document.getElementById('target').addEventListener('click', function() {
-  chrome.runtime.getBackgroundPage(function(backgroundPage){
-    backgroundPage.backgroundFunction()
-  })
+document.getElementById("target").addEventListener("click", function () {
+  chrome.runtime.getBackgroundPage(function (backgroundPage) {
+    backgroundPage.backgroundFunction();
+  });
 });
 ```
 

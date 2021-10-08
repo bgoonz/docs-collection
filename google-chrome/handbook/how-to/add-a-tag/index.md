@@ -1,14 +1,14 @@
 ---
-layout: 'layouts/doc-post.njk'
+layout: "layouts/doc-post.njk"
 title: Add a tag
-description: 'Add a new tag.'
+description: "Add a new tag."
 date: 2021-01-11
 ---
 
 ## Add the tag to the list of supported tags
 
 - Add your tag to `site/_data/i18n/tags.yml`. The `en` and `es` fields correspond
-to different languages. For now, just add your tag using the `en` field.
+  to different languages. For now, just add your tag using the `en` field.
 
 ```yaml
 news:

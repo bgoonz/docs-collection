@@ -1,13 +1,13 @@
 ---
 # Required
-layout: 'layouts/doc-post.njk'
+layout: "layouts/doc-post.njk"
 
 # Required
 title: My first doc
 
 # Required
 # This appears in the ToC of the project landing page at
-# /docs/[project-name]/. It also appears in the <meta description> used in 
+# /docs/[project-name]/. It also appears in the <meta description> used in
 # Google Search.
 description: >
   A brief, high level summary of this doc.

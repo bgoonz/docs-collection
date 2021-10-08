@@ -5,8 +5,7 @@ authors:
   - kaycebasques
 date: 2019-04-18
 #updated: YYYY-MM-DD
-description:
-  "The main uses of the Chrome DevTools Console are logging messages and running JavaScript."
+description: "The main uses of the Chrome DevTools Console are logging messages and running JavaScript."
 ---
 
 This page explains how the Chrome DevTools Console makes it easier to develop web pages. The Console
@@ -21,39 +20,46 @@ that it's supposed to log the message to the Console. For example, suppose that 
 process of writing the HTML and JavaScript for a page:
 
 ```html
-<!doctype html>
+<!DOCTYPE html>
 <html>
-  <head>
-    <title>Console Demo</title>
-  </head>
-  <body>
-    <h1>Hello, World!</h1>
-    <script>
-      console.log('Loading!');
-      const h1 = document.querySelector('h1');
-      console.log(h1.textContent);
-      console.assert(document.querySelector('h2'), 'h2 not found!');
-      const artists = [
-        {
-          first: 'René',
-          last: 'Magritte'
-        },
-        {
-          first: 'Chaim',
-          last: 'Soutine'
-        },
-        {
-          first: 'Henri',
-          last: 'Matisse'
-        }
-      ];
-      console.table(artists);
-      setTimeout(() => {
-        h1.textContent = 'Hello, Console!';
-        console.log(h1.textContent);
-      }, 3000);
-    </script>
-  </body>
+   
+  <head>
+       
+    <title>Console Demo</title>
+     
+  </head>
+   
+  <body>
+       
+    <h1>Hello, World!</h1>
+       
+    <script>
+      console.log("Loading!");
+      const h1 = document.querySelector("h1");
+      console.log(h1.textContent);
+      console.assert(document.querySelector("h2"), "h2 not found!");
+      const artists = [
+        {
+          first: "René",
+          last: "Magritte",
+        },
+        {
+          first: "Chaim",
+          last: "Soutine",
+        },
+        {
+          first: "Henri",
+          last: "Matisse",
+        },
+      ];
+      console.table(artists);
+      setTimeout(() => {
+        h1.textContent = "Hello, Console!";
+        console.log(h1.textContent);
+      }, 3000);
+    </script>
+     
+  </body>
 </html>
 ```
 

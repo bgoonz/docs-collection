@@ -96,16 +96,16 @@ In its [background.js][16] script, Drive Uploader opens a 500x600px window to th
 specifies a minimum height and width for the window so the content doesn't become too crunched:
 
 ```js
-chrome.app.runtime.onLaunched.addListener(function(launchData) {
-  chrome.app.window.create('../main.html', {
+chrome.app.runtime.onLaunched.addListener(function (launchData) {
+  chrome.app.window.create("../main.html", {
     id: "GDriveExample",
     bounds: {
       width: 500,
-      height: 600
+      height: 600,
     },
     minWidth: 500,
     minHeight: 600,
-    frame: 'none'
+    frame: "none",
   });
 });
 ```
@@ -125,17 +125,17 @@ the custom close button is hidden until the user interacts with this the area:
 
 ```html
 <style>
-nav:hover #close-button {
-  opacity: 1;
-}
+  nav:hover #close-button {
+    opacity: 1;
+  }
 
-#close-button {
-  float: right;
-  padding: 0 5px 2px 5px;
-  font-weight: bold;
-  opacity: 0;
-  transition: all 0.3s ease-in-out;
-}
+  #close-button {
+    float: right;
+    padding: 0 5px 2px 5px;
+    font-weight: bold;
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
+  }
 </style>
 ```
 
@@ -163,8 +163,9 @@ The Angular bits are highlighted in bold:
 ```html
 <ul>
   <li data-ng-repeat="doc in docs">
-    <img data-ng-src="{{doc.icon}}"> <a href="{{doc.alternateLink}}">{{doc.title}}</a>
-{{doc.size}}
+    <img data-ng-src="{{doc.icon}}" />
+    <a href="{{doc.alternateLink}}">{{doc.title}}</a>
+    {{doc.size}}
     <span class="date">{{doc.updatedDate}}</span>
   </li>
 </ul>
@@ -183,18 +184,20 @@ contains a file icon, link to open the file on the web, and last updatedDate.
 
 Next, we need to tell Angular which controller will oversee this template's rendering. For that, we
 use the [ngController][20] directive to tell the `DocsController` to have reign over the template
+
 <body>:
 
 ```html
 <body data-ng-controller="DocsController">
-<section id="main">
-  <ul>
-    <li data-ng-repeat="doc in docs">
-      <img data-ng-src="{{doc.icon}}"> <a href="{{doc.alternateLink}}">{{doc.title}}</a> {{doc.size}}
-      <span class="date">{{doc.updatedDate}}</span>
-    </li>
-  </ul>
-</section>
+  <section id="main">
+    <ul>
+      <li data-ng-repeat="doc in docs">
+        <img data-ng-src="{{doc.icon}}" />
+        <a href="{{doc.alternateLink}}">{{doc.title}}</a> {{doc.size}}
+        <span class="date">{{doc.updatedDate}}</span>
+      </li>
+    </ul>
+  </section>
 </body>
 ```
 
@@ -205,7 +208,7 @@ The last step is to make Angular light up our templates. The typical way to do t
 [ngApp][21] directive all the way up on <html>:
 
 ```html
-<html data-ng-app="gDriveApp">
+<html data-ng-app="gDriveApp"></html>
 ```
 
 You could also scope the app down to a smaller portion of the page if you wanted to. We only have
@@ -216,25 +219,28 @@ The final product for `main.html` looks something like this:
 
 ```html
 <html data-ng-app="gDriveApp">
-<head>
-  …
+  <head>
+    …
 
-  <base target="_blank">
-</head>
-<body data-ng-controller="DocsController">
-<section id="main">
-  <nav>
-    <h2>Google Drive Uploader</h2>
-    <button class="btn" data-ng-click="fetchDocs()">Refresh</button>
-    <button class="btn" id="close-button" title="Close"></button>
-  </nav>
-  <ul>
-    <li data-ng-repeat="doc in docs">
-      <img data-ng-src="{{doc.icon}}"> <a href="{{doc.alternateLink}}">{{doc.title}}</a>  {{doc.size}}
-      <span class="date">{{doc.updatedDate}}</span>
-    </li>
-  </ul>
-</section>
+    <base target="_blank" />
+  </head>
+  <body data-ng-controller="DocsController">
+    <section id="main">
+      <nav>
+        <h2>Google Drive Uploader</h2>
+        <button class="btn" data-ng-click="fetchDocs()">Refresh</button>
+        <button class="btn" id="close-button" title="Close"></button>
+      </nav>
+      <ul>
+        <li data-ng-repeat="doc in docs">
+          <img data-ng-src="{{doc.icon}}" />
+          <a href="{{doc.alternateLink}}">{{doc.title}}</a> {{doc.size}}
+          <span class="date">{{doc.updatedDate}}</span>
+        </li>
+      </ul>
+    </section>
+  </body>
+</html>
 ```
 
 ### A word on Content Security Policy {: #csp }
@@ -247,7 +253,7 @@ Angular to run in a "content security mode". This is done by including the [ngCs
 alongside [ngApp][25]:
 
 ```html
-<html data-ng-app data-ng-csp>
+<html data-ng-app data-ng-csp></html>
 ```
 
 ### Handling authorization {: #authorization }
@@ -260,15 +266,18 @@ For that, we've created a method to wrap the call to `chrome.identity.getAuthTok
 `accessToken`, which we can reuse for future calls to the Drive API.
 
 ```js
-GDocs.prototype.auth = function(opt_callback) {
+GDocs.prototype.auth = function (opt_callback) {
   try {
-    chrome.identity.getAuthToken({interactive: false}, function(token) {
-      if (token) {
-        this.accessToken = token;
-        opt_callback && opt_callback();
-      }
-    }.bind(this));
-  } catch(e) {
+    chrome.identity.getAuthToken(
+      { interactive: false },
+      function (token) {
+        if (token) {
+          this.accessToken = token;
+          opt_callback && opt_callback();
+        }
+      }.bind(this)
+    );
+  } catch (e) {
     console.log(e);
   }
 };
@@ -328,23 +337,25 @@ It's time to define the main controller method, `fetchDocs()`. It's the workhors
 responsible for requesting the user's files and filing the docs array with data from API responses.
 
 ```js
-$scope.fetchDocs = function() {
+$scope.fetchDocs = function () {
   $scope.docs = []; // First, clear out any old results
 
   // Response handler that doesn't cache file icons.
-  var successCallback = function(resp, status, headers, config) {
+  var successCallback = function (resp, status, headers, config) {
     var docs = [];
     var totalEntries = resp.feed.entry.length;
 
-    resp.feed.entry.forEach(function(entry, i) {
+    resp.feed.entry.forEach(function (entry, i) {
       var doc = {
         title: entry.title.$t,
         updatedDate: Util.formatDate(entry.updated.$t),
         updatedDateFull: entry.updated.$t,
-        icon: gdocs.getLink(entry.link,
-                            'http://schemas.google.com/docs/2007#icon').href,
-        alternateLink: gdocs.getLink(entry.link, 'alternate').href,
-        size: entry.docs$size ? '( ' + entry.docs$size.$t + ' bytes)' : null
+        icon: gdocs.getLink(
+          entry.link,
+          "http://schemas.google.com/docs/2007#icon"
+        ).href,
+        alternateLink: gdocs.getLink(entry.link, "alternate").href,
+        size: entry.docs$size ? "( " + entry.docs$size.$t + " bytes)" : null,
       };
 
       $scope.docs.push(doc);
@@ -357,11 +368,11 @@ $scope.fetchDocs = function() {
   };
 
   var config = {
-    params: {'alt': 'json'},
+    params: { alt: "json" },
     headers: {
-      'Authorization': 'Bearer ' + gdocs.accessToken,
-      'GData-Version': '3.0'
-    }
+      Authorization: "Bearer " + gdocs.accessToken,
+      "GData-Version": "3.0",
+    },
   };
 
   $http.get(gdocs.DOCLIST_FEED, config).success(successCallback);
@@ -532,13 +543,13 @@ to Google Drive.
 Simply adding this to the gdocs service does the job:
 
 ```js
-gDriveApp.factory('gdocs', function() {
+gDriveApp.factory("gdocs", function () {
   var gdocs = new GDocs();
 
-  var dnd = new DnDFileController('body', function(files) {
+  var dnd = new DnDFileController("body", function (files) {
     var $scope = angular.element(this).scope();
-    Util.toArray(files).forEach(function(file, i) {
-      gdocs.upload(file, function() {
+    Util.toArray(files).forEach(function (file, i) {
+      gdocs.upload(file, function () {
         $scope.fetchDocs();
       });
     });

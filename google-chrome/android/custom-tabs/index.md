@@ -35,7 +35,7 @@ content for faster loading.
 
 {% Img src="image/Vww75TFpThOgTNuASFM6UYfBAp53/mExXXCgjE1Hm0VDxskRw.gif", alt="Perfomance comparison between opening a browser, the WebView and Custom Tabs.", width="640", height="360" %}
 
-You can test this now with our [sample][1] on GitHub. 
+You can test this now with our [sample][1] on GitHub.
 
 ## When should I use Custom Tabs vs WebView?
 
@@ -45,34 +45,34 @@ that you use Custom Tabs for these reasons:
 
 - Support for the same web platform features and capabilities as the browsers.
 - Simple to implement. No need to build code to manage requests, permission
-	grants or cookie stores.
+  grants or cookie stores.
 - UI customization:
   - Toolbar color
-	- Action button
-	- Custom menu items
-	- Custom in/out animations
-	- Bottom toolbar
+  - Action button
+  - Custom menu items
+  - Custom in/out animations
+  - Bottom toolbar
 - Navigation awareness: the browser delivers a callback to the application upon
-an external navigation.
+  an external navigation.
 - Security: the browser uses Google's Safe Browsing to protect the user and the device from
-dangerous sites.
+  dangerous sites.
 - Performance optimization:
-	- Pre-warming of the Browser in the background, while avoiding stealing
-	resources from the application.
-	- Providing a likely URL in advance to the browser, which may perform
-	speculative work, speeding up page load time.
+  - Pre-warming of the Browser in the background, while avoiding stealing
+    resources from the application.
+  - Providing a likely URL in advance to the browser, which may perform
+    speculative work, speeding up page load time.
 - Lifecycle management: the browser prevents the application from being evicted
-	by the system while on top of it, by raising its importance to the
-	"foreground" level.
+  by the system while on top of it, by raising its importance to the
+  "foreground" level.
 - Shared cookie jar and permissions model so users don't have to sign-in to sites
-	they are already connected to, or re-grant permissions they have already
-	granted.
+  they are already connected to, or re-grant permissions they have already
+  granted.
 - If the user has turned on Data Saver, they will still benefit from it.
 - Synchronized AutoComplete across devices for better form completion.
 - Simple customization model.
 - Quickly return to app with a single tap.
 - You want to use the latest browser implementations on devices pre-Lollipop
-(auto updating WebView) instead of older WebViews.
+  (auto updating WebView) instead of older WebViews.
 
 ## When should I use Custom Tabs vs Trusted Web Activity
 
@@ -93,7 +93,7 @@ issues on [crbug.com][3] and ask questions to our Twitter account
 
 ## Getting Started
 
-If you are getting started with Custom Tabs, checkout the [Implementation Guide][11] and the 
+If you are getting started with Custom Tabs, checkout the [Implementation Guide][11] and the
 [GitHub Demo][1].
 
 For questions, check the [chrome-custom-tabs][5] tag on StackOverflow.

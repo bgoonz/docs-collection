@@ -1,64 +1,60 @@
----json {"title":"The nacl\_io Library"} ---
+---json {"title":"The nacl_io Library"} ---
 
 {% include 'partials/nacl-warning.njk' %}
 
-------------------------------------------------------------------------
+---
 
--   <a href="#introduction" id="id1" class="reference internal">Introduction</a>
--   <a href="#using-nacl-io" id="id2" class="reference internal">Using nacl_io</a>
--   <a href="#logging-in-nacl-io" id="id3" class="reference internal">Logging in nacl_io</a>
--   <a href="#the-nacl-io-demo" id="id4" class="reference internal">The nacl_io demo</a>
+- <a href="#introduction" id="id1" class="reference internal">Introduction</a>
+- <a href="#using-nacl-io" id="id2" class="reference internal">Using nacl_io</a>
+- <a href="#logging-in-nacl-io" id="id3" class="reference internal">Logging in nacl_io</a>
+- <a href="#the-nacl-io-demo" id="id4" class="reference internal">The nacl_io demo</a>
 
-    -   <a href="#building-and-running-the-demo" id="id5" class="reference internal">Building and running the demo</a>
-    -   <a href="#a-look-at-the-code" id="id6" class="reference internal">A look at the code</a>
+  - <a href="#building-and-running-the-demo" id="id5" class="reference internal">Building and running the demo</a>
+  - <a href="#a-look-at-the-code" id="id6" class="reference internal">A look at the code</a>
 
--   <a href="#reference-information" id="id7" class="reference internal">Reference Information</a>
+- <a href="#reference-information" id="id7" class="reference internal">Reference Information</a>
 
-Introduction
-------------
+## Introduction
 
 `nacl_io` is a utility library that provides implementations of standard C APIs such as POSIX I/O (`stdio.h`) and BSD sockets (`sys/socket.h`). Its primary function is to allow code that uses these standard APIs to be compiled and used in a Native Client module. The library is included as part of Native Client SDK and is implemented in on top of Pepper API.
 
-Since Native Client modules cannot access the host machine’s file system directly, nacl\_io provides several alternative filesystem types which can be used by the application. For example, the Chrome browser supports the <a href="http://www.html5rocks.com/en/tutorials/file/filesystem/" class="reference external">HTML5 File System API</a> which provides access to a protected area of the local file system. This filesystem can be accessed by an HTML page using JavaScript commands, and also by a Native Client module using the Pepper <a href="/docs/native-client/devguide/coding/file-io" class="reference internal"><em>File IO API</em></a>.
+Since Native Client modules cannot access the host machine’s file system directly, nacl_io provides several alternative filesystem types which can be used by the application. For example, the Chrome browser supports the <a href="http://www.html5rocks.com/en/tutorials/file/filesystem/" class="reference external">HTML5 File System API</a> which provides access to a protected area of the local file system. This filesystem can be accessed by an HTML page using JavaScript commands, and also by a Native Client module using the Pepper <a href="/docs/native-client/devguide/coding/file-io" class="reference internal"><em>File IO API</em></a>.
 
-With nacl\_io a Native Client application can mount an HTML5 filesystem and access it via standard POSIX I/O function such as `fopen`, `fseek`, `fread`, `fwrite`, and `fclose`, or their low level UNIX counterparts `open`, `lseek`, `read`, `write` and `close`. As well as the HTML5 file system, nacl\_io provides several other file system types which are described in the table below:
+With nacl_io a Native Client application can mount an HTML5 filesystem and access it via standard POSIX I/O function such as `fopen`, `fseek`, `fread`, `fwrite`, and `fclose`, or their low level UNIX counterparts `open`, `lseek`, `read`, `write` and `close`. As well as the HTML5 file system, nacl_io provides several other file system types which are described in the table below:
 
 <table><thead><tr class="header"><th>File System</th><th>Description</th></tr></thead><tbody><tr class="odd"><td>memfs</td><td>An in-memory file system</td></tr><tr class="even"><td>html5fs</td><td>An HTML5 local file system, which can be persistent or temporary</td></tr><tr class="odd"><td>http</td><td>Maps files on a remote webserver into the local filesystem.</td></tr><tr class="even"><td>dev</td><td>A file system containing special files (e.g.: <code>/dev/null</code>)</td></tr></tbody></table>
 
-Using nacl\_io
---------------
+## Using nacl_io
 
-Using nacl\_io is mostly just a matter of using the standard POSIX C library functions. However, there are some steps required to initialize the library and setup the filesystem mounts. In general the following steps will be needed to use nacl\_io in a NaCl application:
+Using nacl_io is mostly just a matter of using the standard POSIX C library functions. However, there are some steps required to initialize the library and setup the filesystem mounts. In general the following steps will be needed to use nacl_io in a NaCl application:
 
-1.  Link the application with the nacl\_io library (`-lnacl_io`)
-2.  Initialize nacl\_io at startup using the `nacl_io_init_ppapi` or `nacl_io_init` functions.
+1.  Link the application with the nacl_io library (`-lnacl_io`)
+2.  Initialize nacl_io at startup using the `nacl_io_init_ppapi` or `nacl_io_init` functions.
 3.  Mount any desired filesystems using the `mount` function. The arguments to `mount` for the different filesystem types are detailed in `include/nacl_io/nacl_io.h`.
 4.  If you are going to mount an HTML5 file system, be sure to allocate space for it. You can either set the `unlimitedStorage` permission in the app’s Web Store manifest file, or call the HTML5 QuotaManagement API. These options are explained in the <a href="/docs/native-client/devguide/coding/file-io#quota-management" class="reference internal"><em>File IO documentation</em></a>.
 5.  Make sure that file and socket API calls are all made from the background thread. This is because the main Pepper thread does not support the blocking behavior needed by the POSIX I/O operations.
 
-Logging in nacl\_io
--------------------
+## Logging in nacl_io
 
-Unlike most input/output for nacl\_io, internal logging writes directly to the `stderr` stream of the NaCl process. It deliberately bypasses the standard library functions implemented in nacl\_io to avoid circular calls to itself.
+Unlike most input/output for nacl_io, internal logging writes directly to the `stderr` stream of the NaCl process. It deliberately bypasses the standard library functions implemented in nacl_io to avoid circular calls to itself.
 
-The nacl\_io demo
------------------
+## The nacl_io demo
 
 ### Building and running the demo
 
 The demo application launches a Native Client module that mounts three file systems and displays a set of controls that let you work with them:
 
-![/native-client/images/nacl\_io1.png](/docs/native-client/images/nacl_io1.png)
+![/native-client/images/nacl_io1.png](/docs/native-client/images/nacl_io1.png)
 
 Follow these steps to build and run the demo:
 
--   Open a terminal in the demo directory:
+- Open a terminal in the demo directory:
 
-        $ cd $NACL_SDK_ROOT/examples/demo/nacl_io_demo
+      $ cd $NACL_SDK_ROOT/examples/demo/nacl_io_demo
 
--   run the demo:
+- run the demo:
 
-        $ make run
+      $ make run
 
 Once the demo is running, try these operations:
 
@@ -77,9 +73,9 @@ Once the demo is running, try these operations:
 
 The demo is written C and comprises three files.
 
-#### nacl\_io\_demo.c
+#### nacl_io_demo.c
 
-This is the demo’s main file. The code here creates and initializes the Native Client module instance. The Pepper function `Instance_DidCreate` initializes nacl\_io and mounts an HTML5 filesystem at `/persistent`.
+This is the demo’s main file. The code here creates and initializes the Native Client module instance. The Pepper function `Instance_DidCreate` initializes nacl_io and mounts an HTML5 filesystem at `/persistent`.
 
     static PP_Bool Instance_DidCreate(PP_Instance instance,
                                       uint32_t argc,
@@ -117,11 +113,11 @@ The `Instance_DidCreate` function also creates a worker thread that receives mes
 
 #### queue.c
 
-This file implements a circular queue that is used to receive messages from the browser UI to the Native Client module. The file system commands in the enqueued messages are executed on the worker thread. This keeps blocking calls (like fread) off the main Native Client thread, which is a good thing. The queue is initialized in nacl\_io\_demo.c `Instance_DidCreate`.
+This file implements a circular queue that is used to receive messages from the browser UI to the Native Client module. The file system commands in the enqueued messages are executed on the worker thread. This keeps blocking calls (like fread) off the main Native Client thread, which is a good thing. The queue is initialized in nacl_io_demo.c `Instance_DidCreate`.
 
 #### handlers.c
 
-This file implements the stdio calls associated with the commands sent from the browser. There is a separate `Handle*` function for each command: fopen, fclose, fseek, fread, fwrite. The handlers are called from the `HandleMessage` function in nacl\_io\_demo.c, which runs in the worker thread managing the message queue. The code for the `fwrite` handler appears below. Notice that it does not contain any PPAPI calls and looks like “ordinary” C code.
+This file implements the stdio calls associated with the commands sent from the browser. There is a separate `Handle*` function for each command: fopen, fclose, fseek, fread, fwrite. The handlers are called from the `HandleMessage` function in nacl_io_demo.c, which runs in the worker thread managing the message queue. The code for the `fwrite` handler appears below. Notice that it does not contain any PPAPI calls and looks like “ordinary” C code.
 
     int HandleFwrite(int num_params, char** params, char** output) {
       FILE* file;
@@ -153,11 +149,10 @@ This file implements the stdio calls associated with the commands sent from the 
       return 0;
     }
 
-Reference Information
----------------------
+## Reference Information
 
 The example discussed here is included in the SDK in the directory `examples/demo/nacl_io_demo`.
 
-The nacl\_io library is included in the SDK toolchain and is not a part of the Pepper API. For reference information related to the nacl\_io interface see its header file in the SDK directory, located at `include/nacl_io/nacl_io.h`.
+The nacl_io library is included in the SDK toolchain and is not a part of the Pepper API. For reference information related to the nacl_io interface see its header file in the SDK directory, located at `include/nacl_io/nacl_io.h`.
 
 For more about the HTML5 file system read the <a href="http://dev.w3.org/2009/dap/file-system/pub/FileSystem/" class="reference external">specification</a>.

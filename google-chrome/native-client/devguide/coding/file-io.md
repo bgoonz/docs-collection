@@ -2,36 +2,35 @@
 
 {% include 'partials/nacl-warning.njk' %}
 
-------------------------------------------------------------------------
+---
 
--   <a href="#introduction" id="id2" class="reference internal">Introduction</a>
--   <a href="#reference-information" id="id3" class="reference internal">Reference information</a>
--   <a href="#local-file-i-o" id="id4" class="reference internal">Local file I/O</a>
+- <a href="#introduction" id="id2" class="reference internal">Introduction</a>
+- <a href="#reference-information" id="id3" class="reference internal">Reference information</a>
+- <a href="#local-file-i-o" id="id4" class="reference internal">Local file I/O</a>
 
-    -   <a href="#enabling-local-file-i-o" id="id5" class="reference internal">Enabling local file I/O</a>
-    -   <a href="#testing-local-file-i-o" id="id6" class="reference internal">Testing local file I/O</a>
+  - <a href="#enabling-local-file-i-o" id="id5" class="reference internal">Enabling local file I/O</a>
+  - <a href="#testing-local-file-i-o" id="id6" class="reference internal">Testing local file I/O</a>
 
--   <a href="#the-file-io-example" id="id7" class="reference internal">The <code>file_io</code> example</a>
+- <a href="#the-file-io-example" id="id7" class="reference internal">The <code>file_io</code> example</a>
 
-    -   <a href="#file-i-o-overview" id="id8" class="reference internal">File I/O overview</a>
-    -   <a href="#creating-and-writing-a-file" id="id9" class="reference internal">Creating and writing a file</a>
-    -   <a href="#opening-and-reading-a-file" id="id10" class="reference internal">Opening and reading a file</a>
-    -   <a href="#deleting-a-file" id="id11" class="reference internal">Deleting a file</a>
-    -   <a href="#making-a-directory" id="id12" class="reference internal">Making a directory</a>
-    -   <a href="#listing-the-contents-of-a-directory" id="id13" class="reference internal">Listing the contents of a directory</a>
+  - <a href="#file-i-o-overview" id="id8" class="reference internal">File I/O overview</a>
+  - <a href="#creating-and-writing-a-file" id="id9" class="reference internal">Creating and writing a file</a>
+  - <a href="#opening-and-reading-a-file" id="id10" class="reference internal">Opening and reading a file</a>
+  - <a href="#deleting-a-file" id="id11" class="reference internal">Deleting a file</a>
+  - <a href="#making-a-directory" id="id12" class="reference internal">Making a directory</a>
+  - <a href="#listing-the-contents-of-a-directory" id="id13" class="reference internal">Listing the contents of a directory</a>
 
--   <a href="#file-io-deep-dive" id="id14" class="reference internal"><code>file_io</code> deep dive</a>
+- <a href="#file-io-deep-dive" id="id14" class="reference internal"><code>file_io</code> deep dive</a>
 
-    -   <a href="#opening-a-file-system-and-preparing-for-file-i-o" id="id15" class="reference internal">Opening a file system and preparing for file I/O</a>
-    -   <a href="#handling-messages-from-javascript" id="id16" class="reference internal">Handling messages from JavaScript</a>
-    -   <a href="#saving-a-file" id="id17" class="reference internal">Saving a file</a>
-    -   <a href="#loading-a-file" id="id18" class="reference internal">Loading a file</a>
-    -   <a href="#id1" id="id19" class="reference internal">Deleting a file</a>
-    -   <a href="#listing-files-in-a-directory" id="id20" class="reference internal">Listing files in a directory</a>
-    -   <a href="#making-a-new-directory" id="id21" class="reference internal">Making a new directory</a>
+  - <a href="#opening-a-file-system-and-preparing-for-file-i-o" id="id15" class="reference internal">Opening a file system and preparing for file I/O</a>
+  - <a href="#handling-messages-from-javascript" id="id16" class="reference internal">Handling messages from JavaScript</a>
+  - <a href="#saving-a-file" id="id17" class="reference internal">Saving a file</a>
+  - <a href="#loading-a-file" id="id18" class="reference internal">Loading a file</a>
+  - <a href="#id1" id="id19" class="reference internal">Deleting a file</a>
+  - <a href="#listing-files-in-a-directory" id="id20" class="reference internal">Listing files in a directory</a>
+  - <a href="#making-a-new-directory" id="id21" class="reference internal">Making a new directory</a>
 
-Introduction
-------------
+## Introduction
 
 This section describes how to use the <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_file_i_o" class="reference external">FileIO API</a> to read and write files using a local secure data store.
 
@@ -44,17 +43,15 @@ You might use the File IO API with the URL Loading APIs to create an overall dat
 
 The example discussed in this section is included in the SDK in the directory `examples/api/file_io`.
 
-Reference information
----------------------
+## Reference information
 
 For reference information related to FileIO, see the following documentation:
 
--   <a href="/docs/native-client/pepper_stable/cpp/file__io_8h" class="reference external">file_io.h</a> - API to create a FileIO object
--   <a href="/docs/native-client/pepper_stable/cpp/file__ref_8h" class="reference external">file_ref.h</a> - API to create a file reference or “weak pointer” to a file in a file system
--   <a href="/docs/native-client/pepper_stable/cpp/file__system_8h" class="reference external">file_system.h</a> - API to create a file system associated with a file
+- <a href="/docs/native-client/pepper_stable/cpp/file__io_8h" class="reference external">file_io.h</a> - API to create a FileIO object
+- <a href="/docs/native-client/pepper_stable/cpp/file__ref_8h" class="reference external">file_ref.h</a> - API to create a file reference or “weak pointer” to a file in a file system
+- <a href="/docs/native-client/pepper_stable/cpp/file__system_8h" class="reference external">file_system.h</a> - API to create a file system associated with a file
 
-Local file I/O
---------------
+## Local file I/O
 
 Chrome provides an obfuscated, restricted area on disk to which a web app can safely <a href="https://developers.google.com/chrome/whitepapers/storage#persistent" class="reference external">read and write files</a>. The Pepper FileIO, FileRef, and FileSystem APIs (collectively called the File IO APIs) allow you to access this sandboxed local disk so you can read and write files and manage caching yourself. The data is persistent between launches of Chrome, and is not removed unless your application deletes it or the user manually deletes it. There is no limit to the amount of local data you can use, other than the actual space available on the local drive.
 
@@ -68,14 +65,13 @@ If you do not use the `unlimitedStorage` permission you must include JavaScript 
 
 You should be aware that using the `unlimitedStorage` manifest permission constrains the way you can test your app. Three of the four techniques described in <a href="/docs/native-client/devguide/devcycle/running" class="reference internal"><em>Running Native Client Applications</em></a> read the Chrome Web Store manifest file and enable the `unlimitedStorage` permission when it appears, but the first technique (local server) does not. If you want to test the file IO portion of your app with a simple local server, you need to include JavaScript code that calls the HTML5 Quota Management API. When you deliver your application you can replace this code with the `unlimitedStorage` manifest permission.
 
-The `file_io` example
----------------------
+## The `file_io` example
 
 The Native Client SDK includes an example, `file_io`, that demonstrates how to read and write a local disk file. Since you will probably run the example from a local server without a Chrome Web Store manifest file, the example’s index file uses JavaScript to perform the Quota Management setup as described above. The example has these primary files:
 
--   `index.html` - The HTML code that launches the Native Client module and displays the user interface.
--   `example.js` - JavaScript code that requests quota (as described above). It also listens for user interaction with the user interface, and forwards the requests to the Native Client module.
--   `file_io.cc` - The code that sets up and provides an entry point to the Native Client module.
+- `index.html` - The HTML code that launches the Native Client module and displays the user interface.
+- `example.js` - JavaScript code that requests quota (as described above). It also listens for user interaction with the user interface, and forwards the requests to the Native Client module.
+- `file_io.cc` - The code that sets up and provides an entry point to the Native Client module.
 
 The remainder of this section covers the code in the `file_io.cc` file for reading and writing files.
 
@@ -118,8 +114,7 @@ Following are the high-level steps involved in listing a directory:
 1.  `pp::FileRef::ReadDirectoryEntries` is called, and given a directory entry to list. A callback is given as well; many of the other functions use `pp::BlockUntilComplete`, but `ReadDirectoryEntries` returns results in its callback, so it must be specified.
 2.  When the call to `ReadDirectoryEntries` completes, it calls `ListCallback` which packages up the results into a string message, and sends it to JavaScript.
 
-`file_io` deep dive
--------------------
+## `file_io` deep dive
 
 The `file_io` example displays a user interface with a couple of fields and several buttons. Following is a screenshot of the `file_io` example:
 

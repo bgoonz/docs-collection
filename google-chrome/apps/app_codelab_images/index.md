@@ -1,5 +1,5 @@
 ---
-layout: 'layouts/doc-post.njk'
+layout: "layouts/doc-post.njk"
 title: "Step 5: Add Images From the Web"
 date: 2014-10-17
 updated: 2018-05-14
@@ -62,7 +62,7 @@ In **_manifest.json_**, request the "<all_urls>" permission:
 In **_controller.js_**, add a `_createObjectURL()` method to create ObjectURLs from a Blob:
 
 ```js
-Controller.prototype._createObjectURL = function(blob) {
+Controller.prototype._createObjectURL = function (blob) {
   var objURL = URL.createObjectURL(blob);
   this.objectURLs = this.objectURLs || [];
   this.objectURLs.push(objURL);
@@ -74,9 +74,9 @@ ObjectURLs hold memory, so when you no longer need the ObjectURL, you should rev
 `_clearObjectURL()` method to _controller.js_ to handle that:
 
 ```js
-Controller.prototype._clearObjectURL = function() {
+Controller.prototype._clearObjectURL = function () {
   if (this.objectURLs) {
-    this.objectURLs.forEach(function(objURL) {
+    this.objectURLs.forEach(function (objURL) {
       URL.revokeObjectURL(objURL);
     });
     this.objectURLs = null;
@@ -89,16 +89,19 @@ Controller.prototype._clearObjectURL = function() {
 Add a `_requestRemoteImageAndAppend()` method to execute a XMLHttpRequest on a given image URL:
 
 ```js
-Controller.prototype._requestRemoteImageAndAppend = function(imageUrl, element) {
+Controller.prototype._requestRemoteImageAndAppend = function (
+  imageUrl,
+  element
+) {
   var xhr = new XMLHttpRequest();
-  xhr.open('GET', imageUrl);
-  xhr.responseType = 'blob';
-  xhr.onload = function() {
-    var img = document.createElement('img');
-    img.setAttribute('data-src', imageUrl);
-    img.className = 'icon';
+  xhr.open("GET", imageUrl);
+  xhr.responseType = "blob";
+  xhr.onload = function () {
+    var img = document.createElement("img");
+    img.setAttribute("data-src", imageUrl);
+    img.className = "icon";
     var objURL = this._createObjectURL(xhr.response);
-    img.setAttribute('src', objURL);
+    img.setAttribute("src", objURL);
     element.appendChild(img);
   }.bind(this);
   xhr.send();
@@ -117,12 +120,12 @@ images. For each URL that looks like an image, execute `_requestRemoteImageAndAp
 Controller.prototype._parseForImageURLs = function () {
   // remove old blobs to avoid memory leak:
   this._clearObjectURL();
-  var links = this.$todoList.querySelectorAll('a[data-src]:not(.thumbnail)');
+  var links = this.$todoList.querySelectorAll("a[data-src]:not(.thumbnail)");
   var re = /\.(png|jpg|jpeg|svg|gif)$/;
-  for (var i = 0; i<links.length; i++) {
-    var url = links[i].getAttribute('data-src');
+  for (var i = 0; i < links.length; i++) {
+    var url = links[i].getAttribute("data-src");
     if (re.test(url)) {
-      links[i].classList.add('thumbnail');
+      links[i].classList.add("thumbnail");
       this._requestRemoteImageAndAppend(url, links[i]);
     }
   }
@@ -225,9 +228,7 @@ Ready to continue onto the next step? Go to [Step 6 - Export todos to the filesy
 [7]: https://developer.mozilla.org/en-US/docs/Web/API/URL.createObjectURL
 [8]: https://github.com/GoogleChrome/apps-resource-loader#readme
 [9]: /apps/contentSecurityPolicy "Read 'Content Security Policy' in the Chrome developer docs"
-[10]:
-  #csp-compliance
-  "This feature mentioned in 'Learn how CSP affects the use of external web resources'"
+[10]: #csp-compliance "This feature mentioned in 'Learn how CSP affects the use of external web resources'"
 [11]: /apps/declare_permissions "Read 'Declare Permissions' in the Chrome developer docs"
 [12]: #update-permissions "This feature mentioned in 'Update permissions'"
 [13]: ../app_codelab_filesystem

@@ -2,51 +2,49 @@
 
 {% include 'partials/nacl-warning.njk' %}
 
-------------------------------------------------------------------------
+---
 
--   <a href="#reference-information" id="id2" class="reference internal">Reference information</a>
--   <a href="#introduction-to-the-messaging-system" id="id3" class="reference internal">Introduction to the messaging system</a>
+- <a href="#reference-information" id="id2" class="reference internal">Reference information</a>
+- <a href="#introduction-to-the-messaging-system" id="id3" class="reference internal">Introduction to the messaging system</a>
 
-    -   <a href="#design-of-the-messaging-system" id="id4" class="reference internal">Design of the messaging system</a>
+  - <a href="#design-of-the-messaging-system" id="id4" class="reference internal">Design of the messaging system</a>
 
--   <a href="#communication-tasks-in-the-hello-world-example" id="id5" class="reference internal">Communication tasks in the “Hello, World” example</a>
+- <a href="#communication-tasks-in-the-hello-world-example" id="id5" class="reference internal">Communication tasks in the “Hello, World” example</a>
 
-    -   <a href="#javascript-code" id="id6" class="reference internal">JavaScript code</a>
-    -   <a href="#native-client-module" id="id7" class="reference internal">Native Client module</a>
+  - <a href="#javascript-code" id="id6" class="reference internal">JavaScript code</a>
+  - <a href="#native-client-module" id="id7" class="reference internal">Native Client module</a>
 
--   <a href="#messaging-in-javascript-code-more-details" id="id8" class="reference internal">Messaging in JavaScript code: More details.</a>
+- <a href="#messaging-in-javascript-code-more-details" id="id8" class="reference internal">Messaging in JavaScript code: More details.</a>
 
-    -   <a href="#setting-up-an-event-listener-and-handler" id="id9" class="reference internal">Setting up an event listener and handler</a>
+  - <a href="#setting-up-an-event-listener-and-handler" id="id9" class="reference internal">Setting up an event listener and handler</a>
 
--   <a href="#messaging-in-the-native-client-module-more-details" id="id10" class="reference internal">Messaging in the Native Client module: More details.</a>
+- <a href="#messaging-in-the-native-client-module-more-details" id="id10" class="reference internal">Messaging in the Native Client module: More details.</a>
 
-    -   <a href="#implementing-handlemessage" id="id11" class="reference internal">Implementing HandleMessage()</a>
-    -   <a href="#implementing-application-specific-functions" id="id12" class="reference internal">Implementing application-specific functions</a>
-    -   <a href="#sending-messages-back-to-the-javascript-code" id="id13" class="reference internal">Sending messages back to the JavaScript code</a>
-    -   <a href="#sending-and-receiving-other-pp-var-types" id="id14" class="reference internal">Sending and receiving other <code>pp::Var</code> types</a>
+  - <a href="#implementing-handlemessage" id="id11" class="reference internal">Implementing HandleMessage()</a>
+  - <a href="#implementing-application-specific-functions" id="id12" class="reference internal">Implementing application-specific functions</a>
+  - <a href="#sending-messages-back-to-the-javascript-code" id="id13" class="reference internal">Sending messages back to the JavaScript code</a>
+  - <a href="#sending-and-receiving-other-pp-var-types" id="id14" class="reference internal">Sending and receiving other <code>pp::Var</code> types</a>
 
 This section describes the messaging system used to communicate between the JavaScript code and the Native Client module’s C or C++ code in a Native Client application. It introduces the concept of asynchronous programming and the basic steps required to set up a Native Client module that sends messages to and receive messages from JavaScript. This section assumes you are familiar with the material presented in the <a href="/docs/native-client/devguide/coding/application-structure" class="reference internal"><em>Application Structure</em></a> section.
 
 The “Hello, World” example for getting started with NaCl is used here to illustrate basic programming techniques. You can find this code in the `/getting_started/part2` directory in the Native Client SDK download.
 
-Reference information
----------------------
+## Reference information
 
 For reference information related to the Pepper messaging API, see the following documentation:
 
--   <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_instance" class="reference external">pp::Instance class</a> HandleMessage(), PostMessage())
--   <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_module" class="reference external">pp::Module class</a>
--   <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_var" class="reference external">pp::Var class</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_instance" class="reference external">pp::Instance class</a> HandleMessage(), PostMessage())
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_module" class="reference external">pp::Module class</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_var" class="reference external">pp::Var class</a>
 
-Introduction to the messaging system
-------------------------------------
+## Introduction to the messaging system
 
 Native Client modules and JavaScript communicate by sending messages to each other. The most basic form of a message is a string. Messages support many JavaScript types, including ints, arrays, array buffers, and dictionaries (see <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_var" class="reference external">pp::Var</a>, <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_var_array_buffer" class="reference external">pp:VarArrayBuffer</a>, and the general <a href="/docs/native-client/pepper_stable/c/struct_p_p_b___messaging__1__0" class="reference external">messaging system documentation</a>). It’s up to you to decide on the type of message and define how to process the messages on both the JavaScript and Native Client side. For the “Hello, World” example, we will work with string-typed messages only.
 
 When JavaScript posts a message to the Native Client module, the Pepper `HandleMessage()` function is invoked on the module side. Similarly, the Native Client module can post a message to JavaScript, and this message triggers a JavaScript event listener for `message` events in the DOM. (See the W3C specification on <a href="http://www.w3.org/TR/DOM-Level-2-Events/events.html" class="reference external">Document Object Model Events</a> for more information.) In the “Hello, World” example, the JavaScript functions for posting and handling messages are named `postMessage()` and `handleMessage()` (but any names could be used). On the Native Client C++ side, the Pepper Library functions for posting and handling messages are:
 
--   `void pp::Instance::PostMessage(const Var &message)`
--   `virtual void pp::Instance::HandleMessage(const Var &message)`
+- `void pp::Instance::PostMessage(const Var &message)`
+- `virtual void pp::Instance::HandleMessage(const Var &message)`
 
 If you want to receive messages from JavaScript, you need to implement the `pp::Instance::HandleMessage()` function in your Native Client module.
 
@@ -56,12 +54,11 @@ The Native Client messaging system is analogous to the system used by the browse
 
 This asynchronous processing model keeps the main thread free while avoiding the following problems:
 
--   The JavaScript engine hangs while waiting for a synchronous call to return.
--   The browser pops up a dialog when a JavaScript entry point takes longer than a few moments.
--   The application hangs while waiting for an unresponsive Native Client module.
+- The JavaScript engine hangs while waiting for a synchronous call to return.
+- The browser pops up a dialog when a JavaScript entry point takes longer than a few moments.
+- The application hangs while waiting for an unresponsive Native Client module.
 
-Communication tasks in the “Hello, World” example
--------------------------------------------------
+## Communication tasks in the “Hello, World” example
 
 The following sections describe how the “Hello, World” example posts and handles messages on both the JavaScript side and the Native Client side of the application.
 
@@ -146,8 +143,7 @@ The C++ code in the Native Client module of the “Hello, World” example:
       }
     };
 
-Messaging in JavaScript code: More details.
--------------------------------------------
+## Messaging in JavaScript code: More details.
 
 This section describes in more detail the messaging system code in the JavaScript portion of the “Hello, World” example.
 
@@ -196,10 +192,9 @@ The following JavaScript code sets up an event listener for messages posted by t
       logEl.textContent += message.data;
     }
 
-Note that the `handleMessage()` function is handed a message\_event containing `data` that you can display or manipulate in JavaScript. The “Hello, World” application simply logs this data to the `log` div.
+Note that the `handleMessage()` function is handed a message_event containing `data` that you can display or manipulate in JavaScript. The “Hello, World” application simply logs this data to the `log` div.
 
-Messaging in the Native Client module: More details.
-----------------------------------------------------
+## Messaging in the Native Client module: More details.
 
 This section describes in more detail the messaging system code in the Native Client module portion of the “Hello, World” example.
 

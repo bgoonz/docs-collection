@@ -26,14 +26,14 @@ including the ability to pass extra information into the app via [Intent Extras]
 The basic syntax for an intent-based URI is as follows:
 
 ```text
-intent:  
-   HOST/URI-path // Optional host  
-   #Intent;  
-      package=\[string\];  
-      action=\[string\];  
-      category=\[string\];  
-      component=\[string\];  
-      scheme=\[string\];  
+intent:
+   HOST/URI-path // Optional host
+   #Intent;
+      package=\[string\];
+      action=\[string\];
+      category=\[string\];
+      component=\[string\];
+      scheme=\[string\];
    end;
 ```
 
@@ -62,18 +62,22 @@ it.
 Here's an intent that launches the Zxing barcode scanner app. It follows the syntax thus:
 
 ```text
-intent:  
-   //scan/  
-   #Intent;  
-      package=com.google.zxing.client.android;  
-      scheme=zxing;  
+intent:
+   //scan/
+   #Intent;
+      package=com.google.zxing.client.android;
+      scheme=zxing;
    end;
 ```
 
 To launch the Zxing barcode scanner app, you encode your `href` on the anchor as follows:
 
 ```html
-  <a href="intent://scan/#Intent;scheme=zxing;package=com.google.zxing.client.android;end"> Take a QR code </a>
+<a
+  href="intent://scan/#Intent;scheme=zxing;package=com.google.zxing.client.android;end"
+>
+  Take a QR code
+</a>
 ```
 
 See the [Android Zxing Manifest][4], which defines the package and the host.
@@ -81,8 +85,11 @@ See the [Android Zxing Manifest][4], which defines the package and the host.
 Also, if fallback URL is specified, the full URL will look like this:
 
 ```html
-   <a href="intent://scan/#Intent;scheme=zxing;package=com.google.zxing.client.android;S.browser_fallback_url=http%3A%2F%2Fzxing.org;end"> Take a QR code </a>
-
+<a
+  href="intent://scan/#Intent;scheme=zxing;package=com.google.zxing.client.android;S.browser_fallback_url=http%3A%2F%2Fzxing.org;end"
+>
+  Take a QR code
+</a>
 ```
 
 Now the URL will get you to zxing.org if the app could not be found, or the link was triggered from
@@ -107,8 +114,7 @@ And Chrome doesn't launch an external app for a given Intent URI in the followin
 
 [1]: http://developer.android.com/guide/components/intents-filters.html
 [2]: http://developer.android.com/guide/components/intents-filters.html#extras
-[3]:
-  https://code.google.com/p/android-source-browsing/source/browse/core/java/android/content/Intent.java?repo=platform--frameworks--base#6514
+[3]: https://code.google.com/p/android-source-browsing/source/browse/core/java/android/content/Intent.java?repo=platform--frameworks--base#6514
 [4]: https://code.google.com/p/zxing/source/browse/trunk/android/AndroidManifest.xml#97
 [5]: http://developer.android.com/guide/components/intents-filters.html#extras
 [6]: http://developer.android.com/reference/android/content/Intent.html#CATEGORY_BROWSABLE

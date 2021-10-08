@@ -1,5 +1,5 @@
 ---
-layout: 'layouts/doc-post.njk'
+layout: "layouts/doc-post.njk"
 title: "Step 7: Publish Your App"
 date: 2014-10-17
 #updated: TODO

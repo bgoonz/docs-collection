@@ -53,7 +53,7 @@ If you have a simple button with the following styling:
   border-radius: 5px;
   border-bottom-style: solid;
   border-width: 4px;
-  border-color: #DA8300;
+  border-color: #da8300;
 }
 ```
 
@@ -66,8 +66,8 @@ The pressed state may look like:
 
 ```css
 .btn:active {
-  background-color: #E68F05;
-  border-color: #CD7600;
+  background-color: #e68f05;
+  border-color: #cd7600;
   border-width: 2px;
   top: 2px;
 }
@@ -103,7 +103,7 @@ For example a button element in the new WebView is given an orange outline:
 
 In the old webview a highlight color is applied on top of certain elements:
 
-{% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/1604543794370.png", 
+{% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/1604543794370.png",
        alt="A screenshot of a button with a highlight color on top of it.",
        width="656",
        height="158" %}
@@ -112,7 +112,7 @@ If you are taking care of the touch and focus feedback yourself, you can overrid
 the following CSS properties:
 
 ```css
--webkit-tap-highlight-color: rgba(0,0,0, 0.0);
+-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 outline: none;
 ```
 

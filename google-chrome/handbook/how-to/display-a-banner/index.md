@@ -1,7 +1,7 @@
 ---
-layout: 'layouts/doc-post.njk'
+layout: "layouts/doc-post.njk"
 title: Display a banner
-description: 'Display a banner across the entire site or an individual post.'
+description: "Display a banner across the entire site or an individual post."
 date: 2021-04-21
 ---
 

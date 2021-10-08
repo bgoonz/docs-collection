@@ -1,5 +1,5 @@
 ---
-layout: 'layouts/doc-post.njk'
+layout: "layouts/doc-post.njk"
 title: "Getting Started: WebView-based Applications for Web Developers"
 date: 2014-02-28
 description: A tutorial on the basics of building WebView-based applications.
@@ -439,10 +439,8 @@ to get started.
 [6]: http://developer.android.com/guide/topics/security/permissions.html
 [7]: http://developer.android.com/guide/topics/manifest/manifest-intro.html
 [8]: http://beta.html5test.com/
-[9]:
-  http://developer.android.com/reference/android/webkit/WebViewClient.html#onPageStarted(android.webkit.WebView,%20java.lang.String,%20android.graphics.Bitmap)
-[10]:
-  http://developer.android.com/reference/android/webkit/WebViewClient.html#onPageFinished(android.webkit.WebView,%20java.lang.String)
+[9]: http://developer.android.com/reference/android/webkit/WebViewClient.html#onPageStarted(android.webkit.WebView,%20java.lang.String,%20android.graphics.Bitmap)
+[10]: http://developer.android.com/reference/android/webkit/WebViewClient.html#onPageFinished(android.webkit.WebView,%20java.lang.String)
 [11]: http://developer.android.com/reference/android/content/Intent.html
 [12]: http://developer.android.com/reference/android/webkit/WebViewClient.html
 [13]: /docs/multidevice/webview/pixelperfect/

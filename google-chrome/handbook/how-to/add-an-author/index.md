@@ -1,7 +1,7 @@
 ---
-layout: 'layouts/doc-post.njk'
+layout: "layouts/doc-post.njk"
 title: Add an author
-description: 'Add an author to a post.'
+description: "Add an author to a post."
 date: 2020-12-07
 updated: 2021-09-08
 ---
