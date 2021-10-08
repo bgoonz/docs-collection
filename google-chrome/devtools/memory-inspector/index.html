@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="dcterms.date" content="2020-08-20" />
+  <title>Inspect JavaScript ArrayBuffer with the Memory inspector</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Inspect JavaScript ArrayBuffer with the Memory inspector</h1>
+<p class="date">2020-08-20</p>
+</header>
+<p>{% Aside %} This feature is available from Chrome 91 onwards. You can check your version with <code>chrome://version/</code>. {% endAside %}</p>
+<p>Use the new <strong>Memory inspector</strong> to inspect an <code>ArrayBuffer</code> in JavaScript, as well as a <code>WebAssembly.Memory</code>. ## Open the Memory Inspector {: #open }</p>
+<p>There are a few ways to open the <strong>Memory inspector</strong>.</p>
+<h3 id="open-from-the-menu-open-from-menu">Open from the menu {: #open-from-menu }</h3>
+<ol type="1">
+<li><a href="/docs/devtools/open/">Open DevTools</a>.</li>
+<li>Click <strong>More Options</strong> {% Img src=“image/admin/4sdCQbpBaG4MpoHB1J08.png”, alt=“More”, width=“6”, height=“22” %} &gt; <strong>More tools</strong> &gt; <strong>Memory inspector</strong>. {% Img src=“image/dPDCek3EhZgLQPGtEG3y0fTn4v82/PBV15PXwV7eftpmeaGVN.png”, alt=“Memory inspector menu”, width=“800”, height=“499” %}</li>
+</ol>
+<h3 id="open-during-debugging-open-debug">Open during debugging {: #open-debug }</h3>
+<ol type="1">
+<li>Open a page with JavaScript <code>ArrayBuffer</code>. We will be using <a href="http://memory-inspector.glitch.me/demo-js.html">this demo page</a>.</li>
+<li><a href="/docs/devtools/open/">Open DevTools</a>.</li>
+<li>Open the <strong>demo-js.js</strong> file in the <strong>Sources</strong> panel, set a breakpoint at line 18.</li>
+<li>Refresh the page.</li>
+<li>Expand the <strong>Scope</strong> section on the right <strong>Debugger</strong> pane.</li>
+<li><p>You can open the <strong>Memory inspector</strong>:</p>
+<ul>
+<li><strong>From the icon</strong>. Clicking on the icon next to the <code>buffer</code> property, or</li>
+<li><strong>From the context menu</strong>. Right click on the <code>buffer</code> property and select <strong>Reveal in Memory Inspector panel</strong>.</li>
+</ul>
+<p>{% Img src=“image/dPDCek3EhZgLQPGtEG3y0fTn4v82/QjCkBSuGQ8x9cj5uDdbo.png”, alt=“Reveal in Memory Inspector panel”, width=“800”, height=“602” %}</p></li>
+</ol>
+<h3 id="inspect-multiple-objects-open-multiple">Inspect multiple objects {: #open-multiple }</h3>
+<ol type="1">
+<li>You can inspect <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView">DataView</a> or <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray">TypedArray</a> as well. For example, <code>b2</code> is a <code>TypedArray</code>. To inspect that, right click on the <code>b2</code> property and select <strong>Reveal in Memory Inspector panel</strong> (No icon for <code>TypedArray</code> or <code>DataView</code> yet).</li>
+<li>A new tab is opened in the <strong>Memory inspector</strong>. Please note that you can inspect multiple objects at once. {% Img src=“image/dPDCek3EhZgLQPGtEG3y0fTn4v82/ZaLWbrktT6N3sHMhyLHA.png”, alt=“New tab in the Memory inspector”, width=“800”, height=“602” %}</li>
+</ol>
+<h2 id="the-memory-inspector-inspector">The Memory inspector {: #inspector }</h2>
+<p>{% Img src=“image/dPDCek3EhZgLQPGtEG3y0fTn4v82/Q7ynuEVSKHlcLoBI8xjZ.jpg”, alt=“The Memory inspector”, width=“800”, height=“478” %}</p>
+<p>The <strong>Memory inspector</strong> consists of 3 main areas:</p>
+<h3 id="navigation-bar-nav-bar">Navigation bar {: #nav-bar }</h3>
+<p>{% Img src=“image/dPDCek3EhZgLQPGtEG3y0fTn4v82/FSDfhwDYEkL2yPwJOWvx.jpg”, alt=“Navigation bar”, width=“800”, height=“85” %}</p>
+<ol type="1">
+<li>The <strong>address input</strong> shows the current byte address in hex format. You can input a new value to jump to a new location in the memory buffer. For example, try type <code>0x00000008</code>.</li>
+<li>Memory buffers could be longer than a page. Instead of scrolling through, you can use the <strong>left</strong> and <strong>right</strong> button to navigate.</li>
+<li>The buttons on the left allow a <strong>forward/backward</strong> navigation.</li>
+<li>By default, the buffer is automatically updated on stepping. In the case it’s not, the <strong>refresh</strong> button gives you the option to refresh the memory and update its contents.</li>
+</ol>
+<h3 id="memory-buffer-buffer">Memory buffer {: #buffer }</h3>
+<p>{% Img src=“image/dPDCek3EhZgLQPGtEG3y0fTn4v82/4dzzRu6TRCB70fmMXjIS.jpg”, alt=“Memory buffer”, width=“613”, height=“518” %}</p>
+<ol type="1">
+<li>From the left, the <strong>address</strong> is displayed in hex format.</li>
+<li>The <strong>memory</strong> is also shown in hex format, each byte separated by a space. The currently selected byte is highlighted. You can click on the byte or navigate with keyboard (left, right, up, down).</li>
+<li>An <strong>ASCII representation</strong> of the memory is shown on the right side. A highlight shows the corresponding value to the selected bits on the byte. Similar to memory, you can click on the byte or navigate with keyboard (left, right, up, down).</li>
+</ol>
+<h3 id="value-inspector-value-inspector">Value inspector {: #value-inspector }</h3>
+<p>{% Img src=“image/dPDCek3EhZgLQPGtEG3y0fTn4v82/icshYGOKAiZp1uy7hOoM.jpg”, alt=“Value inspector”, width=“800”, height=“417” %}</p>
+<ol type="1">
+<li>A top toolbar features a button to switch between <strong>big and little endian</strong> and to open the <strong>settings</strong>. Open the <strong>settings</strong> to select which value types they want to see per default in the inspector. {% Img src=“image/dPDCek3EhZgLQPGtEG3y0fTn4v82/Yo4JHzfWgfGKEK5FHPvD.png”, alt=“toolbar button”, width=“800”, height=“333” %}</li>
+<li>The main area shows all the <strong>value interpretations</strong> as per the <strong>settings</strong>. By default, all are shown.</li>
+<li>The <strong>encoding</strong> is clickable. You can switch between dec, hex, oct for integer and sci, dec for floats. {% Img src=“image/dPDCek3EhZgLQPGtEG3y0fTn4v82/NIxBbl3ouwAdTlU0xvls.png”, alt=“Encoding switch”, width=“800”, height=“220” %}</li>
+</ol>
+<h2 id="inspecting-memory-inspect">Inspecting memory {: #inspect }</h2>
+<p>Let’s inspect the memory together.</p>
+<ol type="1">
+<li>Follow these steps to <a href="#open-debug">start</a> the debugging.</li>
+<li>Change the address to <code>0x00000027</code> in the <strong>address input</strong>. {% Img src=“image/dPDCek3EhZgLQPGtEG3y0fTn4v82/S8m0VP5MuCr9YkZQx7mR.png”, alt=“address input”, width=“800”, height=“602” %}</li>
+<li>Observe the <strong>ASCII representation</strong> and the <strong>value interpretations</strong>. All values are empty at the moment.</li>
+<li>Notice the blue <strong>Jump to address</strong> button next to <code>Pointer 32-bit</code> and <code>Pointer 64-bit</code>. You can click on it to jump to the address. The buttons are grayed out and not clickable if the addresses are not valid. {% Img src=“image/dPDCek3EhZgLQPGtEG3y0fTn4v82/sMVdWgtnjhTAb0jlxcu7.png”, alt=“Jump to address button”, width=“800”, height=“602” %}</li>
+<li>Click on <strong>Resume script execution</strong> to step through the code. {% Img src=“image/dPDCek3EhZgLQPGtEG3y0fTn4v82/r0qWvOy2GO8bqUfkjYZa.png”, alt=“Resume script execution”, width=“800”, height=“602” %}</li>
+<li>Notice the <strong>ASCII representation</strong> is now updated. All the <strong>value interpretations</strong> are updated as well. {% Img src=“image/dPDCek3EhZgLQPGtEG3y0fTn4v82/IeVwiaLTr50DjXx59AQi.png”, alt=“All value interpretations are updated”, width=“800”, height=“602” %}</li>
+<li>Let’s customize the <strong>Value inspector</strong> to show only <strong>floating point</strong>. Click on the <strong>settings</strong> button and check only <strong>Float 32-bit</strong> and <strong>Float 64-bit</strong>. {% Img src=“image/dPDCek3EhZgLQPGtEG3y0fTn4v82/ZJFQAJFXB3GOA1hqVcfd.png”, alt=“settings to customize value inspector”, width=“800”, height=“602” %}</li>
+<li>Let’s change the encoding from <code>dec</code> to <code>sci</code>. Notice the value representations are updated accordingly. {% Img src=“image/dPDCek3EhZgLQPGtEG3y0fTn4v82/RqOAPGuSPUReZ6yRIf2Z.png”, alt=“change the encoding”, width=“800”, height=“602” %}</li>
+<li>Try to navigate the memory buffer with your keyboard or using the navigation bar. Repeat step 4 to observe values changes.</li>
+</ol>
+<h2 id="webassembly-memory-inspection-wasm">WebAssembly memory inspection {: #wasm }</h2>
+<p>For Wasm memory inspection, the process is similar to the JavaScript one.</p>
+<ol type="1">
+<li>Open <a href="http://memory-inspector.glitch.me/demo-wasm.html">this demo page</a>.</li>
+<li>In the <strong>Sources</strong> panel, open <strong>memory-write.wasm</strong> and set a breakpoint at line 5.</li>
+<li>Refresh the page.</li>
+<li>In the <strong>debugger</strong> pane, expand the <strong>Scope</strong>.</li>
+<li>In the <strong>Scope</strong> section, expand the <strong>Module</strong>.</li>
+<li>Click on the icon next to the <code>$imports.memory</code> property to reveal the <strong>Memory inspector</strong>. {% Img src=“image/dPDCek3EhZgLQPGtEG3y0fTn4v82/k3zWDJprBAnKMiIpbwmf.png”, alt=“Reveal the Memory inspector”, width=“800”, height=“602” %}</li>
+</ol>
+<p>Read <a href="/blog/wasm-debugging-2020/">this article</a> to learn more on debugging WebAssembly with modern tools.</p>
+</body>
+</html>

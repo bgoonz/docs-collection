@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="dcterms.date" content="2019-03-25" />
+  <title>View Application Cache Data With Chrome DevTools</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">View Application Cache Data With Chrome DevTools</h1>
+<p class="date">2019-03-25</p>
+</header>
+<p>{% Aside ‘warning’ %} Support for <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/applicationCache">AppCache</a> will be removed from Chrome and other Chromium-based browsers. We encourage developers to migrate off of AppCache now, rather than waiting any longer. Read <a href="https://web.dev/appcache-removal/">more</a>. {% endAside %}</p>
+<p>This guide shows you how to use <a href="/docs/devtools/">Chrome DevTools</a> to inspect <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/applicationCache">Application Cache</a>{: .external } resources.</p>
+<h2 id="view-application-cache-data-view">View Application Cache Data {: #view }</h2>
+<ol type="1">
+<li><p>Click the <strong>Sources</strong> tab to open the <strong>Sources</strong> panel. The <strong>Manifest</strong> pane usually opens by default.</p>
+<p>{% Img src=“image/dPDCek3EhZgLQPGtEG3y0fTn4v82/bzasEKrxVeISVxBqy42W.png”, alt=“The Manifest pane”, width=“800”, height=“619” %}</p></li>
+<li><p>Expand the <strong>Application Cache</strong> section and click a cache to view its resources.</p>
+<p>{% Img src=“image/dPDCek3EhZgLQPGtEG3y0fTn4v82/uWzKzxzWLNb1FeURUls6.png”, alt=“The Application Cache pane”, width=“800”, height=“427” %}</p></li>
+</ol>
+<p>Each row of the table represents a cached resource.</p>
+<p>The <strong>Type</strong> column represents the resource’s category:</p>
+<ul>
+<li><strong>Master</strong>. The <code>manifest</code> attribute on the resource indicated that this cache is the resource’s master.</li>
+<li><strong>Explicit</strong>. This resource was explicitly listed in the manifest.</li>
+<li><strong>Network</strong>. The manifest specified that this resource must come from the network.</li>
+<li><strong>Fallback</strong>. The URL is a fallback for another resource. The URL of the other resource is not listed in DevTools.</li>
+</ul>
+<p>At the bottom of the table there are status icons indicating your network connection and the status of the Application Cache. The Application Cache can have the following statuses:</p>
+<ul>
+<li><strong>IDLE</strong>. The cache has no new changes.</li>
+<li><strong>CHECKING</strong>. The manifest is being fetched and checked for updates.</li>
+<li><strong>DOWNLOADING</strong>. Resources are being added to the cache.</li>
+<li><strong>UPDATEREADY</strong>. A new version of the cache is available.</li>
+<li><strong>OBSOLETE</strong>. The cache is being deleted.</li>
+</ul>
+</body>
+</html>
