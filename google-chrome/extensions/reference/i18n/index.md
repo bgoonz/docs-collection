@@ -46,7 +46,7 @@ Some notes about internationalizing:
 - In your extension or app's JavaScript code, refer to a string named _messagename_ like this:
 
   ```js
-  chrome.i18n.getMessage("messagename");
+  chrome.i18n.getMessage("messagename")
   ```
 
 - In each call to `getMessage()`, you can supply up to 9 strings to be included in the message. See
@@ -96,7 +96,7 @@ Here's an example of using `@@extension_id` in a CSS file to construct a URL:
 
 ```css
 body {
-  background-image: url("chrome-extension://__MSG_@@extension_id__/background.png");
+  background-image:url('chrome-extension://__MSG_@@extension_id__/background.png');
 }
 ```
 
@@ -104,7 +104,7 @@ If the extension ID is abcdefghijklmnopqrstuvwxyzabcdef, then the bold line in t
 snippet becomes:
 
 ```css
-background-image: url("chrome-extension://abcdefghijklmnopqrstuvwxyzabcdef/background.png");
+  background-image:url('chrome-extension://abcdefghijklmnopqrstuvwxyzabcdef/background.png');
 ```
 
 Here's an example of using `@@bidi_*` messages in a CSS file:
@@ -127,9 +127,9 @@ div#header {
 For left-to-right languages such as English, the bold lines become:
 
 ```css
-dir: ltr;
-padding-left: 0;
-padding-right: 1.5em;
+  dir: ltr;
+  padding-left: 0;
+  padding-right: 1.5em;
 ```
 
 ## Locales
@@ -282,8 +282,8 @@ function getMessage() {
 Here's how you'd supply and use a single string:
 
 ```js
-// In JavaScript code
-status.innerText = chrome.i18n.getMessage("error", errorDetails);
+  // In JavaScript code
+  status.innerText = chrome.i18n.getMessage("error", errorDetails);
 ```
 
 ```json
@@ -309,10 +309,10 @@ separating each accept-language with ','.
 
 ```js
 function getAcceptLanguages() {
-  chrome.i18n.getAcceptLanguages(function (languageList) {
+  chrome.i18n.getAcceptLanguages(function(languageList) {
     var languages = languageList.join(",");
     document.getElementById("languageSpan").innerHTML = languages;
-  });
+  })
 }
 ```
 
@@ -325,15 +325,14 @@ strings separated by new lines.
 
 ```js
 function detectLanguage(inputText) {
-  chrome.i18n.detectLanguage(inputText, function (result) {
+  chrome.i18n.detectLanguage(inputText, function(result) {
     var outputLang = "Detected Language: ";
     var outputPercent = "Language Percentage: ";
-    for (i = 0; i < result.languages.length; i++) {
+    for(i = 0; i < result.languages.length; i++) {
       outputLang += result.languages[i].language + " ";
-      outputPercent += result.languages[i].percentage + " ";
+      outputPercent +=result.languages[i].percentage + " ";
     }
-    document.getElementById("languageSpan").innerHTML =
-      outputLang + "\n" + outputPercent + "\nReliable: " + result.isReliable;
+    document.getElementById("languageSpan").innerHTML = outputLang + "\n" + outputPercent + "\nReliable: " + result.isReliable;
   });
 }
 ```

@@ -56,10 +56,10 @@ In order to write file systems which are file handlers (source is `"file"`) the 
 
 If the source is network or a device, then the file system should be mounted when [onMountRequested](#event-onMountRequested) event is called.
 
-| [Source](#manifest-source) of the file system data | Entry point                                 |
-| -------------------------------------------------- | ------------------------------------------- |
-| `"file"`                                           | Available to packaged apps only.            |
-| `"device"` or `"network"`                          | [onMountRequested](#event-onMountRequested) |
+| [Source](#manifest-source) of the file system data | Entry point |
+|----------------------------------------------------|-------------|
+| `"file"` | Available to packaged apps only. |
+| `"device"` or `"network"` | [onMountRequested](#event-onMountRequested) |
 
 ## Configuring file systems
 

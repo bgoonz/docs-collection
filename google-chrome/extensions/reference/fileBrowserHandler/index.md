@@ -51,8 +51,8 @@ To use this API, you must implement a function that handles the `onExecute` even
 
 ```js
 chrome.fileBrowserHandler.onExecute.addListener(async (id, details) => {
-  if (id !== "upload") {
-    return; // check if you have multiple file_browser_handlers
+  if (id !== 'upload') {
+    return;  // check if you have multiple file_browser_handlers
   }
 
   for (const entry of detail.entries) {

@@ -46,21 +46,17 @@ The following code gets the standard font for Arabic.
 
 ```js
 chrome.fontSettings.getFont(
-  { genericFamily: "standard", script: "Arab" },
-  function (details) {
-    console.log(details.fontId);
-  }
+  { genericFamily: 'standard', script: 'Arab' },
+  function(details) { console.log(details.fontId); }
 );
 ```
 
 The next snippet sets the sans-serif font for Japanese.
 
 ```js
-chrome.fontSettings.setFont({
-  genericFamily: "sansserif",
-  script: "Jpan",
-  fontId: "MS PGothic",
-});
+chrome.fontSettings.setFont(
+  { genericFamily: 'sansserif', script: 'Jpan', fontId: 'MS PGothic' }
+);
 ```
 
 You can find a sample extension using the Font Settings API in the [examples/api/fontSettings][3]
