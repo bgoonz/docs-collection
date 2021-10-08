@@ -16,8 +16,7 @@ For background information about Bluetooth, see the official [Bluetooth specific
 
 {% endAside %}
 
-Manifest requirements {: \#manifest }
--------------------------------------
+## Manifest requirements {: \#manifest }
 
 For Chrome Apps that use Bluetooth, add the [bluetooth](/docs/apps/manifest/bluetooth/) entry to the manifest and specify, if appropriate, the UUIDs of profiles, protocols or services you wish to implement along with whether you wish to implement these with the socket and/or Low Energy APIs.
 
@@ -39,10 +38,9 @@ To only access adapter state, discover nearby devices, and obtain basic informat
 
     "bluetooth": {}
 
-Adapter information {: \#adapter\_info }
-----------------------------------------
+## Adapter information {: \#adapter_info }
 
-### Obtaining adapter state {: \#adapter\_state }
+### Obtaining adapter state {: \#adapter_state }
 
 To obtain the state of the Bluetooth adapter, use the [bluetooth.getAdapterState](/docs/extensions/reference/bluetooth/#method-getAdapterState) method:
 
@@ -50,7 +48,7 @@ To obtain the state of the Bluetooth adapter, use the [bluetooth.getAdapterState
       console.log("Adapter " + adapter.address + ": " + adapter.name);
     });
 
-### Adapter notifications {: \#adapter\_notifications }
+### Adapter notifications {: \#adapter_notifications }
 
 The [bluetooth.onAdapterStateChanged](/docs/extensions/reference/bluetooth/#event-onAdapterStateChanged) event is sent whenever the adapter state changes. This can be used, for example, to determine when the adapter radio is powered on or off.
 
@@ -71,10 +69,9 @@ The [bluetooth.onAdapterStateChanged](/docs/extensions/reference/bluetooth/#even
         }
       });
 
-Device information {: \#device\_info }
---------------------------------------
+## Device information {: \#device_info }
 
-### Listing known devices {: \#listing\_devices }
+### Listing known devices {: \#listing_devices }
 
 To get a list of the devices known to the Bluetooth adapter, use the [bluetooth.getDevices](/docs/extensions/reference/bluetooth/#method-getDevices) method:
 
@@ -86,7 +83,7 @@ To get a list of the devices known to the Bluetooth adapter, use the [bluetooth.
 
 All devices are returned, including paired devices and devices recently discovered. It will not begin discovery of new devices (see [Discovering nearby devices](#discovery)).
 
-### Receiving device notifications {: \#device\_notifications }
+### Receiving device notifications {: \#device_notifications }
 
 Instead of repeatedly calling [bluetooth.getDevices](/docs/extensions/reference/bluetooth/#method-getDevices), you can use the [bluetooth.onDeviceAdded](/docs/extensions/reference/bluetooth/#event-onDeviceAdded), [bluetooth.onDeviceChanged](/docs/extensions/reference/bluetooth/#event-onDeviceChanged) and [bluetooth.onDeviceRemoved](/docs/extensions/reference/bluetooth/#event-onDeviceRemoved) events to receive notifications.
 
@@ -153,7 +150,7 @@ Example:
 
 If the user turns off the Bluetooth radio, all discovery sessions will be ended and not resumed automatically when the radio is switched on. If this matters to your app, you should watch the [bluetooth.onAdapterStateChanged](/docs/extensions/reference/bluetooth/#event-onAdapterStateChanged) event. If the `discovering` property changes to `false`, then your app will need to call [bluetooth.startDiscovery](/docs/extensions/reference/bluetooth/#method-startDiscovery) again to resume. Be cautious of the resource intensive nature of discovery.
 
-### Identifying devices {: \#identifying\_devices }
+### Identifying devices {: \#identifying_devices }
 
 A number of different options are provided for identifying devices returned by [bluetooth.getDevices](/docs/extensions/reference/bluetooth/#method-getDevices) and the related events.
 
@@ -194,8 +191,7 @@ Parsing the field can be complex so for the most common device types Chrome hand
       }
     });
 
-Using RFCOMM and L2CAP {: \#using\_rfcomm }
--------------------------------------------
+## Using RFCOMM and L2CAP {: \#using_rfcomm }
 
 Chrome Apps may make connections to any device that supports RFCOMM or L2CAP services. This includes the majority of classic Bluetooth devices on the market.
 
@@ -262,8 +258,7 @@ To hang up the connection and disconnect the socket use [bluetoothSocket.disconn
 
     chrome.bluetoothSocket.disconnect(socketId);
 
-Publishing services
--------------------
+## Publishing services
 
 In addition to making outbound connections to devices, Chrome Apps may publish services that may be used by any device that supports RFCOMM or L2CAP.
 
@@ -311,14 +306,13 @@ To stop accepting client connections and unpublish the service use [bluetoothSoc
 
     chrome.bluetoothSocket.disconnect(serverSocketId);
 
-Interacting with Low Energy devices {: \#low-energy }
------------------------------------------------------
+## Interacting with Low Energy devices {: \#low-energy }
 
 Bluetooth Low Energy or (Bluetooth Smart) is a wireless technology aimed at reduced power consumption. The [Bluetooth Low Energy](/docs/extensions/reference/bluetoothLowEnergy) API allows applications to implement the central role in a LE connection to a peripheral. The following sections describe how to discover, connect to, and interact with Bluetooth Low Energy peripherals.
 
 ### Discovering and connecting to peripherals {: \#le-discovery }
 
-As with traditional Bluetooth devices, LE peripherals can be discovered using the methods described in [Discovering nearby devices](#discovery) . An LE device makes itself discoverable by sending data packets called “Advertising Data” and the device is said to be in *advertising mode*. The advertising data may contain UUIDs of services that are available on the device. If present, these UUIDs will be accessible using the `uuids` property of the corresponding [bluetooth.Device](/docs/extensions/reference/bluetooth/#type-Device) object.
+As with traditional Bluetooth devices, LE peripherals can be discovered using the methods described in [Discovering nearby devices](#discovery) . An LE device makes itself discoverable by sending data packets called “Advertising Data” and the device is said to be in _advertising mode_. The advertising data may contain UUIDs of services that are available on the device. If present, these UUIDs will be accessible using the `uuids` property of the corresponding [bluetooth.Device](/docs/extensions/reference/bluetooth/#type-Device) object.
 
 Once discovered, an LE device can be connected to by calling [bluetoothLowEnergy.connect](/docs/extensions/reference/bluetoothLowEnergy#method-connect) so that the application can interact with its services:
 
@@ -347,15 +341,15 @@ Once your application no longer needs to be connected, it can remove its claim o
 
 Note that this won’t necessarily destroy the physical link to the device, as there may be other applications who have active connections to the device. Sometimes the device might become disconnected due to reasons that are beyond the control of the application (e.g. if the device disappears or gets explicitly disconnected by the user through utilities of the operating system). Your application should observe the [bluetooth.onDeviceChanged](/docs/extensions/reference/bluetooth/#event-onDeviceChanged) event to get notified of changes to the connection and reconnect if necessary.
 
-Once connected, the device that is running Chrome will be in the so called *central role*, while the remote device is said to be in the *peripheral role*. At this point, your application can interact with the services on the device using the methods described in the following section. *Note:* The APIs currently do not support acting as a LE peripheral; apps can only implement the central role.
+Once connected, the device that is running Chrome will be in the so called _central role_, while the remote device is said to be in the _peripheral role_. At this point, your application can interact with the services on the device using the methods described in the following section. _Note:_ The APIs currently do not support acting as a LE peripheral; apps can only implement the central role.
 
 ### Services, Characteristics, and Descriptors {: \#gatt }
 
-Bluetooth Low Energy is based on a simple request-response protocol called the *Attribute Protocol* (ATT). Using ATT, a central device interacts with the so called *attributes* on a peripheral device by conforming to a special Bluetooth profile called the *Generic Attribute Profile* (GATT). GATT defines the following high level concepts:
+Bluetooth Low Energy is based on a simple request-response protocol called the _Attribute Protocol_ (ATT). Using ATT, a central device interacts with the so called _attributes_ on a peripheral device by conforming to a special Bluetooth profile called the _Generic Attribute Profile_ (GATT). GATT defines the following high level concepts:
 
--   Service: A GATT service represents a collection of data and associated behaviors to accomplish a particular function of a device. For example, a heart rate monitor will typically have at least one “Heart Rate Service”. Information about a GATT service is contained in a [bluetoothLowEnergy.Service](/docs/extensions/reference/bluetoothLowEnergy#type-Service) object.
--   Characteristic: A GATT characteristic is a basic data element used to construct a GATT service, containing a value along with properties that define how that value can be accessed. For example, the “Heart Rate Service” has the “Heart Rate Measurement” characteristic, which is used to obtain the value of the user’s heart rate. Information about a GATT characteristic is contained in a [bluetoothLowEnergy.Characteristic](/docs/extensions/reference/bluetoothLowEnergy#type-Characteristic) object.
--   Descriptor: A GATT characteristic descriptor contains further information about a characteristic. Information about a GATT characteristic descriptor is contained in a [bluetoothLowEnergy.Descriptor](/docs/extensions/reference/bluetoothLowEnergy#type-Descriptor) object.
+- Service: A GATT service represents a collection of data and associated behaviors to accomplish a particular function of a device. For example, a heart rate monitor will typically have at least one “Heart Rate Service”. Information about a GATT service is contained in a [bluetoothLowEnergy.Service](/docs/extensions/reference/bluetoothLowEnergy#type-Service) object.
+- Characteristic: A GATT characteristic is a basic data element used to construct a GATT service, containing a value along with properties that define how that value can be accessed. For example, the “Heart Rate Service” has the “Heart Rate Measurement” characteristic, which is used to obtain the value of the user’s heart rate. Information about a GATT characteristic is contained in a [bluetoothLowEnergy.Characteristic](/docs/extensions/reference/bluetoothLowEnergy#type-Characteristic) object.
+- Descriptor: A GATT characteristic descriptor contains further information about a characteristic. Information about a GATT characteristic descriptor is contained in a [bluetoothLowEnergy.Descriptor](/docs/extensions/reference/bluetoothLowEnergy#type-Descriptor) object.
 
 The [Bluetooth Low Energy](/docs/extensions/reference/bluetoothLowEnergy) API allows applications to find information about a device’s services, characteristics, and descriptors by calling [bluetoothLowEnergy.getServices](/docs/extensions/reference/bluetoothLowEnergy#method-getServices), [bluetoothLowEnergy.getCharacteristics](/docs/extensions/reference/bluetoothLowEnergy#method-getCharacteristics), and [bluetoothLowEnergy.getDescriptors](/docs/extensions/reference/bluetoothLowEnergy#method-getDescriptors). Apps can filter through services, characteristics, and descriptors by comparing their `uuid` field to the desired GATT UUID:
 
@@ -429,7 +423,7 @@ Some peripherals may modify their services, e.g. the characteristics of a servi
 
 ### Reading and writing a characteristic’s value {: \#gatt-read-write }
 
-A GATT characteristic encodes one aspect of its service. A central app reads, acts on, and modifies the state of a peripheral’s service by operating on a characteristic’s value. The characteristic value is a sequence of bytes and its meaning is defined by the high-level specification that defines a certain characteristic. For example, the value of the *Heart Rate Measurement* characteristic encodes the user’s heart rate and the total amount of calories they burned, while the *Body Sensor Location* characteristic encodes where in the body the heart rate sensor should be worn.
+A GATT characteristic encodes one aspect of its service. A central app reads, acts on, and modifies the state of a peripheral’s service by operating on a characteristic’s value. The characteristic value is a sequence of bytes and its meaning is defined by the high-level specification that defines a certain characteristic. For example, the value of the _Heart Rate Measurement_ characteristic encodes the user’s heart rate and the total amount of calories they burned, while the _Body Sensor Location_ characteristic encodes where in the body the heart rate sensor should be worn.
 
 Chrome provides the [bluetoothLowEnergy.readCharacteristicValue](/docs/extensions/reference/bluetoothLowEnergy#method-readCharacteristicValue) method to read the value of a characteristic:
 
@@ -446,7 +440,7 @@ Chrome provides the [bluetoothLowEnergy.readCharacteristicValue](/docs/extension
       ...
     });
 
-Some characteristics are writable, especially those that behave as “Control Points”, where writing the value has side effects. For example, the *Heart Rate Control Point* characteristic is used to tell a heart rate sensor to reset its count of total calories burned and only supports writes. To achieve this, Chrome provides the [bluetoothLowEnergy.writeCharacteristicValue](/docs/extensions/reference/bluetoothLowEnergy#method-writeCharacteristicValue) method:
+Some characteristics are writable, especially those that behave as “Control Points”, where writing the value has side effects. For example, the _Heart Rate Control Point_ characteristic is used to tell a heart rate sensor to reset its count of total calories burned and only supports writes. To achieve this, Chrome provides the [bluetoothLowEnergy.writeCharacteristicValue](/docs/extensions/reference/bluetoothLowEnergy#method-writeCharacteristicValue) method:
 
     var myBytes = new Uint8Array([ ... ]);
     chrome.bluetoothLowEnergy.writeCharacteristicValue(chrc.instanceId,
@@ -467,7 +461,7 @@ To check if a characteristic supports reads or writes, an application can check 
 
 ### Handling value notifications {: \#gatt-notifications }
 
-Some characteristics make their value known using notifications or indications. For example the *Heart Rate Measurement* characteristic is neither readable nor writable but sends updates on its current value at regular intervals. Applications can listen to these notifications using the [bluetoothLowEnergy.onCharacteristicValueChanged](/docs/extensions/reference/bluetoothLowEnergy#event-onCharacteristicValueChanged) event.
+Some characteristics make their value known using notifications or indications. For example the _Heart Rate Measurement_ characteristic is neither readable nor writable but sends updates on its current value at regular intervals. Applications can listen to these notifications using the [bluetoothLowEnergy.onCharacteristicValueChanged](/docs/extensions/reference/bluetoothLowEnergy#event-onCharacteristicValueChanged) event.
 
       chrome.bluetoothLowEnergy.onCharacteristicValueChanged.addListener(
           function(chrc) {

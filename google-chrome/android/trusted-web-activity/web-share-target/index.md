@@ -10,8 +10,7 @@ Along the same lines, a full explanation of the Web Share Target implementation 
 
 The demo application at <https://scrapbook-pwa.web.app/> will be used as the PWA for this article, and its source code is available on [Github](https://github.com/GoogleChrome/samples/tree/gh-pages/web-share), and the Android Application is based on the [basic Trusted Web Activity demo](https://github.com/GoogleChrome/android-browser-helper/tree/master/demos/twa-basic).
 
-Add Web Share Target to the Android app
----------------------------------------
+## Add Web Share Target to the Android app
 
 In order to modify an existing Trusted Web Activity based application to implement Web Share Target, modifications to three different files are required:
 
@@ -105,8 +104,7 @@ Finally, two new items need to be added to the LauncherActivity activity tag: - 
 
 As can be seen in the markup above, a `data` element should be added for each `mime-type` declared in the `share_target` JSON.
 
-Conclusion
-----------
+## Conclusion
 
 The Web Share Target integration enables PWAs inside a Trusted Web Activity to be more deeply integrated with other applications installed on an Android device.
 
@@ -114,8 +112,7 @@ As described in the steps above, the additional markup needed to add support for
 
 Check out the [Web Share Target article](https://web.dev/web-share-target/) to learn more using the API on a PWA and the [Web Share API](https://web.dev/web-share/) to learn how to share content from the Progressive Web App.
 
-Troubleshooting
----------------
+## Troubleshooting
 
 **My application doesn’t show as an option when I try to share a file from another application.**
 
@@ -125,5 +122,5 @@ When the application doesn’t show as an option, this indicates that the `inten
 
 There are a few things that can cause this. This is a checklist of things to look at:
 
--   Ensure that the Digital Asset Links validation is successful.
--   Check the JSON inside strings.xml for correctness.
+- Ensure that the Digital Asset Links validation is successful.
+- Check the JSON inside strings.xml for correctness.

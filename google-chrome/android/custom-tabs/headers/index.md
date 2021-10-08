@@ -10,8 +10,7 @@ HTTP requests contain headers such as User-Agent or Content-Type. Apart from hea
 
 This article shows how to set up a verified connection between the server and client and use that to send whitelisted as well as non-whitelisted http headers. You can skip to [Adding Extra Headers to CustomTab Intents](#adding-extra-headers) for the code.
 
-Background
-----------
+## Background
 
 ### Whitelisted vs. Non-whitelisted CORS Request Headers
 
@@ -39,7 +38,7 @@ Attaching non-whitelisted headers to CORS requests is discouraged by the HTML st
 
     Bundle headers = new Bundle();
     headers.putString("bearer-token", "Some token");
-    headers.putString("redirect-url", "Some redirect url");   
+    headers.putString("redirect-url", "Some redirect url");
     intent.intent.putExtra(Browser.EXTRA_HEADERS, headers);
 
     intent.launchUrl(Activity.this, Uri.parse("http://www.google.com"));
@@ -48,14 +47,13 @@ We can always attach whitelisted headers to custom tabs CORS requests. However, 
 
 The supported way of including non-whitelisted headers in custom tabs is to first verify the cross-origin connection using a digital access link. The next section shows how to set these up and launch a Custom Tabs intent with the required headers.
 
-Adding Extra Headers to CustomTab Intents {: \#adding-extra-headers }
----------------------------------------------------------------------
+## Adding Extra Headers to CustomTab Intents {: \#adding-extra-headers }
 
 ### Set up digital asset links
 
 To allow non-whitelisted headers to be passed through custom tab intents, it is necessary to set up a digital asset link between the android and web application that verifies that the author owns both applications.
 
-Follow the [official guide](https://developers.google.com/digital-asset-links/v1/getting-started) to set up a digital asset link. For the link relation use “delegate\_permission/common.use\_as\_origin”\` which indicates that both apps belong to the same origin once the link is verified.
+Follow the [official guide](https://developers.google.com/digital-asset-links/v1/getting-started) to set up a digital asset link. For the link relation use “delegate_permission/common.use_as_origin”\` which indicates that both apps belong to the same origin once the link is verified.
 
 ### Create Custom Tab Intent with Extra Headers
 
@@ -85,13 +83,13 @@ It is encouraged to call `CustomTabsClient.warmup()`. It allows the browser appl
     // Set up a connection that warms up and validates a session.
     CustomTabsServiceConnection connection = new CustomTabsServiceConnection() {
         @Override
-        public void onCustomTabsServiceConnected(@NonNull ComponentName name, 
+        public void onCustomTabsServiceConnected(@NonNull ComponentName name,
             @NonNull CustomTabsClient client) {
             // Create session after service connected.
             mSession = client.newSession(callback);
             client.warmup(0);
             // Validate the session as the same origin to allow cross origin headers.
-            mSession.validateRelationship(CustomTabsService.RELATION_USE_AS_ORIGIN, 
+            mSession.validateRelationship(CustomTabsService.RELATION_USE_AS_ORIGIN,
                 Uri.parse(url), null);
         }
         @Override
@@ -105,7 +103,7 @@ The `CustomTabsCallback` was passed into the session. We set up its `onRelations
     // Set up a callback that launches the intent after session validated.
     CustomTabsCallback callback = new CustomTabsCallback() {
         @Override
-        public void onRelationshipValidationResult(int relation, @NonNull Uri requestedOrigin, 
+        public void onRelationshipValidationResult(int relation, @NonNull Uri requestedOrigin,
             boolean result, @Nullable Bundle extras) {
             // Launch custom tabs intent after session was validated as the same origin.
             CustomTabsIntent intent = constructExtraHeadersIntent(mSession);
@@ -131,7 +129,6 @@ Binding the service launches the service and the connection’s `onCustomTabsSer
 
 You can find more details about Custom Tabs Service [here](/docs/android/custom-tabs/integration-guide#connect_to_the_custom_tabs_service). See the [android-browser-helper](https://github.com/GoogleChrome/android-browser-helper/tree/master/demos) GitHub repository for a working example app.
 
-Summary
--------
+## Summary
 
 This guide demonstated how to add arbitrary headers to custom tabs CORS requests. Whitelisted headers can be attached to every custom tabs CORS request. Non-whitelisted headers are generally considered unsafe in CORS requests and chrome filters them by default. Attaching them is allowed only for clients and servers of the same origin, verified by a digital asset link.

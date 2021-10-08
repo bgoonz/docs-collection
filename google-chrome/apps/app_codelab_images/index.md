@@ -8,26 +8,24 @@
 
 {% Aside %}
 
-**Want to start fresh from here?** Find the previous step’s code in the [reference code zip](https://github.com/mangini/io13-codelab/archive/master.zip) under ***cheat\_code &gt; solution\_for\_step4***.
+**Want to start fresh from here?** Find the previous step’s code in the [reference code zip](https://github.com/mangini/io13-codelab/archive/master.zip) under **_cheat_code &gt; solution_for_step4_**.
 
 {% endAside %}
 
 In this step, you will learn:
 
--   How to load resources from outside your app and add them to the DOM through XHR and ObjectURLs.
+- How to load resources from outside your app and add them to the DOM through XHR and ObjectURLs.
 
-*Estimated time to complete this step: 20 minutes.*  
+_Estimated time to complete this step: 20 minutes._  
 To preview what you will complete in this step, [jump down to the bottom of this page ↓](#launch).
 
-How CSP affects the use of external resources {: \#csp-compliance }
--------------------------------------------------------------------
+## How CSP affects the use of external resources {: \#csp-compliance }
 
 The Chrome Apps platform forces your app to be fully compliant with Content Security Policies (CSP). You can’t directly load DOM resources like images, fonts, and CSS from outside of your Chrome App package.
 
 If you want to show an external image in your app, you need to request it via [XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest), transform it into a [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob), and create an [ObjectURL](https://developer.mozilla.org/en-US/docs/Web/API/URL.createObjectURL). This `ObjectURL` can be added to the DOM because it refers to an in-memory item in the context of the app.
 
-Show thumbnail images for todo items {: \#show-images }
--------------------------------------------------------
+## Show thumbnail images for todo items {: \#show-images }
 
 Let’s change our app to look for image URLs in a todo item. If the URL looks like an image (for example, ends with .png, .jpg, .svg, or .gif), apply the process mentioned above in order to show an image thumbnail next to the URL.
 
@@ -35,14 +33,14 @@ Let’s change our app to look for image URLs in a todo item. If the URL looks l
 
 In a Chrome App, you can make XMLHttpRequest calls to any URL as long as you specify its domain in the manifest. Since you won’t know beforehand what image URL the user will type, ask permission to make requests to `"<all_urls>"`.
 
-In ***manifest.json***, request the “” permission:
+In **_manifest.json_**, request the “” permission:
 
     "permissions": ["storage", "alarms", "notifications",
                     "webview", "<all_urls>"],
 
 ### Create and clear ObjectURLs {: \#object-urls }
 
-In ***controller.js***, add a `_createObjectURL()` method to create ObjectURLs from a Blob:
+In **_controller.js_**, add a `_createObjectURL()` method to create ObjectURLs from a Blob:
 
     Controller.prototype._createObjectURL = function(blob) {
       var objURL = URL.createObjectURL(blob);
@@ -51,7 +49,7 @@ In ***controller.js***, add a `_createObjectURL()` method to create ObjectURLs f
       return objURL;
     };
 
-ObjectURLs hold memory, so when you no longer need the ObjectURL, you should revoke them. Add this `_clearObjectURL()` method to *controller.js* to handle that:
+ObjectURLs hold memory, so when you no longer need the ObjectURL, you should revoke them. Add this `_clearObjectURL()` method to _controller.js_ to handle that:
 
     Controller.prototype._clearObjectURL = function() {
       if (this.objectURLs) {
@@ -152,15 +150,14 @@ Do the same for `editItem()`:
 
 ### Constrain the displayed image dimensions {: \#css }
 
-Finally, in ***bower\_components/todomvc-common/base.css***, add a CSS rule to limit the size of the image:
+Finally, in **_bower_components/todomvc-common/base.css_**, add a CSS rule to limit the size of the image:
 
     .thumbnail img[data-src] {
       max-width: 100px;
       max-height: 28px;
     }
 
-Launch your finished Todo app {: \#launch }
--------------------------------------------
+## Launch your finished Todo app {: \#launch }
 
 You are done Step 5! Reload your app and add a todo item with a URL to an image hosted online. Some URLs you could use: **http://goo.gl/nqHMF\#.jpg** or **http://goo.gl/HPBGR\#.png**.
 
@@ -170,12 +167,11 @@ You are done Step 5! Reload your app and add a todo item with a URL to an image 
 
 {% endAside %}
 
-For more information {: \#recap }
----------------------------------
+## For more information {: \#recap }
 
 For more detailed information about some of the APIs introduced in this step, refer to:
 
--   [Content Security Policy](/apps/contentSecurityPolicy "Read 'Content Security Policy' in the Chrome developer docs") [↑](#csp-compliance "This feature mentioned in 'Learn how CSP affects the use of external web resources'")
--   [Declare Permissions](/apps/declare_permissions "Read 'Declare Permissions' in the Chrome developer docs") [↑](#update-permissions "This feature mentioned in 'Update permissions'")
+- [Content Security Policy](/apps/contentSecurityPolicy "Read 'Content Security Policy' in the Chrome developer docs") [↑](#csp-compliance "This feature mentioned in 'Learn how CSP affects the use of external web resources'")
+- [Declare Permissions](/apps/declare_permissions "Read 'Declare Permissions' in the Chrome developer docs") [↑](#update-permissions "This feature mentioned in 'Update permissions'")
 
 Ready to continue onto the next step? Go to [Step 6 - Export todos to the filesystem »](../app_codelab_filesystem)

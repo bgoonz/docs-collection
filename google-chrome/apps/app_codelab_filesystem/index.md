@@ -8,20 +8,19 @@
 
 {% Aside %}
 
-**Want to start fresh from here?** Find the previous step’s code in the [reference code zip](https://github.com/mangini/io13-codelab/archive/master.zip) under ***cheat\_code &gt; solution\_for\_step5***.
+**Want to start fresh from here?** Find the previous step’s code in the [reference code zip](https://github.com/mangini/io13-codelab/archive/master.zip) under **_cheat_code &gt; solution_for_step5_**.
 
 {% endAside %}
 
 In this step, you will learn:
 
--   How to get a reference to a file in the external filesystem.
--   How to write to the filesystem.
+- How to get a reference to a file in the external filesystem.
+- How to write to the filesystem.
 
-*Estimated time to complete this step: 20 minutes.*  
+_Estimated time to complete this step: 20 minutes._  
 To preview what you will complete in this step, [jump down to the bottom of this page ↓](#launch).
 
-Export todos {: \#export-todos }
---------------------------------
+## Export todos {: \#export-todos }
 
 This step adds an export button to the app. When clicked, the current todo items are saved to a text file selected by the user. If the file exists, it’s replaced. Otherwise, a new file gets created.
 
@@ -38,20 +37,20 @@ File system permissions can be requested as a string for read-only access, or an
     // Read, write, autocomplate previous input, and select folder directories instead of files
     "permissions": [{"fileSystem": ["write", "retainEntries", "directory"]}]
 
-You need read and write access. In *manifest.json*, request the `{fileSystem: [ "write" ] }` permission:
+You need read and write access. In _manifest.json_, request the `{fileSystem: [ "write" ] }` permission:
 
     "permissions": [
-      "storage", 
-      "alarms", 
-      "notifications", 
+      "storage",
+      "alarms",
+      "notifications",
       "webview",
-      "<all_urls>", 
-      { "fileSystem": ["write"] } 
+      "<all_urls>",
+      { "fileSystem": ["write"] }
     ],
 
 ### Update HTML view {: \#update-html-view }
 
-In *index.html*, add an **Export to disk** button and a `div` where the app shows a status message:
+In _index.html_, add an **Export to disk** button and a `div` where the app shows a status message:
 
     <footer id="info">
       <button id="toggleAlarm">Activate alarm</button>
@@ -60,7 +59,7 @@ In *index.html*, add an **Export to disk** button and a `div` where the app show
       ...
     </footer>
 
-Also in *index.html*, load the *export.js* script:
+Also in _index.html_, load the _export.js_ script:
 
     ...
     <script src="js/alarms.js"></script>
@@ -68,7 +67,7 @@ Also in *index.html*, load the *export.js* script:
 
 ### Create export script {: \#create-js }
 
-Create a new JavaScript file named *export.js* using the code below. Save it in the *js* folder.
+Create a new JavaScript file named _export.js_ using the code below. Save it in the _js_ folder.
 
     (function() {
 
@@ -89,7 +88,7 @@ Create a new JavaScript file named *export.js* using the code below. Save it in 
 
     })();
 
-Right now, *export.js* only contains a click listener on the **Export to disk** button and stubs for `getTodosAsText()`, `exportToFileEntry`, and `doExportToDisk()`.
+Right now, _export.js_ only contains a click listener on the **Export to disk** button and stubs for `getTodosAsText()`, `exportToFileEntry`, and `doExportToDisk()`.
 
 ### Get todo items as text {: \#get-todos-as-text }
 
@@ -189,7 +188,7 @@ Update `exportToFileEntry()` to save the todos as text via the `FileEntry` Web A
 
 Use `fileEntry.createWriter()` to create a `FileWriter` object. `fileWriter.write()` can then write a [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob) to the filesystem. Use `fileWriter.onwriteend()` and `fileWriter.onerror()` to update the status `div`.
 
-For more information about `FileEntry`, read [*Exploring the FileSystem APIs*](http://www.html5rocks.com/en/tutorials/file/filesystem/) on HTML5Rocks, or refer to the [`FileEntry docs`](https://developer.mozilla.org/en-US/docs/Web/API/FileEntry) on MDN.
+For more information about `FileEntry`, read [_Exploring the FileSystem APIs_](http://www.html5rocks.com/en/tutorials/file/filesystem/) on HTML5Rocks, or refer to the [`FileEntry docs`](https://developer.mozilla.org/en-US/docs/Web/API/FileEntry) on MDN.
 
 ### Persist FileEntry objects {: \#persistance }
 
@@ -197,24 +196,22 @@ For more information about `FileEntry`, read [*Exploring the FileSystem APIs*](h
 
 If you wish, experiment by saving the ID returned by [retainEntry()](/apps/fileSystem#method-retainEntry) and restoring it on app restart. (Hint: Add a listener to the `onRestarted` event in the background page.)
 
-Launch your finished Todo app {: \#launch }
--------------------------------------------
+## Launch your finished Todo app {: \#launch }
 
 You are done Step 6! Reload your app and add some todos. Click **Export to disk** to export your todos to a .txt file.
 
 {% Img src=“image/BrQidfK9jaQyIHwdw91aVpkPiib2/D5YDP8PChoRlsCxAOkPa.png”, alt=“The Todo app with exported todos”, height=“650”, width=“659” %}
 
-For more information {: \#recap }
----------------------------------
+## For more information {: \#recap }
 
 For more detailed information about some of the APIs introduced in this step, refer to:
 
--   [Using the Chrome Filesystem API](/apps/app_storage#filesystem "Read 'Using the Chrome Filesystem API' in the Chrome developer docs") [↑](#export-todos "This feature mentioned in 'Export todos'")
--   [Declare Permissions](/apps/declare_permissions "Read 'Declare Permissions' in the Chrome developer docs") [↑](#update-permissions "This feature mentioned in 'Update permissions'")
--   [chrome.storage.local.get()](/apps/storage#method-StorageArea-get "Read 'chrome.storage.local.get()' in the Chrome developer docs") [↑](#get-todos-as-text "This feature mentioned in 'Get todo items as text'")
--   [chrome.fileSystem.chooseEntry()](/apps/fileSystem#method-chooseEntry "Read 'chrome.fileSystem.chooseEntry()' in the Chrome developer docs") [↑](#choose-file "This feature mentioned in 'Choose a file'")
--   [chrome.fileSystem.getDisplayPath()](/apps/fileSystem#method-getDisplayPath "Read 'chrome.fileSystem.getDisplayPath()' in the Chrome developer docs") [↑](#use-fileentry "This feature mentioned in 'Use FileEntry to write todos items to disk'")
--   [chrome.fileSystem.restoreEntry()](/apps/fileSystem#method-restoreEntry "Read 'chrome.fileSystem.restoreEntry()' in the Chrome developer docs") [↑](#persistance "This feature mentioned in 'Persist FileEntry objects'")
--   [chrome.fileSystem.retainEntry()](/apps/fileSystem#method-retainEntry "Read 'chrome.fileSystem.retainEntry()' in the Chrome developer docs") [↑](#persistance "This feature mentioned in 'Persist FileEntry objects'")
+- [Using the Chrome Filesystem API](/apps/app_storage#filesystem "Read 'Using the Chrome Filesystem API' in the Chrome developer docs") [↑](#export-todos "This feature mentioned in 'Export todos'")
+- [Declare Permissions](/apps/declare_permissions "Read 'Declare Permissions' in the Chrome developer docs") [↑](#update-permissions "This feature mentioned in 'Update permissions'")
+- [chrome.storage.local.get()](/apps/storage#method-StorageArea-get "Read 'chrome.storage.local.get()' in the Chrome developer docs") [↑](#get-todos-as-text "This feature mentioned in 'Get todo items as text'")
+- [chrome.fileSystem.chooseEntry()](/apps/fileSystem#method-chooseEntry "Read 'chrome.fileSystem.chooseEntry()' in the Chrome developer docs") [↑](#choose-file "This feature mentioned in 'Choose a file'")
+- [chrome.fileSystem.getDisplayPath()](/apps/fileSystem#method-getDisplayPath "Read 'chrome.fileSystem.getDisplayPath()' in the Chrome developer docs") [↑](#use-fileentry "This feature mentioned in 'Use FileEntry to write todos items to disk'")
+- [chrome.fileSystem.restoreEntry()](/apps/fileSystem#method-restoreEntry "Read 'chrome.fileSystem.restoreEntry()' in the Chrome developer docs") [↑](#persistance "This feature mentioned in 'Persist FileEntry objects'")
+- [chrome.fileSystem.retainEntry()](/apps/fileSystem#method-retainEntry "Read 'chrome.fileSystem.retainEntry()' in the Chrome developer docs") [↑](#persistance "This feature mentioned in 'Persist FileEntry objects'")
 
 Ready to continue onto the next step? Go to [Step 7 - Publish your app »](../app_codelab_publish)

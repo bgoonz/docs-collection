@@ -16,8 +16,7 @@ Isolated content cannot directly access the app’s data or any of the APIs. Use
 
 {% endAside %}
 
-Referencing external resources {: \#external }
-----------------------------------------------
+## Referencing external resources {: \#external }
 
 The [Content Security Policy](contentSecurityPolicy) used by apps disallows the use of many kinds of remote URLs, so you can’t directly reference external images, stylesheets, or fonts from an app page. Instead, you can use use cross-origin XMLHttpRequests to fetch these resources, and then serve them via `blob:` URLs.
 
@@ -47,8 +46,7 @@ Fetch the remote URL into the app and serve its contents as a `blob:` URL:
 
 You may want to [save](offline_apps#saving-locally) these resources locally, so that they are available offline.
 
-Embed external web pages {: \#webview }
----------------------------------------
+## Embed external web pages {: \#webview }
 
 {% Aside %}
 
@@ -58,7 +56,7 @@ Embed external web pages {: \#webview }
 
 The [`webview`](webview_tag) tag allows you to embed external web content in your app, for example, a web page. It replaces iframes that point to remote URLs, which are disabled inside Chrome Apps. Unlike iframes, the `webview` tag runs in a separate process. This means that an exploit inside of it will still be isolated and won’t be able to gain elevated privileges. Further, since its storage (cookies, etc.) is isolated from the app, there is no way for the web content to access any of the app’s data.
 
-### Add webview element {: \#webview\_element }
+### Add webview element {: \#webview_element }
 
 Your `webview` element must include the URL to the source content and specify its dimensions.
 
@@ -74,14 +72,13 @@ To dynamically change the `src`, `width` and `height` properties of a `webview` 
     document.querySelector('#mywebview').setAttribute(
         'src', 'http://blog.chromium.org/');
 
-Sandbox local content {: \#sandboxing }
----------------------------------------
+## Sandbox local content {: \#sandboxing }
 
 Sandboxing allows specified pages to be served in a sandboxed, unique origin. These pages are then exempt from their Content Security Policy. Sandboxed pages can use iframes, inline scripting, and `eval()`. Check out the manifest field description for [sandbox](manifest/sandbox).
 
 It’s a trade-off though: sandboxed pages can’t use the chrome.\* APIs. If you need to do things like `eval()`, go this route to be exempt from CSP, but you won’t be able to use the cool new stuff.
 
-### Use inline scripts in sandbox {: \#inline\_scripts }
+### Use inline scripts in sandbox {: \#inline_scripts }
 
 Here’s a sample sandboxed page which uses an inline script and `eval()`:
 
@@ -94,7 +91,7 @@ Here’s a sample sandboxed page which uses an inline script and `eval()`:
       </body>
     </html>
 
-### Include sandbox in manifest {: \#include\_sandbox }
+### Include sandbox in manifest {: \#include_sandbox }
 
 You need to include the `sandbox` field in the manifest and list the app pages to be served in a sandbox:
 
@@ -102,7 +99,7 @@ You need to include the `sandbox` field in the manifest and list the app pages t
       "pages": ["sandboxed.html"]
     }
 
-### Opening a sandboxed page in a window {: \#opening\_sandbox }
+### Opening a sandboxed page in a window {: \#opening_sandbox }
 
 Just like any other app pages, you can create a window that the sandboxed page opens in. Here’s a sample that creates two windows, one for the main app window that isn’t sandboxed, and one for the sandboxed page:
 
@@ -132,7 +129,7 @@ NOTE: A sandboxed window will not have access to the chrome.app APIs. If a callb
       });
     });
 
-### Embedding a sandboxed page in an app page {: \#embedding\_sandbox }
+### Embedding a sandboxed page in an app page {: \#embedding_sandbox }
 
 Sandboxed pages can also be embedded within another app page using an `iframe`:
 
@@ -147,12 +144,11 @@ Sandboxed pages can also be embedded within another app page using an `iframe`:
       </body>
     </html>
 
-Sending messages to sandboxed pages {: \#postMessage }
-------------------------------------------------------
+## Sending messages to sandboxed pages {: \#postMessage }
 
 There are two parts to sending a message: you need to post a message from the sender page/window, and listen for messages on the receiving page/window.
 
-### Post message {: \#post\_message }
+### Post message {: \#post_message }
 
 You can use `postMessage` to communicate between your app and sandboxed content. Here’s a sample background script that posts a message to the sandboxed page it opens:
 
@@ -172,7 +168,7 @@ You can use `postMessage` to communicate between your app and sandboxed content.
 
 Generally speaking on the web, you want to specify the exact origin from where the message is sent. Chrome Apps have no access to the unique origin of sandboxed content, so you can only allowlist all origins as acceptable origins (‘\*’). On the receiving end, you generally want to check the origin; but since Chrome Apps content is contained, it isn’t necessary. To find out more, see [window.postMessage](https://developer.mozilla.org/en/DOM/window.postMessage).
 
-### Listen for message and reply {: \#listen\_message }
+### Listen for message and reply {: \#listen_message }
 
 Here’s a sample message receiver that gets added to your sandboxed page:
 

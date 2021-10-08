@@ -2,8 +2,7 @@
 
 Use the Console API to write messages to the Console from your JavaScript. See [Get Started With Logging Messages To The Console](/docs/devtools/console/log) for an interactive introduction to the topic. See [Console Utilities API Reference](/docs/devtools/console/utilities) if you’re looking for the convenience methods like `debug(function)` or `monitorEvents(node)` which are only available from the Console.
 
-console.assert(expression, object) {: \#assert }
-------------------------------------------------
+## console.assert(expression, object) {: \#assert }
 
 [Log level](/docs/devtools/console/reference#level): `Error`
 
@@ -18,8 +17,7 @@ Writes an [error](#error) to the console when `expression` evaluates to `false`.
 
 **Figure 1**. The result of the `console.assert()` example above.
 
-console.clear() {: \#clear }
-----------------------------
+## console.clear() {: \#clear }
 
 Clears the console.
 
@@ -29,8 +27,7 @@ If [**Preserve Log**](/docs/devtools/console/reference#persist) is enabled, `con
 
 See also: [Clear the Console](/docs/devtools/console/reference#clear)
 
-console.count(\[label\]) {: \#count }
--------------------------------------
+## console.count(\[label\]) {: \#count }
 
 [Log level](/docs/devtools/console/reference#level): `Info`
 
@@ -45,16 +42,14 @@ Writes the number of times that `count()` has been invoked at the same line and 
 
 **Figure 2**. The result of the `console.count()` example above.
 
-console.countReset(\[label\]) {: \#countreset }
------------------------------------------------
+## console.countReset(\[label\]) {: \#countreset }
 
 Resets a count.
 
     console.countReset();
     console.countReset('coffee');
 
-console.debug(object \[, object, …\]) {: \#debug }
---------------------------------------------------
+## console.debug(object \[, object, …\]) {: \#debug }
 
 [Log level](/docs/devtools/console/reference#level): `Verbose`
 
@@ -66,8 +61,7 @@ Identical to [`console.log(object [, object, ...])`](#log) except different log 
 
 **Figure 3**. The result of the `console.debug()` example above.
 
-console.dir(object) {: \#dir }
-------------------------------
+## console.dir(object) {: \#dir }
 
 [Log level](/docs/devtools/console/reference#level): `Info`
 
@@ -79,8 +73,7 @@ Prints a JSON representation of the specified object.
 
 **Figure 4**. The result of the `console.dir()` example above.
 
-console.dirxml(node) {: \#dirxml }
-----------------------------------
+## console.dirxml(node) {: \#dirxml }
 
 [Log level](/docs/devtools/console/reference#level): `Info`
 
@@ -92,8 +85,7 @@ Prints an XML representation of the descendants of `node`.
 
 **Figure 5**. The result of the `console.dirxml()` example above.
 
-console.error(object \[, object, …\]) {: \#error }
---------------------------------------------------
+## console.error(object \[, object, …\]) {: \#error }
 
 [Log level](/docs/devtools/console/reference#level): `Error`
 
@@ -105,8 +97,7 @@ Prints `object` to the Console, formats it as an error, and includes a stack tra
 
 **Figure 6**. The result of the `console.error()` example above.
 
-console.group(label) {: \#group }
----------------------------------
+## console.group(label) {: \#group }
 
 Visually groups messages together until `console.groupEnd(label)` is called. Use `console.groupCollapsed(label)` to collapse the group when it’s initially logged to the Console.
 
@@ -122,18 +113,15 @@ Visually groups messages together until `console.groupEnd(label)` is called. Use
 
 **Figure 7**. The result of the `console.group()` example above.
 
-console.groupCollapsed(label) {: \#groupcollapsed }
----------------------------------------------------
+## console.groupCollapsed(label) {: \#groupcollapsed }
 
 Same as [`console.group(label)`](#group), except the group is initially collapsed when it’s logged to the Console.
 
-console.groupEnd(label) {: \#groupend }
----------------------------------------
+## console.groupEnd(label) {: \#groupend }
 
 Stops visually grouping messages. See [`console.group`](#group).
 
-console.info(object \[, object, …\]) {: \#info }
-------------------------------------------------
+## console.info(object \[, object, …\]) {: \#info }
 
 [Log level](/docs/devtools/console/reference#level): `Info`
 
@@ -145,8 +133,7 @@ Identical to [`console.log(object [, object, ...])`](#log).
 
 **Figure 8**. The result of the `console.info()` example above.
 
-console.log(object \[, object, …\]) {: \#log }
-----------------------------------------------
+## console.log(object \[, object, …\]) {: \#log }
 
 [Log level](/docs/devtools/console/reference#level): `Info`
 
@@ -158,8 +145,7 @@ Prints a message to the Console.
 
 **Figure 9**. The result of the `console.log()` example above.
 
-console.table(array) {: \#table }
----------------------------------
+## console.table(array) {: \#table }
 
 [Log level](/docs/devtools/console/reference#level): `Info`
 
@@ -185,8 +171,7 @@ Logs an array of objects as a table.
 
 **Figure 10**. The result of the `console.table()` example above.
 
-console.time(\[label\]) {: \#time }
------------------------------------
+## console.time(\[label\]) {: \#time }
 
 Starts a new timer. Call `console.timeEnd([label])` to stop the timer and print the elapsed time to the Console.
 
@@ -200,15 +185,13 @@ Starts a new timer. Call `console.timeEnd([label])` to stop the timer and print 
 
 **Figure 11**. The result of the `console.time()` example above.
 
-console.timeEnd(\[label\]) {: \#timeend }
------------------------------------------
+## console.timeEnd(\[label\]) {: \#timeend }
 
 [Log level](/docs/devtools/console/reference#level): `Info`
 
 Stops a timer. See [`console.time()`](#time).
 
-console.trace() {: \#trace }
-----------------------------
+## console.trace() {: \#trace }
 
 [Log level](/docs/devtools/console/reference#level): `Info`
 
@@ -224,8 +207,7 @@ Prints a stack trace to the Console.
 
 **Figure 12**. The result of the `console.trace()` example above.
 
-console.warn(object \[, object, …\]) {: \#warn }
-------------------------------------------------
+## console.warn(object \[, object, …\]) {: \#warn }
 
 [Log level](/docs/devtools/console/reference#level): `Warning`
 

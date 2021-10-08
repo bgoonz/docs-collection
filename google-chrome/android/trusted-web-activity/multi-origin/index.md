@@ -10,23 +10,22 @@ A Trusted Web Activity needs the origins being opened to be validated using [Dig
 
 When a user navigates off the validated origin, Custom Tab UI is shown. The URL bar in the Custom Tab tells the users they are now navigating in a domain outside the application, while also providing the user with an X button that allows them to quickly return to the validated origin.
 
-But it is also common for Web Apps to create experiences that span multiple origins - An example would be a shopping application with the main experience at *www.example.com*, while the checkout flow is hosted at *checkout.example.com*.
+But it is also common for Web Apps to create experiences that span multiple origins - An example would be a shopping application with the main experience at *www.example.com*, while the checkout flow is hosted at _checkout.example.com_.
 
 In cases like that, showing the Custom Tabs is undesirable, not only because the user is in the same application, but also because the top bar could make the user think they left the application and abandon the checkout.
 
 Trusted Web Activities allow developers to validate multiple origins, and the user will remain in full-screen when navigating across those origins. As with the main domain, the developer must be able to control each validated origin.
 
-Setting up validation for multiple origins
-------------------------------------------
+## Setting up validation for multiple origins
 
 As in the main origin, the validation is achieved via Digital Asset Links and each domain to be validated needs to have its own assetlinks.json file.
 
 ### Add an assetlinks file to each origin
 
-In our example with *www.example.com* and *checkout.example.com*, we would have:
+In our example with *www.example.com* and _checkout.example.com_, we would have:
 
--   `https://www.example.com/.well-known/assetlinks.json`
--   `https://checkout.example.com/.well-known/assetlinks.json`
+- `https://www.example.com/.well-known/assetlinks.json`
+- `https://checkout.example.com/.well-known/assetlinks.json`
 
 Since each domain is getting connected to the same Android application, the `assetlinks.json` files look exactly the same.
 
@@ -65,8 +64,7 @@ On the Android application, the `asset_statements` declaration needs to be updat
 
 Note: Applications based on the [svgomg-twa demo](https://github.com/GoogleChromeLabs/svgomg-twa) application or [bubblewrap](https://github.com/GoogleChromeLabs/bubblewrap) have the `asset_statements` declaration inside `app/build.gradle`. Even though the location of the declaration is different, the JSON content is the same.
 
-Add extra origins to the LauncherActivity
------------------------------------------
+## Add extra origins to the LauncherActivity
 
 ### Using the default LauncherActivity
 
@@ -96,8 +94,7 @@ Next, add a new `meta-data` tag inside the existing activity element that refere
     </activity>
     ...
 
-Using a custom LauncherActivity
--------------------------------
+## Using a custom LauncherActivity
 
 When using custom code to launch a Trusted Web Activity, adding extra origins can be achieved by calling `setAdditionalTrustedOrigins` when building the Intent to launch the Trusted Web Activity:
 
@@ -114,13 +111,11 @@ When using custom code to launch a Trusted Web Activity, adding extra origins ca
       new TwaLauncher(this).launch(builder, null, null);
     }
 
-Conclusion
-----------
+## Conclusion
 
 With those steps, the Trusted Web Activity is now ready to support multiple origins. android-browser-helper has a [sample application](https://github.com/GoogleChrome/android-browser-helper/tree/master/demos/twa-multi-domain) for multi origin Trusted Web Activities. Make sure to check it.
 
-Troubleshooting
----------------
+## Troubleshooting
 
 Setting up Digital Asset Links has a few moving parts. If the application is still showing the Custom Tabs bar on the top, it’s likely that something is wrong with the configuration.
 

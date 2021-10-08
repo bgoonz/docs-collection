@@ -1,0 +1,6 @@
+---json {"title":"pp::internal Namespace Reference"} ---
+
+Classes
+-------
+
+<table><tbody><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_dev/cpp/classpp_1_1internal_1_1_directory_entry_array_output_adapter_with_storage/" class="el">DirectoryEntryArrayOutputAdapterWithStorage</a></td></tr><tr class="even"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/cpp/structpp_1_1internal_1_1_callback_output_traits_3_01std_1_1vector_3_01_directory_entry_01_4_01_4/" class="el">CallbackOutputTraits&lt; std::vector&lt; DirectoryEntry &gt; &gt;</a></td></tr><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/cpp/structpp_1_1internal_1_1_type_unwrapper/" class="el">TypeUnwrapper</a></td></tr><tr class="even"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/cpp/structpp_1_1internal_1_1_type_unwrapper_3_01_t_01_6_01_4/" class="el">TypeUnwrapper&lt; T &amp; &gt;</a></td></tr><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/cpp/structpp_1_1internal_1_1_type_unwrapper_3_01const_01_t_01_6_01_4/" class="el">TypeUnwrapper&lt; const T &amp; &gt;</a></td></tr></tbody></table>

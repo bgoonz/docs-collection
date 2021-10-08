@@ -8,8 +8,7 @@
 
 Chrome Apps integrate closely with a user’s operating system. They are designed to be run outside of a browser tab, to run robustly in offline and poor connectivity scenarios and to have far more powerful capabilities than are available in a typical web browsing environment. The app container, programming, and security models support these Chrome App requirements.
 
-App container model {: \#container }
-------------------------------------
+## App container model {: \#container }
 
 The app container describes the visual appearance and loading behavior of Chrome Apps. Chrome Apps look different than traditional web apps because the app container does not show any traditional web page UI controls; it simply contains a blank rectangular area. This allows an app to blend with “native” apps on the system, and it prevents the user from “messing” with the app logic by manually changing the URL.
 
@@ -17,8 +16,7 @@ Chrome Apps are loaded differently than web apps. Both load the same type of con
 
 {% Img src=“image/BrQidfK9jaQyIHwdw91aVpkPiib2/1elqMcady4myIQ5qqQxA.png”, alt=“how app container model works”, height=“172”, width=“671” %}
 
-Programming model {: \#programming }
-------------------------------------
+## Programming model {: \#programming }
 
 The programming model describes the lifecycle and window behavior of Chrome Apps. Similar to native apps, the goal of this programming model is to give users and their systems full control over the app lifecycle. The Chrome App lifecycle should be independent of browser window behavior or a network connection.
 
@@ -32,8 +30,7 @@ For detailed instructions on how to use the programming model, see [Manage App L
 
 <table><thead><tr class="header"><th>Stage</th><th>Summary</th></tr></thead><tbody><tr class="odd"><td>Installation</td><td>User chooses to install the app and explicitly accepts the <a href="declare_permissions">permissions</a>.</td></tr><tr class="even"><td>Startup</td><td>The event page is loaded, the ‘launch’ event fires, and app pages open in windows. You <a href="app_lifecycle#eventpage">create the windows</a> that your app requires, how they look, and how they communicate with the event page and with other windows.</td></tr><tr class="odd"><td>Termination</td><td>User can terminate apps at any time and app can be quickly restored to previous state. <a href="app_lifecycle#local_settings">Stashing data</a> protects against data loss.</td></tr><tr class="even"><td>Update</td><td>Apps can be updated at any time; however, the code that a Chrome App is running cannot change during a startup/termination cycle.</td></tr><tr class="odd"><td>Uninstallation</td><td>User can actively uninstall apps. When uninstalled, no executing code or private data is left behind.</td></tr></tbody></table>
 
-Security model {: \#security }
-------------------------------
+## Security model {: \#security }
 
 The Chrome Apps security model protects users by ensuring their information is managed in a safe and secure manner. [Comply with CSP](contentSecurityPolicy) includes detailed information on how to comply with content security policy. This policy blocks dangerous scripting reducing cross-site scripting bugs and protecting users against man-in-the-middle attacks.
 

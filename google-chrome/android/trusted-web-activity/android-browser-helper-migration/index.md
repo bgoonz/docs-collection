@@ -8,9 +8,9 @@ The library is hosted on the official [Google Maven repository](https://maven.go
 
 More features and development experience improvements will be added this library. This is a short list of what has already been added:
 
--   Handles opening the content in a browser that supports Trusted Web Activities and, if one is not installed, implements a fallback strategy.
--   Makes the fallback strategy customizable, so developers can customize how their application behaves when a browser the supports Trusted Web Activities is not installed. The [twa-webview-fallback](https://github.com/GoogleChrome/android-browser-helper/tree/master/demos/twa-webview-fallback) demo shows how to use a fallback strategy that uses the [Android WebView](https://developer.android.com/guide/webapps/webview), for example.
--   Makes configuring Trusted Web Actitivities that work with multiple origins easier, as illustrated on the twa-multi-domain\][4](https://github.com/GoogleChrome/android-browser-helper/tree/master/demos/twa-multi-domain) demo.
+- Handles opening the content in a browser that supports Trusted Web Activities and, if one is not installed, implements a fallback strategy.
+- Makes the fallback strategy customizable, so developers can customize how their application behaves when a browser the supports Trusted Web Activities is not installed. The [twa-webview-fallback](https://github.com/GoogleChrome/android-browser-helper/tree/master/demos/twa-webview-fallback) demo shows how to use a fallback strategy that uses the [Android WebView](https://developer.android.com/guide/webapps/webview), for example.
+- Makes configuring Trusted Web Actitivities that work with multiple origins easier, as illustrated on the twa-multi-domain\][4](https://github.com/GoogleChrome/android-browser-helper/tree/master/demos/twa-multi-domain) demo.
 
 The library can be added to Android application by using the following dependency to the appllication `build.gradle`:
 
@@ -19,8 +19,7 @@ The library can be added to Android application by using the following dependenc
         implementation 'com.google.androidbrowserhelper:androidbrowserhelper:2.2.0'
     }
 
-Migrating from the custom-tabs-client
--------------------------------------
+## Migrating from the custom-tabs-client
 
 Developers who were using the previous [`custom-tabs-client`](https://jitpack.io/#GoogleChrome/custom-tabs-client) will have to implement a few changes in their application, when migrating to `android-browser-helper`.
 
@@ -32,12 +31,10 @@ Here’s a summary of the names changed:
 
 The [svgomg-twa demo](https://github.com/GoogleChromeLabs/svgomg-twa) has been updated to use android-browser-helper. this [diff](https://github.com/GoogleChromeLabs/svgomg-twa/pull/76/files) shows all the changes required when migrating an existing project using `custom-tabs-client` to `android-browser-helper`.
 
-Are we missing anything?
-------------------------
+## Are we missing anything?
 
 android-browser-helper has the goal of simplifying the development of applications using Trusted Web Activities. The library will continue to evolve as Trusted Web Activity get more features.
 
 If you are missing a feature in Trusted Web Activities, think of ways that android-browser-helper could make make the development work simpler, or have a question on how to use the library, make sure to pop by the [GitHub repository](https://github.com/GoogleChrome/android-browser-helper) and file an [issue](https://github.com/GoogleChrome/android-browser-helper/issues).
 
-Feedback {: \#feedback .hide-from-toc }
----------------------------------------
+## Feedback {: \#feedback .hide-from-toc }

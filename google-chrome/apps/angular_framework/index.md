@@ -8,8 +8,7 @@
 
 This guide gets you started building Chrome Apps with the [AngularJS](https://angularjs.org/) MVC framework. To illustrate Angular in action, we’ll be referencing an actual app built using the framework, the Google Drive Uploader. The [source code](https://github.com/GoogleChrome/chrome-app-samples/tree/master/samples/gdrive) is available on GitHub.
 
-About the app {: \#first }
---------------------------
+## About the app {: \#first }
 
 {% Img src=“image/BrQidfK9jaQyIHwdw91aVpkPiib2/UbxLa9XoyBXX4BgqNqeJ.png”, alt=“Google Drive Uploader”, height=“680”, width=“580” %}
 
@@ -25,16 +24,15 @@ The Uploader uses OAuth2 to access the user’s data. The [chrome.identity API](
 
 Key features this app uses:
 
--   AngularJS’s autodetection for [CSP](/docs/extensions/reference/contentSecurityPolicy)
--   Render a list of files fetched from the [Google Drive API](https://developers.google.com/drive/get-started)
--   [HTML5 Filesystem API](http://www.html5rocks.com/en/tutorials/file/filesystem/) to store file icons offline
--   [HTML5 Drag and Drop](http://www.html5rocks.com/en/tutorials/dnd/basics/) for importing/uploading new files from the desktop
--   XHR2 to load images, cross-domain
--   [chrome.identity API](/docs/extensions/reference/app_identity) for OAuth authorization
--   Chromeless frames to define the app’s own navbar look and feel
+- AngularJS’s autodetection for [CSP](/docs/extensions/reference/contentSecurityPolicy)
+- Render a list of files fetched from the [Google Drive API](https://developers.google.com/drive/get-started)
+- [HTML5 Filesystem API](http://www.html5rocks.com/en/tutorials/file/filesystem/) to store file icons offline
+- [HTML5 Drag and Drop](http://www.html5rocks.com/en/tutorials/dnd/basics/) for importing/uploading new files from the desktop
+- XHR2 to load images, cross-domain
+- [chrome.identity API](/docs/extensions/reference/app_identity) for OAuth authorization
+- Chromeless frames to define the app’s own navbar look and feel
 
-Creating the manifest {: \#second }
------------------------------------
+## Creating the manifest {: \#second }
 
 All Chrome Apps require a `manifest.json` file which contains the information Chrome needs to launch the app. The manifest contains relevant metadata and lists any special permissions the app needs to run.
 
@@ -62,12 +60,11 @@ A stripped down version of the Uploader’s manifest looks like this:
 
 The most important parts of this manifest are the “oauth2” and “permissions” sections.
 
-The “oauth2” section defines the required parameters by OAuth2 to do its magic. To create a “client\_id”, follow the instructions in [Get your client id](/docs/extensions/reference/app_identity#client_id). The “scopes” list the authorization scopes that the OAuth token will be valid for (for example, the APIs the app wants to access).
+The “oauth2” section defines the required parameters by OAuth2 to do its magic. To create a “client_id”, follow the instructions in [Get your client id](/docs/extensions/reference/app_identity#client_id). The “scopes” list the authorization scopes that the OAuth token will be valid for (for example, the APIs the app wants to access).
 
 The “permissions” section includes URLs that the app will access via XHR2. The URL prefixes are required in order for Chrome to know which cross-domain requests to allow.
 
-Creating the event page {: \#three }
-------------------------------------
+## Creating the event page {: \#three }
 
 All Chrome Apps require a background script/page to launch the app and respond to system events.
 
@@ -116,8 +113,7 @@ The entire navigational area is wrapped in a
 
 In [app.js](https://github.com/GoogleChrome/chrome-app-samples/blob/master/samples/gdrive/js/app.js), this button is hooked up to `window.close()`.
 
-Designing the app the Angular way {: \#four }
----------------------------------------------
+## Designing the app the Angular way {: \#four }
 
 Angular is an MVC framework, so we need to define the app in such a way that a model, view, and controller logically fall out of it. Luckily, this is trivial when using Angular.
 
@@ -267,8 +263,7 @@ s in the template:
 
 Notice that `gdocs.auth()` is called as part of the DocsController constructor. When Angular’s internals create the controller, we’re insured to have a fresh OAuth token waiting for the user.
 
-Fetching data {: \#five }
--------------------------
+## Fetching data {: \#five }
 
 Template laid out. Controller scaffolded. OAuth token in hand. Now what?
 
@@ -367,8 +362,7 @@ Now that CSP is happy with us again, we get nice file icons:
 
 {% Img src=“image/BrQidfK9jaQyIHwdw91aVpkPiib2/GP49lYVzl4rPNt868wtn.png”, alt=“Google Drive Uploader with file icons”, height=“680”, width=“580” %}
 
-Going offline: caching external resources {: \#six }
-----------------------------------------------------
+## Going offline: caching external resources {: \#six }
 
 The obvious optimization that needs to be made: not make 100s of XHR requests for each file icon on every call to `fetchDocs()`. Verify this in the Developer Tools console by pressing the “Refresh” button several times. Every time, n images are fetched:
 
@@ -446,8 +440,7 @@ On first run, the icons won’t be in the HTML5 Filesystem and the calls to `win
 
 Upon next run (or press of the “Refresh” button), the URL passed to `webkitResolveLocalFileSystemURL()` exists because the file has been previously cached. The app sets the `doc.icon` to the file’s `filesystem: URL` and avoids making the costly XHR for the icon.
 
-Drag and drop uploading {: \#seven }
-------------------------------------
+## Drag and drop uploading {: \#seven }
 
 An uploader app is false advertising if it can’t upload files!
 

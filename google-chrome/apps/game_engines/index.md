@@ -8,8 +8,7 @@
 
 Several graphically intense interactive application frameworks / game engines exist that target web technologies. The following are some we recommend with instructions for producing a Chrome App.
 
-PlayCanvas {: \#playcanvas }
-----------------------------
+## PlayCanvas {: \#playcanvas }
 
 <https://playcanvas.com>
 

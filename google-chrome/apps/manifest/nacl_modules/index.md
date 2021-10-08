@@ -23,10 +23,12 @@ handler for the OpenOffice spreadsheet MIME type.
   "name": "Native Client OpenOffice Spreadsheet Viewer",
   "version": "0.1",
   "description": "Open OpenOffice spreadsheets, right in your browser.",
-  "nacl_modules": [{
-    "path": "OpenOfficeViewer.nmf",
-    "mime_type": "application/vnd.oasis.opendocument.spreadsheet"
-  }]
+  "nacl_modules": [
+    {
+      "path": "OpenOfficeViewer.nmf",
+      "mime_type": "application/vnd.oasis.opendocument.spreadsheet"
+    }
+  ]
 }
 ```
 
@@ -43,18 +45,20 @@ three MIME types.
   "name": "Spreadsheet Viewer",
   "version": "0.1",
   "description": "Open OpenOffice and Excel spreadsheets, right in your browser.",
-  "nacl_modules": [{
-    "path": "OpenOfficeViewer.nmf",
-    "mime_type": "application/vnd.oasis.opendocument.spreadsheet"
-  },
-  {
-    "path": "OpenOfficeViewer.nmf",
-    "mime_type": "application/vnd.oasis.opendocument.spreadsheet-template"
-  },
-  {
-    "path": "ExcelViewer.nmf",
-    "mime_type": "application/excel"
-  }]
+  "nacl_modules": [
+    {
+      "path": "OpenOfficeViewer.nmf",
+      "mime_type": "application/vnd.oasis.opendocument.spreadsheet"
+    },
+    {
+      "path": "OpenOfficeViewer.nmf",
+      "mime_type": "application/vnd.oasis.opendocument.spreadsheet-template"
+    },
+    {
+      "path": "ExcelViewer.nmf",
+      "mime_type": "application/excel"
+    }
+  ]
 }
 ```
 

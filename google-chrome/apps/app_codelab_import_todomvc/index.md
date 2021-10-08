@@ -8,29 +8,28 @@
 
 {% Aside %}
 
-**Want to start fresh from here?** Find the previous step’s code in the [reference code zip](https://github.com/mangini/io13-codelab/archive/master.zip) under ***cheat\_code &gt; solution\_for\_step1***.
+**Want to start fresh from here?** Find the previous step’s code in the [reference code zip](https://github.com/mangini/io13-codelab/archive/master.zip) under **_cheat_code &gt; solution_for_step1_**.
 
 {% endAside %}
 
 In this step, you will learn:
 
--   How to adapt an existing web application for the Chrome Apps platform.
--   How to make your app scripts Content Security Policy (CSP) compliant.
--   How to implement local storage using the [chrome.storage.local](/docs/extensions/reference/storage "Read 'chrome.storage.local' in the Chrome developer docs").
+- How to adapt an existing web application for the Chrome Apps platform.
+- How to make your app scripts Content Security Policy (CSP) compliant.
+- How to implement local storage using the [chrome.storage.local](/docs/extensions/reference/storage "Read 'chrome.storage.local' in the Chrome developer docs").
 
-*Estimated time to complete this step: 20 minutes.*  
+_Estimated time to complete this step: 20 minutes._  
 To preview what you will complete in this step, [jump down to the bottom of this page ↓](#launch).
 
-Import an existing Todo app {: \#todomvc }
-------------------------------------------
+## Import an existing Todo app {: \#todomvc }
 
 As a starting point, import the [vanilla JavaScript version](http://todomvc.com/vanilla-examples/vanillajs/) of [TodoMVC](http://todomvc.com/), a common benchmark app, into your project.
 
-We’ve included a version of the TodoMVC app in the [reference code zip](https://github.com/mangini/io13-codelab/archive/master.zip) in the ***todomvc*** folder. Copy all files (including folders) from *todomvc* into your project folder.
+We’ve included a version of the TodoMVC app in the [reference code zip](https://github.com/mangini/io13-codelab/archive/master.zip) in the **_todomvc_** folder. Copy all files (including folders) from _todomvc_ into your project folder.
 
 {% Img src=“image/BrQidfK9jaQyIHwdw91aVpkPiib2/Yfv4O1dCRrqr6XNtTBta.png”, alt=“Copy todomvc folder into codelab folder”, height=“515”, width=“800” %}
 
-You will be asked to replace *index.html*. Go ahead and accept.
+You will be asked to replace _index.html_. Go ahead and accept.
 
 {% Img src=“image/BrQidfK9jaQyIHwdw91aVpkPiib2/EhTkBXH06XN95xjOreut.png”, alt=“Replace index.html”, height=“124”, width=“420” %}
 
@@ -38,12 +37,11 @@ You should now have the following file structure in your application folder:
 
 {% Img src=“image/BrQidfK9jaQyIHwdw91aVpkPiib2/vSqNPowp4gvcBThfKYE0.png”, alt=“New project folder”, height=“144”, width=“593” %}
 
-The files highlighted in blue are from the *todomvc* folder.
+The files highlighted in blue are from the _todomvc_ folder.
 
 Reload your app now (**right-click &gt; Reload App**). You should see the basic UI but you won’t be able to add todos.
 
-Make scripts Content Security Policy (CSP) compliant {: \#csp-compliance }
---------------------------------------------------------------------------
+## Make scripts Content Security Policy (CSP) compliant {: \#csp-compliance }
 
 Open the DevTools Console (**right-click &gt; Inspect Element**, then select the **Console** tab). You will see an error about refusing to execute an inline script:
 
@@ -53,26 +51,25 @@ Let’s fix this error by making the app [Content Security Policy](/apps/content
 
 The solution is simple: move the inline content to a new file.
 
-1. Near the bottom of ***index.html***, remove the inline JavaScript and instead include *js/bootstrap.js*:
+1. Near the bottom of **_index.html_**, remove the inline JavaScript and instead include _js/bootstrap.js_:
 
-    <script src="bower_components/director/build/director.js"></script>
-    <script>
-      // Bootstrap app data
-      window.app = {};
-    </script>
-    <script src="js/bootstrap.js"></script>
-    <script src="js/helpers.js"></script>
-    <script src="js/store.js"></script>
+   <script src="bower_components/director/build/director.js"></script>
+   <script>
+     // Bootstrap app data
+     window.app = {};
+   </script>
+   <script src="js/bootstrap.js"></script>
+   <script src="js/helpers.js"></script>
+   <script src="js/store.js"></script>
 
-2. Create a file in the ***js*** folder named ***bootstrap.js***. Move the previously inline code to be in this file:
+2. Create a file in the **_js_** folder named **_bootstrap.js_**. Move the previously inline code to be in this file:
 
-    // Bootstrap app data
-    window.app = {};
+   // Bootstrap app data
+   window.app = {};
 
 You’ll still have a non-working Todo app if you reload the app now but you’re getting closer.
 
-Convert localStorage to chrome.storage.local {: \#convert-storage }
--------------------------------------------------------------------
+## Convert localStorage to chrome.storage.local {: \#convert-storage }
 
 If you open the DevTools Console now, the previous error should be gone. There is a new error, however, about `window.localStorage` not being available:
 
@@ -86,7 +83,7 @@ To address the error message in our app, you need to convert `localStorage` to [
 
 ### Update app permissions {: \#update-permissions }
 
-In order to use `chrome.storage.local`, you need to request the `storage` permission. In ***manifest.json***, add `"storage"` to the `permissions` array:
+In order to use `chrome.storage.local`, you need to request the `storage` permission. In **_manifest.json_**, add `"storage"` to the `permissions` array:
 
     "permissions": ["storage"],
 
@@ -124,7 +121,7 @@ Most of the remaining steps in converting the Todo app are small changes to the 
 
 {% Aside %}
 
-To maximize your fun with this codelab, it’ll be best if you overwrite your ***store.js***, ***controller.js***, and ***model.js*** with the ones from ***cheat\_code/solution\_for\_step\_2*** in the reference code zip.
+To maximize your fun with this codelab, it’ll be best if you overwrite your **_store.js_**, **_controller.js_**, and **_model.js_** with the ones from **_cheat_code/solution_for_step_2_** in the reference code zip.
 
 Once you’ve done that, continue reading as we’ll go over each of the changes individually.
 
@@ -132,48 +129,48 @@ Once you’ve done that, continue reading as we’ll go over each of the changes
 
 The key differences between `localStorage` and `chrome.storage` come from the async nature of `chrome.storage`:
 
--   Instead of writing to `localStorage` using simple assignment, you need to use `chrome.storage.local.set()` with optional callbacks.
+- Instead of writing to `localStorage` using simple assignment, you need to use `chrome.storage.local.set()` with optional callbacks.
 
-        var data = { todos: [] };
-        localStorage[dbName] = JSON.stringify(data);
+      var data = { todos: [] };
+      localStorage[dbName] = JSON.stringify(data);
 
-    versus
+  versus
 
-        var storage = {};
-        storage[dbName] = { todos: [] };
-        chrome.storage.local.set( storage, function() {
-          // optional callback
+      var storage = {};
+      storage[dbName] = { todos: [] };
+      chrome.storage.local.set( storage, function() {
+        // optional callback
+      });
+
+- Instead of accessing `localStorage[myStorageName]` directly, you need to use `chrome.storage.local.get(myStorageName,function(storage){...})` and then parse the returned `storage` object in the callback function.
+
+      var todos = JSON.parse(localStorage[dbName]).todos;
+
+  versus
+
+      chrome.storage.local.get(dbName, function(storage) {
+        var todos = storage[dbName].todos;
+      });
+
+- The function `.bind(this)` is used on all callbacks to ensure `this` refers to the `this` of the `Store` prototype. (More info on bound functions can be found on the MDN docs: [Function.prototype.bind()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind).)
+
+      function Store() {
+        this.scope = 'inside Store';
+        chrome.storage.local.set( {}, function() {
+          console.log(this.scope); // outputs: 'undefined'
         });
+      }
+      new Store();
 
--   Instead of accessing `localStorage[myStorageName]` directly, you need to use `chrome.storage.local.get(myStorageName,function(storage){...})` and then parse the returned `storage` object in the callback function.
+  versus
 
-        var todos = JSON.parse(localStorage[dbName]).todos;
-
-    versus
-
-        chrome.storage.local.get(dbName, function(storage) {
-          var todos = storage[dbName].todos;
-        });
-
--   The function `.bind(this)` is used on all callbacks to ensure `this` refers to the `this` of the `Store` prototype. (More info on bound functions can be found on the MDN docs: [Function.prototype.bind()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind).)
-
-        function Store() {
-          this.scope = 'inside Store';
-          chrome.storage.local.set( {}, function() {
-            console.log(this.scope); // outputs: 'undefined'
-          });
-        }
-        new Store();
-
-    versus
-
-        function Store() {
-          this.scope = 'inside Store';
-          chrome.storage.local.set( {}, function() {
-            console.log(this.scope); // outputs: 'inside Store'
-          }.bind(this));
-        }
-        new Store();
+      function Store() {
+        this.scope = 'inside Store';
+        chrome.storage.local.set( {}, function() {
+          console.log(this.scope); // outputs: 'inside Store'
+        }.bind(this));
+      }
+      new Store();
 
 Keep these key differences in mind as we cover retrieving, saving, and removing todo items in the following sections.
 
@@ -183,7 +180,7 @@ Let’s update the Todo app in order to retrieve todo items:
 
 1. The `Store` constructor method takes care of initializing the Todo app with all the existing todo items from the datastore. The method first checks if the datastore exists. If it doesn’t, it’ll create an empty array of `todos` and save it to the datastore so there are no runtime read errors.
 
-In ***js/store.js***, convert the use of `localStorage` in the constructor method to instead use `chrome.storage.local`:
+In **_js/store.js_**, convert the use of `localStorage` in the constructor method to instead use `chrome.storage.local`:
 
     function Store(name, callback) {
       var data;
@@ -239,42 +236,42 @@ Convert `find()` to use `chrome.storage.local`:
 
 3. Similiar to `find()`, `findAll()` gets all todos from the Model. Convert `findAll()` to use `chrome.storage.local`:
 
-    Store.prototype.findAll = function (callback) {
-      callback = callback || function () {};
-      callback.call(this, JSON.parse(localStorage[this._dbName]).todos);
-      chrome.storage.local.get(this._dbName, function(storage) {
-        var todos = storage[this._dbName] && storage[this._dbName].todos || [];
-        callback.call(this, todos);
-      }.bind(this));
-    };
+   Store.prototype.findAll = function (callback) {
+   callback = callback || function () {};
+   callback.call(this, JSON.parse(localStorage[this._dbName]).todos);
+   chrome.storage.local.get(this.\_dbName, function(storage) {
+   var todos = storage[this._dbName] && storage[this._dbName].todos || [];
+   callback.call(this, todos);
+   }.bind(this));
+   };
 
 ### Save todos items {: \#save-items }
 
-The current `save()` method presents a challenge. It depends on two async operations (get and set) that operate on the whole monolithic JSON storage every time. Any batch updates on more than one todo item, like “mark all todos as completed”, will result in a data hazard known as [Read-After-Write](http://en.wikipedia.org/wiki/Hazard_(computer_architecture)#Read_After_Write_.28RAW.29). This issue wouldn’t happen if we were using a more appropriate data storage, like IndexedDB, but we are trying to minimize the conversion effort for this codelab.
+The current `save()` method presents a challenge. It depends on two async operations (get and set) that operate on the whole monolithic JSON storage every time. Any batch updates on more than one todo item, like “mark all todos as completed”, will result in a data hazard known as [Read-After-Write](<http://en.wikipedia.org/wiki/Hazard_(computer_architecture)#Read_After_Write_.28RAW.29>). This issue wouldn’t happen if we were using a more appropriate data storage, like IndexedDB, but we are trying to minimize the conversion effort for this codelab.
 
 There are several ways to fix it so we will use this opportunity to slightly refactor `save()` by taking an array of todo IDs to be updated all at once:
 
-1. To start off, wrap everything already inside `save()` with a `chrome.storage.local.get()` callback:
+1.  To start off, wrap everything already inside `save()` with a `chrome.storage.local.get()` callback:
 
     Store.prototype.save = function (id, updateData, callback) {
-      chrome.storage.local.get(this._dbName, function(storage) {
-        var data = JSON.parse(localStorage[this._dbName]);
-        // ...
-        if (typeof id !== 'object') {
-          // ...
-        }else {
-          // ...
-        }
-      }.bind(this));
+    chrome.storage.local.get(this.\_dbName, function(storage) {
+    var data = JSON.parse(localStorage[this._dbName]);
+    // ...
+    if (typeof id !== 'object') {
+    // ...
+    }else {
+    // ...
+    }
+    }.bind(this));
     };
 
-2. Convert all the `localStorage` instances with `chrome.storage.local`:
+2.  Convert all the `localStorage` instances with `chrome.storage.local`:
 
     Store.prototype.save = function (id, updateData, callback) {
-      chrome.storage.local.get(this._dbName, function(storage) {
-        var data = JSON.parse(localStorage[this._dbName]);
-        var data = storage[this._dbName];
-        var todos = data.todos;
+    chrome.storage.local.get(this.\_dbName, function(storage) {
+    var data = JSON.parse(localStorage[this._dbName]);
+    var data = storage[this._dbName];
+    var todos = data.todos;
 
         callback = callback || function () {};
 
@@ -303,15 +300,16 @@ There are several ways to fix it so we will use this opportunity to slightly ref
             callback.call(this, [updateData]);
           }.bind(this));
         }
-      }.bind(this));
+
+    }.bind(this));
     };
 
-3. Then update the logic to operate on an array instead of a single item:
+3.  Then update the logic to operate on an array instead of a single item:
 
     Store.prototype.save = function (id, updateData, callback) {
-      chrome.storage.local.get(this._dbName, function(storage) {
-        var data = storage[this._dbName];
-        var todos = data.todos;
+    chrome.storage.local.get(this.\_dbName, function(storage) {
+    var data = storage[this._dbName];
+    var todos = data.todos;
 
         callback = callback || function () {};
 
@@ -346,50 +344,51 @@ There are several ways to fix it so we will use this opportunity to slightly ref
             callback.call(this, [updateData]);
           }.bind(this));
         }
-      }.bind(this));
+
+    }.bind(this));
     };
 
 ### Mark todo items as complete {: \#complete-items }
 
 Now that app is operating on arrays, you need to change how the app handles a user clicking on the **Clear completed (\#)** button:
 
-1. In ***controller.js***, update `toggleAll()` to call `toggleComplete()` only once with an array of todos instead of marking a todo as completed one by one. Also delete the call to `_filter()` since you’ll be adjusting the `toggleComplete` `_filter()`.
+1.  In **_controller.js_**, update `toggleAll()` to call `toggleComplete()` only once with an array of todos instead of marking a todo as completed one by one. Also delete the call to `_filter()` since you’ll be adjusting the `toggleComplete` `_filter()`.
 
     Controller.prototype.toggleAll = function (e) {
-      var completed = e.target.checked ? 1 : 0;
-      var query = 0;
-      if (completed === 0) {
-        query = 1;
-      }
-      this.model.read({ completed: query }, function (data) {
-        var ids = [];
-        data.forEach(function (item) {
-          this.toggleComplete(item.id, e.target, true);
-          ids.push(item.id);
-        }.bind(this));
-        this.toggleComplete(ids, e.target, false);
-      }.bind(this));
+    var completed = e.target.checked ? 1 : 0;
+    var query = 0;
+    if (completed === 0) {
+    query = 1;
+    }
+    this.model.read({ completed: query }, function (data) {
+    var ids = [];
+    data.forEach(function (item) {
+    this.toggleComplete(item.id, e.target, true);
+    ids.push(item.id);
+    }.bind(this));
+    this.toggleComplete(ids, e.target, false);
+    }.bind(this));
 
-      this._filter();
+    this.\_filter();
     };
 
-2. Now update `toggleComplete()` to accept both a single todo or an array of todos. This includes moving `filter()` to be inside the `update()`, instead of outside.
+2.  Now update `toggleComplete()` to accept both a single todo or an array of todos. This includes moving `filter()` to be inside the `update()`, instead of outside.
 
     Controller.prototype.toggleComplete = function (ids, checkbox, silent) {
-      var completed = checkbox.checked ? 1 : 0;
-      this.model.update(ids, { completed: completed }, function () {
-        if ( ids.constructor != Array ) {
-          ids = [ ids ];
-        }
-        ids.forEach( function(id) {
-          var listItem = $$('[data-id="' + id + '"]');
-          
+    var completed = checkbox.checked ? 1 : 0;
+    this.model.update(ids, { completed: completed }, function () {
+    if ( ids.constructor != Array ) {
+    ids = [ ids ];
+    }
+    ids.forEach( function(id) {
+    var listItem = $$('[data-id="' + id + '"]');
+
           if (!listItem) {
             return;
           }
-          
+
           listItem.className = completed ? 'completed' : '';
-          
+
           // In case it was toggled from an event and not by clicking the checkbox
           listItem.querySelector('input').checked = completed;
         });
@@ -398,41 +397,41 @@ Now that app is operating on arrays, you need to change how the app handles a us
           this._filter();
         }
 
-      }.bind(this));
+    }.bind(this));
     };
 
 ### Count todo items {: \#count-items }
 
 After switching to async storage, there is a minor bug that shows up when getting the number of todos. You’ll need to wrap the count operation in a callback function:
 
-1. In ***model.js***, update `getCount()` to accept a callback:
+1.  In **_model.js_**, update `getCount()` to accept a callback:
 
-      Model.prototype.getCount = function (callback) {
-      var todos = {
-        active: 0,
-        completed: 0,
-        total: 0
-      };
-      this.storage.findAll(function (data) {
-        data.each(function (todo) {
-          if (todo.completed === 1) {
-            todos.completed++;
-          } else {
-            todos.active++;
-          }
-          todos.total++;
-        });
-        if (callback) callback(todos);
-      });
-      return todos;
+    Model.prototype.getCount = function (callback) {
+    var todos = {
+    active: 0,
+    completed: 0,
+    total: 0
+    };
+    this.storage.findAll(function (data) {
+    data.each(function (todo) {
+    if (todo.completed === 1) {
+    todos.completed++;
+    } else {
+    todos.active++;
+    }
+    todos.total++;
+    });
+    if (callback) callback(todos);
+    });
+    return todos;
     };
 
-2. Back in ***controller.js***, update `_updateCount()` to use the async `getCount()` you edited in the previous step:
+2.  Back in **_controller.js_**, update `_updateCount()` to use the async `getCount()` you edited in the previous step:
 
-    Controller.prototype._updateCount = function () {
-      var todos = this.model.getCount();
-      this.model.getCount(function(todos) {
-        this.$todoItemCounter.innerHTML = this.view.itemCounter(todos.active);
+    Controller.prototype.\_updateCount = function () {
+    var todos = this.model.getCount();
+    this.model.getCount(function(todos) {
+    this.$todoItemCounter.innerHTML = this.view.itemCounter(todos.active);
 
         this.$clearCompleted.innerHTML = this.view.clearCompletedButton(todos.completed);
         this.$clearCompleted.style.display = todos.completed > 0 ? 'block' : 'none';
@@ -440,7 +439,8 @@ After switching to async storage, there is a minor bug that shows up when gettin
         this.$toggleAll.checked = todos.completed === todos.total;
 
         this._toggleFrame(todos);
-      }.bind(this));
+
+    }.bind(this));
 
     };
 
@@ -448,18 +448,18 @@ You are almost there! If you reload the app now, you will be able to insert new 
 
 ### Remove todos items {: \#remove-items }
 
-Now that the app can save todo items, you’re close to being done! You still get errors when you attempt to *remove* todo items:
+Now that the app can save todo items, you’re close to being done! You still get errors when you attempt to _remove_ todo items:
 
 {% Img src=“image/BrQidfK9jaQyIHwdw91aVpkPiib2/PryPGnyoZVeKoHrtGT9x.png”, alt=“Todo app with localStorage console log error”, height=“726”, width=“678” %}
 
-1. In ***store.js***, convert all the `localStorage` instances to use `chrome.storage.local`:
+1.  In **_store.js_**, convert all the `localStorage` instances to use `chrome.storage.local`:
 
 1.  To start off, wrap everything already inside `remove()` with a `get()` callback:
 
     Store.prototype.remove = function (id, callback) {
-      chrome.storage.local.get(this._dbName, function(storage) {
-        var data = JSON.parse(localStorage[this._dbName]);
-        var todos = data.todos;
+    chrome.storage.local.get(this.\_dbName, function(storage) {
+    var data = JSON.parse(localStorage[this._dbName]);
+    var todos = data.todos;
 
         for (var i = 0; i < todos.length; i++) {
           if (todos[i].id == id) {
@@ -470,7 +470,8 @@ Now that the app can save todo items, you’re close to being done! You still ge
 
         localStorage[this._dbName] = JSON.stringify(data);
         callback.call(this, JSON.parse(localStorage[this._dbName]).todos);
-      }.bind(this));
+
+    }.bind(this));
     };
 
 1.  Then convert the contents within the `get()` callback:
@@ -500,7 +501,7 @@ Now that the app can save todo items, you’re close to being done! You still ge
 
 2. The same Read-After-Write data hazard issue previously present in the `save()` method is also present when removing items so you will need to update a few more places to allow for batch operations on a list of todo IDs.
 
-1.  Still in *store.js*, update `remove()`:
+1. Still in _store.js_, update `remove()`:
 
 <!-- -->
 
@@ -525,7 +526,7 @@ Now that the app can save todo items, you’re close to being done! You still ge
       }.bind(this));
     };
 
-1.  In ***controller.js***, change `removeCompletedItems()` to make it call `removeItem()` on all IDs at once:
+1.  In **_controller.js_**, change `removeCompletedItems()` to make it call `removeItem()` on all IDs at once:
 
 <!-- -->
 
@@ -542,7 +543,7 @@ Now that the app can save todo items, you’re close to being done! You still ge
       this._filter();
     };
 
-1.  Finally, still in *controller.js*, change the `removeItem()` to support removing multiple items from the DOM at once, and move the `_filter()` call to be inside the callback:
+1.  Finally, still in _controller.js_, change the `removeItem()` to support removing multiple items from the DOM at once, and move the `_filter()` call to be inside the callback:
 
 <!-- -->
 
@@ -559,7 +560,7 @@ Now that the app can save todo items, you’re close to being done! You still ge
 
 ### Drop all todo items {: \#drop-items }
 
-There is one more method in *store.js* using `localStorage`:
+There is one more method in _store.js_ using `localStorage`:
 
     Store.prototype.drop = function (callback) {
       localStorage[this._dbName] = JSON.stringify({todos: []});
@@ -568,8 +569,7 @@ There is one more method in *store.js* using `localStorage`:
 
 This method is not being called in the current app so, if you want an extra challenge, try implementing it on your own. Hint: Have a look at [`chrome.storage.local.clear()`](/docs/extensions/reference/storage#method-StorageArea-remove).
 
-Launch your finished Todo app {: \#launch }
--------------------------------------------
+## Launch your finished Todo app {: \#launch }
 
 You are done Step 2! Reload your app and you should now have a fully working Chrome packaged version of TodoMVC.
 
@@ -580,17 +580,16 @@ Remember to always check the DevTools Console to see if there are any error mess
 
 {% endAside %}
 
-For more information {: \#recap }
----------------------------------
+## For more information {: \#recap }
 
 For more detailed information about some of the APIs introduced in this step, refer to:
 
--   [Content Security Policy](/apps/contentSecurityPolicy "Read 'Content Security Policy' in the Chrome developer docs") [↑](#csp-compliance "This feature mentioned in 'Make scripts Content Security Policy (CSP) compliant'")
--   [Declare Permissions](/apps/declare_permissions "Read 'Declare Permissions' in the Chrome developer docs") [↑](#update-permissions "This feature mentioned in 'Update app permissions'")
--   [chrome.storage](/docs/extensions/reference/storage "Read 'chrome.storage' in the Chrome developer docs") [↑](#get-and-set "This feature mentioned in 'Learn about local.storage.set() and local.storage.get()'")
--   [chrome.storage.local.get()](/docs/extensions/reference/storage#method-StorageArea-get "Read 'chrome.storage.local.get()' in the Chrome developer docs") [↑](#retrieve-items "This feature mentioned in 'Retrieve todos items'")
--   [chrome.storage.local.set()](/docs/extensions/reference/storage#method-StorageArea-set "Read 'chrome.storage.local.set()' in the Chrome developer docs") [↑](#save-items "This feature mentioned in 'Save todos items'")
--   [chrome.storage.local.remove()](/docs/extensions/reference/storage#method-StorageArea-remove "Read 'chrome.storage.local.remove()' in the Chrome developer docs") [↑](#remove-items "This feature mentioned in 'Remove todos items'")
--   [chrome.storage.local.clear()](/docs/extensions/reference/storage#method-StorageArea-remove "Read 'chrome.storage.local.clear()' in the Chrome developer docs") [↑](#remove-items "This feature mentioned in 'Drop all todo items'")
+- [Content Security Policy](/apps/contentSecurityPolicy "Read 'Content Security Policy' in the Chrome developer docs") [↑](#csp-compliance "This feature mentioned in 'Make scripts Content Security Policy (CSP) compliant'")
+- [Declare Permissions](/apps/declare_permissions "Read 'Declare Permissions' in the Chrome developer docs") [↑](#update-permissions "This feature mentioned in 'Update app permissions'")
+- [chrome.storage](/docs/extensions/reference/storage "Read 'chrome.storage' in the Chrome developer docs") [↑](#get-and-set "This feature mentioned in 'Learn about local.storage.set() and local.storage.get()'")
+- [chrome.storage.local.get()](/docs/extensions/reference/storage#method-StorageArea-get "Read 'chrome.storage.local.get()' in the Chrome developer docs") [↑](#retrieve-items "This feature mentioned in 'Retrieve todos items'")
+- [chrome.storage.local.set()](/docs/extensions/reference/storage#method-StorageArea-set "Read 'chrome.storage.local.set()' in the Chrome developer docs") [↑](#save-items "This feature mentioned in 'Save todos items'")
+- [chrome.storage.local.remove()](/docs/extensions/reference/storage#method-StorageArea-remove "Read 'chrome.storage.local.remove()' in the Chrome developer docs") [↑](#remove-items "This feature mentioned in 'Remove todos items'")
+- [chrome.storage.local.clear()](/docs/extensions/reference/storage#method-StorageArea-remove "Read 'chrome.storage.local.clear()' in the Chrome developer docs") [↑](#remove-items "This feature mentioned in 'Drop all todo items'")
 
 Ready to continue onto the next step? Go to [Step 3 - Add alarms and notifications »](../app_codelab_alarms)

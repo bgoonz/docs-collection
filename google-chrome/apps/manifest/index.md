@@ -6,8 +6,7 @@
 
 Every app has a [JSON](https://www.json.org)-formatted manifest file, named `manifest.json`, that provides important information.
 
-Field summary {: \#overview }
------------------------------
+## Field summary {: \#overview }
 
 The following code shows the supported manifest fields for Apps, with links to the page that discusses each field.
 

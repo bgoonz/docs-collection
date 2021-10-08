@@ -20,8 +20,7 @@ Chrome Apps can act as a network client for TCP and UDP connections. This doc sh
 
 {% endAside %}
 
-Manifest requirements {: \#manifest }
--------------------------------------
+## Manifest requirements {: \#manifest }
 
 For Chrome Apps that use TCP or UDP, add the [sockets](manifest/sockets) entry to the manifest and specify the IP end point permission rules. For example:
 
@@ -51,16 +50,15 @@ See [Sockets Manifest Key](manifest/sockets) for detailed description of the syn
 
 Examples of socket manifest entries:
 
--   `{ "tcp": { "connect" : "*:23" } }`–connecting on port 23 of any hosts
--   `{ "tcp": { "connect" : ["*:23", "*:80"] } }`–connecting on port 23 or 80 of any hosts
--   `{ "tcp": { "connect" : "www.example.com:23" } }`–connecting port 23 of *www.example.com*
--   `{ "tcp": { "connect" : "" } }`–connecting any ports of any hosts
--   `{ "udp": { "send" : ":99" } }`–sending UDP packet to port 99 of any hosts
--   `{ "udp": { "bind" : ":8899" } }`–binding local port 8899 to receive UDP packets
--   `{ "tcpServer": { "listen" : ":8080" } }`–TCP listening on local port 8080
+- `{ "tcp": { "connect" : "*:23" } }`–connecting on port 23 of any hosts
+- `{ "tcp": { "connect" : ["*:23", "*:80"] } }`–connecting on port 23 or 80 of any hosts
+- `{ "tcp": { "connect" : "www.example.com:23" } }`–connecting port 23 of *www.example.com*
+- `{ "tcp": { "connect" : "" } }`–connecting any ports of any hosts
+- `{ "udp": { "send" : ":99" } }`–sending UDP packet to port 99 of any hosts
+- `{ "udp": { "bind" : ":8899" } }`–binding local port 8899 to receive UDP packets
+- `{ "tcpServer": { "listen" : ":8080" } }`–TCP listening on local port 8080
 
-Using TCP {: \#tcp }
---------------------
+## Using TCP {: \#tcp }
 
 Chrome Apps can make connections to any service that supports TCP.
 
@@ -93,8 +91,7 @@ Here’s how to disconnect ([sockets.tcp.disconnect](/apps/sockets.tcp#method-di
 
     chrome.sockets.tcp.disconnect(socketId);
 
-Using UDP {: \#udp }
---------------------
+## Using UDP {: \#udp }
 
 Chrome Apps can make connections to any service that supports UDP.
 
@@ -143,8 +140,7 @@ This example is very similar to the ‘Sending data’ example, except we setup 
       });
     });
 
-Using TCP Server {: \#tcpServer }
----------------------------------
+## Using TCP Server {: \#tcpServer }
 
 Chrome Apps can act as TCP servers using the [sockets.tcpServer](/apps/sockets.tcpServer) API.
 

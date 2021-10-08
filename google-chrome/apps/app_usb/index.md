@@ -15,10 +15,9 @@ This document describes how to use the [USB API](usb) to communicate with USB de
 {% endAside %}
 
 For background information about USB, see the official [USB specifications](http://www.usb.org/home).  
-[*USB in a NutShell*](http://www.beyondlogic.org/usbnutshell/usb1.shtml) is a reasonable crash course that you may find helpful.
+[_USB in a NutShell_](http://www.beyondlogic.org/usbnutshell/usb1.shtml) is a reasonable crash course that you may find helpful.
 
-Manifest requirement {: \#manifest }
-------------------------------------
+## Manifest requirement {: \#manifest }
 
 The USB API requires the “usb” permission in the manifest file:
 
@@ -49,8 +48,8 @@ Note that only decimal numbers are allowed in JSON format. You cannot use hexade
 
 Since **Chrome 57**, the requirement for declaring all the device types in the app manifest is relaxed for apps running as Chrome OS [kiosk apps](apps/manifest/kiosk_enabled). For kiosk apps, you can use the `interfaceClass` permission property to request permission to access USB devices that:
 
--   implement a USB interface of a specific interface class
--   have a specific USB device class
+- implement a USB interface of a specific interface class
+- have a specific USB device class
 
 For example, the following `usbDevices` permission would grant an app access to all USB devices that implement a printer interface (interface class code 7), and to USB hub devices (device class code 9):
 
@@ -84,8 +83,7 @@ Note that `usbDevices` permissions with `interfaceClass` property have effect on
 
 {% endAside %}
 
-Finding a device {: \#finding\_device }
----------------------------------------
+## Finding a device {: \#finding_device }
 
 To determine whether one or more specific devices are connected to a user’s system, use the [usb.getDevices](/apps/usb#method-getDevices) method:
 
@@ -111,8 +109,7 @@ Example:
 
     chrome.usb.getDevices({"vendorId": vendorId, "productId": productId}, onDeviceFound);
 
-Opening a device {: \#usb\_open }
----------------------------------
+## Opening a device {: \#usb_open }
 
 Once the `Device` objects are returned, you can open a device using usb.openDevice to obtain a connection handle. You can only communicate with USB devices using connection handles.
 
@@ -167,8 +164,7 @@ which is equivalent to:
       })
     });
 
-USB transfers and receiving data from a device {: \#usb\_transfers }
---------------------------------------------------------------------
+## USB transfers and receiving data from a device {: \#usb_transfers }
 
 The USB protocol defines four types of transfers: [control](#control_transfers), [bulk](#bulk_transfers), [isochronous](#isochronous_transfers) and [interrupt](#interrupt_transfers). These transfers are described below.
 
@@ -190,8 +186,7 @@ Example:
 
     chrome.usb.bulkTransfer(connectionHandle, transferInfo, onTransferCallback);
 
-CONTROL transfers {: \#control\_transfers }
--------------------------------------------
+## CONTROL transfers {: \#control_transfers }
 
 Control transfers are generally used to send or receive configuration or command parameters to a USB device. The controlTransfer method always sends to/reads from endpoint 0, and no claimInterface is required. The method is simple and receives three parameters:
 
@@ -220,8 +215,7 @@ Example:
     };
     chrome.usb.controlTransfer(connectionHandle, transferInfo, optionalCallback);
 
-ISOCHRONOUS transfers {: \#isochronous\_transfers }
----------------------------------------------------
+## ISOCHRONOUS transfers {: \#isochronous_transfers }
 
 Isochronous transfers are the most complex type of USB transfer. They are commonly used for streams of data, like video and sound. To initiate an isochronous transfer (either inbound or outbound), you must use the [usb.isochronousTransfer](/apps/usb#method-isochronousTransfer) method:
 
@@ -262,8 +256,7 @@ If you are expecting a stream of data from the device, remember that you will ha
 
 {% endAside %}
 
-BULK transfers {: \#bulk\_transfers }
--------------------------------------
+## BULK transfers {: \#bulk_transfers }
 
 Bulk transfers are commonly used to transfer a large amount of non-time-sensitive data in a reliable way. [usb.bulkTransfer](/apps/usb#method-bulkTransfer) has three parameters:
 
@@ -283,8 +276,7 @@ Example:
       "data": new Uint8Array([4, 8, 15, 16, 23, 42]).buffer
     };
 
-INTERRUPT transfers {: \#interrupt\_transfers }
------------------------------------------------
+## INTERRUPT transfers {: \#interrupt_transfers }
 
 Interrupt transfers are used to small amount of time sensitive data. Since all USB communication is initiated by the host, host code usually polls the device periodically, sending interrupt IN transfers that will make the device send data back if there is anything in the interrupt queue (maintained by the device). [usb.interruptTransfer](/apps/usb#method-interruptTransfer) has three parameters:
 
@@ -305,8 +297,7 @@ Example:
     };
     chrome.usb.interruptTransfer(connectionHandle, transferInfo, optionalCallback);
 
-Caveats {: \#caveats }
-----------------------
+## Caveats {: \#caveats }
 
 Not all devices can be accessed through the USB API. In general, devices are not accessible because either the Operating System’s kernel or a native driver holds them off from user space code. Some examples are devices with HID profiles on OSX systems, and USB pen drives.
 
@@ -316,8 +307,8 @@ On most Linux systems, USB devices are mapped with read-only permissions by defa
 
 Then, just restart the udev daemon: `service udev restart`. You can check if device permissions are set correctly by following these steps:
 
--   Run `lsusb` to find the bus and device numbers.
--   Run `ls -al /dev/bus/usb/[bus]/[device]`. This file should be owned by group “plugdev” and have group write permissions.
+- Run `lsusb` to find the bus and device numbers.
+- Run `ls -al /dev/bus/usb/[bus]/[device]`. This file should be owned by group “plugdev” and have group write permissions.
 
 Your app cannot do this automatically since this this procedure requires root access. We recommend that you provide instructions to end-users and link to the [Caveats](#caveats) section on this page for an explanation.
 

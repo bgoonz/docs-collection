@@ -8,8 +8,7 @@ This interactive tutorial shows you how to log and filter messages in the [Chrom
 
 This tutorial is intended to be completed in order. It assumes that you understand the fundamentals of web development, such as how to use JavaScript to add interactivity to a page.
 
-Set up the demo and DevTools {: \#setup }
------------------------------------------
+## Set up the demo and DevTools {: \#setup }
 
 This tutorial is designed so that you can open up the demo and try all the workflows yourself. When you physically follow along, you’re more likely to remember the workflows later.
 
@@ -36,8 +35,7 @@ This tutorial is designed so that you can open up the demo and try all the workf
 
     **Figure 5**. DevTools undocked in a separate window.
 
-View messages logged from JavaScript {: \#javascript }
-------------------------------------------------------
+## View messages logged from JavaScript {: \#javascript }
 
 Most messages that you see in the Console come from the web developers who wrote the page’s JavaScript. The goal of this section is to introduce you to the different message types that you’re likely to see in the Console, and explain how you can log each message type yourself from your own JavaScript.
 
@@ -55,9 +53,9 @@ Most messages that you see in the Console come from the web developers who wrote
 
 3.  Navigate back to the Console using any of the following workflows:
 
-    -   Click the **Console** tab.
-    -   Press Control+\[ or Command+\[ (Mac) until the Console panel is in focus.
-    -   [Open the Command Menu](/docs/devtools/command-menu), start typing `Console`, select the **Show Console Panel** command, and then press Enter.
+    - Click the **Console** tab.
+    - Press Control+\[ or Command+\[ (Mac) until the Console panel is in focus.
+    - [Open the Command Menu](/docs/devtools/command-menu), start typing `Console`, select the **Show Console Panel** command, and then press Enter.
 
 4.  Click the **Log Warning** button in the demo. `Abandon Hope All Ye Who Enter` gets logged to the Console. Messages formatted like this are warnings.
 
@@ -102,8 +100,7 @@ The main idea here is that when you want to log messages to the Console from you
 
 There are even more methods than what has been demonstrated in this section. At the end of the tutorial you’ll learn how to explore the rest of the methods.
 
-View messages logged by the browser {: \#browser }
---------------------------------------------------
+## View messages logged by the browser {: \#browser }
 
 The browser logs messages to the Console, too. This usually happens when there’s a problem with the page.
 
@@ -131,8 +128,7 @@ The browser logs messages to the Console, too. This usually happens when there�
 
     **Figure 17**. A violation in the Console.
 
-Filter messages {: \#filter }
------------------------------
+## Filter messages {: \#filter }
 
 On some pages you’ll see the Console get flooded with messages. DevTools provides many different ways to filter out messages that aren’t relevant to the task at hand.
 
@@ -190,7 +186,7 @@ When you want to only view the messages that came from a certain URL, use the **
 
 ### Filter by user messages {: \#user }
 
-Earlier, when you clicked **Log Info**, a script called `console.log('Hello, Console!')` in order to log the message to the Console. Messages logged from JavaScript like this are called *user messages*. In contrast, when you clicked **Cause 404**, the browser logged an `Error`-level message stating that the requested resource could not be found. Messages like that are considered *browser messages*. You can use the **Sidebar** to filter out browser messages and only show user messages.
+Earlier, when you clicked **Log Info**, a script called `console.log('Hello, Console!')` in order to log the message to the Console. Messages logged from JavaScript like this are called _user messages_. In contrast, when you clicked **Cause 404**, the browser logged an `Error`-level message stating that the requested resource could not be found. Messages like that are considered _browser messages_. You can use the **Sidebar** to filter out browser messages and only show user messages.
 
 1.  Click **9 User Messages**. The browser messages are hidden.
 
@@ -200,8 +196,7 @@ Earlier, when you clicked **Log Info**, a script called `console.log('Hello, Con
 
 2.  Click **12 Messages** to show all messages again.
 
-Use the Console alongside any other panel {: \#drawer }
--------------------------------------------------------
+## Use the Console alongside any other panel {: \#drawer }
 
 What if you’re editing styles, but you need to quickly check the Console log for something? Use the Drawer.
 
@@ -212,11 +207,10 @@ What if you’re editing styles, but you need to quickly check the Console log f
 
     **Figure 24**. The Console tab in the Drawer.
 
-Next steps {: \#next }
-----------------------
+## Next steps {: \#next }
 
 Congratulations, you have completed the tutorial. Click **Dispense Trophy** to receive your trophy.
 
--   See [Console Reference](/docs/devtools/console/reference) to explore more features and workflows related to the Console UI.
--   See [Console API Reference](/docs/devtools/console/api) to learn more about all of the `console` methods that were demonstrated in [View messages logged from JavaScript](#javascript) and explore the other `console` methods that weren’t covered in this tutorial.
--   See [Get Started](/docs/devtools/overview/#start) to explore what else you can do with DevTools.
+- See [Console Reference](/docs/devtools/console/reference) to explore more features and workflows related to the Console UI.
+- See [Console API Reference](/docs/devtools/console/api) to learn more about all of the `console` methods that were demonstrated in [View messages logged from JavaScript](#javascript) and explore the other `console` methods that weren’t covered in this tutorial.
+- See [Get Started](/docs/devtools/overview/#start) to explore what else you can do with DevTools.

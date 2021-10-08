@@ -12,14 +12,13 @@ CSP is a policy to mitigate against cross-site scripting issues, and we all know
 
 The purpose of this document is to tell you exactly what the CSP policy is for Chrome Apps, what you need to do to comply with it, and how you can still do those fundamental tasks in a way that is CSP–compliant.
 
-What is the CSP for Chrome Apps? {: \#what }
---------------------------------------------
+## What is the CSP for Chrome Apps? {: \#what }
 
 The content security policy for Chrome Apps restricts you from doing the following:
 
--   You can’t use inline scripting in your Chrome App pages. The restriction bans both `<script>` blocks and event handlers (`<button onclick="...">`).
--   You can’t reference any external resources in any of your app files (except for video and audio resources). You can’t embed external resources in an iframe.
--   You can’t use string-to-JavaScript methods like `eval()` and `new Function()`.
+- You can’t use inline scripting in your Chrome App pages. The restriction bans both `<script>` blocks and event handlers (`<button onclick="...">`).
+- You can’t reference any external resources in any of your app files (except for video and audio resources). You can’t embed external resources in an iframe.
+- You can’t use string-to-JavaScript methods like `eval()` and `new Function()`.
 
 This is implemented via the following policy value:
 
@@ -33,13 +32,11 @@ This is implemented via the following policy value:
 
 Your Chrome App can only refer to scripts and objects within your app, with the exception of media files (apps can refer to video and audio outside the package). Chrome extensions will let you relax the default Content Security Policy; Chrome Apps won’t.
 
-How to comply with CSP {: \#how }
----------------------------------
+## How to comply with CSP {: \#how }
 
 All JavaScript and all resources should be local (everything gets packaged in your Chrome App).
 
-“But then how do I…” {: \#but }
--------------------------------
+## “But then how do I…” {: \#but }
 
 It’s very possible that you are using templating libraries and many of these won’t work with CSP. You may also want to access external resources in your app (external images, content from websites).
 
@@ -49,12 +46,12 @@ Use a library that offers precompiled templates and you’re all set. You can st
 
 You will need to use sandboxing to isolate any content that you want to do ‘eval’ things to. Sandboxing lifts CSP on the content that you specify. If you want to use the very powerful Chrome APIs in your Chrome App, your sandboxed content can’t directly interact with these APIs (see [Sandbox local content](app_external#sandboxing)).
 
-### Access remote resources {: \#remote\_resources }
+### Access remote resources {: \#remote_resources }
 
 You can fetch remote resources via `XMLHttpRequest` and serve them via `blob:`, `data:`, or `filesystem:` URLs (see [Referencing external resources](app_external#external)).
 
 Video and audio can be loaded from remote services because they have good fallback behavior when offline or under spotty connectivity.
 
-### Embed web content {: \#embed\_content }
+### Embed web content {: \#embed_content }
 
 Instead of using an iframe, you can call out to an external URL using a webview tag (see [Embed external web pages](app_external#webview)).

@@ -8,8 +8,7 @@ In order to ease the integration to the Android app, the Trusted Web Activity te
 
 **Note:** This articles covers the integration for the Android app. If you are using [Bubblewrap](https://github.com/GoogleChromeLabs/bubblewrap) to build your application you will be able to use the tool to update your app. The implementation on Bubblewrap is being tracked in [this issue](https://github.com/GoogleChromeLabs/bubblewrap/issues/376). This guide is meant for those who are **not** using Bubblewrap to update their app.
 
-build.gradle
-------------
+## build.gradle
 
 The billing extension library itself depends on version `2.1.0` of `android-browser-helper`. Ensure your application is using a version that is equal or greater than that.
 
@@ -21,8 +20,7 @@ You will also need to add an implementation declaration for the billing extensio
         implementation 'com.google.androidbrowserhelper:billing:1.0.0-alpha05'
     }
 
-DelegationService.java
-----------------------
+## DelegationService.java
 
 android-browser-helper ships with a default `DelegationService` that can be used directly by apps. When using the billing extension, you need a slightly customized version of the `DelegationService`.
 
@@ -42,8 +40,7 @@ In order to do that, you will need to create your own `DelegationService` class 
         }
     }
 
-AndroidManifest.xml
--------------------
+## AndroidManifest.xml
 
 On the Android Manifest, you will need to change the reference to the Delegation Library your own implementation. In the corresponding `service` declaration, replace `com.google.androidbrowserhelper.trusted.DelegationService` with your newly created class.
 
@@ -80,7 +77,6 @@ The billing library also introduces two new components that will need to be adde
         </intent-filter>
     </service>
 
-Learn more about the Digital Goods API and Google Play Billing
---------------------------------------------------------------
+## Learn more about the Digital Goods API and Google Play Billing
 
 This article covered the steps needed specifically on the Android application that uses Trusted Web Activity, but the Google Play Billing API has its own terminology and includes client and backend components. We strongly recommend reading the [Google Play Billing](https://developer.android.com/google/play/billing) and the [Digital Goods API](https://github.com/WICG/digital-goods) documentation and understanding its concepts before integrating it into an application in production.

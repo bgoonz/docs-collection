@@ -8,43 +8,41 @@
 
 {% Aside %}
 
-**Want to start fresh from here?** Find the previous step’s code in the [reference code zip](https://github.com/mangini/io13-codelab/archive/master.zip) under ***cheat\_code &gt; solution\_for\_step6***.
+**Want to start fresh from here?** Find the previous step’s code in the [reference code zip](https://github.com/mangini/io13-codelab/archive/master.zip) under **_cheat_code &gt; solution_for_step6_**.
 
 {% endAside %}
 
 In this step, you will learn:
 
--   How to publish a Chrome App to the Chrome Web Store.
+- How to publish a Chrome App to the Chrome Web Store.
 
-*Estimated time to complete this step: 10 minutes.*  
+_Estimated time to complete this step: 10 minutes._  
 To preview what you will complete in this step, [jump down to the bottom of this page ↓](#view-in-webstore).
 
-Learn about Chrome Web Store benefits {: \#about-web-store }
-------------------------------------------------------------
+## Learn about Chrome Web Store benefits {: \#about-web-store }
 
 For those not familiar with the store, it provides several benefits to users and developers.
 
 For users:
 
--   Added security—all apps and extensions are checked for Malware signals.
--   All apps are maintained with the latest version the developer has published.
--   Ratings and reviews provide a great way to see the quality of applications.
+- Added security—all apps and extensions are checked for Malware signals.
+- All apps are maintained with the latest version the developer has published.
+- Ratings and reviews provide a great way to see the quality of applications.
 
 For developers:
 
--   You can upload your app once and know that it will be distributed to all users.
--   Payments and subscriptions are built in.
--   Your app is more discoverable to users.
--   Tools to help you manage bugs and reviews from users.
+- You can upload your app once and know that it will be distributed to all users.
+- Payments and subscriptions are built in.
+- Your app is more discoverable to users.
+- Tools to help you manage bugs and reviews from users.
 
-Upload your app via the Developer Dashboard {: \#developer-dashboard }
-----------------------------------------------------------------------
+## Upload your app via the Developer Dashboard {: \#developer-dashboard }
 
 The Chrome Web Store has a special dashboard for developers that lets you upload new applications and update existing ones.
 
 The process of uploading apps is simple:
 
-1.  Compress your application’s root directory (the folder containing the *manifest.json* file) into a .zip file.
+1.  Compress your application’s root directory (the folder containing the _manifest.json_ file) into a .zip file.
 2.  Go to the [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/developer/dashboard) and log in with a developer-verified Google Account. (If you don’t have a verified account, you can [sign up](https://chrome.google.com/webstore/developer/about_signup) for a nominal fee.)
 3.  Click **Add new item**.
 4.  Accept the terms and services agreement to continue.
@@ -56,8 +54,7 @@ You are nearly done. If you are not quite ready for the next step, you can save 
 
 {% Img src=“image/BrQidfK9jaQyIHwdw91aVpkPiib2/UNBhXQl7cHVl3GeNFVfl.png”, alt=“Save a draft”, height=“174”, width=“643” %}
 
-Add promotional materials {: \#promotional-metadata }
------------------------------------------------------
+## Add promotional materials {: \#promotional-metadata }
 
 Before you can publicly publish your app, you need to add promotional assets and extra meta information about your application.You should see a screen that looks like this:
 
@@ -65,19 +62,18 @@ Before you can publicly publish your app, you need to add promotional assets and
 
 The below fields are mandatory:
 
--   A **detailed description** of your application. Write your description to entice users to download your app.
--   A 128x128 **icon** to display in the store. You may re-use your app icon here.
--   At least one 1280x800 or 640x400 **screenshot** or YouTube **video** to show off what your app does.
--   A 440x280 **small tile icon** that will be displayed on the Chrome Web Store wall.
--   The **primary category** where your app should be listed.
--   Your app’s **language** to help users find it.
+- A **detailed description** of your application. Write your description to entice users to download your app.
+- A 128x128 **icon** to display in the store. You may re-use your app icon here.
+- At least one 1280x800 or 640x400 **screenshot** or YouTube **video** to show off what your app does.
+- A 440x280 **small tile icon** that will be displayed on the Chrome Web Store wall.
+- The **primary category** where your app should be listed.
+- Your app’s **language** to help users find it.
 
 Once you are happy with everything, you can now publish your application to the public.
 
 {% Img src=“image/BrQidfK9jaQyIHwdw91aVpkPiib2/mDeJNuPD6lD5aTSt8UZY.png”, alt=“Publish your changes”, height=“174”, width=“643” %}
 
-View your app in the Chrome Web Store {: \#view-in-webstore }
--------------------------------------------------------------
+## View your app in the Chrome Web Store {: \#view-in-webstore }
 
 You are done Step 7! You should have a link to your public Chrome App that you can share with the world.
 

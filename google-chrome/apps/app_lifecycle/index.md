@@ -8,8 +8,7 @@
 
 The app runtime and event page are responsible for managing the app lifecycle. The app runtime manages app installation, controls the event page, and can shutdown the app at anytime. The event page listens out for events from the app runtime and manages what gets launched and how.
 
-How the lifecycle works {: \#lifecycle }
-----------------------------------------
+## How the lifecycle works {: \#lifecycle }
 
 The app runtime loads the event page from a user’s desktop and the `onLaunch()` event is fired. This event tells the event page what windows to launch and their dimensions.
 
@@ -17,12 +16,11 @@ The app runtime loads the event page from a user’s desktop and the `onLaunch()
 
 When the event page has no executing JavaScript, no pending callbacks, and no open windows, the runtime unloads the event page and closes the app. Before unloading the event page, the `onSuspend()` event is fired. This gives the event page opportunity to do simple clean-up tasks before the app is closed.
 
-Create event page and windows {: \#eventpage }
-----------------------------------------------
+## Create event page and windows {: \#eventpage }
 
 All apps must have an event page. This page contains the top-level logic of the application with none of its own UI and is responsible for creating the windows for all other app pages.
 
-### Create event page {: \#create\_event\_page }
+### Create event page {: \#create_event_page }
 
 To create the event page, include the “background” field in the app manifest and include the `background.js` in the scripts array. Any library scripts used by the event page need to be added to the “background” field first:
 
@@ -39,7 +37,7 @@ Your event page must include the `onLaunched()` function. This function is calle
       // Tell your app what to launch and how.
     });
 
-### Create windows {: \#create\_windows }
+### Create windows {: \#create_windows }
 
 An event page may create one or more windows at its discretion. By default, these windows are created with a script connection to the event page and are directly scriptable by the event page.
 
@@ -61,16 +59,15 @@ Here’s a sample window created from `background.js`:
       });
     });
 
-### Including Launch Data {: \#launch\_data }
+### Including Launch Data {: \#launch_data }
 
 Depending on how your app is launched, you may need to handle launch data in your event page. By default, there is no launch data when the app is started by the app launcher. For apps that have file handlers, you need to handle the `launchData.items` parameter to allow them to be launched with files.
 
-Listening for app runtime events {: \#runtime }
------------------------------------------------
+## Listening for app runtime events {: \#runtime }
 
 The app runtime controls the app installs, updates, and uninstalls. You don’t need to do anything to set up the app runtime, but your event page can listen out for the `onInstalled()` event to store local settings and the `onSuspend()` event to do simple clean-up tasks before the event page is unloaded.
 
-### Storing local settings {: \#local\_settings }
+### Storing local settings {: \#local_settings }
 
 `chrome.runtime.onInstalled()` is called when your app has first been installed, or when it has been updated. Any time this function is called, the `onInstalled` event is fired. The event page can listen for this event and use the [Storage API](storage) to store and update local settings (see also [Storage options](app_storage#options)).
 
@@ -78,7 +75,7 @@ The app runtime controls the app installs, updates, and uninstalls. You don’t 
       chrome.storage.local.set(object items, function callback);
     });
 
-### Preventing data loss {: \#preventing\_loss }
+### Preventing data loss {: \#preventing_loss }
 
 Users can uninstall your app at any time. When uninstalled, no executing code or private data is left behind. This can lead to data loss since the users may be uninstalling an app that has locally edited, unsynchronized data. You should stash data to prevent data loss.
 

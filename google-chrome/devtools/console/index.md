@@ -2,8 +2,7 @@
 
 This page explains how the Chrome DevTools Console makes it easier to develop web pages. The Console has 2 main uses: [viewing logged messages](#view) and [running JavaScript](#javascript).
 
-Viewing logged messages {: \#view }
------------------------------------
+## Viewing logged messages {: \#view }
 
 Web developers often log messages to the Console to make sure that their JavaScript is working as expected. To log a message, you insert an expression like `console.log('Hello, Console!')` into your JavaScript. When the browser executes your JavaScript and sees an expression like that, it knows that it’s supposed to log the message to the Console. For example, suppose that you’re in the process of writing the HTML and JavaScript for a page:
 
@@ -50,13 +49,12 @@ Web developers often log messages to the Console to make sure that their JavaScr
 
 Web developers log messages for 2 general reasons:
 
--   Making sure that code is executing in the right order.
--   Inspecting the values of variables at a certain moment in time.
+- Making sure that code is executing in the right order.
+- Inspecting the values of variables at a certain moment in time.
 
 See [Get Started With Logging Messages](/docs/devtools/console/log) to get hands-on experience with logging. See the [Console API Reference](/docs/devtools/console/api) to browse the full list of `console` methods. The main difference between the methods is how they display the data that you’re logging.
 
-Running JavaScript {: \#javascript }
-------------------------------------
+## Running JavaScript {: \#javascript }
 
 The Console is also a [REPL](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop). You can run JavaScript in the Console to interact with the page that you’re inspecting. For example, **Figure 2** shows the Console next to the DevTools homepage, and **Figure 3** shows that same page after using the Console to change the page’s title.
 

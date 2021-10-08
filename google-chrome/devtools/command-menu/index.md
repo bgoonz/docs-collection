@@ -6,8 +6,7 @@ The Command Menu provides a fast way to navigate the Chrome DevTools UI and acco
 
 **Figure 1**. Using the Command Menu to disable JavaScript.
 
-Open the Command Menu {: \#open }
----------------------------------
+## Open the Command Menu {: \#open }
 
 Press Control+Shift+P or Command+Shift+P (Mac). Or, click **Customize And Control DevTools** {% Img src=“image/admin/m1Eh4SVSkWc43wVZc6xD.png”, alt=“Customize And Controls DevTools”, width=“6”, height=“26” %} and then select **Run Command**.
 
@@ -15,8 +14,7 @@ Press Control+Shift+P or Command+Shift+P (Mac). Or, click **Customize And Contro
 
 **Figure 2**. Run Command.
 
-See other available actions {: \#help }
----------------------------------------
+## See other available actions {: \#help }
 
 If you use the workflow outlined in [Open the Command Menu](#open), the Command Menu opens with a `>` character prepended to the Command Menu text box.
 

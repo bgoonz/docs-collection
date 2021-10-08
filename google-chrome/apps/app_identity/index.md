@@ -16,15 +16,13 @@ Use the [Chrome Identity API](identity) to authenticate users: the `getAuthToken
 
 {% endAside %}
 
-How it works {: \#how }
------------------------
+## How it works {: \#how }
 
 Chrome Apps users have a Google account associated with their profile. Apps can get OAuth2 tokens for these users using the `getAuthToken` API.
 
 Apps that want to perform authentication with non-Google identity providers must call `launchWebAuthFlow`. This method uses a browser pop-up to show the provider pages and captures redirects to the specific URL patterns. The redirect URLs are passed to the app and the app extracts the token from the URL.
 
-Google account authentication {: \#google }
--------------------------------------------
+## Google account authentication {: \#google }
 
 Here are the five steps you need to complete:
 
@@ -34,7 +32,7 @@ Here are the five steps you need to complete:
 4.  Update your manifest to include the client ID and scopes.
 5.  Get the authentication token.
 
-### Add permissions and upload app {: \#add\_permissions }
+### Add permissions and upload app {: \#add_permissions }
 
 You need to make sure the identity permission is in your manifest. You can then upload your app to the apps and extensions management page (see [Publish](publish_app)).
 
@@ -42,7 +40,7 @@ You need to make sure the identity permission is in your manifest. You can then 
       "identity"
     ]
 
-### Copy key to your manifest {: \#copy\_key }
+### Copy key to your manifest {: \#copy_key }
 
 When you register your application in the Google OAuth console, you’ll provide your application’s ID, which will be checked during token requests. Therefore it’s important to have a consistent application ID during development.
 
@@ -53,7 +51,7 @@ To keep your application ID constant, you need to copy the key in the installed 
 3.  Go to the installed app directory (this will be a version within the app ID). Open the installed `manifest.json` (pico is a quick way to open the file).
 4.  Copy the “key” in the installed `manifest.json` and paste it into your app’s source manifest file.
 
-### Get your OAuth2 client ID {: \#client\_id }
+### Get your OAuth2 client ID {: \#client_id }
 
 You need to register your app in the Google APIs Console to get the client ID:
 
@@ -70,7 +68,7 @@ You need to register your app in the Google APIs Console to get the client ID:
 
 {% endAside %}
 
-### Update your manifest with OAuth2 client ID and scopes {: \#update\_manifest }
+### Update your manifest with OAuth2 client ID and scopes {: \#update_manifest }
 
 You need to update your manifest to include the client ID and scopes. Here’s the sample “oauth2” for the [gdrive sample](https://github.com/GoogleChrome/chrome-app-samples/tree/master/samples/gdrive):
 
@@ -143,8 +141,7 @@ Example of `removeCachedAuthToken` usage:
       }
     }
 
-Non-Google account authentication {: \#non }
---------------------------------------------
+## Non-Google account authentication {: \#non }
 
 Here are the three steps you need to complete:
 
@@ -152,13 +149,13 @@ Here are the three steps you need to complete:
 2.  Add permissions for provider resources that your app will access.
 3.  Get the authentication token.
 
-### Register with the provider {: \#register\_provider }
+### Register with the provider {: \#register_provider }
 
 You need to register an OAuth2 client ID with the provider and configure the client ID as a website. For the redirect URI to be entered during registration, use the URL of the form: `https://<extension-id>.chromiumapp.org/<anything-here>`
 
 For example, if you app ID is `abcdefghijklmnopqrstuvwxyzabcdef` and you want `provider_cb` to be the path, to distinguish it with redirect URIs from other providers, you should use: `https://abcdefghijklmnopqrstuvwxyzabcdef.chromiumapp.org/provider_cb`
 
-### Add permissions for provider {: \#permissions\_provider }
+### Add permissions for provider {: \#permissions_provider }
 
 To make cross-origin XHRs to the provider API endpoints, you need to allowlist the appropriate patterns in the permissions:
 

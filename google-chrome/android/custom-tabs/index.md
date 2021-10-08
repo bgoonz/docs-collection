@@ -10,9 +10,9 @@ Note: For information on sharing the content in Custom Tabs, see the blog post, 
 
 Custom Tabs allow an app to customize how the browser looks and feels. An app can change things like:
 
--   Toolbar color
--   Enter and exit animations
--   Add custom actions to the browser toolbar, overflow menu and bottom toolbar
+- Toolbar color
+- Enter and exit animations
+- Add custom actions to the browser toolbar, overflow menu and bottom toolbar
 
 Custom Tabs also allow the developer to pre-start the browser and pre-fetch content for faster loading.
 
@@ -20,46 +20,42 @@ Custom Tabs also allow the developer to pre-start the browser and pre-fetch cont
 
 You can test this now with our [sample](https://github.com/GoogleChrome/android-browser-helper/tree/master/demos/custom-tabs-example-app) on GitHub.
 
-When should I use Custom Tabs vs WebView?
------------------------------------------
+## When should I use Custom Tabs vs WebView?
 
 The WebView is good solution if you are hosting your own content inside your app. If your app directs people to URLs outside your domain, we recommend that you use Custom Tabs for these reasons:
 
--   Support for the same web platform features and capabilities as the browsers.
--   Simple to implement. No need to build code to manage requests, permission grants or cookie stores.
--   UI customization:
-    -   Toolbar color
-        -   Action button
-        -   Custom menu items
-        -   Custom in/out animations
-        -   Bottom toolbar
--   Navigation awareness: the browser delivers a callback to the application upon an external navigation.
--   Security: the browser uses Google’s Safe Browsing to protect the user and the device from dangerous sites.
--   Performance optimization:
-    -   Pre-warming of the Browser in the background, while avoiding stealing resources from the application.
-    -   Providing a likely URL in advance to the browser, which may perform speculative work, speeding up page load time.
--   Lifecycle management: the browser prevents the application from being evicted by the system while on top of it, by raising its importance to the “foreground” level.
--   Shared cookie jar and permissions model so users don’t have to sign-in to sites they are already connected to, or re-grant permissions they have already granted.
--   If the user has turned on Data Saver, they will still benefit from it.
--   Synchronized AutoComplete across devices for better form completion.
--   Simple customization model.
--   Quickly return to app with a single tap.
--   You want to use the latest browser implementations on devices pre-Lollipop (auto updating WebView) instead of older WebViews.
+- Support for the same web platform features and capabilities as the browsers.
+- Simple to implement. No need to build code to manage requests, permission grants or cookie stores.
+- UI customization:
+  - Toolbar color
+    - Action button
+    - Custom menu items
+    - Custom in/out animations
+    - Bottom toolbar
+- Navigation awareness: the browser delivers a callback to the application upon an external navigation.
+- Security: the browser uses Google’s Safe Browsing to protect the user and the device from dangerous sites.
+- Performance optimization:
+  - Pre-warming of the Browser in the background, while avoiding stealing resources from the application.
+  - Providing a likely URL in advance to the browser, which may perform speculative work, speeding up page load time.
+- Lifecycle management: the browser prevents the application from being evicted by the system while on top of it, by raising its importance to the “foreground” level.
+- Shared cookie jar and permissions model so users don’t have to sign-in to sites they are already connected to, or re-grant permissions they have already granted.
+- If the user has turned on Data Saver, they will still benefit from it.
+- Synchronized AutoComplete across devices for better form completion.
+- Simple customization model.
+- Quickly return to app with a single tap.
+- You want to use the latest browser implementations on devices pre-Lollipop (auto updating WebView) instead of older WebViews.
 
-When should I use Custom Tabs vs Trusted Web Activity
------------------------------------------------------
+## When should I use Custom Tabs vs Trusted Web Activity
 
 [Trusted Web Activities](/docs/android/trusted-web-activity/) extend the Custom Tabs protocol and shares most of its benefits. But, instead of providing a customized UI, it allows developers to open a browser tab without any UI at all. It is recommended for developers who want to open their own [Progressive Web App](https://web.dev/progressive-web-apps/), in full screen, inside their own Android app.
 
-Where is Custom Tabs available?
--------------------------------
+## Where is Custom Tabs available?
 
 Custom Tabs is a feature supported by browsers on the Android platform. It was originally introduced by [Chrome](https://play.google.com/store/apps/details?id=com.chrome), on version 45. Currently, the protocol is supported by most Android browsers.
 
 We are looking for feedback, questions and suggestions on this project, so we encourage you to file issues on [crbug.com](https://crbug.com) and ask questions to our Twitter account <span class="citation" data-cites="ChromiumDev">\[@ChromiumDev\]</span>[4](https://twitter.com/ChromiumDev).
 
-Getting Started
----------------
+## Getting Started
 
 If you are getting started with Custom Tabs, checkout the [Implementation Guide](/docs/android/custom-tabs/integration-guide/) and the [GitHub Demo](https://github.com/GoogleChrome/android-browser-helper/tree/master/demos/custom-tabs-example-app).
 

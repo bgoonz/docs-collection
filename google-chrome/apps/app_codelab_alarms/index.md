@@ -8,39 +8,37 @@
 
 {% Aside %}
 
-**Want to start fresh from here?** Find the previous step’s code in the [reference code zip](https://github.com/mangini/io13-codelab/archive/master.zip) under ***cheat\_code &gt; solution\_for\_step2***.
+**Want to start fresh from here?** Find the previous step’s code in the [reference code zip](https://github.com/mangini/io13-codelab/archive/master.zip) under **_cheat_code &gt; solution_for_step2_**.
 
 {% endAside %}
 
 In this step, you will learn:
 
--   How to wake your app at specified intervals to execute background tasks.
--   How to use on-screen notifications to draw attention to something important.
+- How to wake your app at specified intervals to execute background tasks.
+- How to use on-screen notifications to draw attention to something important.
 
-*Estimated time to complete this step: 20 minutes.*  
+_Estimated time to complete this step: 20 minutes._  
 To preview what you will complete in this step, [jump down to the bottom of this page ↓](#launch).
 
-Enhance your Todo app with reminders {: \#overview }
-----------------------------------------------------
+## Enhance your Todo app with reminders {: \#overview }
 
 Enhance the Todo app by adding functionality to remind the user if they have open todos—even when the app is closed.
 
 First, you need to add a way for the app to regularly check for uncompleted todos. Next, the app needs to display a message to the user, even if the Todo app window is closed. To accomplish this, you need to understand how alarms and notifications work in Chrome Apps.
 
-Add alarms {: \#alarms }
-------------------------
+## Add alarms {: \#alarms }
 
 Use [`chrome.alarms`](/docs/extensions/reference/alarms) to set a wake up interval. As long as Chrome is running, the alarm listener is called at approximately the interval set.
 
 ### Update app permissions {: \#update-permissions-alarms }
 
-In ***manifest.json***, request the `"alarms"` permission:
+In **_manifest.json_**, request the `"alarms"` permission:
 
     "permissions": ["storage", "alarms"],
 
 ### Update background scripts {: \#update-background-script-alarms }
 
-In ***background.js***, add an [`onAlarm`](/apps/alarms#event-onAlarm) listener. For now, the callback function will just log a message to the Console whenever there is a todo item:
+In **_background.js_**, add an [`onAlarm`](/apps/alarms#event-onAlarm) listener. For now, the callback function will just log a message to the Console whenever there is a todo item:
 
     chrome.app.runtime.onLaunched.addListener(function() {
       chrome.app.window.create('index.html', {
@@ -54,14 +52,14 @@ In ***background.js***, add an [`onAlarm`](/apps/alarms#event-onAlarm) listener.
 
 ### Update HTML view {: \#update-html-view-alarms }
 
-In ***index.html***, add an **Activate alarm** button:
+In **_index.html_**, add an **Activate alarm** button:
 
     <footer id="info">
       <button id="toggleAlarm">Activate alarm</button>
       ...
     </footer>
 
-You now need to write the JavaScript event handler for this new button. Recall from [Step 2](/apps/app_codelab_import_todomvc#csp-compliance) that one of the most common CSP non-compliances is caused by inline JavaScript. In *index.html*, add this line to import a new *alarms.js* file which you will create in the following step:
+You now need to write the JavaScript event handler for this new button. Recall from [Step 2](/apps/app_codelab_import_todomvc#csp-compliance) that one of the most common CSP non-compliances is caused by inline JavaScript. In _index.html_, add this line to import a new _alarms.js_ file which you will create in the following step:
 
       </footer>
       ...
@@ -71,7 +69,7 @@ You now need to write the JavaScript event handler for this new button. Recall f
 
 ### Create alarms script {: \#add-alarms-script }
 
-Create a new file in your ***js*** folder called ***alarms.js***.
+Create a new file in your **_js_** folder called **_alarms.js_**.
 
 Use the code below to add `checkAlarm()`, `createAlarm()`, `cancelAlarm()` and `toggleAlarm()` methods, along with a click event handler to toggle the alarm when the **Activate alarm** button is clicked.
 
@@ -136,10 +134,10 @@ Whenever you have the alarm activated, you should see log messages being printed
 
 You should notice that:
 
--   Even when you close the Todo app window, the alarms will keep coming.
--   On platforms other than Chrome OS, if you completely close all Chrome browser instances, alarms won’t trigger.
+- Even when you close the Todo app window, the alarms will keep coming.
+- On platforms other than Chrome OS, if you completely close all Chrome browser instances, alarms won’t trigger.
 
-Let’s go over some of the pieces in *alarms.js* that use `chrome.alarms` methods one by one.
+Let’s go over some of the pieces in _alarms.js_ that use `chrome.alarms` methods one by one.
 
 ### Create alarms {: \#create-alarms }
 
@@ -182,8 +180,7 @@ This will output an object such as `{name: "remindme", periodInMinutes: 0.1, sch
 
 Now that alarms are in place to poll the app at regular intervals, use this as a base for adding visual notifications.
 
-Add notifications {: \#notifications }
---------------------------------------
+## Add notifications {: \#notifications }
 
 Let’s change the alarm notification to something the user can easily notice. Use [`chrome.notifications`](/apps/notifications) to show a desktop notification like the one below:
 
@@ -193,13 +190,13 @@ When the user clicks on the notification, the Todo app window should come into v
 
 ### Update app permissions {: \#update-permissions-notifications }
 
-In ***manifest.json***, request the `"notifications"` permission:
+In **_manifest.json_**, request the `"notifications"` permission:
 
     "permissions": ["storage", "alarms", "notifications"],
 
 ### Update background scripts {: \#update-background-script-notifications }
 
-In ***background.js***, refactor the `chrome.app.window.create()` callback into a standalone method so you can reuse it:
+In **_background.js_**, refactor the `chrome.app.window.create()` callback into a standalone method so you can reuse it:
 
     chrome.app.runtime.onLaunched.addListener(function() {
     function launch() {
@@ -214,11 +211,11 @@ In ***background.js***, refactor the `chrome.app.window.create()` callback into 
 
 ### Update alarm listener {: \#update-alarm-listener }
 
-At the top of the *background.js*, add a variable for a database name that’s used in the alarm listener:
+At the top of the _background.js_, add a variable for a database name that’s used in the alarm listener:
 
     var dbName = 'todos-vanillajs';
 
-The value of `dbName` is the same database name set in line 17 of *js/app.js*:
+The value of `dbName` is the same database name set in line 17 of _js/app.js_:
 
     var todo = new Todo('todos-vanillajs');
 
@@ -231,7 +228,7 @@ Instead of simply logging a new alarm to the Console, update the `onAlarm` liste
       chrome.storage.local.get(dbName, showNotification);
     });
 
-Add this `showNotification()` method to *background.js*:
+Add this `showNotification()` method to _background.js_:
 
     function launch(){
       ...
@@ -272,7 +269,7 @@ The third (optional) parameter is a callback method that should take on the form
 
 ### Handle notification interactions {: \#interact-with-notification }
 
-Open the Todo app when the user clicks on the notification. At the end of *background.js*, create a [`chrome.notifications.onClicked`](/apps/notifications#event-onClicked) event handler:
+Open the Todo app when the user clicks on the notification. At the end of _background.js_, create a [`chrome.notifications.onClicked`](/apps/notifications#event-onClicked) event handler:
 
     chrome.notifications.onClicked.addListener(function() {
       launch();
@@ -280,34 +277,32 @@ Open the Todo app when the user clicks on the notification. At the end of *backg
 
 The event handler callback simply calls the `launch()` method. `chrome.app.window.create()` either creates a new Chrome App window if one doesn’t already exist, or brings into focus the currently open window that has the window id of `main`.
 
-Launch your finished Todo app {: \#launch }
--------------------------------------------
+## Launch your finished Todo app {: \#launch }
 
 You are done Step 3! Reload your Todo app now with reminders.
 
 Check these behaviors work as expected:
 
--   If you don’t have any uncompleted todo items, there are no popup notifications.
--   If you click on the notification when your app is closed, the Todo app will open or come into focus.
+- If you don’t have any uncompleted todo items, there are no popup notifications.
+- If you click on the notification when your app is closed, the Todo app will open or come into focus.
 
 ### Troubleshooting {: \#troubleshooting }
 
-Your final *background.js* file should look like [this](https://github.com/mangini/io13-codelab/blob/master/cheat_code/solution_for_step3/background.js). If notifications are not showing up, confirm that your Chrome is version 28 or higher. If notifications still don’t show up, check for error messages in the DevTools Console on both the main window (**right click &gt; Inspect Element**) and the background page (**right click &gt; Inspect Background Page**).
+Your final _background.js_ file should look like [this](https://github.com/mangini/io13-codelab/blob/master/cheat_code/solution_for_step3/background.js). If notifications are not showing up, confirm that your Chrome is version 28 or higher. If notifications still don’t show up, check for error messages in the DevTools Console on both the main window (**right click &gt; Inspect Element**) and the background page (**right click &gt; Inspect Background Page**).
 
-For more information {: \#recap }
----------------------------------
+## For more information {: \#recap }
 
 For more detailed information about some of the APIs introduced in this step, refer to:
 
--   [Declare Permissions](/apps/declare_permissions "Read 'Declare Permissions' in the Chrome developer docs") [↑](#update-permissions-alarms "This feature mentioned in 'Update app permissions for alarms'")
--   [chrome.alarms](/docs/extensions/reference/alarms "Read 'chrome.alarms' in the Chrome developer docs") [↑](#alarms "This feature mentioned in 'Add alarm reminders'")
--   [chrome.alarms.onAlarm](/apps/alarms#event-onAlarm "Read 'chrome.alarms.onAlarm' in the Chrome developer docs") [↑](#update-background-script-alarms "This feature mentioned in ''")
--   [chrome.alarms.create()](/apps/alarms#method-create "Read 'chrome.alarms.create()' in the Chrome developer docs") [↑](#create-alarms "This feature mentioned in 'Create alarms'")
--   [chrome.alarms.clear()](/apps/alarms#method-clear "Read 'chrome.alarms.clear()' in the Chrome developer docs") [↑](#clear-alarms "This feature mentioned in 'Clear alarms'")
--   [chrome.alarms.getAll()](/apps/alarms#method-getAll "Read 'chrome.alarms.getAll()' in the Chrome developer docs") [↑](#get-alarms "This feature mentioned in 'Get alarms'")
--   [chrome.notifications](/apps/notifications "Read 'chrome.notifications' in the Chrome developer docs") [↑](#notifications "This feature mentioned in 'Add notifications'")
--   [chrome.notifications.create()](/apps/notifications#method-create "Read 'chrome.notifications.create()' in the Chrome developer docs") [↑](#create-notification "This feature mentioned in 'Create a notification'")
--   [NotificationOptions](/apps/notifications#type-NotificationOptions "Read 'NotificationOptions' in the Chrome developer docs") [↑](#create-notification "This feature mentioned in 'Create a notification'")
--   [chrome.notifications.onClicked](/apps/notifications#event-onClicked "Read 'chrome.notifications.onClicked' in the Chrome developer docs") [↑](#interact-with-notification "This feature mentioned in 'Handle notification interactions'")
+- [Declare Permissions](/apps/declare_permissions "Read 'Declare Permissions' in the Chrome developer docs") [↑](#update-permissions-alarms "This feature mentioned in 'Update app permissions for alarms'")
+- [chrome.alarms](/docs/extensions/reference/alarms "Read 'chrome.alarms' in the Chrome developer docs") [↑](#alarms "This feature mentioned in 'Add alarm reminders'")
+- [chrome.alarms.onAlarm](/apps/alarms#event-onAlarm "Read 'chrome.alarms.onAlarm' in the Chrome developer docs") [↑](#update-background-script-alarms "This feature mentioned in ''")
+- [chrome.alarms.create()](/apps/alarms#method-create "Read 'chrome.alarms.create()' in the Chrome developer docs") [↑](#create-alarms "This feature mentioned in 'Create alarms'")
+- [chrome.alarms.clear()](/apps/alarms#method-clear "Read 'chrome.alarms.clear()' in the Chrome developer docs") [↑](#clear-alarms "This feature mentioned in 'Clear alarms'")
+- [chrome.alarms.getAll()](/apps/alarms#method-getAll "Read 'chrome.alarms.getAll()' in the Chrome developer docs") [↑](#get-alarms "This feature mentioned in 'Get alarms'")
+- [chrome.notifications](/apps/notifications "Read 'chrome.notifications' in the Chrome developer docs") [↑](#notifications "This feature mentioned in 'Add notifications'")
+- [chrome.notifications.create()](/apps/notifications#method-create "Read 'chrome.notifications.create()' in the Chrome developer docs") [↑](#create-notification "This feature mentioned in 'Create a notification'")
+- [NotificationOptions](/apps/notifications#type-NotificationOptions "Read 'NotificationOptions' in the Chrome developer docs") [↑](#create-notification "This feature mentioned in 'Create a notification'")
+- [chrome.notifications.onClicked](/apps/notifications#event-onClicked "Read 'chrome.notifications.onClicked' in the Chrome developer docs") [↑](#interact-with-notification "This feature mentioned in 'Handle notification interactions'")
 
 Ready to continue onto the next step? Go to [Step 4 - Open external links with a webview »](../app_codelab_webview/)

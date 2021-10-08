@@ -4,8 +4,7 @@ When using Trusted Web Activity in their applications, developers may need to pa
 
 A common use-case for this is implementing custom analytics segmentations to measure installations and sessions started from the Trusted Web Activity. Query parameters can be added to the launch URL to implement this.
 
-Modifying the start URL
------------------------
+## Modifying the start URL
 
 If the parameter being passed to the PWA will remain the same across users and launches, the parameter can be appended directly to the launch URL. An example of this usage is when developers want to measure the number of navigation sessions created from a Trusted Web Activity.
 
@@ -19,7 +18,7 @@ When using the [Bubblewrap CLI](https://www.npmjs.com/package/@bubblewrap/cli), 
 
     bubblewrap init --manifest https://material.money/manifest.json
 
-The wizard will use the start\_url from the Web Manifest as default and will ask users to confirm the value, giving developers the chance to add extra parameters to the url used to start the Progressive Web App.
+The wizard will use the start_url from the Web Manifest as default and will ask users to confirm the value, giving developers the chance to add extra parameters to the url used to start the Progressive Web App.
 
 {% Img src=“image/Vww75TFpThOgTNuASFM6UYfBAp53/7JihrLf0VHfAI3P7GP79.png”, alt=“Showing the Bubblewrap CLI output”, width=“704”, height=“281” %}
 
@@ -51,8 +50,7 @@ When using Android Studio and the default LauncherActivity, the startUrl is defi
 
 Note: Bubblewrap takes care of ensuring the URLs across the application match the same origin and, therefore, uses a relative for start URL. When modifying AndroidManifest.xml, the entire URL, including schema and domain must be used.
 
-Modifying the start URL dynamically
------------------------------------
+## Modifying the start URL dynamically
 
 In other cases, developers may want to create parameters that change across users or sessions, for instance. In most cases, this will involve collecting details from the Android side of the application to pass it to the Progressive Web App.
 
@@ -91,8 +89,7 @@ In other cases, developers may want to create parameters that change across user
 
 Note: Bubblewrap doesn’t support dynamically generating query parameters at this moment. We’re interested in hearing from developers who have the need for this feature. Check out the Bubblewrap [issue tracker](https://github.com/GoogleChromeLabs/bubblewrap/issues) and tell us about your use-case.
 
-Conclusion
-----------
+## Conclusion
 
 Passing information from the native part to the web part of an application can be achieved by using query parameters. When a parameter is added to the query string, it will be accessible to scripts running on the page and may also be part of the referral when users navigate to a different page or the developer implements a share action.
 

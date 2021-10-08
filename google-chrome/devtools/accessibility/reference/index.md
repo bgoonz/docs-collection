@@ -2,15 +2,14 @@
 
 This page is a comprehensive reference of accessibility features in Chrome DevTools. It is intended for web developers who:
 
--   Have a basic understanding of DevTools, such as how to open it.
--   Are familiar with [accessibility principles and best practices](https://developers.google.com/web/fundamentals/accessibility).
+- Have a basic understanding of DevTools, such as how to open it.
+- Are familiar with [accessibility principles and best practices](https://developers.google.com/web/fundamentals/accessibility).
 
 The purpose of this reference is to help you discover all of the tools available in DevTools that can help you examine a page’s accessibility.
 
 See [Navigating Chrome DevTools With Assistive Technology](/docs/devtools/accessibility/navigation) if you’re looking for help on navigating DevTools with an assistive technology like a screen reader.
 
-Overview of accessibility features in Chrome DevTools {: \#overview }
----------------------------------------------------------------------
+## Overview of accessibility features in Chrome DevTools {: \#overview }
 
 This section explains how DevTools fits into your overall accessibility toolkit.
 
@@ -21,13 +20,12 @@ When determining whether a page is accessible, you need to have 2 general questi
 
 In general, DevTools can help you fix errors related to question \#2, because these errors are easy to detect in an automated fashion. Question \#1 is just as important, but unfortunately DevTools can’t help you there. The only way to find errors related to question \#1 is to try using a page with a keyboard or screen reader yourself. See [How To Do An Accessibility Review](https://developers.google.com/web/fundamentals/accessibility/how-to-review) to learn more.
 
-Audit a page’s accessibility {: \#audits }
-------------------------------------------
+## Audit a page’s accessibility {: \#audits }
 
 In general, use the Audits panel to determine if:
 
--   A page is properly marked up for screen readers.
--   The text elements on a page have sufficient contrast ratios. See also [View the contrast ratio of a text element in the Color Picker](#contrast).
+- A page is properly marked up for screen readers.
+- The text elements on a page have sufficient contrast ratios. See also [View the contrast ratio of a text element in the Color Picker](#contrast).
 
 To audit a page:
 
@@ -74,8 +72,7 @@ You may prefer to use the [aXe extension](https://chrome.google.com/webstore/det
 
 **Figure 5**. The aXe extension
 
-The Accessibility pane {: \#pane }
-----------------------------------
+## The Accessibility pane {: \#pane }
 
 The Accessibility pane is where you can view the accessibility tree, ARIA attributes, and computed accessibility properties of DOM nodes.
 
@@ -125,8 +122,7 @@ View an element’s computed accessibility properties in [the Accessibility pane
 
 **Figure 9**. The Computed (Accessibility) Properties section
 
-View the contrast ratio of a text element in the Color Picker {: \#contrast }
------------------------------------------------------------------------------
+## View the contrast ratio of a text element in the Color Picker {: \#contrast }
 
 Some people with low vision don’t see areas as very bright or very dark. Everything tends to appear at about the same brightness, which makes it hard to distinguish outlines and edges. Contrast ratio measures the difference in brightness between the foreground and background of text. If your text has a low contrast ratio, then these low vision users may literally experience your site as a blank screen.
 

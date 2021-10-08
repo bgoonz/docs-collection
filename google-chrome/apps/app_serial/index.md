@@ -14,8 +14,7 @@ This document describes how to use the [serial API](serial) to read and write fr
 
 {% endAside %}
 
-Manifest requirement {: \#requirement }
----------------------------------------
+## Manifest requirement {: \#requirement }
 
 You must add the “serial” permission to the manifest file:
 
@@ -23,8 +22,7 @@ You must add the “serial” permission to the manifest file:
       "serial"
     ]
 
-Listing available serial ports {: \#listing }
----------------------------------------------
+## Listing available serial ports {: \#listing }
 
 To get a list of paths associated with available serial ports, use the [`serial.getDevices`](/apps/serial#method-getDevices) method. **Note:** not all serial ports are available. The API uses heuristics to only expose serial devices that are expected to be safe.
 
@@ -35,8 +33,7 @@ To get a list of paths associated with available serial ports, use the [`serial.
     }
     chrome.serial.getDevices(onGetDevices);
 
-Connecting to a serial device {: \#opening }
---------------------------------------------
+## Connecting to a serial device {: \#opening }
 
 If you know the path associated with the serial port, you can connect to it using the [`serial.connect`](/apps/serial#method-connect) method:
 
@@ -54,8 +51,7 @@ A simple example:
     // Connect to the serial port /dev/ttyS01
     chrome.serial.connect("/dev/ttyS01", {bitrate: 115200}, onConnect);
 
-Disconnect from a serial port {: \#disconnect }
------------------------------------------------
+## Disconnect from a serial port {: \#disconnect }
 
 When an app terminates, connections to serial ports that are not persistent are automatically closed by the platform. However, if you want to disconnect while your app is still running, you can use the [serial.disconnect](/apps/serial#method-disconnect) method:
 
@@ -68,8 +64,7 @@ When an app terminates, connections to serial ports that are not persistent are 
     }
     chrome.serial.disconnect(connectionId, onDisconnect);
 
-Reading from a serial port {: \#reading }
------------------------------------------
+## Reading from a serial port {: \#reading }
 
 The serial API reads from the serial port and delivers the read bytes as an ArrayBuffer to event listeners. Every port that your application is connected to will generate read events to all listeners added through `chrome.serial.onReceive.addListener(onReceiveCallback)`. If you are connected to more than one port at the same time, you may find the corresponding `connectionId` of an incoming read event in the callback parameter of [serial.onReceive](/apps/serial#event-onReceive).
 
@@ -94,8 +89,7 @@ The following example can accumulate read bytes until a new line is read, conver
 
     // [...] not shown here: connect to the serial port
 
-Sending data to a serial port {: \#writing }
---------------------------------------------
+## Sending data to a serial port {: \#writing }
 
 Sending data is simpler than reading. The only catch is that if your data protocol is String based, you have to convert your output string to an `ArrayBuffer`. See the code example below:
 
@@ -112,14 +106,12 @@ Sending data is simpler than reading. The only catch is that if your data protoc
       return buf;
     }
 
-Flushing a serial port buffer {: \#flushing }
----------------------------------------------
+## Flushing a serial port buffer {: \#flushing }
 
 You can flush your serial port buffer by issuing the flush command:
 
       chrome.serial.flush(connectionId, onFlush);
 
-More {: \#More }
-----------------
+## More {: \#More }
 
 The Serial API has several other features. You can, for example, set a connection to persistent, so it can receive data even when your app is not running, or you can update connection parameters on the fly, like bitrate, timeouts, control signals, and many others with the [serial.update](/apps/serial#method-update) method. See the full reference of the [serial](/apps/serial) API for more information.

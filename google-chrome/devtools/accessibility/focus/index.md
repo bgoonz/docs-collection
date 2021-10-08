@@ -14,6 +14,6 @@ Suppose that you’re testing the keyboard navigation accessibility of a page. W
 
 The value that you see below `document.activeElement` is the result of the expression. Since that expression always represents the focused element, you now have a way to always keep track of which element has focus.
 
--   Hover over the result to highlight the focused element in the viewport.
--   Right-click the result and select **Reveal in Elements panel** to show the element in the **DOM Tree** on the **Elements** panel.
--   Right-click the result and select **Store as global variable** to create a variable reference to the node that you can use in the **Console**.
+- Hover over the result to highlight the focused element in the viewport.
+- Right-click the result and select **Reveal in Elements panel** to show the element in the **DOM Tree** on the **Elements** panel.
+- Right-click the result and select **Store as global variable** to create a variable reference to the node that you can use in the **Console**.

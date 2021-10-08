@@ -8,21 +8,20 @@
 
 In this step, you will learn:
 
--   The basic building blocks of a Chrome App, including the manifest file and background scripts.
--   How to install, run, and debug a Chrome App.
+- The basic building blocks of a Chrome App, including the manifest file and background scripts.
+- How to install, run, and debug a Chrome App.
 
-*Estimated time to complete this step: 10 minutes.*  
+_Estimated time to complete this step: 10 minutes._  
 To preview what you will complete in this step, [jump down to the bottom of this page ↓](#launch).
 
-Get familiar with Chrome Apps {: \#app-components }
----------------------------------------------------
+## Get familiar with Chrome Apps {: \#app-components }
 
 A Chrome App contains these components:
 
--   The **manifest** specifies the meta information of your app. The manifest tells Chrome about your app, how to launch it, and any extra permissions that it requires.
--   The **event page**, also called a **background script**, is responsible for managing the app life cycle. The background script is where you register listeners for specific app events such as the launching and closing of the app’s window.
--   All **code files** must be packaged in the Chrome App. This includes HTML, CSS, JS, and Native Client modules.
--   **Assets**, including app icons, should be packaged in the Chrome App as well.
+- The **manifest** specifies the meta information of your app. The manifest tells Chrome about your app, how to launch it, and any extra permissions that it requires.
+- The **event page**, also called a **background script**, is responsible for managing the app life cycle. The background script is where you register listeners for specific app events such as the launching and closing of the app’s window.
+- All **code files** must be packaged in the Chrome App. This includes HTML, CSS, JS, and Native Client modules.
+- **Assets**, including app icons, should be packaged in the Chrome App as well.
 
 ### Create a manifest {: \#manifest }
 
@@ -44,7 +43,7 @@ Open your favorite code/text editor and create the following file named **manife
       "minimum_chrome_version": "28"
     }
 
-Notice how this manifest describes a background script named *background.js*. You will create that file next.
+Notice how this manifest describes a background script named _background.js_. You will create that file next.
 
     "background": {
       "scripts": ["background.js"]
@@ -58,7 +57,7 @@ We’ll supply you with an app icon later in this step:
 
 ### Create a background script {: \#background-script }
 
-Create the following file and save it as ***background.js***:
+Create the following file and save it as **_background.js_**:
 
     /**
      * Listens for the app launching then creates the window
@@ -78,7 +77,7 @@ This background script simply waits for the [chrome.app.runtime.onLaunched](/doc
       //...
     });
 
-When the Chrome App is launched, [chrome.app.window.create()](/docs/extensions/reference/app_window#method-create) will create a new window using a basic HTML page (*index.html*) as the source. You will create the HTML view in the next step.
+When the Chrome App is launched, [chrome.app.window.create()](/docs/extensions/reference/app_window#method-create) will create a new window using a basic HTML page (_index.html_) as the source. You will create the HTML view in the next step.
 
     chrome.app.window.create('index.html', {
       id: 'main',
@@ -89,7 +88,7 @@ Background scripts may contain additional listeners, windows, post messages, and
 
 ### Create an HTML view {: \#html-view }
 
-Create a simple web page to display a “Hello World” message to the screen and save it as ***index.html***:
+Create a simple web page to display a “Hello World” message to the screen and save it as **_index.html_**:
 
     <!DOCTYPE html>
     <html>
@@ -105,7 +104,7 @@ Just like any other web page, within this HTML file you can include additional p
 
 ### Add an app icon {: \#app-icon }
 
-Right-click and save this 128x128 image to your project folder as ***icon\_128.png***:
+Right-click and save this 128x128 image to your project folder as **_icon_128.png_**:
 
 {% Img src=“image/BrQidfK9jaQyIHwdw91aVpkPiib2/oWw4vtq0F2ZrXo3uKhwG.png”, alt=“Chrome App icon for this codelab”, height=“128”, width=“128” %}
 
@@ -117,8 +116,7 @@ You should have these 4 files in your project folder now:
 
 {% Img src=“image/BrQidfK9jaQyIHwdw91aVpkPiib2/gYAyOofu4qTqwZj0tZVL.png”, alt=“File folder screenshot”, height=“110”, width=“590” %}
 
-Install a Chrome App in developer mode {: \#developer-mode }
-------------------------------------------------------------
+## Install a Chrome App in developer mode {: \#developer-mode }
 
 Use **developer mode** to quickly load and launch your app without having to finalize your app as a distribution package.
 
@@ -132,8 +130,7 @@ Use **developer mode** to quickly load and launch your app without having to fin
 
 {% Img src=“image/BrQidfK9jaQyIHwdw91aVpkPiib2/t1hNzCpoh1S1STdxzhMd.gif”, alt=“Load unpacked extensions”, height=“289”, width=“634” %}
 
-Launch your finished Hello World app {: \#launch }
---------------------------------------------------
+## Launch your finished Hello World app {: \#launch }
 
 After loading your project as an unpacked extension, click **Launch** next to your installed app. A new standalone window should open up:
 
@@ -141,8 +138,7 @@ After loading your project as an unpacked extension, click **Launch** next to yo
 
 Congratulations, you’ve just created a new Chrome App!
 
-Debug a Chrome App with Chrome DevTools {: \#devtools-debug }
--------------------------------------------------------------
+## Debug a Chrome App with Chrome DevTools {: \#devtools-debug }
 
 You can use the [Chrome Developer Tools](/devtools) to inspect, debug, audit, and test your app just like you do on a regular web page.
 
@@ -156,15 +152,14 @@ The DevTools JavaScript console has access to the same APIs available to your ap
 
 {% Img src=“image/BrQidfK9jaQyIHwdw91aVpkPiib2/ip0mFYkSIYw3sObYAow3.png”, alt=“DevTools console log”, height=“181”, width=“645” %}
 
-For more information {: \#recap }
----------------------------------
+## For more information {: \#recap }
 
 For more detailed information about some of the APIs introduced in this step, refer to:
 
--   [Manifest File Format](/apps/manifest "Read 'Manifest File Format' in the Chrome developer docs") [↑](#manifest "This feature mentioned in 'Create a manifest'")
--   [Manifest - Icons](/apps/manifest/icons "Read 'Manifest - Icons' in the Chrome developer docs") [↑](#app-icon "This feature mentioned in 'Add an app icon'")
--   [Chrome App Lifecycle](../app_lifecycle "Read 'Manifest File Format' in the Chrome developer docs") [↑](#background-script "This feature mentioned in 'Create a background script'")
--   [chrome.app.runtime.onLaunched](/docs/extensions/reference/app_runtime#event-onLaunched "Read 'chrome.app.runtime.onLaunched' in the Chrome developer docs") [↑](#background-script "This feature mentioned in 'Create a background script'")
--   [chrome.app.window.create()](/docs/extensions/reference/app_window#method-create "Read 'chrome.app.window.create()' in the Chrome developer docs") [↑](#background-script "This feature mentioned in 'Create a background script'")
+- [Manifest File Format](/apps/manifest "Read 'Manifest File Format' in the Chrome developer docs") [↑](#manifest "This feature mentioned in 'Create a manifest'")
+- [Manifest - Icons](/apps/manifest/icons "Read 'Manifest - Icons' in the Chrome developer docs") [↑](#app-icon "This feature mentioned in 'Add an app icon'")
+- [Chrome App Lifecycle](../app_lifecycle "Read 'Manifest File Format' in the Chrome developer docs") [↑](#background-script "This feature mentioned in 'Create a background script'")
+- [chrome.app.runtime.onLaunched](/docs/extensions/reference/app_runtime#event-onLaunched "Read 'chrome.app.runtime.onLaunched' in the Chrome developer docs") [↑](#background-script "This feature mentioned in 'Create a background script'")
+- [chrome.app.window.create()](/docs/extensions/reference/app_window#method-create "Read 'chrome.app.window.create()' in the Chrome developer docs") [↑](#background-script "This feature mentioned in 'Create a background script'")
 
 Ready to continue onto the next step? Go to [Step 2 - Import an existing web app »](../app_codelab_import_todomvc)

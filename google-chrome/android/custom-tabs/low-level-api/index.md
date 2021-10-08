@@ -4,29 +4,27 @@ Although the recommended method to integrate your application with Custom Tabs i
 
 The complete implementation of the Support Library is available on [Github](https://github.com/GoogleChrome/custom-tabs-client/tree/master/customtabs) and an be used as a start point. It also contains the [AIDL files](https://developer.android.com/guide/components/aidl.html) required to connect to the service, as the ones contained in the Chromium repository are not directly usable with Android Studio.
 
-Basics for Launching Custom Tabs using the Low Level API
---------------------------------------------------------
+## Basics for Launching Custom Tabs using the Low Level API
 
     // Using a VIEW intent for compatibility with any other browsers on device.
-    // Caller should not be setting FLAG_ACTIVITY_NEW_TASK or 
-    // FLAG_ACTIVITY_NEW_DOCUMENT. 
+    // Caller should not be setting FLAG_ACTIVITY_NEW_TASK or
+    // FLAG_ACTIVITY_NEW_DOCUMENT.
     String url = ¨https://paul.kinlan.me/¨;
-    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url)); 
+    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
     //  Must have. Extra used to match the session. Its value is an IBinder passed
-    //  whilst creating a news session. See newSession() below. Even if the service is not 
-    //  used and there is no valid session id to be provided, this extra has to be present 
+    //  whilst creating a news session. See newSession() below. Even if the service is not
+    //  used and there is no valid session id to be provided, this extra has to be present
     //  with a null value to launch a custom tab.
 
     private static final String EXTRA_CUSTOM_TABS_SESSION = "android.support.customtabs.extra.SESSION";
     Bundle extras = new Bundle;
-    extras.putBinder(EXTRA_CUSTOM_TABS_SESSION, 
+    extras.putBinder(EXTRA_CUSTOM_TABS_SESSION,
        sessionICustomTabsCallback.asBinder() /* Set to null for no session */);
     intent.putExtras(extras);
 
-Adding UI Customizations
-------------------------
+## Adding UI Customizations
 
-UI Customizations are included by adding Extras to the ACTION\_VIEW Intent. A full list of the extras keys used to customize the UI can be found on the [CustomTabsIntent docs](https://developer.android.com/reference/androidx/browser/customtabs/CustomTabsIntent). An example on how to add a custom toolbar color follows:
+UI Customizations are included by adding Extras to the ACTION_VIEW Intent. A full list of the extras keys used to customize the UI can be found on the [CustomTabsIntent docs](https://developer.android.com/reference/androidx/browser/customtabs/CustomTabsIntent). An example on how to add a custom toolbar color follows:
 
     // Extra that changes the background color for the address bar. colorInt is an int
     // that specifies a Color.
@@ -34,8 +32,7 @@ UI Customizations are included by adding Extras to the ACTION\_VIEW Intent. A fu
     private static final String EXTRA_CUSTOM_TABS_TOOLBAR_COLOR = "android.support.customtabs.extra.TOOLBAR_COLOR";
     intent.putExtra(EXTRA_CUSTOM_TABS_TOOLBAR_COLOR, colorInt);
 
-Connecting to the Custom Tabs service
--------------------------------------
+## Connecting to the Custom Tabs service
 
 The Custom Tabs service can be used in the same way other Android Services are. The interface is created with AIDL and automatically creates a proxy service class for you.
 
@@ -48,8 +45,8 @@ Use the methods on the proxy service to warm-up, create sessions and pre-fetch
     // Dev = com.chrome.dev
     public static final String CUSTOM_TAB_PACKAGE_NAME = "com.chrome.dev";  // Change when in stable
 
-    // Action to add to the service intent. This action can be used as a way 
-    // generically pick apps that handle custom tabs for both activity and service 
+    // Action to add to the service intent. This action can be used as a way
+    // generically pick apps that handle custom tabs for both activity and service
     // side implementations.
     public static final String ACTION_CUSTOM_TABS_CONNECTION =
            "android.support.customtabs.action.CustomTabsService";
@@ -57,4 +54,4 @@ Use the methods on the proxy service to warm-up, create sessions and pre-fetch
 
     serviceIntent.setPackage(CUSTOM_TAB_PACKAGE_NAME);
     context.bindService(serviceIntent, mServiceConnection,
-                        Context.BIND_AUTO_CREATE | Context.BIND_WAIVE_PRIORITY);    
+                        Context.BIND_AUTO_CREATE | Context.BIND_WAIVE_PRIORITY);

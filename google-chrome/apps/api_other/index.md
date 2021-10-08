@@ -19,18 +19,18 @@ Use [XMLHttpRequest](/docs/extensions/mv2/xhr/) to request data from one or more
 HTML and other emerging APIs  
 Google Chrome supports modern HTML features, along with other emerging APIs. Here are some of the APIs you can use:
 
--   audio ([tutorial](http://www.html5rocks.com/tutorials/audio/quick/))
--   application cache ([tutorial](http://www.html5rocks.com/tutorials/appcache/beginner/))
--   canvas ([articles](http://www.html5rocks.com/en/tutorials/#canvas))
--   fullscreen ([article](http://updates.html5rocks.com/2011/10/Let-Your-Content-Do-the-Talking-Fullscreen-API))
-    -   In Chrome Apps, fullscreen is entered without prompting the user or providing exit instructions. HTML5 fullscreen requires the `app.window.fullscreen` permission in the manifest. In normal webpages, the browser intercepts the ESC key to exit pointer lock ensuring a consistent escape method for users. That is also the behavior in Chrome Apps unless the `app.window.fullscreen.overrideEsc` permission is used to enable the app to call `preventDefault` on keydown and keyup events.
--   geolocation ([tutorial](http://www.html5rocks.com/tutorials/geolocation/trip_meter/))
--   local storage ([tutorial](http://www.html5rocks.com/en/tutorials/offline/storage/))
--   notifications ([tutorial](http://www.html5rocks.com/tutorials/notifications/quick/))
--   pointer lock ([tutorial](http://www.html5rocks.com/en/tutorials/pointerlock/intro/))
-    -   In Chrome Apps, pointer lock is entered without requiring a user gesture, prompting the user, or providing exit instructions. Pointer lock requires the `pointerlock` permission in the manifest. Also, there is no default exit behavior. In normal webpages, the browser intercepts the ESC key to exit pointer lock. This behavior is not present in Chrome Apps.
--   video ([tutorial](http://www.html5rocks.com/en/tutorials/video/basics/))
--   web database ([tutorial](http://www.html5rocks.com/tutorials/webdatabase/todo/))
+- audio ([tutorial](http://www.html5rocks.com/tutorials/audio/quick/))
+- application cache ([tutorial](http://www.html5rocks.com/tutorials/appcache/beginner/))
+- canvas ([articles](http://www.html5rocks.com/en/tutorials/#canvas))
+- fullscreen ([article](http://updates.html5rocks.com/2011/10/Let-Your-Content-Do-the-Talking-Fullscreen-API))
+  - In Chrome Apps, fullscreen is entered without prompting the user or providing exit instructions. HTML5 fullscreen requires the `app.window.fullscreen` permission in the manifest. In normal webpages, the browser intercepts the ESC key to exit pointer lock ensuring a consistent escape method for users. That is also the behavior in Chrome Apps unless the `app.window.fullscreen.overrideEsc` permission is used to enable the app to call `preventDefault` on keydown and keyup events.
+- geolocation ([tutorial](http://www.html5rocks.com/tutorials/geolocation/trip_meter/))
+- local storage ([tutorial](http://www.html5rocks.com/en/tutorials/offline/storage/))
+- notifications ([tutorial](http://www.html5rocks.com/tutorials/notifications/quick/))
+- pointer lock ([tutorial](http://www.html5rocks.com/en/tutorials/pointerlock/intro/))
+  - In Chrome Apps, pointer lock is entered without requiring a user gesture, prompting the user, or providing exit instructions. Pointer lock requires the `pointerlock` permission in the manifest. Also, there is no default exit behavior. In normal webpages, the browser intercepts the ESC key to exit pointer lock. This behavior is not present in Chrome Apps.
+- video ([tutorial](http://www.html5rocks.com/en/tutorials/video/basics/))
+- web database ([tutorial](http://www.html5rocks.com/tutorials/webdatabase/todo/))
 
 See [html5rocks.com](http://www.html5rocks.com) for HTML5 information, tutorials, an interactive playground, and links to other resources.
 

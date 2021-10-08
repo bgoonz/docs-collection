@@ -16,8 +16,7 @@ Design patterns are important to write maintainable and reusable code. A pattern
 
 In the last few years, a series of JavaScript MVC frameworks have been developed, such as [backbone.js](http://backbonejs.org/), [ember.js](http://emberjs.com/), [AngularJS](http://angularjs.org/), [Sencha](http://sencha.com/), [Kendo UI](http://www.kendoui.com/), and more. While they all have their unique advantages, each one of them follows some form of MVC pattern with the goal of encouraging developers to write more structured JavaScript code.
 
-MVC pattern overview {: \#mvc }
--------------------------------
+## MVC pattern overview {: \#mvc }
 
 MVC offers architectural benefits over standard JavaScript—it helps you write better organized, and therefore more maintainable code. This pattern has been used and extensively tested over multiple languages and generations of programmers.
 
@@ -53,17 +52,16 @@ If you are interested in learning more, we recommend [Addy Osmani’s](https://p
 
 To summarize, the MVC pattern brings modularity to application developers and it enables:
 
--   Reusable and extendable code.
--   Separation of view logic from business logic.
--   Allow simultaneous work between developers who are responsible for different components (such as UI layer and core logic).
--   Easier to maintain.
+- Reusable and extendable code.
+- Separation of view logic from business logic.
+- Allow simultaneous work between developers who are responsible for different components (such as UI layer and core logic).
+- Easier to maintain.
 
-MVC persistence patterns {: \#mvcpersistence }
-----------------------------------------------
+## MVC persistence patterns {: \#mvcpersistence }
 
 There are many different ways of implementing persistence with an MVC framework, each with different trade–offs. When writing Chrome Apps, choose the frameworks with MVC and persistence patterns that feel natural to you and fit you application needs.
 
-### Model does its own persistence - ActiveRecord pattern {: \#model\_persistence }
+### Model does its own persistence - ActiveRecord pattern {: \#model_persistence }
 
 Popular in both server–side frameworks like Ruby on Rails, and client-side frameworks like [Backbone.js](http://backbonejs.org) and [ember.js](http://emberjs.com/), the ActiveRecord pattern places the responsibility for persistence on the model itself and is typically implemented via JSON API.
 
@@ -73,28 +71,28 @@ An adapter, or a proxy, receives the requests from a store and translates them i
 
 Pros:
 
--   Simple to use and understand.
+- Simple to use and understand.
 
 Cons:
 
--   Hard to test since the persistence layer is ‘baked’ into the object hierarchy.
--   Having different objects use different persistent stores is difficult (for example, FileSystem APIs vs indexedDB vs server–side).
--   Reusing Model in other applications may create conflicts, such as sharing a single Customer class between two different views, each view wanting to save to different places.
+- Hard to test since the persistence layer is ‘baked’ into the object hierarchy.
+- Having different objects use different persistent stores is difficult (for example, FileSystem APIs vs indexedDB vs server–side).
+- Reusing Model in other applications may create conflicts, such as sharing a single Customer class between two different views, each view wanting to save to different places.
 
-### Controller does persistence {: \#controller\_persistence }
+### Controller does persistence {: \#controller_persistence }
 
 In this pattern, the controller holds a reference to both the model and a datastore and is responsible for keeping the model persisted. The controller responds to lifecycle events like Load, Save, Delete, and issues commands to the datastore to fetch or update the model.
 
 Pros:
 
--   Easier to test, controller can be passed a mock datastore to write tests against.
--   The same model can be reused with multiple datastores just by constructing controllers with different datastores.
+- Easier to test, controller can be passed a mock datastore to write tests against.
+- The same model can be reused with multiple datastores just by constructing controllers with different datastores.
 
 Cons:
 
--   Code can be more complex to maintain.
+- Code can be more complex to maintain.
 
-### AppController does persistence {: \#app\_controller }
+### AppController does persistence {: \#app_controller }
 
 In some patterns, there is a supervising controller responsible for navigating between one MVC and another. The AppController decides, for example, that a ‘Back’ button moves the client from an editing screen (which contains MVC widgets/formats), to a settings screen.
 
@@ -102,32 +100,31 @@ In the AppController pattern, the AppController responds to events and changes t
 
 Pros:
 
--   Moves persistence layer even higher up the stack where it can be easily changed.
--   Doesn’t pollute lower level controllers like a DatePickerController with the need to know about persistence.
+- Moves persistence layer even higher up the stack where it can be easily changed.
+- Doesn’t pollute lower level controllers like a DatePickerController with the need to know about persistence.
 
 Cons:
 
--   Each ‘Page/Screen’ of the app now requires a lot of boilerplate to write or update: Model, View, Controller, AppController.
+- Each ‘Page/Screen’ of the app now requires a lot of boilerplate to write or update: Model, View, Controller, AppController.
 
 ### Recommended MVC frameworks {: \#recommended }
 
 MVC is crucial to designing Chrome Apps. We recommend the following [CSP–Compliant](contentSecurityPolicy) MVC frameworks for writing secure and scalable Chrome Apps:
 
--   [AngularJS](http://angularjs.org/) ([Text Drive Reference App](https://github.com/GoogleChrome/textdrive-app) and [Build Apps with AngularJS tutorial](angular_framework))
--   [Kendo UI](http://www.kendoui.com/) ([Photo Booth Reference App](https://github.com/GoogleChrome/kendo-photo-booth-app))
--   [Sencha](http://www.sencha.com/) ([Video Player Reference App](https://github.com/GoogleChrome/sencha-video-player-app) and [Build Apps with Sencha Ext JS tutorial](sencha_framework))
+- [AngularJS](http://angularjs.org/) ([Text Drive Reference App](https://github.com/GoogleChrome/textdrive-app) and [Build Apps with AngularJS tutorial](angular_framework))
+- [Kendo UI](http://www.kendoui.com/) ([Photo Booth Reference App](https://github.com/GoogleChrome/kendo-photo-booth-app))
+- [Sencha](http://www.sencha.com/) ([Video Player Reference App](https://github.com/GoogleChrome/sencha-video-player-app) and [Build Apps with Sencha Ext JS tutorial](sencha_framework))
 
-Useful resources {: \#resources }
----------------------------------
+## Useful resources {: \#resources }
 
 ### Online {: \#online }
 
--   [HTML5Rocks.com](http://www.html5rocks.com/)
--   [Learning JavaScript Design Patterns](http://addyosmani.com/resources/essentialjsdesignpatterns/book/) (by Addy Osmani)
--   [TodoMVC](http://addyosmani.github.com/todomvc/)
+- [HTML5Rocks.com](http://www.html5rocks.com/)
+- [Learning JavaScript Design Patterns](http://addyosmani.com/resources/essentialjsdesignpatterns/book/) (by Addy Osmani)
+- [TodoMVC](http://addyosmani.github.com/todomvc/)
 
 ### Books {: \#books }
 
--   [JavaScript Web Applications](http://www.amazon.com/JavaScript-Web-Applications-Alex-MacCaw/dp/144930351X) (By Alex MacCaw)
--   [JavaScript Patterns](http://www.amazon.com/JavaScript-Patterns-Stoyan-Stefanov/dp/0596806752/ref=pd_sim_b_2) (By Stoyan Stefonov)
--   [Maintainable JavaScript](http://www.amazon.com/Maintainable-JavaScript-Nicholas-C-Zakas/dp/1449327680) (By Nicolas Z. Zakas)
+- [JavaScript Web Applications](http://www.amazon.com/JavaScript-Web-Applications-Alex-MacCaw/dp/144930351X) (By Alex MacCaw)
+- [JavaScript Patterns](http://www.amazon.com/JavaScript-Patterns-Stoyan-Stefanov/dp/0596806752/ref=pd_sim_b_2) (By Stoyan Stefonov)
+- [Maintainable JavaScript](http://www.amazon.com/Maintainable-JavaScript-Nicholas-C-Zakas/dp/1449327680) (By Nicolas Z. Zakas)

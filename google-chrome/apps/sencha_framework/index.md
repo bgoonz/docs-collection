@@ -83,16 +83,15 @@ All Chrome Apps require `background.js` to launch the application. The media pla
 `index.html`, opens in a window with the specified dimensions:
 
 ```js
-chrome.app.runtime.onLaunched.addListener(function(launchData) {
-    var opt = {
-        width: 1000,
-        height: 700
-    };
+chrome.app.runtime.onLaunched.addListener(function (launchData) {
+  var opt = {
+    width: 1000,
+    height: 700,
+  };
 
-    chrome.app.window.create('index.html', opt, function (win) {
-        win.launchData = launchData;
-    });
-
+  chrome.app.window.create("index.html", opt, function (win) {
+    win.launchData = launchData;
+  });
 });
 ```
 
@@ -112,14 +111,18 @@ application:
 
 ```html
 <html>
-<head>
-    <link rel="stylesheet" type="text/css" href="resources/css/app.css" />'
-    <script src="sdk/ext-all-dev.js"></script>'
-    <script src="lib/ext/data/PostMessage.js"></script>'
-    <script src="lib/ChromeProxy.js"></script>'
+  <head>
+    <link rel="stylesheet" type="text/css" href="resources/css/app.css" />
+    '
+    <script src="sdk/ext-all-dev.js"></script>
+    '
+    <script src="lib/ext/data/PostMessage.js"></script>
+    '
+    <script src="lib/ChromeProxy.js"></script>
+    '
     <script src="app.js"></script>
-</head>
-<body></body>
+  </head>
+  <body></body>
 </html>
 ```
 
@@ -136,7 +139,7 @@ directly access the Chrome App APIs.
 `index.js` creates the iframe:
 
 ```js
-var iframe = document.getElementById('sandbox-frame');
+var iframe = document.getElementById("sandbox-frame");
 
 iframeWindow = iframe.contentWindow;
 ```
@@ -144,41 +147,47 @@ iframeWindow = iframe.contentWindow;
 And listens for messages from the sandboxed files:
 
 ```js
-window.addEventListener('message', function(e) {
-    var data= e.data,
-        key = data.key;
+window.addEventListener(
+  "message",
+  function (e) {
+    var data = e.data,
+      key = data.key;
 
-    console.log('[index.js] Post Message received with key ' + key);
+    console.log("[index.js] Post Message received with key " + key);
 
     switch (key) {
-        case 'extension-baseurl':
-            extensionBaseUrl(data);
-            break;
+      case "extension-baseurl":
+        extensionBaseUrl(data);
+        break;
 
-        case 'upnp-discover':
-            upnpDiscover(data);
-            break;
+      case "upnp-discover":
+        upnpDiscover(data);
+        break;
 
-        case 'upnp-browse':
-            upnpBrowse(data);
-            break;
+      case "upnp-browse":
+        upnpBrowse(data);
+        break;
 
-        case 'play-media':
-            playMedia(data);
-            break;
+      case "play-media":
+        playMedia(data);
+        break;
 
-        case 'download-media':
-            downloadMedia(data);
-            break;
+      case "download-media":
+        downloadMedia(data);
+        break;
 
-        case 'cancel-download':
-            cancelDownload(data);
-            break;
+      case "cancel-download":
+        cancelDownload(data);
+        break;
 
-        default:
-            console.log('[index.js] unidentified key for Post Message: "' + key + '"');
+      default:
+        console.log(
+          '[index.js] unidentified key for Post Message: "' + key + '"'
+        );
     }
-}, false);
+  },
+  false
+);
 ```
 
 In the following example, `app.js` sends a message to `index.js` requesting the key
@@ -186,10 +195,10 @@ In the following example, `app.js` sends a message to `index.js` requesting the 
 
 ```js
 Ext.data.PostMessage.request({
-    key: 'extension-baseurl',
-    success: function(data) {
-        //...
-    }
+  key: "extension-baseurl",
+  success: function (data) {
+    //...
+  },
 });
 ```
 
@@ -197,8 +206,8 @@ Ext.data.PostMessage.request({
 
 ```js
 function extensionBaseUrl(data) {
-    data.result = chrome.extension.getURL('/');
-    iframeWindow.postMessage(data, '*');
+  data.result = chrome.extension.getURL("/");
+  iframeWindow.postMessage(data, "*");
 }
 ```
 
@@ -303,47 +312,42 @@ by tag name into a document.
 API:
 
 ```js
-socket.create("udp", {}, function(info) {
-    var socketId = info.socketId;
+socket.create("udp", {}, function (info) {
+  var socketId = info.socketId;
 
-    //bind locally
-    socket.bind(socketId, "0.0.0.0", 0, function(info) {
+  //bind locally
+  socket.bind(socketId, "0.0.0.0", 0, function (info) {
+    //pack upnp message
+    var message = String.toBuffer(UPNP_MESSAGE);
 
-        //pack upnp message
-        var message = String.toBuffer(UPNP_MESSAGE);
+    //broadcast to upnp
+    socket.sendTo(socketId, message, UPNP_ADDRESS, UPNP_PORT, function (info) {
+      // Wait 1 second
+      setTimeout(function () {
+        //receive
+        socket.recvFrom(socketId, function (info) {
+          //unpack message
+          var data = String.fromBuffer(info.data),
+            servers = [],
+            locationReg = /^location:/i;
 
-        //broadcast to upnp
-        socket.sendTo(socketId, message, UPNP_ADDRESS, UPNP_PORT, function(info) {
+          //extract location info
+          if (data) {
+            data = data.split("\r\n");
 
-            // Wait 1 second
-            setTimeout(function() {
+            data.forEach(function (value) {
+              if (locationReg.test(value)) {
+                servers.push(value.replace(locationReg, "").trim());
+              }
+            });
+          }
 
-                //receive
-                socket.recvFrom(socketId, function(info) {
-
-                    //unpack message
-                    var data        = String.fromBuffer(info.data),
-                        servers     = [],
-                        locationReg = /^location:/i;
-
-                    //extract location info
-                    if (data) {
-                        data = data.split("\r\n");
-
-                        data.forEach(function(value) {
-                            if (locationReg.test(value)){
-                                servers.push(value.replace(locationReg, "").trim());
-                            }
-                        });
-                    }
-
-                    //success
-                    callback(servers);
-                });
-
-            }, 1000);
+          //success
+          callback(servers);
         });
+      }, 1000);
     });
+  });
 });
 ```
 
@@ -378,50 +382,49 @@ onFileDblClick: function(explorer, record) {
 
 ```js
 function playMedia(data) {
-    var type        = data.params.type,
-        url         = data.params.url,
-        playerCt    = document.getElementById('player-ct'),
-        audioBody   = document.getElementById('audio-body'),
-        videoBody   = document.getElementById('video-body'),
-        mediaEl     = playerCt.getElementsByTagName(type)[0],
-        mediaBody   = type === 'video' ? videoBody : audioBody,
-        isLocal     = false;
+  var type = data.params.type,
+    url = data.params.url,
+    playerCt = document.getElementById("player-ct"),
+    audioBody = document.getElementById("audio-body"),
+    videoBody = document.getElementById("video-body"),
+    mediaEl = playerCt.getElementsByTagName(type)[0],
+    mediaBody = type === "video" ? videoBody : audioBody,
+    isLocal = false;
 
-    //save data
-    filePlaying = {
-        url : url,
-        type: type,
-        name: data.params.name
-    };
+  //save data
+  filePlaying = {
+    url: url,
+    type: type,
+    name: data.params.name,
+  };
 
-    //hide body els
-    audioBody.style.display = 'none';
-    videoBody.style.display = 'none';
+  //hide body els
+  audioBody.style.display = "none";
+  videoBody.style.display = "none";
 
-    var animEnd = function(e) {
+  var animEnd = function (e) {
+    //show body el
+    mediaBody.style.display = "";
 
-        //show body el
-        mediaBody.style.display = '';
+    //play media
+    mediaEl.play();
 
-        //play media
-        mediaEl.play();
+    //clear listeners
+    playerCt.removeEventListener("transitionend", animEnd, false);
+    animEnd = null;
+  };
 
-        //clear listeners
-        playerCt.removeEventListener( 'transitionend', animEnd, false );
-        animEnd = null;
-    };
+  //load media
+  mediaEl.src = url;
+  mediaEl.load();
 
-    //load media
-    mediaEl.src = url;
-    mediaEl.load();
+  //animate in player
+  playerCt.addEventListener("transitionend", animEnd, false);
+  playerCt.style.transform = "translateY(0)";
 
-    //animate in player
-    playerCt.addEventListener( 'transitionend', animEnd, false );
-    playerCt.style.transform = "translateY(0)";
-
-    //reply postmessage
-    data.result = true;
-    sendMessage(data);
+  //reply postmessage
+  data.result = true;
+  sendMessage(data);
 }
 ```
 
@@ -437,11 +440,11 @@ download process:
 
 ```js
 function downloadMedia(data) {
-        DownloadProcess.run(data.params.files, function() {
-            data.result = true;
-            sendMessage(data);
-        });
-    }
+  DownloadProcess.run(data.params.files, function () {
+    data.result = true;
+    sendMessage(data);
+  });
+}
 ```
 
 The `DownloadProcess` utility method creates an xhr request to get data from the media server and
@@ -450,37 +453,39 @@ and saves the data locally using the `filer.js` function:
 
 ```js
 filer.write(
-    saveUrl,
-    {
-        data: Util.arrayBufferToBlob(fileArrayBuf),
-        type: contentType
-    },
-    function(fileEntry, fileWriter) {
+  saveUrl,
+  {
+    data: Util.arrayBufferToBlob(fileArrayBuf),
+    type: contentType,
+  },
+  function (fileEntry, fileWriter) {
+    console.log("file saved!");
 
-        console.log('file saved!');
+    //increment downloaded
+    me.completedFiles++;
 
-        //increment downloaded
-        me.completedFiles++;
+    //if reached the end, finalize the process
+    if (me.completedFiles === me.totalFiles) {
+      sendMessage({
+        key: "download-progresss",
+        totalFiles: me.totalFiles,
+        completedFiles: me.completedFiles,
+      });
 
-        //if reached the end, finalize the process
-        if (me.completedFiles === me.totalFiles) {
+      me.completedFiles =
+        me.totalFiles =
+        me.percentage =
+        me.downloadedFiles =
+          0;
+      delete me.percentages;
 
-            sendMessage({
-                key             : 'download-progresss',
-                totalFiles      : me.totalFiles,
-                completedFiles  : me.completedFiles
-            });
-
-            me.completedFiles = me.totalFiles = me.percentage = me.downloadedFiles = 0;
-            delete me.percentages;
-
-            //reload local
-            loadLocalFiles(callback);
-        }
-    },
-    function(e) {
-        console.log(e);
+      //reload local
+      loadLocalFiles(callback);
     }
+  },
+  function (e) {
+    console.log(e);
+  }
 );
 ```
 
@@ -502,14 +507,11 @@ player tree panel.
 [13]: http://senchaprosvcs.github.com/GooglePlayer/docs/output/source/app.html#VP-Application
 [14]: https://developer.mozilla.org/en-US/docs/DOM/window.postMessage
 [15]: https://github.com/GoogleChrome/sencha-video-player-app/blob/master/index.js
-[16]:
-  https://github.com/GoogleChrome/sencha-video-player-app/blob/master/app/controller/MediaServers.js
+[16]: https://github.com/GoogleChrome/sencha-video-player-app/blob/master/app/controller/MediaServers.js
 [17]: https://github.com/GoogleChrome/sencha-video-player-app/blob/master/lib/Upnp.js
 [18]: app_network
 [19]: https://github.com/GoogleChrome/sencha-video-player-app/blob/master/lib/soapclient.js
-[20]:
-  https://github.com/GoogleChrome/sencha-video-player-app/blob/master/app/controller/MediaExplorer.js
+[20]: https://github.com/GoogleChrome/sencha-video-player-app/blob/master/app/controller/MediaExplorer.js
 [21]: https://github.com/GoogleChrome/sencha-video-player-app/blob/master/lib/filer.js
 [22]: http://ericbidelman.tumblr.com/post/14866798359/introducing-filer-js
-[23]:
-  https://github.com/GoogleChrome/sencha-video-player-app/blob/master/app/controller/MediaExplorer.js
+[23]: https://github.com/GoogleChrome/sencha-video-player-app/blob/master/app/controller/MediaExplorer.js

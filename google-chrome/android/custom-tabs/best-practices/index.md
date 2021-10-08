@@ -2,41 +2,36 @@
 
 Since Custom Tabs was launched, we’ve seen various implementations with different levels of quality. This section describes a set of best practices we’ve found to create a good integration.
 
-Connect to the Custom Tabs service and call `warmup()`
-------------------------------------------------------
+## Connect to the Custom Tabs service and call `warmup()`
 
 You can **save up to 700 ms** when opening a link with the Custom Tabs by connecting to the service and pre-loading the browser.
 
-Connect to the Custom Tabs service on the [`onStart()`](https://developer.android.com/reference/android/app/Activity.html#onStart()) method of the Activities you plan to launch a Custom Tab from. Upon connection, call [`warmup()`](https://developer.android.com/reference/androidx/browser/customtabs/CustomTabsClient#warmup(long)).
+Connect to the Custom Tabs service on the [`onStart()`](<https://developer.android.com/reference/android/app/Activity.html#onStart()>) method of the Activities you plan to launch a Custom Tab from. Upon connection, call [`warmup()`](<https://developer.android.com/reference/androidx/browser/customtabs/CustomTabsClient#warmup(long)>).
 
 The loading happens as a low priority process, meaning that **it won’t have any negative performance impact on your application**, but will give a big performance boost when loading a link.
 
-Pre-render content
-------------------
+## Pre-render content
 
-Pre-rendering will make external content open instantly. So, as if your user has **at least a 50%** likelihood of clicking on the link, call the [`mayLaunchUrl()`](https://developer.android.com/reference/androidx/browser/customtabs/CustomTabsSession#mayLaunchUrl(android.net.Uri,%20android.os.Bundle,%20java.util.List%3Candroid.os.Bundle%3E)) method.
+Pre-rendering will make external content open instantly. So, as if your user has **at least a 50%** likelihood of clicking on the link, call the [`mayLaunchUrl()`](<https://developer.android.com/reference/androidx/browser/customtabs/CustomTabsSession#mayLaunchUrl(android.net.Uri,%20android.os.Bundle,%20java.util.List%3Candroid.os.Bundle%3E)>) method.
 
-Calling [`mayLaunchUrl()`](https://developer.android.com/reference/androidx/browser/customtabs/CustomTabsSession#mayLaunchUrl(android.net.Uri,%20android.os.Bundle,%20java.util.List%3Candroid.os.Bundle%3E)) will make Custom Tabs pre-fetch the main page with the supporting content and pre-render. This will give the maximum speed up to the page loading process, but **comes with a network and battery cost**.
+Calling [`mayLaunchUrl()`](<https://developer.android.com/reference/androidx/browser/customtabs/CustomTabsSession#mayLaunchUrl(android.net.Uri,%20android.os.Bundle,%20java.util.List%3Candroid.os.Bundle%3E)>) will make Custom Tabs pre-fetch the main page with the supporting content and pre-render. This will give the maximum speed up to the page loading process, but **comes with a network and battery cost**.
 
 Custom Tabs is smart and knows if the user is using the phone on a metered network or if it’s a low end device and pre-rendering will have a negative effect on the overall performance of the device and won’t pre-fetch or pre-render on those scenarios. So, there’s no need to optimize your application for those cases.
 
-Provide a fallback for when Custom Tabs is not installed
---------------------------------------------------------
+## Provide a fallback for when Custom Tabs is not installed
 
 Although Custom Tabs is available for the great majority of users, there are some scenarios where a browser that supports Custom Tabs is not installed on the device or the device does not support a browser version that has Custom Tabs enabled.
 
 **Make sure to provide a fallback that provides a good user experience** by either opening the default browser or using your own [WebView](https://developer.android.com/reference/android/webkit/WebView.html) implementation.
 
-Add your app as the referrer
-----------------------------
+## Add your app as the referrer
 
 It’s usually very important for websites to track where their traffic is coming from. Make sure you let them know you are sending them users by setting the referrer when launching your Custom Tab:
 
-    intent.putExtra(Intent.EXTRA_REFERRER, 
+    intent.putExtra(Intent.EXTRA_REFERRER,
             Uri.parse("android-app://" + context.getPackageName()));
 
-Add custom animations
----------------------
+## Add custom animations
 
 Custom animations will make the transition from your application to the web content smoother. Make sure the finish animation is the reverse of the start animation, as it will help the user understand them returning to the content where the navigation started.
 
@@ -46,11 +41,10 @@ Custom animations will make the transition from your application to the web cont
     intentBuilder.setExitAnimations(this, android.R.anim.slide_in_left,
         android.R.anim.slide_out_right);
 
-    //Open the Custom Tab        
-    intentBuilder.build().launchUrl(context, Uri.parse("https://developer.chrome.com/"));        
+    //Open the Custom Tab
+    intentBuilder.build().launchUrl(context, Uri.parse("https://developer.chrome.com/"));
 
-Choosing an icon for the Action Button
---------------------------------------
+## Choosing an icon for the Action Button
 
 Adding an Action Button will make users engage more with your app features. But, if there isn’t a good icon to represent the action your Action Button will perform, create a bitmap with a text describing the action.
 
@@ -63,20 +57,19 @@ Remember the maximum size for the bitmap is 24dp height x 48dp width.
     //Create a PendingIntent to your BroadCastReceiver implementation
     Intent actionIntent = new Intent(
             this.getApplicationContext(), ShareBroadcastReceiver.class);
-    PendingIntent pendingIntent = 
-            PendingIntent.getBroadcast(getApplicationContext(), 0, actionIntent, 0);            
+    PendingIntent pendingIntent =
+            PendingIntent.getBroadcast(getApplicationContext(), 0, actionIntent, 0);
 
-    //Set the pendingIntent as the action to be performed when the button is clicked.            
+    //Set the pendingIntent as the action to be performed when the button is clicked.
     intentBuilder.setActionButton(icon, shareLabel, pendingIntent);
 
-Preparing for other browsers
-----------------------------
+## Preparing for other browsers
 
 Remember the user may have more than one browser installed that supports Custom Tabs. If there’s more than one browser that supports Custom Tabs and none if them is the preferred browser, ask the user how they want to open the link:
 
     /**
       * Returns a list of packages that support Custom Tabs.
-      */    
+      */
     public static ArrayList<ResolveInfo> getCustomTabsPackages(Context context) {
         PackageManager pm = context.getPackageManager();
         // Get default VIEW intent handler.
@@ -111,13 +104,11 @@ Android 11 has introduced [package visibility changes](https://developer.android
         </intent>
     </queries>
 
-Allow the user to opt out of Custom Tabs
-----------------------------------------
+## Allow the user to opt out of Custom Tabs
 
 Add an option into the application for the user to open links in the default browser instead of using a Custom Tab. This is specially important if the application opened the link using the browser before adding support for Custom Tabs.
 
-Let native applications handle the content
-------------------------------------------
+## Let native applications handle the content
 
 Some URLs can be handled by native applications. If the user has the Twitter app installed and clicks on a link to a tweet. They expect that the Twitter application will handle it.
 
@@ -208,8 +199,7 @@ We need to ensure using the right method for each occasion:
 
 If launching a native app fails, we then launch a Custom Tabs.
 
-Customize the toolbar color
----------------------------
+## Customize the toolbar color
 
 Customize with your application’s primary color if you want the user to feel that the content is a part of your application.
 
@@ -219,16 +209,14 @@ If you want to make it clear for the user that they have left your application, 
     CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
     intentBuilder.setToolbarColor(Color.BLUE);
 
-Enable the default Share Action or add your own
------------------------------------------------
+## Enable the default Share Action or add your own
 
 Make sure you enable the Share Action to the overflow menu, as users expect to be able to share the link to the content they are seeing in most use cases:
 
         CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
         intentBuilder.setShareState(CustomTabsIntent.SHARE_STATE_ON);
 
-Customize the close button
---------------------------
+## Customize the close button
 
 Customize the close button to make the Custom Tab feel it is part of your application.
 
@@ -239,8 +227,7 @@ If you want the user to feel like Custom Tabs is a modal dialog, use the default
         intentBuilder.setCloseButtonIcon(BitmapFactory.decodeResource(
             getResources(), R.drawable.ic_arrow_back));
 
-Handle internal links
----------------------
+## Handle internal links
 
 When intercepting clicks on links generated by [android:autoLink](https://developer.android.com/reference/android/widget/TextView.html#attr_android:autoLink) or overriding clicks on links on WebViews, make sure that your application handles the internal links and let’s Custom Tabs handle the external ones.
 
@@ -260,14 +247,13 @@ When intercepting clicks on links generated by [android:autoLink](https://develo
                 Uri uri = Uri.parse(url);
                 CustomTabsIntent.Builder intentBuilder =
                         new CustomTabsIntent.Builder(mCustomTabActivityHelper.getSession());
-               //Open the Custom Tab        
-                intentBuilder.build().launchUrl(context, url));                            
+               //Open the Custom Tab
+                intentBuilder.build().launchUrl(context, url));
             }
         }
     });
 
-Handle multiple clicks
-----------------------
+## Handle multiple clicks
 
 If you need to do any processing between the user clicking on a link and opening the Custom Tab, make sure it runs in under 100ms. Otherwise users will see the unresponsiveness and may try to click multiple times on the link.
 

@@ -6,13 +6,11 @@ This interactive tutorial shows you how to run JavaScript in the [Chrome DevTool
 
 **Figure 1**. The **Console**.
 
-Overview {: \#overview }
-------------------------
+## Overview {: \#overview }
 
 The **Console** is a [REPL](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop), which stands for Read, Evaluate, Print, and Loop. It reads the JavaScript that you type into it, evaluates your code, prints out the result of your [expression](http://2ality.com/2012/09/expressions-vs-statements.html), and then loops back to the first step.
 
-Set up DevTools {: \#setup }
-----------------------------
+## Set up DevTools {: \#setup }
 
 This tutorial is designed so that you can open up the demo and try all the workflows yourself. When you physically follow along, you’re more likely to remember the workflows later.
 
@@ -22,8 +20,7 @@ This tutorial is designed so that you can open up the demo and try all the workf
 
     **Figure 2**. This tutorial on the left, and DevTools on the right.
 
-View and change the page’s JavaScript or DOM {: \#page }
---------------------------------------------------------
+## View and change the page’s JavaScript or DOM {: \#page }
 
 When building or debugging a page, it’s often useful to run statements in the **Console** in order to change how the page looks or runs.
 
@@ -39,8 +36,7 @@ When building or debugging a page, it’s often useful to run statements in the 
 
     Below the code that you evaluated you see `"Hello, Console!"`. Recall the 4 steps of REPL: read, evaluate, print, loop. After evaluating your code, a REPL prints the result of the expression. So `"Hello, Console!"` must be the result of evaluating `document.getElementById('hello').textContent = 'Hello, Console!'`.
 
-Run arbitrary JavaScript that’s not related to the page {: \#playground }
--------------------------------------------------------------------------
+## Run arbitrary JavaScript that’s not related to the page {: \#playground }
 
 Sometimes, you just want a code playground where you can test some code, or try out new JavaScript features you’re not familiar with. The Console is a perfect place for these kinds of experiments.
 
@@ -63,8 +59,7 @@ Sometimes, you just want a code playground where you can test some code, or try 
 
     `add(25)` evaluates to `45` because when the `add` function is called without a second argument, `b` defaults to `20`.
 
-Next steps {: \#next }
-----------------------
+## Next steps {: \#next }
 
 See [Run JavaScript](/docs/devtools/console/reference#js) to explore more features related to running JavaScript in the Console.
 
@@ -72,8 +67,8 @@ DevTools lets you pause a script in the middle of its execution. While you’re 
 
 The **Console** also has a set of convenience functions that make it easier to interact with a page. For example:
 
--   Rather than typing `document.querySelector()` to select an element, you can type `$()`. This syntax is inspired by jQuery, but it’s not actually jQuery. It’s just an alias for `document.querySelector()`.
--   `debug(function)` effectively sets a breakpoint on the first line of that function.
--   `keys(object)` returns an array containing the keys of the specified object.
+- Rather than typing `document.querySelector()` to select an element, you can type `$()`. This syntax is inspired by jQuery, but it’s not actually jQuery. It’s just an alias for `document.querySelector()`.
+- `debug(function)` effectively sets a breakpoint on the first line of that function.
+- `keys(object)` returns an array containing the keys of the specified object.
 
 See [Console Utilities API Reference](/docs/devtools/console/utilities) to explore all the convenience functions.

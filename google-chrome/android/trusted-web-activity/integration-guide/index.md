@@ -2,33 +2,31 @@
 
 {% Aside %} Note: A simpler [quick start guide for Trusted Web Activities](/docs/android/trusted-web-activity/quick-start) is now available. {% endAside%}
 
-Setting up a Trusted Web Activity doesn’t require developers to author Java code, but [Android Studio](https://developer.android.com/studio/) is required. This guide was created using *Android Studio 3.3*. Check the [docs on how to install it](https://developer.android.com/studio/install).
+Setting up a Trusted Web Activity doesn’t require developers to author Java code, but [Android Studio](https://developer.android.com/studio/) is required. This guide was created using _Android Studio 3.3_. Check the [docs on how to install it](https://developer.android.com/studio/install).
 
-Create a Trusted Web Activity Project {: \#create-project }
------------------------------------------------------------
+## Create a Trusted Web Activity Project {: \#create-project }
 
 When using Trusted Web Activities, the project must target API 16 or higher.
 
 Note: This section will guide you on setting up a new project on Android Studio. If you are already familiar with the tool feel free to skip to the [Getting the Trusted Web Activity Library](#get-support-lib) section.
 
-Open Android Studio and click on *Start a new Android Studio project*.
+Open Android Studio and click on _Start a new Android Studio project_.
 
-Android Studio will prompt to choose an Activity type. Since Trusted Web Activities use an Activity provided by support library, choose *Add No Activity* and click *Next*.
+Android Studio will prompt to choose an Activity type. Since Trusted Web Activities use an Activity provided by support library, choose _Add No Activity_ and click _Next_.
 
 Next step, the wizard will prompt for configurations for the project. Here’s a short description of each field:
 
--   **Name:** The name that will be used for your application on the *Android Launcher*.
--   **Package Name:** An unique identifier for Android Applications on the Play Store and on Android devices. Check the [documentation](https://developer.android.com/guide/topics/manifest/manifest-element#package) for more information on requirements and best practices for creating package names for Android apps.
--   **Save location:** Where Android Studio will create the project in the file system.
--   **Language:** The project doesn’t require writing any Java or Kotlin code. Select Java, as the default.
--   **Minimum API Level:** The Support Library requires at least *API Level 16*. Select API 16 any version above.
+- **Name:** The name that will be used for your application on the _Android Launcher_.
+- **Package Name:** An unique identifier for Android Applications on the Play Store and on Android devices. Check the [documentation](https://developer.android.com/guide/topics/manifest/manifest-element#package) for more information on requirements and best practices for creating package names for Android apps.
+- **Save location:** Where Android Studio will create the project in the file system.
+- **Language:** The project doesn’t require writing any Java or Kotlin code. Select Java, as the default.
+- **Minimum API Level:** The Support Library requires at least _API Level 16_. Select API 16 any version above.
 
-Leave the remaining checkboxes unchecked, as we will not be using Instant Apps or AndroidX artifacts, and click *Finish*.
+Leave the remaining checkboxes unchecked, as we will not be using Instant Apps or AndroidX artifacts, and click _Finish_.
 
-Get the Trusted Web Activity Support Library {: \#get-support-lib }
--------------------------------------------------------------------
+## Get the Trusted Web Activity Support Library {: \#get-support-lib }
 
-To setup the Trusted Web Activity library in the project you will need to edit the Application build file. Look for the *Gradle Scripts* section in the *Project Navigator*. There are two files called `build.gradle`, which may be a bit confusing and the descriptions in parenthesis help identifying the correct one.
+To setup the Trusted Web Activity library in the project you will need to edit the Application build file. Look for the _Gradle Scripts_ section in the _Project Navigator_. There are two files called `build.gradle`, which may be a bit confusing and the descriptions in parenthesis help identifying the correct one.
 
 The file we are are looking for is the one with module **Module** next to its name.
 
@@ -48,14 +46,13 @@ The next step will add the Trusted Web Activity Support Library to the project. 
         implementation 'com.google.androidbrowserhelper:androidbrowserhelper:2.2.0'
     }
 
-Android Studio will show prompt asking to synchronize the project once more. Click on the *Sync Now* link and synchronize it.
+Android Studio will show prompt asking to synchronize the project once more. Click on the _Sync Now_ link and synchronize it.
 
-Launch the Trusted Web Activity {: \#add-activity }
----------------------------------------------------
+## Launch the Trusted Web Activity {: \#add-activity }
 
 Setting up the Trusted Web Activity is achieved by editing the [Android App Manifest](https://developer.android.com/guide/topics/manifest/manifest-intro).
 
-On the *Project Navigator*, expand the *app* section, followed by the *manifests* and double click on `AndroidManifest.xml` to open the file.
+On the _Project Navigator_, expand the _app_ section, followed by the _manifests_ and double click on `AndroidManifest.xml` to open the file.
 
 Since we asked Android Studio not to add any Activity to our project when creating it, the manifest is empty and contains only the application tag.
 
@@ -114,8 +111,7 @@ Note: When running the project at this stage, the URL Bar from Custom Tabs will 
 
 The next section will show how to setup [Digital AssetLinks](/digital-asset-links/v1/getting-started) to verify relationship between the website and the app, and remove the URL bar.
 
-Remove the URL bar {: \#remove-url-bar }
-----------------------------------------
+## Remove the URL bar {: \#remove-url-bar }
 
 Trusted Web Activities require an association between the Android application and the website to be established to remove the URL bar.
 
@@ -171,7 +167,7 @@ Here’s how to test this on a development device:
 
 ### Enable debug mode {: \#debugging }
 
-1.  Open Chrome on the development device, navigate to `chrome://flags`, search for an item called *Enable command line on non-rooted devices* and change it to **ENABLED** and then restart the browser.
+1.  Open Chrome on the development device, navigate to `chrome://flags`, search for an item called _Enable command line on non-rooted devices_ and change it to **ENABLED** and then restart the browser.
 2.  Next, on the Terminal application of your operating system, use the [Android Debug Bridge](https://developer.android.com/studio/command-line/adb) (installed with Android Studio), and run the following command:
 
 <!-- -->
@@ -180,25 +176,24 @@ Here’s how to test this on a development device:
 
 Close Chrome and re-launch your application from Android Studio. The application should now be shown in full-screen.
 
-Note: It may needed to force close Chrome so it restarts with the correct command line. Go to *Android Settings &gt; Apps & notifications &gt; Chrome*, and click on *Force stop*.
+Note: It may needed to force close Chrome so it restarts with the correct command line. Go to _Android Settings &gt; Apps & notifications &gt; Chrome_, and click on _Force stop_.
 
-Establish an association from the website to the app {: \#link-site-to-app }
-----------------------------------------------------------------------------
+## Establish an association from the website to the app {: \#link-site-to-app }
 
 {% YouTube id=‘3bAQPnxLd4c’ %}
 
 There are 2 pieces of information that the developer needs to collect from the app in order to create the association:
 
--   **Package Name:** The first information is the package name for the app. This is the same package name generated when creating the app. It can also be found inside the **Module** `build.gradle`, under *Gradle Scripts &gt; build.gradle (Module: app)*, and is the value of the `applicationId` attribute.
--   **SHA-256 Fingerprint:** Android applications must be signed in order to be uploaded to the Play Store. The same signature is used to establish the connection between the website and the app through the SHA-256 fingerprint of the upload key.
+- **Package Name:** The first information is the package name for the app. This is the same package name generated when creating the app. It can also be found inside the **Module** `build.gradle`, under _Gradle Scripts &gt; build.gradle (Module: app)_, and is the value of the `applicationId` attribute.
+- **SHA-256 Fingerprint:** Android applications must be signed in order to be uploaded to the Play Store. The same signature is used to establish the connection between the website and the app through the SHA-256 fingerprint of the upload key.
 
-The Android documentation [explains in detail how to generate a key using Android Studio](https://developer.android.com/studio/publish/app-signing#generate-key). Make sure to take note the *path*, *alias* and *passwords* for the key store, as you will need it for the next step.
+The Android documentation [explains in detail how to generate a key using Android Studio](https://developer.android.com/studio/publish/app-signing#generate-key). Make sure to take note the _path_, _alias_ and _passwords_ for the key store, as you will need it for the next step.
 
 Extract the SHA-256 fingerprint using the [keytool](https://docs.oracle.com/javase/6/docs/technotes/tools/windows/keytool.html), with the following command:
 
     keytool -list -v -keystore [path] -alias [alias] -storepass [password] -keypass [password]
 
-The value for the *SHA-256 fingerprint* is printed under the *Certificate* fingerprints section. Here’s an example output:
+The value for the _SHA-256 fingerprint_ is printed under the _Certificate_ fingerprints section. Here’s an example output:
 
     keytool -list -v -keystore ./mykeystore.ks -alias test -storepass password -keypass password
 
@@ -218,7 +213,7 @@ The value for the *SHA-256 fingerprint* is printed under the *Certificate* finge
     Subject Public Key Algorithm: 2048-bit RSA key
     Version: 3
 
-With both pieces of information at hand, head over to the [assetlinks generator](/digital-asset-links/tools/generator), fill-in the fields and hit *Generate Statement*. Copy the generated statement and serve it from your domain, from the URL `/.well-known/assetlinks.json`.
+With both pieces of information at hand, head over to the [assetlinks generator](/digital-asset-links/tools/generator), fill-in the fields and hit _Generate Statement_. Copy the generated statement and serve it from your domain, from the URL `/.well-known/assetlinks.json`.
 
 Note: The `AssetLinks` file must be under `/.well-known/assetlinks.json`, at the root of the domain, as that’s only the place Chrome will look for it.
 
@@ -244,8 +239,7 @@ If the verification step fails it is possible to check for error messages using 
 
 With the upload APK generated, you can now [upload the app to the Play Store](https://developer.android.com/studio/publish/upload-bundle).
 
-Adding a Splash Screen {: \#making-a-splash }
----------------------------------------------
+## Adding a Splash Screen {: \#making-a-splash }
 
 Starting on **Chrome 75**, Trusted Web Activities have support for Splash Screens. The Splash Screen can be set up by adding a few new image files and configurations to the project.
 
@@ -255,7 +249,7 @@ Make sure to update to **Chrome 75 or above** and use the [latest version of Tru
 
 Android devices can have different [screen sizes](https://developer.android.com/training/multiscreen/screensizes) and [pixel densities](https://developer.android.com/training/multiscreen/screendensities). To ensure the Splash Screen looks good on all devices, you will need to generate the image for each pixel density.
 
-A full explanation of [display-independent pixels (dp or dip)](https://developer.android.com/training/multiscreen/screendensities#TaskUseDP) is beyond the scope of this article, but one example would be to create an image that is 320x320dp, which represents a square of 2x2 inches on a device screen of any density and is equivalent to 320x320 **pixels** at the *mdpi* density.
+A full explanation of [display-independent pixels (dp or dip)](https://developer.android.com/training/multiscreen/screendensities#TaskUseDP) is beyond the scope of this article, but one example would be to create an image that is 320x320dp, which represents a square of 2x2 inches on a device screen of any density and is equivalent to 320x320 **pixels** at the _mdpi_ density.
 
 From there we can derive the sizes needed for other pixel densities. Below is a list with the pixel densities, the multiplier applied to the base size (320x320dp), the resulting size in pixels and the location where the image should be added in the Android Studio project.
 

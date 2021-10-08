@@ -8,19 +8,18 @@
 
 {% Aside %}
 
-**Want to start fresh from here?** Find the previous step’s code in the [reference code zip](https://github.com/mangini/io13-codelab/archive/master.zip) under ***cheat\_code &gt; solution\_for\_step3***.
+**Want to start fresh from here?** Find the previous step’s code in the [reference code zip](https://github.com/mangini/io13-codelab/archive/master.zip) under **_cheat_code &gt; solution_for_step3_**.
 
 {% endAside %}
 
 In this step, you will learn:
 
--   How to show external web content inside your app in a secure and sandboxed way.
+- How to show external web content inside your app in a secure and sandboxed way.
 
-*Estimated time to complete this step: 10 minutes.*  
+_Estimated time to complete this step: 10 minutes._  
 To preview what you will complete in this step, [jump down to the bottom of this page ↓](#launch).
 
-Learn about the webview tag {: \#overview }
--------------------------------------------
+## Learn about the webview tag {: \#overview }
 
 Some applications need to present external web content directly to the user but keep them inside the application experience. For example, a news aggregator might want to embed the news from external sites with all the formatting, images, and behavior of the original site. For these and other usages, Chrome Apps have a custom HTML tag called [webview](/docs/extensions/reference/webviewTag).
 
@@ -32,14 +31,13 @@ Some applications need to present external web content directly to the user but 
 
 {% endAside %}
 
-Implement the webview tag {: \#implement-webview }
---------------------------------------------------
+## Implement the webview tag {: \#implement-webview }
 
 Update the Todo app to search for URLs in the todo item text and create a hyperlink. The link, when clicked, opens a new Chrome App window (not a browser tab) with a webview presenting the content.
 
 ### Update permissions {: \#update-permissions }
 
-In ***manifest.json***, request the `webview` permission:
+In **_manifest.json_**, request the `webview` permission:
 
     "permissions": [
       "storage",
@@ -50,7 +48,7 @@ In ***manifest.json***, request the `webview` permission:
 
 ### Create a webview embedder page {: \#create-webview }
 
-Create a new file in the root of your project folder and name it ***webview.html***. This file is a basic webpage with one `<webview>` tag:
+Create a new file in the root of your project folder and name it **_webview.html_**. This file is a basic webpage with one `<webview>` tag:
 
     <!DOCTYPE html>
     <html>
@@ -64,7 +62,7 @@ Create a new file in the root of your project folder and name it ***webview.html
 
 ### Parse for URLs in todo items {: \#parse-urls }
 
-At the end of ***controller.js***, add a new method called `_parseForURLs()`:
+At the end of **_controller.js_**, add a new method called `_parseForURLs()`:
 
       Controller.prototype._getCurrentPage = function () {
         return document.location.hash.split('/')[1];
@@ -83,7 +81,7 @@ Whenever a string starting with “http://” or “https://” is found, a HTML
 
 ### Render hyperlinks in the todo list {: \#render-links }
 
-Find `showAll()` in *controller.js*. Update `showAll()` to parse for links by using the `_parseForURLs()` method added previously:
+Find `showAll()` in _controller.js_. Update `showAll()` to parse for links by using the `_parseForURLs()` method added previously:
 
     /**
      * An event to fire on load. Will get all items and display them in the
@@ -148,7 +146,7 @@ Still in `editItem()`, fix the code so that it uses the `innerText` of the label
 
 ### Open new window containing webview {: \#open-webview }
 
-Add a `_doShowUrl()` method to *controller.js*. This method opens a new Chrome App window via [chrome.app.window.create()](/docs/extensions/reference/app_window#method-create) with *webview.html* as the window source:
+Add a `_doShowUrl()` method to _controller.js_. This method opens a new Chrome App window via [chrome.app.window.create()](/docs/extensions/reference/app_window#method-create) with _webview.html_ as the window source:
 
       Controller.prototype._parseForURLs = function (text) {
         var re = /(https?:\/\/[^\s"<>,]+)/g;
@@ -200,18 +198,16 @@ Lastly, add a click event listener inside the `Controller` constructor to call `
       ...
     }
 
-Launch your finished Todo app {: \#launch }
--------------------------------------------
+## Launch your finished Todo app {: \#launch }
 
 You are done Step 4! If you reload your app and add a todo item with a full URL starting with http:// or https://, you should see something like this:
 
-For more information {: \#recap }
----------------------------------
+## For more information {: \#recap }
 
 For more detailed information about some of the APIs introduced in this step, refer to:
 
--   [Declare Permissions](/docs/extensions/mv3/declare_permissions/ "Read 'Declare Permissions' in the Chrome developer docs") [↑](#update-permissions "This feature mentioned in 'Update app permissions'")
--   [Tag](/docs/extensions/reference/webviewTag "Read '<webview> Tag' in the Chrome developer docs") [↑](#overview "This feature mentioned in 'Learn about the webview tag'")
--   [chrome.app.window.create()](/docs/extensions/reference/app_window#method-create "Read 'chrome.app.window.create()' in the Chrome developer docs") [↑](#open-webview "This feature mentioned in 'Open new window containing webview'")
+- [Declare Permissions](/docs/extensions/mv3/declare_permissions/ "Read 'Declare Permissions' in the Chrome developer docs") [↑](#update-permissions "This feature mentioned in 'Update app permissions'")
+- [Tag](/docs/extensions/reference/webviewTag "Read '<webview> Tag' in the Chrome developer docs") [↑](#overview "This feature mentioned in 'Learn about the webview tag'")
+- [chrome.app.window.create()](/docs/extensions/reference/app_window#method-create "Read 'chrome.app.window.create()' in the Chrome developer docs") [↑](#open-webview "This feature mentioned in 'Open new window containing webview'")
 
 Ready to continue onto the next step? Go to [Step 5 - Add images from the web »](../app_codelab_images)

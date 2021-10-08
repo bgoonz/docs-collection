@@ -4,39 +4,35 @@ This guide aims to help users who primarily rely on assistive technology like sc
 
 The accessibility of DevTools is a work-in-progress. Some panels and tabs work better with assistive technology than others. This guide walks you through the panels which are the most accessible and highlights specific issues you may encounter along the way.
 
-Overview {: \#overview }
-------------------------
+## Overview {: \#overview }
 
-Before starting, it helps to have a mental model of how the DevTools UI is structured. DevTools is divided into a series of *panels* which are organized into an [ARIA `tablist`](https://www.w3.org/TR/wai-aria-1.1/#tablist). For example:
+Before starting, it helps to have a mental model of how the DevTools UI is structured. DevTools is divided into a series of _panels_ which are organized into an [ARIA `tablist`](https://www.w3.org/TR/wai-aria-1.1/#tablist). For example:
 
--   The **Elements** panel lets you view and change [DOM nodes](/docs/devtools/dom) or [CSS](/docs/devtools/css).
--   The [**Console** panel](/docs/devtools/console) lets you read JavaScript logs and live edit objects.
+- The **Elements** panel lets you view and change [DOM nodes](/docs/devtools/dom) or [CSS](/docs/devtools/css).
+- The [**Console** panel](/docs/devtools/console) lets you read JavaScript logs and live edit objects.
 
-Within the content area of each panel, there are a number of different tools, often referred to as *tabs* or *panes* in the documentation. For instance, the **Elements** panel contains additional tabs to inspect event listeners, the accessibility tree, and much more. The distinction between tabs and panes is somewhat arbitrary. The only reason you’ll see one term or the other is to maintain consistency with the rest of the official DevTools documentation.
+Within the content area of each panel, there are a number of different tools, often referred to as _tabs_ or _panes_ in the documentation. For instance, the **Elements** panel contains additional tabs to inspect event listeners, the accessibility tree, and much more. The distinction between tabs and panes is somewhat arbitrary. The only reason you’ll see one term or the other is to maintain consistency with the rest of the official DevTools documentation.
 
-Keyboard shortcuts {: \#shortcuts }
------------------------------------
+## Keyboard shortcuts {: \#shortcuts }
 
 The [DevTools Keyboard Shortcuts reference](/docs/devtools/shortcuts) is a helpful cheatsheet. Be sure to bookmark it and refer back to it as you explore the different panels.
 
-Open DevTools {: \#open }
--------------------------
+## Open DevTools {: \#open }
 
 To get started, read through [Open Chrome DevTools](/docs/devtools/open). There are a number of ways to open DevTools, either through keyboard shortcuts or menu items.
 
-Navigate between panels {: \#panelnav }
----------------------------------------
+## Navigate between panels {: \#panelnav }
 
 ### Navigate by keyboard {: \#keynav }
 
--   With DevTools open, press Control+\] or Command+\] (Mac) to focus the next panel.
--   Press Control+\[ or Command+\[ (Mac) to focus the previous panel.
--   It’s also possible to use Shift+Tab to move focus into a panel’s `tablist` and use the arrow keys to change panels, though it may be faster to use the previously mentioned shortcuts.
+- With DevTools open, press Control+\] or Command+\] (Mac) to focus the next panel.
+- Press Control+\[ or Command+\[ (Mac) to focus the previous panel.
+- It’s also possible to use Shift+Tab to move focus into a panel’s `tablist` and use the arrow keys to change panels, though it may be faster to use the previously mentioned shortcuts.
 
 #### Known issues {: \#keynavissues }
 
--   Some panels, such as the **Console** and **Performance** panels, may move focus into their content area as soon as they are activated. This can make navigating by arrow keys difficult.
--   The selected panel’s name is announced, but only after it has read the focused content in the panel. This can make it very easy to miss.
+- Some panels, such as the **Console** and **Performance** panels, may move focus into their content area as soon as they are activated. This can make navigating by arrow keys difficult.
+- The selected panel’s name is announced, but only after it has read the focused content in the panel. This can make it very easy to miss.
 
 ### Navigate by Command Menu {: \#commandmenunav }
 
@@ -54,8 +50,7 @@ For example, to open the **Elements** panel:
 
 Opening a panel this way directs focus to the contents of the panel itself. In the case of the **Elements** panel, focus moves into the **DOM Tree**.
 
-Elements panel {: \#elements }
-------------------------------
+## Elements panel {: \#elements }
 
 ### Inspect an element on the page {: \#inspect }
 
@@ -73,33 +68,32 @@ The **DOM Tree** is laid out as an [ARIA `tree`](https://www.w3.org/TR/wai-aria-
 
 #### Known issues {: \#outerhtmlissues }
 
--   **Copy outerHTML** often doesn’t select the current node but instead selects its parent node. However, the contents of the element should still be in the copied outerHTML.
+- **Copy outerHTML** often doesn’t select the current node but instead selects its parent node. However, the contents of the element should still be in the copied outerHTML.
 
 ### Modify the attributes of an element in the DOM Tree {: \#attributes }
 
--   With focus on a node in the **DOM Tree**, press Enter to make it editable.
--   Press Tab to move between attribute values. When you hear “space” you are inside of an empty text input and can type a new attribute value.
--   Press Control+Enter or Command+Enter (Mac) to accept the change and hear the entire contents of the element.
+- With focus on a node in the **DOM Tree**, press Enter to make it editable.
+- Press Tab to move between attribute values. When you hear “space” you are inside of an empty text input and can type a new attribute value.
+- Press Control+Enter or Command+Enter (Mac) to accept the change and hear the entire contents of the element.
 
 #### Known issues {: \#attributesissues }
 
--   When you type into the text input you get no feedback. If you make a typo and use the arrow keys to explore your input you also get no feedback. The easiest way to check your work is to accept the change, then listen for the entire element to be announced.
+- When you type into the text input you get no feedback. If you make a typo and use the arrow keys to explore your input you also get no feedback. The easiest way to check your work is to accept the change, then listen for the entire element to be announced.
 
 ### Edit the HTML of an element in the DOM Tree {: \#nodetype }
 
--   With focus on a node in the **DOM Tree**, press Enter to make it editable.
--   Press Tab to move between attribute values. When you hear the element’s name, for instance, “h2”, you are inside of a text input and may change the element’s type.
--   Press Control+Enter or Command+Enter (Mac) to accept the change.
+- With focus on a node in the **DOM Tree**, press Enter to make it editable.
+- Press Tab to move between attribute values. When you hear the element’s name, for instance, “h2”, you are inside of a text input and may change the element’s type.
+- Press Control+Enter or Command+Enter (Mac) to accept the change.
 
 For example, typing `h3` and pressing Control+Enter or Command+Enter (Mac) changes the element’s start and end tags to `h3`.
 
-Elements panel tabs {: \#elementstabs }
----------------------------------------
+## Elements panel tabs {: \#elementstabs }
 
 The **Elements** panel contains additional tabs for inspecting things like the CSS applied to an element or its place in the accessibility tree.
 
--   With focus on a node in the **DOM Tree**, press Tab until you hear that the **Styles** pane is selected.
--   Use the Right Arrow to explore other available tabs.
+- With focus on a node in the **DOM Tree**, press Tab until you hear that the **Styles** pane is selected.
+- Use the Right Arrow to explore other available tabs.
 
 The **DOM Tree** turns elements with `href` attributes into focusable links, so you may need to press Tab more than once to reach the Styles pane.
 
@@ -117,18 +111,18 @@ The key concept to understand about the **Styles** pane is that it only shows st
 
 Because all of the style tools connect in one way or another back to the **Styles** pane, it makes sense to become an expert in this tool first.
 
--   With focus on the **Styles** pane, press Tab to move focus inside and explore its contents.
--   Press Tab until the first style becomes active. If you’re using a screen reader this first style will be announced as “element.style {}”.
--   Press Down Arrow to navigate the list of styles in order of specificity. A screen reader announces each style starting with the name of the CSS file, the line number that the style appears on, and the style name itself. For example: “main.css:233 .card\_\_img {}”
--   Press Enter to inspect a style in more detail. Focus begins on an editable version of the style name.
--   Press Tab to move between editable versions of each CSS property and their corresponding values. At the end of each style block is a blank editable text field which you may use to add additional CSS properties.
--   You may continue to press Tab to move through the list of styles, or press Escape to exit this mode and go back to navigating by arrow keys.
+- With focus on the **Styles** pane, press Tab to move focus inside and explore its contents.
+- Press Tab until the first style becomes active. If you’re using a screen reader this first style will be announced as “element.style {}”.
+- Press Down Arrow to navigate the list of styles in order of specificity. A screen reader announces each style starting with the name of the CSS file, the line number that the style appears on, and the style name itself. For example: “main.css:233 .card\_\_img {}”
+- Press Enter to inspect a style in more detail. Focus begins on an editable version of the style name.
+- Press Tab to move between editable versions of each CSS property and their corresponding values. At the end of each style block is a blank editable text field which you may use to add additional CSS properties.
+- You may continue to press Tab to move through the list of styles, or press Escape to exit this mode and go back to navigating by arrow keys.
 
 Be sure to read through [the Styles pane keyboard reference](/docs/devtools/shortcuts#styles) for additional shortcuts.
 
 ##### Known Issues {: \#stylesnavissues }
 
--   If you use the **Filter** editable text field you will no longer be able to navigate the list of styles.
+- If you use the **Filter** editable text field you will no longer be able to navigate the list of styles.
 
 #### Toggle element state {: \#togglestate }
 
@@ -160,7 +154,7 @@ Press Tab until you reach the collection of computed styles. These are presented
 
 #### Known issues {: \#explorecomputedissues }
 
--   If you use the **Filter** text field you will no longer be able to inspect styles.
+- If you use the **Filter** text field you will no longer be able to inspect styles.
 
 ### Event listeners tab {: \#listeners }
 
@@ -180,11 +174,10 @@ The **Accessibility Tree** is presented as an ARIA `tree` where each `treeitem` 
 
 #### Known issues {: \#accessibilitytreeissues }
 
--   The type of ARIA tree used by the **Accessibility** pane may not be properly exposed in Chrome for macOS screen readers like VoiceOver. Subscribe to [Chromium issue \#868480](https://bugs.chromium.org/p/chromium/issues/detail?id=868480) to be informed about progress on this issue.
--   The **ARIA Attributes** and **Computed Properties** sections are marked up as ARIA trees, but they do not currently have focus management so they are not keyboard operable.
+- The type of ARIA tree used by the **Accessibility** pane may not be properly exposed in Chrome for macOS screen readers like VoiceOver. Subscribe to [Chromium issue \#868480](https://bugs.chromium.org/p/chromium/issues/detail?id=868480) to be informed about progress on this issue.
+- The **ARIA Attributes** and **Computed Properties** sections are marked up as ARIA trees, but they do not currently have focus management so they are not keyboard operable.
 
-Audits panel {: \#audits }
---------------------------
+## Audits panel {: \#audits }
 
 The **Audits** panel let’s you run a series of tests against a site to check for common issues related to performance, accessibility, SEO, and a number of other categories.
 
@@ -197,8 +190,8 @@ The **Audits** panel let’s you run a series of tests against a site to check f
 
 #### Known issues {: \#configureauditsissues }
 
--   The different sections of the configuration form are not currently marked up with a `fieldset` element. It may be easier to navigate them in Browse mode to figure out which controls are associated with each section.
--   There is no earcon or live region announcement when the audit is finished running. Generally it takes about 30 seconds, after which you should be able to navigate to the results. Using Browse mode may be the easiest way to reach the results.
+- The different sections of the configuration form are not currently marked up with a `fieldset` element. It may be easier to navigate them in Browse mode to figure out which controls are associated with each section.
+- There is no earcon or live region announcement when the audit is finished running. Generally it takes about 30 seconds, after which you should be able to navigate to the results. Using Browse mode may be the easiest way to reach the results.
 
 ### Navigate the audit report {: \#auditsnav }
 

@@ -4,24 +4,23 @@ Trusted Web Activities can be a bit tricky to set up, especially if all you want
 
 By the end of this guide, you will:
 
--   Have used [Bubblewrap](https://github.com/GoogleChromeLabs/bubblewrap) to build an application that uses a Trusted Web Activity and passes verification.
--   Understand when your signing keys are used.
--   Be able to determine the signature your Android Application is being built with.
--   Know how to create a basic [Digital Asset Links](/digital-asset-links/v1/getting-started) file.
+- Have used [Bubblewrap](https://github.com/GoogleChromeLabs/bubblewrap) to build an application that uses a Trusted Web Activity and passes verification.
+- Understand when your signing keys are used.
+- Be able to determine the signature your Android Application is being built with.
+- Know how to create a basic [Digital Asset Links](/digital-asset-links/v1/getting-started) file.
 
 To follow this guide you’ll need:
 
--   [Node.js](https://nodejs.org/en/) 10 or above installed on the development computer.
--   An Android phone or emulator connected and set up for development ([Enable USB debugging](https://developer.android.com/studio/debug/dev-options.html#enable) if you’re using a physical phone).
--   A browser that supports Trusted Web Activity on your development phone. Chrome 72 or later will work. Support in other browsers is on its way.
--   A website you’d like to view in the Trusted Web Activity.
+- [Node.js](https://nodejs.org/en/) 10 or above installed on the development computer.
+- An Android phone or emulator connected and set up for development ([Enable USB debugging](https://developer.android.com/studio/debug/dev-options.html#enable) if you’re using a physical phone).
+- A browser that supports Trusted Web Activity on your development phone. Chrome 72 or later will work. Support in other browsers is on its way.
+- A website you’d like to view in the Trusted Web Activity.
 
 A Trusted Web Activity lets your Android App launch a full screen Browser Tab without any browser UI. This capability is restricted to websites that you own, and you prove this by setting up Digital Asset Links. We’ll talk [more about them later](#creating-your-asset-link-file).
 
 When you launch a Trusted Web Activity, the browser will check that the Digital Asset Links check out, this is called **verification**. If verification fails, the browser will fall back to displaying your website as a [Custom Tab](/docs/android/custom-tabs/).
 
-Install and configure Bubblewrap {: \#install-and-configure-bubblewrap }
-------------------------------------------------------------------------
+## Install and configure Bubblewrap {: \#install-and-configure-bubblewrap }
 
 [Bubblewrap](https://github.com/GoogleChromeLabs/bubblewrap) is a set of libraries and a command line tool (CLI) for Node.js that helps developers generate, build and run Progressive Web Apps inside Android applications, using Trusted Web Activity.
 
@@ -33,8 +32,7 @@ The CLI can be installed with the following command:
 
 When running Bubblewrap for the first time, it will offer to automatically download and install the required external dependencies. We recommend allowing the tool do do this, as it guarantees that the dependencies are configured correctly. Check the [Bubblewrap documentation](https://github.com/GoogleChromeLabs/bubblewrap/blob/main/packages/cli/README.md) to use an existing Java Development Kit (JDK) or Android command line tools installation.
 
-Initialize and build project {: initialize-and-build}
------------------------------------------------------
+## Initialize and build project {: initialize-and-build}
 
 Initializing an Android project that wraps a PWA is done by running the init command:
 
@@ -44,8 +42,7 @@ Bubblewrap will read the [Web Manifest](https://developer.mozilla.org/en-US/docs
 
     bubblewrap build
 
-Run {: \#build-and-run }
-------------------------
+## Run {: \#build-and-run }
 
 The build step will output a file called `app-release-signed.apk`. This file can be installed on a development device for testing or uploaded to the Play Store for release.
 
@@ -69,8 +66,7 @@ The application should now be available on the device launcher. When opening the
 
 Digital Asset Links take into account the key that an APK has been signed with and a common cause for verification failing is to use the wrong signature. (Remember, failing verification means you’ll launch your website as a Custom Tab with browser UI at the top of the page.) When Bubblewrap builds the application, an APK will be created with a key setup during the `init` step. However, when you publish your app in Google Play, another key may be created for you, depending on how you choose to handle signing keys. Learn more on [signing keys and how they relate to Bubblewrap and Google Play](/docs/android/trusted-web-activity/android-for-web-devs#upload-vs-signing-key).
 
-Setting up your asset link file {: \#creating-your-asset-link-file }
---------------------------------------------------------------------
+## Setting up your asset link file {: \#creating-your-asset-link-file }
 
 Digital Asset Links consist essentially of a file on your website that points to your app and some metadata in your app that points to your website.
 
@@ -78,8 +74,7 @@ Digital Asset Links consist essentially of a file on your website that points to
 
 After creating your `assetlinks.json` file, upload it to your website at `.well-known/assetlinks.json` relative to the root) so that your app can be verified properly by the browser. Check out a [deep dive on Digital Asset Links](/docs/android/trusted-web-activity/android-for-web-devs#digital-asset-links) for more information on how it relates to your signing key.
 
-Checking your browser {: \#checking-your-browser }
---------------------------------------------------
+## Checking your browser {: \#checking-your-browser }
 
 A Trusted Web Activity will try to adhere to the user’s default choice of browser. If the user’s default browser supports Trusted Web Activities, it will be launched. Failing that, if any installed browser supports Trusted Web Activities, it will be chosen. Finally, the default behavior is to fall back to a Custom Tabs mode.
 
@@ -88,8 +83,7 @@ This means that if you’re debugging something to do with Trusted Web Activitie
     > adb logcat -v brief | grep -e TWAProviderPicker
     D/TWAProviderPicker(17168): Found TWA provider, finishing search: com.google.android.apps.chrome
 
-Next Steps {: \#next-steps }
-----------------------------
+## Next Steps {: \#next-steps }
 
 Hopefully, if you’ve followed this guide, you’ll have a working Trusted Web Activity and have enough knowledge to debug what’s going on when verification fails. If not, have a look at more [Android concepts for web developers](/docs/android/trusted-web-activity/android-for-web-devs) or file a GitHub issue against [these docs](https://github.com/google/WebFundamentals/issues).
 

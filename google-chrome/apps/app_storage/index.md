@@ -16,8 +16,7 @@ You also need to think about how data is handled when your app is offline (see [
 
 {% endAside %}
 
-Storage options {: \#options }
-------------------------------
+## Storage options {: \#options }
 
 Packaged apps use many different mechanisms to send and receive data. For external data (resources, web pages), you need to be aware of the [Content Security Policy (CSP)](contentSecurityPolicy). Similar to Chrome Extensions, you can use [cross-origin XMLHttpRequests](app_external#external) to communicate with remote servers. You can also isolate external pages, so that the rest of your app is secure (see [Embed external web pages](app_external#webview)).
 
@@ -27,10 +26,9 @@ Chrome’s Filesystem and Sync Filesystem APIs extend the [HTML5 FileSystem API]
 
 With Chrome’s Sync Filesystem API, apps can save and synchronize data on a user’s Google Drive so that the same data can be available across different clients. For example, a [cloud-backed text editor](https://github.com/GoogleChrome/chrome-app-samples/tree/master/samples/syncfs-editor) app can automatically sync new text files to a user’s Google Drive account. When the user opens the text editor in a new client, Google Drive pushes new text files to that instance of the text editor.
 
-Note: Unlike regular Filesystem API, Chrome’s Sync Filesystem API currently does **NOT** support directory operations, except for reading directory entries in the root directory. An attempt to create a directory in Sync Filesystem will result in INVALID\_MODIFICATION\_ERROR.
+Note: Unlike regular Filesystem API, Chrome’s Sync Filesystem API currently does **NOT** support directory operations, except for reading directory entries in the root directory. An attempt to create a directory in Sync Filesystem will result in INVALID_MODIFICATION_ERROR.
 
-Using the Chrome Filesystem API {: \#filesystem }
--------------------------------------------------
+## Using the Chrome Filesystem API {: \#filesystem }
 
 ### Adding file system permission {: \#filesystem-manifest }
 
@@ -113,8 +111,7 @@ The following code creates a new file with “Save as” functionality and write
         }, errorHandler);
     });
 
-Using the Chrome Sync Filesystem API {: \#sync-filesystem }
------------------------------------------------------------
+## Using the Chrome Sync Filesystem API {: \#sync-filesystem }
 
 Using syncable file storage, returned data objects can be operated on in the same way as local offline file systems in the [FileSystem API](http://www.w3.org/TR/file-system-api/), but with the added (and automatic) syncing of that data to Google Drive.
 

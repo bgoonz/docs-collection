@@ -2,8 +2,7 @@
 
 Since [Trusted Web Activity](/docs/android/trusted-web-activity/) was introduced last year, the Chrome team continues to work on the product, making it easier to use with Bubblewrap, adding new features like the upcoming Google Play Billing integration, and enabling it to work on more platforms, like Chrome OS. This article will summarize the latest and upcoming updates for Trusted Web Activity.
 
-New Bubblewrap and Trusted Web Activity features
-------------------------------------------------
+## New Bubblewrap and Trusted Web Activity features
 
 [Bubblewrap](https://www.npmjs.com/package/@bubblewrap/cli) helps you create apps that launch your PWAs inside a Trusted Web Activity, without requiring knowledge of platform-specific tooling.
 
@@ -63,16 +62,15 @@ Another reason to update those applications is ensuring that changes to the Web 
     bubblewrap update
     bubblewrap build
 
-Updates to the Quality Criteria
--------------------------------
+## Updates to the Quality Criteria
 
 Chrome 86 introduced changes to the Trusted Web Activity Quality Criteria, which are explained in full in [Changes to quality criteria for PWAs using Trusted Web Activity](https://blog.chromium.org/2020/06/changes-to-quality-criteria-for-pwas.html).
 
 A quick summary is that you should ensure your applications handle the following scenarios to prevent them from crashing:
 
--   Failure to verify digital asset links at application launch
--   Failure to return HTTP 200 for an offline network resource request
--   Return of an HTTP 404 or 5xx error in the application.
+- Failure to verify digital asset links at application launch
+- Failure to return HTTP 200 for an offline network resource request
+- Return of an HTTP 404 or 5xx error in the application.
 
 Besides ensuring that the application passes the [Digital Asset Links validation](/docs/android/trusted-web-activity/integration-guide#link-site-to-app), the remaining scenarios can be handled by a service worker:
 
@@ -158,8 +156,7 @@ Besides ensuring that the application passes the [Digital Asset Links validation
       }
     }
 
-Google Play Billing
--------------------
+## Google Play Billing
 
 Besides allowing your app to sell digital goods and subscriptions on the Play Store, [Google Play Billing](https://developer.android.com/google/play/billing) offers tools for managing your catalog, prices and subscriptions, useful reports, and a checkout flow powered by the Play Store that is already familiar to your users. It is also a requirement for applications published on the Play Store that sell digital goods.
 
@@ -278,8 +275,7 @@ A user may have redeemed a promo code or may have an existing subscription to yo
       }
     }
 
-Upload to the Chrome OS Play Store
-----------------------------------
+## Upload to the Chrome OS Play Store
 
 Trusted Web Activities are also available since Chrome 85 in the Chrome OS Play Store. The process to list your app in the store is the same for Chrome OS as it is for Android.
 

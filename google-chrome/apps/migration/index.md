@@ -212,15 +212,13 @@ programmatically.][203]
 [4]: https://developers.google.com/web/updates/capabilities
 [5]: https://www.chromium.org/teams/web-capabilities-fugu
 [6]: https://caniuse.com/
-[7]:
-  https://bugs.chromium.org/p/chromium/issues/entry?summary=Fugu+Request:++Add+your+feature+title&comment&labels=Type-Feature,Pri-3,Proj-Fugu
+[7]: https://bugs.chromium.org/p/chromium/issues/entry?summary=Fugu+Request:++Add+your+feature+title&comment&labels=Type-Feature,Pri-3,Proj-Fugu
 [8]: https://developers.google.com/web/progressive-web-apps/desktop
 [9]: https://developers.google.com/web/fundamentals/app-install-banners/
 [10]: /docs/extensions/reference
 [11]: /extensions/messaging#external-webpage
 [12]: /extensions/browserAction
-[13]:
-  https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Porting_a_Google_Chrome_extension
+[13]: https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Porting_a_Google_Chrome_extension
 [14]: /apps/accessibilityFeatures
 [15]: /extensions/accessibilityFeatures
 [16]: /apps/alarms

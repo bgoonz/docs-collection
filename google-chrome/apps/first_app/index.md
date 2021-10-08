@@ -10,10 +10,10 @@ This tutorial walks you through creating your first Chrome App. Chrome Apps are 
 
 A Chrome App contains these components:
 
--   The **manifest** tells Chrome about your app, what it is, how to launch it and the extra permissions that it requires.
--   The **background script** is used to create the event page responsible for managing the app life cycle.
--   All code must be included in the Chrome App package. This includes HTML, JS, CSS and Native Client modules.
--   All **icons** and other assets must be included in the package as well.
+- The **manifest** tells Chrome about your app, what it is, how to launch it and the extra permissions that it requires.
+- The **background script** is used to create the event page responsible for managing the app life cycle.
+- All code must be included in the Chrome App package. This includes HTML, JS, CSS and Native Client modules.
+- All **icons** and other assets must be included in the package as well.
 
 {% Aside %}
 
@@ -21,8 +21,7 @@ A Chrome App contains these components:
 
 {% endAside %}
 
-Step 1: Create the manifest {: \#one }
---------------------------------------
+## Step 1: Create the manifest {: \#one }
 
 First create your `manifest.json` file ([Formats: Manifest Files](manifest) describes this manifest in detail):
 
@@ -45,8 +44,7 @@ First create your `manifest.json` file ([Formats: Manifest Files](manifest) desc
 
 {% endAside %}
 
-Step 2: Create the background script {: \#two }
------------------------------------------------
+## Step 2: Create the background script {: \#two }
 
 Next create a new file called `background.js` with the following content:
 
@@ -61,8 +59,7 @@ Next create a new file called `background.js` with the following content:
 
 In the above sample code, the [onLaunched event](app_lifecycle#lifecycle) will be fired when the user starts the app. It then immediately opens a window for the app of the specified width and height. Your background script may contain additional listeners, windows, post messages, and launch data, all of which are used by the event page to manage the app.
 
-Step 3: Create a window page {: \#three }
------------------------------------------
+## Step 3: Create a window page {: \#three }
 
 Create your `window.html` file:
 
@@ -75,24 +72,22 @@ Create your `window.html` file:
       </body>
     </html>
 
-Step 4: Create the icons {: \#four }
-------------------------------------
+## Step 4: Create the icons {: \#four }
 
 Copy these icons to your app folder:
 
--   [calculator-16.png](/static/images/calculator-16.png)
--   [calculator-128.png](/static/images/calculator-128.png)
+- [calculator-16.png](/static/images/calculator-16.png)
+- [calculator-128.png](/static/images/calculator-128.png)
 
-Step 5: Launch your app {: \#five }
------------------------------------
+## Step 5: Launch your app {: \#five }
 
 ### Enable flags {: \#enable }
 
 Many of the Chrome Apps APIs are still experimental, so you should enable experimental APIs so that you can try them out:
 
--   Go to **chrome://flags**.
--   Find “Experimental Extension APIs”, and click its “Enable” link.
--   Restart Chrome.
+- Go to **chrome://flags**.
+- Find “Experimental Extension APIs”, and click its “Enable” link.
+- Restart Chrome.
 
 ### Load your app {: \#load }
 
@@ -110,5 +105,5 @@ Once you’ve loaded your app, open a New Tab page and click on your new app ico
 
 These command line options to Chrome may help you iterate:
 
--   `--load-and-launch-app=/path/to/app/` installs the unpacked application from the given path, and launches it. If the application is already running it is reloaded with the updated content.
--   `--app-id=ajjhbohkjpincjgiieeomimlgnll` launches an app already loaded into Chrome. It does not restart any previously running app, but it does launch the new app with any updated content.
+- `--load-and-launch-app=/path/to/app/` installs the unpacked application from the given path, and launches it. If the application is already running it is reloaded with the updated content.
+- `--app-id=ajjhbohkjpincjgiieeomimlgnll` launches an app already loaded into Chrome. It does not restart any previously running app, but it does launch the new app with any updated content.

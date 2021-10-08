@@ -10,8 +10,7 @@ The `action_handlers` manifest property declares which user actions or intents t
 
 This list contains one or more of the `ActionType` values specified in the `ActionType` entry of [app.runtime.onLaunched](../app_runtime#event-onLaunched).
 
-Sample manifest.json {: \#manifest }
-------------------------------------
+## Sample manifest.json {: \#manifest }
 
     {
       "name": "My note app",

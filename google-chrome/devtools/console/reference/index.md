@@ -4,8 +4,7 @@ This page is a reference of features related to the Chrome DevTools Console. It 
 
 If you’re looking for the API reference on functions like `console.log()` see [Console API Reference](/docs/devtools/console/api). For the reference on functions like `monitorEvents()` see [Console Utilities API Reference](/docs/devtools/console/utilities).
 
-Open the Console {: \#open }
-----------------------------
+## Open the Console {: \#open }
 
 You can open the Console as a [panel](#panel) or as a [tab in the Drawer](#drawer).
 
@@ -53,13 +52,13 @@ Click **Console Settings** {% Img src=“image/admin/X3iDnXdnzdBTOrbaZiP7.png”
 
 The links below explain each setting:
 
--   [**Hide Network**](#network)
--   [**Preserve Log**](#persist)
--   [**Selected Context Only**](#filtercontext)
--   [**Group Similar**](#group)
--   [**Log XmlHttpRequests**](#xhr)
--   [**Eager Evaluation**](#eagereval)
--   [**Autocomplete From History**](#autocomplete)
+- [**Hide Network**](#network)
+- [**Preserve Log**](#persist)
+- [**Selected Context Only**](#filtercontext)
+- [**Group Similar**](#group)
+- [**Log XmlHttpRequests**](#xhr)
+- [**Eager Evaluation**](#eagereval)
+- [**Autocomplete From History**](#autocomplete)
 
 ### Open the Console Sidebar {: \#sidebar }
 
@@ -69,8 +68,7 @@ Click **Show Console Sidebar** {% Img src=“image/admin/JWC9AxhF6aRjxKLTIfEv.pn
 
 **Figure 7**. Console Sidebar.
 
-View messages {: \#view }
--------------------------
+## View messages {: \#view }
 
 This section contains features that change how messages are presented in the Console. See [View messages](/docs/devtools/console/#view) for a hands-on walkthrough.
 
@@ -109,8 +107,7 @@ To hide network messages:
 1.  [Open Console Settings](#settings).
 2.  Enable the **Hide Network** checkbox.
 
-Filter messages {: \#filter }
------------------------------
+## Filter messages {: \#filter }
 
 There are many ways to filter out messages in the Console.
 
@@ -170,8 +167,7 @@ Type a regular expression such as `/[foo]\s[bar]/` in the **Filter** text box to
 
 **Figure 17**. Filtering out any messages that don’t match `/[gm][ta][mi]/`.
 
-Run JavaScript {: \#js }
-------------------------
+## Run JavaScript {: \#js }
 
 This section contains features related to running JavaScript in the Console. See [Run JavaScript](/docs/devtools/console/#javascript) for a hands-on walkthrough.
 
@@ -209,13 +205,12 @@ Suppose you have an ad on your page embedded in an `<iframe>`. You want to run J
 
 **Figure 20**. Selecting a different JavaScript context.
 
-Clear the Console {: \#clear }
-------------------------------
+## Clear the Console {: \#clear }
 
 You can use any of the following workflows to clear the Console:
 
--   Click **Clear Console** {% Img src=“image/admin/PleTkKOHeF03hC4BxBvM.png”, alt=“Clear Console”, width=“26”, height=“26” %}.
--   Right-click a message and then select **Clear Console**.
--   Type `clear()` in the Console and then press Enter.
--   Call `console.clear()` from your webpage’s JavaScript.
--   Press Control+L while the Console is in focus.
+- Click **Clear Console** {% Img src=“image/admin/PleTkKOHeF03hC4BxBvM.png”, alt=“Clear Console”, width=“26”, height=“26” %}.
+- Right-click a message and then select **Clear Console**.
+- Type `clear()` in the Console and then press Enter.
+- Call `console.clear()` from your webpage’s JavaScript.
+- Press Control+L while the Console is in focus.

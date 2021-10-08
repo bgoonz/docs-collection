@@ -8,7 +8,7 @@
 
 We want extensions and apps to be autoupdated for some of the same reasons as Google Chrome itself: to incorporate bug and security fixes, add new features or performance enhancements, and improve user interfaces.
 
-If you publish using the [Chrome Developer Dashboard](https://chrome.google.com/webstore/developer/dashboard), you can *ignore this page*. You can use the dashboard to release updated versions to users, as well as to the Chrome Web Store.
+If you publish using the [Chrome Developer Dashboard](https://chrome.google.com/webstore/developer/dashboard), you can _ignore this page_. You can use the dashboard to release updated versions to users, as well as to the Chrome Web Store.
 
 If you want to host somewhere other than the store, keep reading. You should also read [Hosting](hosting) and [Packaging](packaging).
 
@@ -20,11 +20,10 @@ If you want to host somewhere other than the store, keep reading. You should als
 
 Previously when off-store extensions were supported, it was possible to have the native binaries and the extension be updated in lock step. However, extensions hosted on the Chrome Web Store are updated via the Chrome update mechanism which developers do not control. Extension developers should be careful about updating extensions that have a dependency on the native binary (for example, legacy extensions using [NPAPI](npapi)).
 
-Overview {: \#overview }
-------------------------
+## Overview {: \#overview }
 
--   A manifest may contain an “update\_url” field, pointing to a location for doing update checks.
--   The content returned by an update check is an *update manifest* XML document listing the latest version of an extension.
+- A manifest may contain an “update_url” field, pointing to a location for doing update checks.
+- The content returned by an update check is an _update manifest_ XML document listing the latest version of an extension.
 
 Every few hours, the browser checks whether any installed extensions or apps have an update URL. For each one, it makes a request to that URL looking for an update manifest XML file. If the update manifest mentions a version that is more recent than what’s installed, the browser downloads and installs the new version. As with manual updates, the new `.crx` file must be signed with the same private key as the currently installed version.
 
@@ -34,10 +33,9 @@ Every few hours, the browser checks whether any installed extensions or apps hav
 
 {% endAside %}
 
-Update URL {: \#update\_url }
------------------------------
+## Update URL {: \#update_url }
 
-If you’re hosting your own extension or app, you need to add the “update\_url” field to your [`manifest.json`](manifest) file, like this:
+If you’re hosting your own extension or app, you need to add the “update_url” field to your [`manifest.json`](manifest) file, like this:
 
     {
       "name": "My extension",
@@ -46,8 +44,7 @@ If you’re hosting your own extension or app, you need to add the “update\_ur
       ...
     }
 
-Update manifest {: \#update\_manifest }
----------------------------------------
+## Update manifest {: \#update_manifest }
 
 The update manifest returned by the server should be an XML document that looks like this (highlights indicate parts you should modify):
 
@@ -65,11 +62,11 @@ The extension or app ID, generated based on a hash of the public key, as describ
 
 Hosted apps, however, are not listed on the Extensions page. You can find the ID of any app using the following steps:
 
--   Open the app. You can do this by clicking its icon on the New Tab page.
--   Open the JavaScript console. You can do this by clicking the wrench icon and choosing **Tools &gt; JavaScript Console**.
--   Enter the following expression into the JavaScript console: `chrome.app.getDetails().id`
+- Open the app. You can do this by clicking its icon on the New Tab page.
+- Open the JavaScript console. You can do this by clicking the wrench icon and choosing **Tools &gt; JavaScript Console**.
+- Enter the following expression into the JavaScript console: `chrome.app.getDetails().id`
 
-    The console shows the app’s ID as a quoted string.
+  The console shows the app’s ID as a quoted string.
 
 **codebase**  
 A URL to the `.crx` file.
@@ -79,13 +76,11 @@ Used by the client to determine whether it should download the `.crx` file speci
 
 The update manifest XML file may contain information about multiple extensions by including multiple elements.
 
-Testing {: \#testing }
-----------------------
+## Testing {: \#testing }
 
 The default update check frequency is several hours, but you can force an update using the Extensions page’s **Update extensions now** button.
 
-Advanced usage: request parameters {: \#request\_parameters }
--------------------------------------------------------------
+## Advanced usage: request parameters {: \#request_parameters }
 
 The basic autoupdate mechanism is designed to make the server-side work as easy as just dropping a static XML file onto any plain web server such as Apache, and updating that XML file as you release new versions of your extensions.
 
@@ -101,17 +96,17 @@ Where `_<extension_data>_` is a URL-encoded string of the format:
 
 For example, say you have two extensions, both of which point to the same update URL (`http://test.com/extension_updates.php`):
 
--   Extension 1
-    -   ID: “aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa”
-    -   Version: “1.1”
--   Extension 2
-    -   ID: “bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb”
-    -   Version: “0.4”
+- Extension 1
+  - ID: “aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa”
+  - Version: “1.1”
+- Extension 2
+  - ID: “bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb”
+  - Version: “0.4”
 
 The request to update each individual extension would be:
 
--   `http://test.com/extension_updates.php?x=id%3Daaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa%26v%3D1.1`
--   `http://test.com/extension_updates.php?x=id%3Dbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb%26v%3D0.4`
+- `http://test.com/extension_updates.php?x=id%3Daaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa%26v%3D1.1`
+- `http://test.com/extension_updates.php?x=id%3Dbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb%26v%3D0.4`
 
 Multiple extensions can be listed in a single request for each unique update URL. For the above example, if a user has both of the extensions installed, then the two requests are merged into a single request:
 
@@ -125,8 +120,7 @@ If the number of installed extensions using the same update URL is large enough 
 
 {% endAside %}
 
-Advanced usage: minimum browser version {: \#minimum\_browser\_version }
-------------------------------------------------------------------------
+## Advanced usage: minimum browser version {: \#minimum_browser_version }
 
 As we add more APIs to the extensions system, it’s possible you will want to release an updated version of an extension or app that will work only with newer versions of the browser. While Google Chrome itself is autoupdated, it can take a few days before the majority of the user base has updated to any given new release. To ensure that a given update will apply only to Google Chrome versions at or higher than a specific version, you add the “prodversionmin” attribute to the element in your update manifest. For example:
 
