@@ -1,6 +1,6 @@
----json {"title":"Coding Your Application"} ---
+—json {“title”:“Coding Your Application”} —
 
-{% include 'partials/nacl-warning.njk' %}
+{% include ‘partials/nacl-warning.njk’ %}
 
 ------------------------------------------------------------------------
 

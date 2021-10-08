@@ -1,4 +1,4 @@
----json {"title":"ppp\_messaging.h File Reference"} ---
+—json {“title”:“ppp\_messaging.h File Reference”} —
 
 Include dependency graph for ppp\_messaging.h:
 
@@ -7,13 +7,13 @@ Include dependency graph for ppp\_messaging.h:
 Data Structures
 ---------------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_p___messaging__1__0/" class="el">PPP_Messaging</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPP_Messaging</code> interface contains pointers to functions that you must implement to handle postMessage events on the associated DOM element. <a href="/docs/native-client/pepper_beta/c/struct_p_p_p___messaging__1__0#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_p___messaging__1__0/" class="el">PPP_Messaging</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPP_Messaging</code> interface contains pointers to functions that you must implement to handle postMessage events on the associated DOM element. <a href="/docs/native-client/pepper_beta/c/struct_p_p_p___messaging__1__0#details">More…</a><br />
 </td></tr></tbody></table>
 
 Defines
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppp__messaging_8h#a2b15920cef3b0b108e4e08ae39ba0b2b" class="el">PPP_MESSAGING_INTERFACE</a>   "PPP_Messaging;1.0"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppp__messaging_8h#a7ea9cbd07fe30bc0d6e3a71a02d7adbb" class="el">PPP_MESSAGING_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppp__messaging_8h#a2b15920cef3b0b108e4e08ae39ba0b2b" class="el">PPP_MESSAGING_INTERFACE</a></td></tr></tbody></table>
+<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppp__messaging_8h#a2b15920cef3b0b108e4e08ae39ba0b2b" class="el">PPP_MESSAGING_INTERFACE</a>   “PPP_Messaging;1.0”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppp__messaging_8h#a7ea9cbd07fe30bc0d6e3a71a02d7adbb" class="el">PPP_MESSAGING_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppp__messaging_8h#a2b15920cef3b0b108e4e08ae39ba0b2b" class="el">PPP_MESSAGING_INTERFACE</a></td></tr></tbody></table>
 
 Typedefs
 --------
@@ -40,4 +40,4 @@ Define Documentation
 
 <span id="a2b15920cef3b0b108e4e08ae39ba0b2b" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppp__messaging_8h#a2b15920cef3b0b108e4e08ae39ba0b2b" class="el">PPP_MESSAGING_INTERFACE</a>   "PPP_Messaging;1.0"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppp__messaging_8h#a2b15920cef3b0b108e4e08ae39ba0b2b" class="el">PPP_MESSAGING_INTERFACE</a>   “PPP_Messaging;1.0”</td></tr></tbody></table>

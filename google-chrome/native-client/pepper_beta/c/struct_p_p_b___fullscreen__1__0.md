@@ -1,4 +1,4 @@
----json {"title":"PPB\_Fullscreen Struct Reference"} ---
+—json {“title”:“PPB\_Fullscreen Struct Reference”} —
 
 Data Fields
 -----------
@@ -30,9 +30,8 @@ Field Documentation
 The module instance will be resized to this size when <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___fullscreen__1__0#a1074f98a5800667313de626b0ed8ad27" class="el" title="SetFullscreen() switches the module instance to and from fullscreen mode.">SetFullscreen()</a> is called to enter fullscreen mode.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code> identifying one instance of a module.</td></tr><tr class="even"><td>[out]</td><td>size</td><td>The size of the entire screen in pixels.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code> identifying one instance of a module.</td></tr><tr class="even"><td>[out]</td><td>size</td><td>The size of the entire screen in pixels.</td></tr></tbody></table>
 
 **Returns:**  
 `PP_TRUE` on success or `PP_FALSE` on failure.
@@ -44,9 +43,8 @@ The module instance will be resized to this size when <a href="/docs/native-clie
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___fullscreen__1__0#a8b6a560d3a57b6df9395b5dcf138cd1d" class="el" title="IsFullscreen() checks whether the module instance is currently in fullscreen mode.">IsFullscreen()</a> checks whether the module instance is currently in fullscreen mode.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code> identifying one instance of a module.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code> identifying one instance of a module.</td></tr></tbody></table>
 
 **Returns:**  
 `PP_TRUE` if the module instance is in fullscreen mode, `PP_FALSE` if the module instance is not in fullscreen mode.
@@ -62,9 +60,8 @@ The transition to and from fullscreen mode is asynchronous. During the transitio
 The transition to fullscreen mode can only occur while the browser is processing a user gesture, even if `PP_TRUE` is returned.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code> identifying one instance of a module.</td></tr><tr class="even"><td>[in]</td><td>fullscreen</td><td><code>PP_TRUE</code> to enter fullscreen mode, or <code>PP_FALSE</code> to exit fullscreen mode.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code> identifying one instance of a module.</td></tr><tr class="even"><td>[in]</td><td>fullscreen</td><td><code>PP_TRUE</code> to enter fullscreen mode, or <code>PP_FALSE</code> to exit fullscreen mode.</td></tr></tbody></table>
 
 **Returns:**  
 `PP_TRUE` on success or `PP_FALSE` on failure.

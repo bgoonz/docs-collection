@@ -1,4 +1,4 @@
----json {"title":"PPB\_FileRef Struct Reference"} ---
+—json {“title”:“PPB\_FileRef Struct Reference”} —
 
 Data Fields
 -----------
@@ -12,7 +12,7 @@ Data Fields
 Detailed Description
 --------------------
 
-The `PPB_FileRef` struct represents a "weak pointer" to a file in a file system.
+The `PPB_FileRef` struct represents a “weak pointer” to a file in a file system.
 
 This struct contains a `PP_FileSystemType` identifier and a file path string.
 
@@ -30,9 +30,8 @@ Field Documentation
 File paths are POSIX style.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a file system.</td></tr><tr class="even"><td>[in]</td><td>path</td><td>A path to the file. Must begin with a '/' character.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a file system.</td></tr><tr class="even"><td>[in]</td><td>path</td><td>A path to the file. Must begin with a ‘/’ character.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_Resource` corresponding to a file reference if successful or 0 if the path is malformed.
@@ -46,9 +45,8 @@ A `PP_Resource` corresponding to a file reference if successful or 0 if the path
 If `file_ref` refers to a directory, then the directory must be empty. It is an error to delete a file or directory that is in use. It is not valid to delete a file in the external file system.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>file_ref</td><td>A <code>PP_Resource</code> corresponding to a file reference.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion of <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___file_ref__1__2#afe27a664ce6b576ae754ed3122f83cae" class="el" title="Delete() deletes a file or directory.">Delete()</a>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>file_ref</td><td>A <code>PP_Resource</code> corresponding to a file reference.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion of <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___file_ref__1__2#afe27a664ce6b576ae754ed3122f83cae" class="el" title="Delete() deletes a file or directory.">Delete()</a>.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing an error code from `pp_errors.h`.
@@ -60,9 +58,8 @@ An int32\_t containing an error code from `pp_errors.h`.
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___file_ref__1__2#acf8cefbf96f2e8ec6b3acd7233dbcce4" class="el" title="GetFileSystemType() returns the type of the file system.">GetFileSystemType()</a> returns the type of the file system.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>file_ref</td><td>A <code>PP_Resource</code> corresponding to a file reference.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>file_ref</td><td>A <code>PP_Resource</code> corresponding to a file reference.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_FileSystemType` with the file system type if valid or `PP_FILESYSTEMTYPE_INVALID` if the provided resource is not a valid file reference.
@@ -74,9 +71,8 @@ A `PP_FileSystemType` with the file system type if valid or `PP_FILESYSTEMTYPE_I
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___file_ref__1__2#ad58bd00ff6a93829b810e4bb4a2ba1af" class="el" title="GetName() returns the name of the file.">GetName()</a> returns the name of the file.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>file_ref</td><td>A <code>PP_Resource</code> corresponding to a file reference.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>file_ref</td><td>A <code>PP_Resource</code> corresponding to a file reference.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_Var` containing the name of the file. The value returned by this function does not include any path components (such as the name of the parent directory, for example). It is just the name of the file. Use <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___file_ref__1__2#aafb00e9a6100b5a1490819606ed36451" class="el" title="GetPath() returns the absolute path of the file.">GetPath()</a> to get the full file path.
@@ -90,9 +86,8 @@ A `PP_Var` containing the name of the file. The value returned by this function 
 If `file_ref` points to the root of the filesystem, then the root is returned.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>file_ref</td><td>A <code>PP_Resource</code> corresponding to a file reference.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>file_ref</td><td>A <code>PP_Resource</code> corresponding to a file reference.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_Resource` containing the parent directory of the file. This function fails if the file system type is `PP_FileSystemType_External`.
@@ -104,9 +99,8 @@ A `PP_Resource` containing the parent directory of the file. This function fails
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___file_ref__1__2#aafb00e9a6100b5a1490819606ed36451" class="el" title="GetPath() returns the absolute path of the file.">GetPath()</a> returns the absolute path of the file.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>file_ref</td><td>A <code>PP_Resource</code> corresponding to a file reference.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>file_ref</td><td>A <code>PP_Resource</code> corresponding to a file reference.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_Var` containing the absolute path of the file. This function fails if the file system type is `PP_FileSystemType_External`.
@@ -118,9 +112,8 @@ A `PP_Var` containing the absolute path of the file. This function fails if the 
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___file_ref__1__2#a53f053134366e9491aee0b88e08346c8" class="el" title="IsFileRef() determines if the provided resource is a file reference.">IsFileRef()</a> determines if the provided resource is a file reference.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a file reference.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a file reference.</td></tr></tbody></table>
 
 **Returns:**  
 `PP_TRUE` if the resource is a `PPB_FileRef`, `PP_FALSE` if the resource is invalid or some type other than `PPB_FileRef`.
@@ -134,9 +127,8 @@ A `PP_Var` containing the absolute path of the file. This function fails if the 
 It is not valid to make a directory in the external file system.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>file_ref</td><td>A <code>PP_Resource</code> corresponding to a file reference.</td></tr><tr class="even"><td>[in]</td><td>make_directory_flags</td><td>A bit-mask of the <code>PP_MakeDirectoryFlags</code> values.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion of <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___file_ref__1__2#a829f880110d9d0756552a7070a08ed33" class="el" title="MakeDirectory() makes a new directory in the file system according to the given make_directory_flags...">MakeDirectory()</a>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>file_ref</td><td>A <code>PP_Resource</code> corresponding to a file reference.</td></tr><tr class="even"><td>[in]</td><td>make_directory_flags</td><td>A bit-mask of the <code>PP_MakeDirectoryFlags</code> values.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion of <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___file_ref__1__2#a829f880110d9d0756552a7070a08ed33" class="el" title="MakeDirectory() makes a new directory in the file system according to the given make_directory_flags...">MakeDirectory()</a>.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing an error code from `pp_errors.h`.
@@ -150,9 +142,8 @@ An int32\_t containing an error code from `pp_errors.h`.
 You must have access to read this file or directory if it exists in the external filesystem.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>file_ref</td><td>A <code>PP_Resource</code> corresponding to a file reference.</td></tr><tr class="even"><td>[out]</td><td>info</td><td>A pointer to a <code>PP_FileInfo</code> which will be populated with information about the file or directory.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion of <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___file_ref__1__2#abc723bde3892c6e5d323497070a08a60" class="el" title="Query() queries info about a file or directory.">Query()</a>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>file_ref</td><td>A <code>PP_Resource</code> corresponding to a file reference.</td></tr><tr class="even"><td>[out]</td><td>info</td><td>A pointer to a <code>PP_FileInfo</code> which will be populated with information about the file or directory.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion of <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___file_ref__1__2#abc723bde3892c6e5d323497070a08a60" class="el" title="Query() queries info about a file or directory.">Query()</a>.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing an error code from `pp_errors.h`.
@@ -164,9 +155,8 @@ An int32\_t containing an error code from `pp_errors.h`.
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___file_ref__1__2#adf5ee82e600680aae53cd70e39e9a568" class="el" title="ReadDirectoryEntries() reads all entries in a directory.">ReadDirectoryEntries()</a> reads all entries in a directory.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>file_ref</td><td>A <code>PP_Resource</code> corresponding to a directory reference.</td></tr><tr class="even"><td>[in]</td><td>output</td><td>An output array which will receive <code>PP_DirectoryEntry</code> objects on success.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to run on completion.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>file_ref</td><td>A <code>PP_Resource</code> corresponding to a directory reference.</td></tr><tr class="even"><td>[in]</td><td>output</td><td>An output array which will receive <code>PP_DirectoryEntry</code> objects on success.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to run on completion.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing an error code from `pp_errors.h`.
@@ -180,9 +170,8 @@ An int32\_t containing an error code from `pp_errors.h`.
 Arguments `file_ref` and `new_file_ref` must both refer to files in the same file system. It is an error to rename a file or directory that is in use. It is not valid to rename a file in the external file system.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>file_ref</td><td>A <code>PP_Resource</code> corresponding to a file reference.</td></tr><tr class="even"><td>[in]</td><td>new_file_ref</td><td>A <code>PP_Resource</code> corresponding to a new file reference.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion of <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___file_ref__1__2#a5139b53dae2953f5e3ec18a3b4ad93fa" class="el" title="Rename() renames a file or directory.">Rename()</a>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>file_ref</td><td>A <code>PP_Resource</code> corresponding to a file reference.</td></tr><tr class="even"><td>[in]</td><td>new_file_ref</td><td>A <code>PP_Resource</code> corresponding to a new file reference.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion of <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___file_ref__1__2#a5139b53dae2953f5e3ec18a3b4ad93fa" class="el" title="Rename() renames a file or directory.">Rename()</a>.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing an error code from `pp_errors.h`.
@@ -196,9 +185,8 @@ An int32\_t containing an error code from `pp_errors.h`.
 You must have write access to the file if it exists in the external filesystem.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>file_ref</td><td>A <code>PP_Resource</code> corresponding to a file reference.</td></tr><tr class="even"><td>[in]</td><td>last_access_time</td><td>The last time the file was accessed.</td></tr><tr class="odd"><td>[in]</td><td>last_modified_time</td><td>The last time the file was modified.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion of <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___file_ref__1__2#a7a83c853e8066a47eb7f222967ac4559" class="el" title="Touch() Updates time stamps for a file.">Touch()</a>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>file_ref</td><td>A <code>PP_Resource</code> corresponding to a file reference.</td></tr><tr class="even"><td>[in]</td><td>last_access_time</td><td>The last time the file was accessed.</td></tr><tr class="odd"><td>[in]</td><td>last_modified_time</td><td>The last time the file was modified.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion of <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___file_ref__1__2#a7a83c853e8066a47eb7f222967ac4559" class="el" title="Touch() Updates time stamps for a file.">Touch()</a>.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing an error code from `pp_errors.h`.

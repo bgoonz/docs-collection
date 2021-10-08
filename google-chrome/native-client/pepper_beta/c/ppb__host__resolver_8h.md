@@ -1,4 +1,4 @@
----json {"title":"ppb\_host\_resolver.h File Reference"} ---
+—json {“title”:“ppb\_host\_resolver.h File Reference”} —
 
 Include dependency graph for ppb\_host\_resolver.h:
 
@@ -7,14 +7,14 @@ Include dependency graph for ppb\_host\_resolver.h:
 Data Structures
 ---------------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___host_resolver___hint/" class="el">PP_HostResolver_Hint</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td><code>PP_HostResolver_Hint</code> represents hints for host resolution. <a href="/docs/native-client/pepper_beta/c/struct_p_p___host_resolver___hint#details">More...</a><br />
-</td></tr><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___host_resolver__1__0/" class="el">PPB_HostResolver</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_HostResolver</code> interface supports host name resolution. <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___host_resolver__1__0#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___host_resolver___hint/" class="el">PP_HostResolver_Hint</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td><code>PP_HostResolver_Hint</code> represents hints for host resolution. <a href="/docs/native-client/pepper_beta/c/struct_p_p___host_resolver___hint#details">More…</a><br />
+</td></tr><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___host_resolver__1__0/" class="el">PPB_HostResolver</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_HostResolver</code> interface supports host name resolution. <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___host_resolver__1__0#details">More…</a><br />
 </td></tr></tbody></table>
 
 Defines
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__host__resolver_8h#af02d4ce7194c9c440c0bd42e81ab7731" class="el">PPB_HOSTRESOLVER_INTERFACE</a>   "PPB_HostResolver;1.0"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__host__resolver_8h#a92db0e0376e1dd64b24f1e107b277d71" class="el">PPB_HOSTRESOLVER_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__host__resolver_8h#af02d4ce7194c9c440c0bd42e81ab7731" class="el">PPB_HOSTRESOLVER_INTERFACE</a></td></tr></tbody></table>
+<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__host__resolver_8h#af02d4ce7194c9c440c0bd42e81ab7731" class="el">PPB_HOSTRESOLVER_INTERFACE</a>   “PPB_HostResolver;1.0”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__host__resolver_8h#a92db0e0376e1dd64b24f1e107b277d71" class="el">PPB_HOSTRESOLVER_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__host__resolver_8h#af02d4ce7194c9c440c0bd42e81ab7731" class="el">PPB_HOSTRESOLVER_INTERFACE</a></td></tr></tbody></table>
 
 Typedefs
 --------
@@ -51,4 +51,4 @@ Define Documentation
 
 <span id="af02d4ce7194c9c440c0bd42e81ab7731" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__host__resolver_8h#af02d4ce7194c9c440c0bd42e81ab7731" class="el">PPB_HOSTRESOLVER_INTERFACE</a>   "PPB_HostResolver;1.0"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__host__resolver_8h#af02d4ce7194c9c440c0bd42e81ab7731" class="el">PPB_HOSTRESOLVER_INTERFACE</a>   “PPB_HostResolver;1.0”</td></tr></tbody></table>

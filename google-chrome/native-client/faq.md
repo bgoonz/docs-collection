@@ -1,6 +1,6 @@
----json {"title":"Frequently Asked Questions"} ---
+—json {“title”:“Frequently Asked Questions”} —
 
-{% include 'partials/nacl-warning.njk' %}
+{% include ‘partials/nacl-warning.njk’ %}
 
 ------------------------------------------------------------------------
 
@@ -133,7 +133,7 @@ If your code isn’t performing as close to native speed as you’d expect, <a h
 
 ### Why use Portable Native Client instead of *&lt;technology X&gt;*?
 
-Many other technologies can be compared to Portable Native Client: Flash, Java, Silverlight, ActiveX, .NET, asm.js, etc...
+Many other technologies can be compared to Portable Native Client: Flash, Java, Silverlight, ActiveX, .NET, asm.js, etc…
 
 Different technologies have different strengths and weaknesses. In appropriate contexts, Portable Native Client can be faster, more secure, and/or more compatible across operating systems and architectures than other technologies.
 
@@ -181,7 +181,7 @@ With Portable Native Client we deliver a system that has comparable portability 
 
 ### <span id="other-languages"></span>Do I have to use C or C++? I’d really like to use another language.
 
-Right now only C and C++ are supported directly by the toolchain in the SDK. C\# and other languages in the .NET family are supported via the <a href="https://github.com/elijahtaylor/mono" class="reference external">Mono port</a> for Native Client. Moreover, there are several ongoing projects to support additional language runtimes (e.g. <a href="https://chromium.googlesource.com/webports" class="reference external">webports includes Lua, Python and Ruby</a>) as well as to compile more languages to LLVM’s intermediate representation (e.g. support <a href="http://halide-lang.org/" class="reference external">Halide</a>, Haskell with <a href="http://www.haskell.org/ghc/docs/latest/html/users_guide/code-generators.html" class="reference external">GHC</a> or support Fortran with <a href="https://flang-gsoc.blogspot.ie/2013/09/end-of-gsoc-report.html" class="reference external">flang</a>), or transpile languages to C/C++ (source-to-source compilation). Even JavaScript is supported by compiling <a href="https://code.google.com/p/v8/" class="reference external">V8</a> to target PNaCl.
+Right now only C and C++ are supported directly by the toolchain in the SDK. C\# and other languages in the .NET family are supported via the <a href="https://github.com/elijahtaylor/mono" class="reference external">Mono port</a> for Native Client. Moreover, there are several ongoing projects to support additional language runtimes (e.g. <a href="https://chromium.googlesource.com/webports" class="reference external">webports includes Lua, Python and Ruby</a>) as well as to compile more languages to LLVM’s intermediate representation (e.g. support <a href="http://halide-lang.org/" class="reference external">Halide</a>, Haskell with <a href="http://www.haskell.org/ghc/docs/latest/html/users_guide/code-generators.html" class="reference external">GHC</a> or support Fortran with <a href="https://flang-gsoc.blogspot.ie/2013/09/end-of-gsoc-report.html" class="reference external">flang</a>), or transpile languages to C/C++ (source-to-source compilation). Even JavaScript is supported by compiling <a href="https://code.google.com/p/v8/" class="reference external">V8</a> to target PNaCl.
 
 The PNaCl toolchain is built on LLVM and can therefore generate code from languages such as <a href="http://www.rust-lang.org/" class="reference external">Rust</a>, <a href="https://golang.org" class="reference external">Go</a>, or Objective-C, but there may still be a few rough edges.
 
@@ -215,7 +215,7 @@ Some GL extensions are exposed to Native Client applications, see the <a href="h
 
 ### Does Native Client support concurrency/parallelism?
 
-Native Client and Portable Native Client both support pthreads, C11/C++11 threads, and low-level synchronization primitives (mutex, barriers, atomic read/modify/write, compare-and-exchange, etc...), thus allowing your Native Client application to utilize several CPU cores. Note that this allows you to modify datastructures concurrently without needing to copy them, which is often a limitation of shared-nothing systems. For more information see <a href="/docs/native-client/reference/pnacl-c-cpp-language-support#memory-model-and-atomics" class="reference internal"><em>memory model and atomics</em></a> and <a href="/docs/native-client/reference/pnacl-c-cpp-language-support#language-support-threading" class="reference internal"><em>threading</em></a>.
+Native Client and Portable Native Client both support pthreads, C11/C++11 threads, and low-level synchronization primitives (mutex, barriers, atomic read/modify/write, compare-and-exchange, etc…), thus allowing your Native Client application to utilize several CPU cores. Note that this allows you to modify datastructures concurrently without needing to copy them, which is often a limitation of shared-nothing systems. For more information see <a href="/docs/native-client/reference/pnacl-c-cpp-language-support#memory-model-and-atomics" class="reference internal"><em>memory model and atomics</em></a> and <a href="/docs/native-client/reference/pnacl-c-cpp-language-support#language-support-threading" class="reference internal"><em>threading</em></a>.
 
 Native Client doesn’t support HTML5 Web Workers directly but can interact with JavaScript code which does.
 
@@ -298,7 +298,7 @@ Portability
 
 ### Do I have to do anything special to make my application run on different operating systems?
 
-No. Native Client and Portable Native Client applications run without modification on all supported operating systems.
+No. Native Client and Portable Native Client applications run without modification on all supported operating systems.
 
 However, to run on different instruction set architectures (such as x86-32, x86-64 or ARM), you currently have to either:
 
@@ -313,7 +313,7 @@ The following kinds of code may be more challenging to port:
 
 -   Code that does direct <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_t_c_p_socket/" class="reference external">TCP</a> or <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_u_d_p_socket/" class="reference external">UDP</a> networking. For security reasons these APIs are only available to <a href="/apps" class="reference external">Chrome apps</a> after asking for the appropriate permissions, not on the open web. Native Client is otherwise restricted to the networking APIs available in the browser. You may want to use to <a href="/docs/native-client/nacl_io/" class="reference external">nacl_io library</a> to use POSIX-like sockets.
 -   Code that creates processes, including UNIX `fork`, won’t function as-is. However, threads are supported. You can nonetheless create new `<embed>` tags in your HTML page to launch new PNaCl processes. You can even use new `.pexe` files that your existing `.pexe` saved in a local filesystem. This is somewhat akin to `execve`, but the process management has to go through `postMessage` to JavaScript in order to create the new `<embed>`.
--   Code that needs to do local file I/O. Native Client is restricted to accessing URLs and to local storage in the browser (the Pepper <a href="/docs/native-client/devguide/coding/file-io" class="reference internal"><em>File IO API</em></a> has access to the same per-application storage that JavaScript has via Local Storage). HTML5 File System can be used, among others. For POSIX compatabiliy the Native Client SDK includes a library called nacl\_io which allows the application to interact with all these types of files via standard POSIX I/O functions (e.g. `open` / `fopen` / `read` / `write` / ...). See <a href="/docs/native-client/devguide/coding/nacl_io" class="reference internal"><em>Using NaCl I/O</em></a> for more details.
+-   Code that needs to do local file I/O. Native Client is restricted to accessing URLs and to local storage in the browser (the Pepper <a href="/docs/native-client/devguide/coding/file-io" class="reference internal"><em>File IO API</em></a> has access to the same per-application storage that JavaScript has via Local Storage). HTML5 File System can be used, among others. For POSIX compatabiliy the Native Client SDK includes a library called nacl\_io which allows the application to interact with all these types of files via standard POSIX I/O functions (e.g. `open` / `fopen` / `read` / `write` / …). See <a href="/docs/native-client/devguide/coding/nacl_io" class="reference internal"><em>Using NaCl I/O</em></a> for more details.
 
 <span id="faq-troubleshooting"></span>Troubleshooting
 -----------------------------------------------------

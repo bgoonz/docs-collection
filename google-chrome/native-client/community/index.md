@@ -1,6 +1,6 @@
----json {"title":"Community"} ---
+—json {“title”:“Community”} —
 
-{% include 'partials/nacl-warning.njk' %}
+{% include ‘partials/nacl-warning.njk’ %}
 
 ------------------------------------------------------------------------
 

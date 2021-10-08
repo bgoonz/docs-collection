@@ -1,4 +1,4 @@
----json {"title":"ppb\_file\_io.h File Reference"} ---
+—json {“title”:“ppb\_file\_io.h File Reference”} —
 
 Include dependency graph for ppb\_file\_io.h:
 
@@ -7,13 +7,13 @@ Include dependency graph for ppb\_file\_io.h:
 Data Structures
 ---------------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___file_i_o__1__1/" class="el">PPB_FileIO</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_FileIO</code> struct is used to operate on a regular file (PP_FileType_Regular). <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___file_i_o__1__1#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___file_i_o__1__1/" class="el">PPB_FileIO</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_FileIO</code> struct is used to operate on a regular file (PP_FileType_Regular). <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___file_i_o__1__1#details">More…</a><br />
 </td></tr></tbody></table>
 
 Defines
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__file__io_8h#aee417de3562daef62dbf68ddc16a8477" class="el">PPB_FILEIO_INTERFACE</a>   "PPB_FileIO;1.1"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__file__io_8h#af7e4bdd4e8dbe17acf89068130f60660" class="el">PPB_FILEIO_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__file__io_8h#aee417de3562daef62dbf68ddc16a8477" class="el">PPB_FILEIO_INTERFACE</a></td></tr></tbody></table>
+<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__file__io_8h#aee417de3562daef62dbf68ddc16a8477" class="el">PPB_FILEIO_INTERFACE</a>   “PPB_FileIO;1.1”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__file__io_8h#af7e4bdd4e8dbe17acf89068130f60660" class="el">PPB_FILEIO_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__file__io_8h#aee417de3562daef62dbf68ddc16a8477" class="el">PPB_FILEIO_INTERFACE</a></td></tr></tbody></table>
 
 Typedefs
 --------
@@ -53,4 +53,4 @@ Define Documentation
 
 <span id="aee417de3562daef62dbf68ddc16a8477" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__file__io_8h#aee417de3562daef62dbf68ddc16a8477" class="el">PPB_FILEIO_INTERFACE</a>   "PPB_FileIO;1.1"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__file__io_8h#aee417de3562daef62dbf68ddc16a8477" class="el">PPB_FILEIO_INTERFACE</a>   “PPB_FileIO;1.1”</td></tr></tbody></table>

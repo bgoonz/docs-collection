@@ -1,4 +1,4 @@
----json {"title":"SDK version information"} ---
+—json {“title”:“SDK version information”} —
 
 <span id="version"></span>
 

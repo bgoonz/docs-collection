@@ -1,4 +1,4 @@
----json {"title":"ppb\_core.h File Reference"} ---
+—json {“title”:“ppb\_core.h File Reference”} —
 
 Include dependency graph for ppb\_core.h:
 
@@ -7,13 +7,13 @@ Include dependency graph for ppb\_core.h:
 Data Structures
 ---------------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___core__1__0/" class="el">PPB_Core</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_Core</code> interface contains pointers to functions related to memory management, time, and threads on the browser. <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___core__1__0#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___core__1__0/" class="el">PPB_Core</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_Core</code> interface contains pointers to functions related to memory management, time, and threads on the browser. <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___core__1__0#details">More…</a><br />
 </td></tr></tbody></table>
 
 Defines
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__core_8h#acdd54c61a74a494eedba88bff5fef3e5" class="el">PPB_CORE_INTERFACE</a>   "PPB_Core;1.0"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__core_8h#ab634737b105d529729cc926ee6dee212" class="el">PPB_CORE_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__core_8h#acdd54c61a74a494eedba88bff5fef3e5" class="el">PPB_CORE_INTERFACE</a></td></tr></tbody></table>
+<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__core_8h#acdd54c61a74a494eedba88bff5fef3e5" class="el">PPB_CORE_INTERFACE</a>   “PPB_Core;1.0”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__core_8h#ab634737b105d529729cc926ee6dee212" class="el">PPB_CORE_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__core_8h#acdd54c61a74a494eedba88bff5fef3e5" class="el">PPB_CORE_INTERFACE</a></td></tr></tbody></table>
 
 Typedefs
 --------
@@ -40,4 +40,4 @@ Define Documentation
 
 <span id="acdd54c61a74a494eedba88bff5fef3e5" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__core_8h#acdd54c61a74a494eedba88bff5fef3e5" class="el">PPB_CORE_INTERFACE</a>   "PPB_Core;1.0"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__core_8h#acdd54c61a74a494eedba88bff5fef3e5" class="el">PPB_CORE_INTERFACE</a>   “PPB_Core;1.0”</td></tr></tbody></table>

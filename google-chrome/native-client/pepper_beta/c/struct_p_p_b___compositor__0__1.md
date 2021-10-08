@@ -1,4 +1,4 @@
----json {"title":"PPB\_Compositor Struct Reference"} ---
+—json {“title”:“PPB\_Compositor Struct Reference”} —
 
 Data Fields
 -----------
@@ -68,9 +68,8 @@ Commits layers added by `AddLayer()` to the chromium compositor.
 param\[in\] compositor A `PP_Resource` corresponding to a compositor layer resource.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>cc</td><td>A <code>PP_CompletionCallback</code> to be called when layers have been represented on screen.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>cc</td><td>A <code>PP_CompletionCallback</code> to be called when layers have been represented on screen.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing a result code from `pp_errors.h`.
@@ -82,9 +81,8 @@ An int32\_t containing a result code from `pp_errors.h`.
 Creates a Compositor resource.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code> identifying one instance of a module.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code> identifying one instance of a module.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_Resource` containing the compositor resource if successful or 0 otherwise.
@@ -96,9 +94,8 @@ A `PP_Resource` containing the compositor resource if successful or 0 otherwise.
 Determines if a resource is a compositor resource.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>The <code>PP_Resource</code> to test.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>The <code>PP_Resource</code> to test.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_Bool` with `PP_TRUE` if the given resource is a compositor resource or `PP_FALSE` otherwise.

@@ -1,4 +1,4 @@
----json {"title":"pp\_size.h File Reference"} ---
+—json {“title”:“pp\_size.h File Reference”} —
 
 Include dependency graph for pp\_size.h:
 
@@ -7,8 +7,8 @@ Include dependency graph for pp\_size.h:
 Data Structures
 ---------------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___size/" class="el">PP_Size</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PP_Size</code> struct contains the size of a 2D rectangle. <a href="/docs/native-client/pepper_beta/c/struct_p_p___size#details">More...</a><br />
-</td></tr><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___float_size/" class="el">PP_FloatSize</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PP_FloatSize</code> struct contains the size of a 2D rectangle. <a href="/docs/native-client/pepper_beta/c/struct_p_p___float_size#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___size/" class="el">PP_Size</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PP_Size</code> struct contains the size of a 2D rectangle. <a href="/docs/native-client/pepper_beta/c/struct_p_p___size#details">More…</a><br />
+</td></tr><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___float_size/" class="el">PP_FloatSize</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PP_FloatSize</code> struct contains the size of a 2D rectangle. <a href="/docs/native-client/pepper_beta/c/struct_p_p___float_size#details">More…</a><br />
 </td></tr></tbody></table>
 
 Functions

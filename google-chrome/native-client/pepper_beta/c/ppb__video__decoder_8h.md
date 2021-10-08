@@ -1,4 +1,4 @@
----json {"title":"ppb\_video\_decoder.h File Reference"} ---
+—json {“title”:“ppb\_video\_decoder.h File Reference”} —
 
 Include dependency graph for ppb\_video\_decoder.h:
 
@@ -7,13 +7,13 @@ Include dependency graph for ppb\_video\_decoder.h:
 Data Structures
 ---------------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___video_decoder__1__1/" class="el">PPB_VideoDecoder</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>Video decoder interface. <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___video_decoder__1__1#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___video_decoder__1__1/" class="el">PPB_VideoDecoder</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>Video decoder interface. <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___video_decoder__1__1#details">More…</a><br />
 </td></tr></tbody></table>
 
 Defines
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__video__decoder_8h#ac9994bddaa7ccc8f52799a00031d5441" class="el">PPB_VIDEODECODER_INTERFACE</a>   "PPB_VideoDecoder;1.1"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__video__decoder_8h#ae369609aebfa745c1836ef92e9b76aa2" class="el">PPB_VIDEODECODER_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__video__decoder_8h#ac9994bddaa7ccc8f52799a00031d5441" class="el">PPB_VIDEODECODER_INTERFACE</a></td></tr></tbody></table>
+<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__video__decoder_8h#ac9994bddaa7ccc8f52799a00031d5441" class="el">PPB_VIDEODECODER_INTERFACE</a>   “PPB_VideoDecoder;1.1”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__video__decoder_8h#ae369609aebfa745c1836ef92e9b76aa2" class="el">PPB_VIDEODECODER_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__video__decoder_8h#ac9994bddaa7ccc8f52799a00031d5441" class="el">PPB_VIDEODECODER_INTERFACE</a></td></tr></tbody></table>
 
 Typedefs
 --------
@@ -40,4 +40,4 @@ Define Documentation
 
 <span id="ac9994bddaa7ccc8f52799a00031d5441" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__video__decoder_8h#ac9994bddaa7ccc8f52799a00031d5441" class="el">PPB_VIDEODECODER_INTERFACE</a>   "PPB_VideoDecoder;1.1"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__video__decoder_8h#ac9994bddaa7ccc8f52799a00031d5441" class="el">PPB_VIDEODECODER_INTERFACE</a>   “PPB_VideoDecoder;1.1”</td></tr></tbody></table>

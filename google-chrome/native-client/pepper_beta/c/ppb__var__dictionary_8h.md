@@ -1,4 +1,4 @@
----json {"title":"ppb\_var\_dictionary.h File Reference"} ---
+—json {“title”:“ppb\_var\_dictionary.h File Reference”} —
 
 Include dependency graph for ppb\_var\_dictionary.h:
 
@@ -7,13 +7,13 @@ Include dependency graph for ppb\_var\_dictionary.h:
 Data Structures
 ---------------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___var_dictionary__1__0/" class="el">PPB_VarDictionary</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>A dictionary var contains key-value pairs with unique keys. <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___var_dictionary__1__0#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___var_dictionary__1__0/" class="el">PPB_VarDictionary</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>A dictionary var contains key-value pairs with unique keys. <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___var_dictionary__1__0#details">More…</a><br />
 </td></tr></tbody></table>
 
 Defines
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__var__dictionary_8h#a33d58f4be531cacb629c9eb33ab8cdc2" class="el">PPB_VAR_DICTIONARY_INTERFACE</a>   "PPB_VarDictionary;1.0"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__var__dictionary_8h#ac9d41ef2449d860ee3b429c148bd6be9" class="el">PPB_VAR_DICTIONARY_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__var__dictionary_8h#a33d58f4be531cacb629c9eb33ab8cdc2" class="el">PPB_VAR_DICTIONARY_INTERFACE</a></td></tr></tbody></table>
+<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__var__dictionary_8h#a33d58f4be531cacb629c9eb33ab8cdc2" class="el">PPB_VAR_DICTIONARY_INTERFACE</a>   “PPB_VarDictionary;1.0”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__var__dictionary_8h#ac9d41ef2449d860ee3b429c148bd6be9" class="el">PPB_VAR_DICTIONARY_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__var__dictionary_8h#a33d58f4be531cacb629c9eb33ab8cdc2" class="el">PPB_VAR_DICTIONARY_INTERFACE</a></td></tr></tbody></table>
 
 Typedefs
 --------
@@ -41,4 +41,4 @@ Define Documentation
 
 <span id="a33d58f4be531cacb629c9eb33ab8cdc2" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__var__dictionary_8h#a33d58f4be531cacb629c9eb33ab8cdc2" class="el">PPB_VAR_DICTIONARY_INTERFACE</a>   "PPB_VarDictionary;1.0"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__var__dictionary_8h#a33d58f4be531cacb629c9eb33ab8cdc2" class="el">PPB_VAR_DICTIONARY_INTERFACE</a>   “PPB_VarDictionary;1.0”</td></tr></tbody></table>

@@ -1,4 +1,4 @@
----json {"title":"PPB\_Gamepad Struct Reference"} ---
+—json {“title”:“PPB\_Gamepad Struct Reference”} —
 
 Data Fields
 -----------

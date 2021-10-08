@@ -1,4 +1,4 @@
----json {"title":"pp\_completion\_callback.h File Reference"} ---
+—json {“title”:“pp\_completion\_callback.h File Reference”} —
 
 Include dependency graph for pp\_completion\_callback.h:
 
@@ -7,7 +7,7 @@ Include dependency graph for pp\_completion\_callback.h:
 Data Structures
 ---------------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___completion_callback/" class="el">PP_CompletionCallback</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td><code>PP_CompletionCallback</code> is a common mechanism for supporting potentially asynchronous calls in browser interfaces. <a href="/docs/native-client/pepper_beta/c/struct_p_p___completion_callback#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___completion_callback/" class="el">PP_CompletionCallback</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td><code>PP_CompletionCallback</code> is a common mechanism for supporting potentially asynchronous calls in browser interfaces. <a href="/docs/native-client/pepper_beta/c/struct_p_p___completion_callback#details">More…</a><br />
 </td></tr></tbody></table>
 
 Typedefs

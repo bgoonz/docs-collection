@@ -1,4 +1,4 @@
----json {"title":"ppb\_url\_request\_info.h File Reference"} ---
+—json {“title”:“ppb\_url\_request\_info.h File Reference”} —
 
 Include dependency graph for ppb\_url\_request\_info.h:
 
@@ -7,13 +7,13 @@ Include dependency graph for ppb\_url\_request\_info.h:
 Data Structures
 ---------------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___u_r_l_request_info__1__0/" class="el">PPB_URLRequestInfo</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_URLRequestInfo</code> interface is used to create and handle URL requests. <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___u_r_l_request_info__1__0#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___u_r_l_request_info__1__0/" class="el">PPB_URLRequestInfo</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_URLRequestInfo</code> interface is used to create and handle URL requests. <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___u_r_l_request_info__1__0#details">More…</a><br />
 </td></tr></tbody></table>
 
 Defines
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__url__request__info_8h#a1624264dba578e2c15b257f7680a43de" class="el">PPB_URLREQUESTINFO_INTERFACE</a>   "PPB_URLRequestInfo;1.0"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__url__request__info_8h#a61dc8b05683833153b9368eabebc5441" class="el">PPB_URLREQUESTINFO_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__url__request__info_8h#a1624264dba578e2c15b257f7680a43de" class="el">PPB_URLREQUESTINFO_INTERFACE</a></td></tr></tbody></table>
+<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__url__request__info_8h#a1624264dba578e2c15b257f7680a43de" class="el">PPB_URLREQUESTINFO_INTERFACE</a>   “PPB_URLRequestInfo;1.0”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__url__request__info_8h#a61dc8b05683833153b9368eabebc5441" class="el">PPB_URLREQUESTINFO_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__url__request__info_8h#a1624264dba578e2c15b257f7680a43de" class="el">PPB_URLREQUESTINFO_INTERFACE</a></td></tr></tbody></table>
 
 Typedefs
 --------
@@ -56,4 +56,4 @@ Define Documentation
 
 <span id="a1624264dba578e2c15b257f7680a43de" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__url__request__info_8h#a1624264dba578e2c15b257f7680a43de" class="el">PPB_URLREQUESTINFO_INTERFACE</a>   "PPB_URLRequestInfo;1.0"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__url__request__info_8h#a1624264dba578e2c15b257f7680a43de" class="el">PPB_URLREQUESTINFO_INTERFACE</a>   “PPB_URLRequestInfo;1.0”</td></tr></tbody></table>

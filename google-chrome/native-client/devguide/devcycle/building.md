@@ -1,6 +1,6 @@
----json {"title":"Building"} ---
+—json {“title”:“Building”} —
 
-{% include 'partials/nacl-warning.njk' %}
+{% include ‘partials/nacl-warning.njk’ %}
 
 ------------------------------------------------------------------------
 
@@ -156,7 +156,7 @@ indicates the **output** filename.
 tells the compiler to include debug information in the result. This debug information can be used during development, and then **stripped** before actually deploying the application to keep the application’s download size small.
 
 `-On`  
-sets the optimization level to n. Use `-O0` when debugging, and `-O2` or `-O3` for deployment.
+sets the optimization level to n. Use `-O0` when debugging, and `-O2` or `-O3` for deployment.
 
 The main difference between `-O2` and `-O3` is whether the compiler performs optimizations that involve a space-speed tradeoff. It could be the case that `-O3` optimizations are not desirable due to increased **pexe** download size; you should make your own performance measurements to determine which level of optimization is right for you. When looking at code size, note that what you generally care about is not the size of the **pexe** produced by `pnacl-clang`, but the size of the compressed **pexe** that you upload to the server or to the Chrome Web Store. Optimizations that increase the size of an uncompressed **pexe** may not increase the size of the compressed **pexe** very much. You should also verify how optimization level affects on-device translation time, this can be tested locally with `pnacl-translate`.
 

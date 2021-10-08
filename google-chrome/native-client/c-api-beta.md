@@ -1,6 +1,6 @@
----json {"title":"Pepper C API Reference (Beta)"} ---
+—json {“title”:“Pepper C API Reference (Beta)”} —
 
-<span id="c-api-beta" class="target"><span id="pepper-beta-c-index"></span></span> {% include 'partials/nacl-warning.njk' %}
+<span id="c-api-beta" class="target"><span id="pepper-beta-c-index"></span></span> {% include ‘partials/nacl-warning.njk’ %}
 
 ------------------------------------------------------------------------
 

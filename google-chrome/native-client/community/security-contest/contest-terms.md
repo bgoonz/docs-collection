@@ -1,6 +1,6 @@
----json {"title":"Security Contest Terms and Conditions"} ---
+—json {“title”:“Security Contest Terms and Conditions”} —
 
-{% include 'partials/nacl-warning.njk' %}
+{% include ‘partials/nacl-warning.njk’ %}
 
 ------------------------------------------------------------------------
 
@@ -30,7 +30,7 @@ ENTRY IN THIS CONTEST CONSTITUTES YOUR ACCEPTANCE OF THESE TERMS AND CONDITIONS.
 
 3.  Sponsor
 
-    The Contest is sponsored by Google Inc. (“Google” or “Sponsor”), a Delaware corporation with its principal place of business at 1600 Amphitheater Parkway, Mountain View, CA, 94043, USA.
+    The Contest is sponsored by Google Inc. (“Google” or “Sponsor”), a Delaware corporation with its principal place of business at 1600 Amphitheater Parkway, Mountain View, CA, 94043, USA.
 
 4.  Term
 
@@ -100,7 +100,7 @@ ENTRY IN THIS CONTEST CONSTITUTES YOUR ACCEPTANCE OF THESE TERMS AND CONDITIONS.
                 -   browser version;
                 -   operating system name(s) and version(s); and/or
                 -   any other platform requirements relevant to the Exploit.
-            2.  If the Exploit requires a binary executable, both the source code and binary executable must be provided upon creation of the Issue. Any subsequent updates to the source code or binary executable after the creation of the Issue will not be considered for the purposes of this Contest. The binary executable must build cleanly by executing the command “make” in the exploit directory (e.g. nacl/googleclient/native\_client/tests/exploit1).
+            2.  If the Exploit requires a binary executable, both the source code and binary executable must be provided upon creation of the Issue. Any subsequent updates to the source code or binary executable after the creation of the Issue will not be considered for the purposes of this Contest. The binary executable must build cleanly by executing the command “make” in the exploit directory (e.g. nacl/googleclient/native\_client/tests/exploit1).
     2.  Verified Issues: In order for an Issue to become a Verified Issue, Google will first examine the submitted Issue to determine whether it complies with the following:
         1.  The Exploit must not contain or depend upon access or use of any third party software or code that Google does not have readily available to it or that would require complying with third party license agreement that Google in its sole discretion deems onerous or burdensome.
         2.  Google must be able to replicate the Exploit in its sole discretion.
@@ -113,7 +113,7 @@ ENTRY IN THIS CONTEST CONSTITUTES YOUR ACCEPTANCE OF THESE TERMS AND CONDITIONS.
         -   Covert Channel Attacks;
         -   Sidechannel Attacks;
         -   Exploits requiring a virtualized CPU;
-        -   Exploits that rely on features, misfeatures or defects of virtual machines (i.e. VMWare, Xen, Parallels etc.);
+        -   Exploits that rely on features, misfeatures or defects of virtual machines (i.e. VMWare, Xen, Parallels etc.);
         -   Exploits that require the machine to be previously compromised by malicious software (including but not limited to viruses or malware); and
         -   Exploits that rely on hardware failures, other than Exploits which, in Google’s sole judgment, depend on CPU errata but which can be reproduced reliably with a common system configuration and under normal operating conditions, or statistically improbable hardware behaviors. Examples include but are not limited to Exploits that rely on memory errors induced by cosmic radiation, and Exploits that require abnormal heating, cooling or other abnormal physical conditions.
     5.  Completeness. Issues submitted that lack any of the above materials or fail to meet any of the above criteria, may not be considered in the judging process at Google’s sole discretion. Issues that are not included in a Participant Summary (see section below) will not be considered.
@@ -128,7 +128,7 @@ ENTRY IN THIS CONTEST CONSTITUTES YOUR ACCEPTANCE OF THESE TERMS AND CONDITIONS.
         -   The version number(s) of Native Client software affected by each Exploit (which must be the version number of the Native Client software current at the time the Issue was submitted to the <a href="http://code.google.com/p/nativeclient/issues/list" class="reference external">Native Client Issue Tracker</a>).
         -   Any other details about the Exploit and the submission that are relevant to the judging criteria, such as, for example, the approach used in finding the exploits, innovative or scalable techniques used to discover exploits, or architectural analysis.
         -   The team name or user name of the Participant. Google may, in its sole discretion, eliminate or disqualify any Summary that lists user names or team names that are not identical to the user name or team name of the Participant listed on the Contest entry form.
-    2.  Each Summary must be a maximum of 8 pages long, in PDF format viewable with Adobe Reader version 9. The Summary must be formatted for 8.5 inches x11 inches or A4 paper, with a minimum font size of 10 pt. Any submission that does not meet these formatting criteria may be disqualified at the sole discretion of Google.
+    2.  Each Summary must be a maximum of 8 pages long, in PDF format viewable with Adobe Reader version 9. The Summary must be formatted for 8.5 inches x11 inches or A4 paper, with a minimum font size of 10 pt. Any submission that does not meet these formatting criteria may be disqualified at the sole discretion of Google.
     3.  All Issues listed in the Summary will be verified by Google before submission of the Summary to the Judges after the Contest Closing Date. Participants may submit or resubmit their Summary at any time during the duration of the Contest, however, the Judges will consider only the last Summary from each Participant prior to the Contest Closing Date and ignore all other Summaries previously submitted by the Participant.
 
 11. Judging
@@ -275,7 +275,7 @@ ENTRY IN THIS CONTEST CONSTITUTES YOUR ACCEPTANCE OF THESE TERMS AND CONDITIONS.
 
     10. Forum and Recourse to Judicial Procedures. These Terms shall be governed by, subject to, and construed in accordance with the laws of the State of California, United States of America, excluding all conflict of law rules. If any provision(s) of these Terms are held to be invalid or unenforceable, all remaining provisions hereof will remain in full force and effect. To the extent permitted by law, the rights to litigate, seek injunctive relief or make any other recourse to judicial or any other procedure in case of disputes or claims resulting from or in connection with this Contest are hereby excluded, and all Participants expressly waive any and all such rights.
 
-    11. Arbitration. By entering the Contest, you agree that exclusive jurisdiction for any dispute, claim, or demand related in any way to the Contest will be decided by binding arbitration. All disputes between you and Google, of whatsoever kind or nature arising out of these Terms, shall be submitted to Judicial Arbitration and Mediation Services, Inc. (“JAMS”) for binding arbitration under its rules then in effect in the San Jose, California, USA area, before one arbitrator to be mutually agreed upon by both parties. The parties agree to share equally in the arbitration costs incurred.
+    11. Arbitration. By entering the Contest, you agree that exclusive jurisdiction for any dispute, claim, or demand related in any way to the Contest will be decided by binding arbitration. All disputes between you and Google, of whatsoever kind or nature arising out of these Terms, shall be submitted to Judicial Arbitration and Mediation Services, Inc. (“JAMS”) for binding arbitration under its rules then in effect in the San Jose, California, USA area, before one arbitrator to be mutually agreed upon by both parties. The parties agree to share equally in the arbitration costs incurred.
 
     12. Winner List
 

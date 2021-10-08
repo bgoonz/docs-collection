@@ -1,6 +1,6 @@
----json {"title":"Native Client Documentation Sitemap"} ---
+—json {“title”:“Native Client Documentation Sitemap”} —
 
-{% include 'partials/nacl-warning.njk' %}
+{% include ‘partials/nacl-warning.njk’ %}
 
 ------------------------------------------------------------------------
 
@@ -194,14 +194,14 @@ Contents:
     -   <a href="/docs/native-client/cds2014/python#introduction" class="reference internal">Introduction</a>
     -   <a href="/docs/native-client/cds2014/python#setup" class="reference internal">Setup</a>
     -   <a href="/docs/native-client/cds2014/python#get-the-code" class="reference internal">Get the Code!</a>
-    -   <a href="/docs/native-client/cds2014/python#your-challenge-should-you-choose-to-accept-it" class="reference internal">Your challenge, should you choose to accept it...</a>
+    -   <a href="/docs/native-client/cds2014/python#your-challenge-should-you-choose-to-accept-it" class="reference internal">Your challenge, should you choose to accept it…</a>
     -   <a href="/docs/native-client/cds2014/python#what-you-ve-learned" class="reference internal">What you’ve learned</a>
     -   <a href="/docs/native-client/cds2014/python#cleanup" class="reference internal">Cleanup</a>
 -   <a href="/docs/native-client/cds2014/cpp" class="reference internal">A Saga of Fire and Water - Codelab</a>
     -   <a href="/docs/native-client/cds2014/cpp#introduction" class="reference internal">Introduction</a>
     -   <a href="/docs/native-client/cds2014/cpp#setup" class="reference internal">Setup</a>
     -   <a href="/docs/native-client/cds2014/cpp#get-the-code" class="reference internal">Get the Code!</a>
-    -   <a href="/docs/native-client/cds2014/cpp#fire-is-cool-let-s-burn-some-stuff" class="reference internal">Fire is cool, let’s burn some stuff...</a>
+    -   <a href="/docs/native-client/cds2014/cpp#fire-is-cool-let-s-burn-some-stuff" class="reference internal">Fire is cool, let’s burn some stuff…</a>
     -   <a href="/docs/native-client/cds2014/cpp#water" class="reference internal">Water</a>
     -   <a href="/docs/native-client/cds2014/cpp#what-you-ve-learned" class="reference internal">What you’ve learned</a>
     -   <a href="/docs/native-client/cds2014/cpp#cleanup" class="reference internal">Cleanup</a>

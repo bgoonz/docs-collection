@@ -1,6 +1,6 @@
----json {"title":"The nacl\_io Library"} ---
+—json {“title”:“The nacl\_io Library”} —
 
-{% include 'partials/nacl-warning.njk' %}
+{% include ‘partials/nacl-warning.njk’ %}
 
 ------------------------------------------------------------------------
 

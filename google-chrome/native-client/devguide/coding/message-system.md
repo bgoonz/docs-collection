@@ -1,6 +1,6 @@
----json {"title":"Messaging System"} ---
+—json {“title”:“Messaging System”} —
 
-{% include 'partials/nacl-warning.njk' %}
+{% include ‘partials/nacl-warning.njk’ %}
 
 ------------------------------------------------------------------------
 

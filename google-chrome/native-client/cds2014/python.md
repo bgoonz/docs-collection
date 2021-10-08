@@ -1,6 +1,6 @@
----json {"title":"What a Difference Python Makes - Codelab"} ---
+—json {“title”:“What a Difference Python Makes - Codelab”} —
 
-{% include 'partials/nacl-warning.njk' %}
+{% include ‘partials/nacl-warning.njk’ %}
 
 ------------------------------------------------------------------------
 
@@ -10,10 +10,9 @@ Introduction
 Learn how you can use client-side Python on your webpage. Use the python [difflib](https://docs.python.org/2/library/difflib.html) module to generate attractive online textual diffs. Develop inside Google Chrome, using a hot off the presses version of our NaCl Dev Environment, running on a webpage, powered by Portable Native Client. The techniques in this codelab also apply to other interpreted languages we’ve ported to PNaCl, including: Python, Lua, Ruby, Tcl, Bash, and Forth.
 
 Requirements:  
--   A Desktop / Laptop Windows, Mac, Linux, or ChromeOS browser  
-    <span id="python_compat" style="color: #cccc00">Checking browser compatibility...</span>  
--   A fast broadband connection (500MB download)
--   Can read and write Python
+- A Desktop / Laptop Windows, Mac, Linux, or ChromeOS browser  
+<span id="python_compat" style="color: #cccc00">Checking browser compatibility…</span>  
+- A fast broadband connection (500MB download) - Can read and write Python
 
 Setup
 -----
@@ -37,7 +36,7 @@ Once the download is complete, you should see a bash prompt (ignore the gcc warn
 
 These development tools are a <a href="/docs/native-client/cds2014/nacldev/" class="reference external">work in progress</a>. At this point, they are a learning tool and demonstration of NaCl’s flexibility, but are not the recommended tools for a production application. In the future, that may change, but for the moment, to develop a substantial application for Native Client / Portable Native Client, we recommend you use the <a href="/docs/native-client/sdk/download" class="reference external">Native Client SDK</a>.
 
-**NOTE: The NaCl Development Environment is not yet stable. Ideally, user data is preserved, but currently it can be lost during updates or sporadically. We're working to resolve this.**
+**NOTE: The NaCl Development Environment is not yet stable. Ideally, user data is preserved, but currently it can be lost during updates or sporadically. We’re working to resolve this.**
 
 ### Navigating in the Dev Environment
 
@@ -55,10 +54,8 @@ Many of the steps in this tutorial will be easier to copy and paste into the Dev
 
 On your platform use:
 
--   <span id="copy_key">Loading...</span>
-    to Copy
--   <span id="paste_key">Loading...</span>
-    to Paste
+-   <span id="copy_key">Loading…</span> to Copy
+-   <span id="paste_key">Loading…</span> to Paste
 
 #### Editing
 
@@ -118,12 +115,12 @@ While working, you can see what you’ve changed by running:
 
     git diff
 
-Your challenge, should you choose to accept it...
--------------------------------------------------
+Your challenge, should you choose to accept it…
+-----------------------------------------------
 
 Javascript has many wonderful features out of the box. Unfortunately, generating textual diffs is not one of them. Python on the other hand has the [difflib](https://docs.python.org/2/library/difflib.html) module in its standard library.
 
-The starting point you’ve just extracted contains the shell of a web app using Portable Native Client Python to generate a diff. Just one thing is missing, that whole diffing thing...
+The starting point you’ve just extracted contains the shell of a web app using Portable Native Client Python to generate a diff. Just one thing is missing, that whole diffing thing…
 
 To see where things stand, deploy the sample like this:
 
@@ -161,4 +158,4 @@ Bring your interpreted app to PNaCl today!
 Cleanup
 -------
 
-The Web-based version of the Chrome Dev Environment installs package data (&gt;800MB) into the HTML5 Filesystem storage associated with naclports.storage.googleapis.com . To recover this storage (i.e. uninstall), enter **chrome://settings/cookies** in the Chrome URL bar. In the cookies UI, search for “naclports”. Then click the “x” next to the naclports entry.
+The Web-based version of the Chrome Dev Environment installs package data (&gt;800MB) into the HTML5 Filesystem storage associated with naclports.storage.googleapis.com . To recover this storage (i.e. uninstall), enter **chrome://settings/cookies** in the Chrome URL bar. In the cookies UI, search for “naclports”. Then click the “x” next to the naclports entry.

@@ -1,4 +1,4 @@
----json {"title":"ppb\_url\_loader.h File Reference"} ---
+—json {“title”:“ppb\_url\_loader.h File Reference”} —
 
 Include dependency graph for ppb\_url\_loader.h:
 
@@ -7,13 +7,13 @@ Include dependency graph for ppb\_url\_loader.h:
 Data Structures
 ---------------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___u_r_l_loader__1__0/" class="el">PPB_URLLoader</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <strong>PPB_URLLoader</strong> interface contains pointers to functions for loading URLs. <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___u_r_l_loader__1__0#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___u_r_l_loader__1__0/" class="el">PPB_URLLoader</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <strong>PPB_URLLoader</strong> interface contains pointers to functions for loading URLs. <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___u_r_l_loader__1__0#details">More…</a><br />
 </td></tr></tbody></table>
 
 Defines
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__url__loader_8h#adebf43440c53ea088f68ae376a7c7bbb" class="el">PPB_URLLOADER_INTERFACE</a>   "PPB_URLLoader;1.0"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__url__loader_8h#ae1fa8c5cdfccb7ea67e184b1e5e1009e" class="el">PPB_URLLOADER_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__url__loader_8h#adebf43440c53ea088f68ae376a7c7bbb" class="el">PPB_URLLOADER_INTERFACE</a></td></tr></tbody></table>
+<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__url__loader_8h#adebf43440c53ea088f68ae376a7c7bbb" class="el">PPB_URLLOADER_INTERFACE</a>   “PPB_URLLoader;1.0”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__url__loader_8h#ae1fa8c5cdfccb7ea67e184b1e5e1009e" class="el">PPB_URLLOADER_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__url__loader_8h#adebf43440c53ea088f68ae376a7c7bbb" class="el">PPB_URLLOADER_INTERFACE</a></td></tr></tbody></table>
 
 Typedefs
 --------
@@ -40,4 +40,4 @@ Define Documentation
 
 <span id="adebf43440c53ea088f68ae376a7c7bbb" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__url__loader_8h#adebf43440c53ea088f68ae376a7c7bbb" class="el">PPB_URLLOADER_INTERFACE</a>   "PPB_URLLoader;1.0"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__url__loader_8h#adebf43440c53ea088f68ae376a7c7bbb" class="el">PPB_URLLOADER_INTERFACE</a>   “PPB_URLLoader;1.0”</td></tr></tbody></table>

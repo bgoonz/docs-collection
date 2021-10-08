@@ -1,6 +1,6 @@
----json {"title":"C++ Tutorial: Getting Started (Part 2)"} ---
+—json {“title”:“C++ Tutorial: Getting Started (Part 2)”} —
 
-{% include 'partials/nacl-warning.njk' %}
+{% include ‘partials/nacl-warning.njk’ %}
 
 ------------------------------------------------------------------------
 
@@ -115,8 +115,6 @@ A list of additional flags to pass to the linker. This example does not need any
 
 SOURCES  
 A list of C or C++ sources to compile, separated by spaces. If you have a long list of sources, it may be easier to read if you put each file on its own line, and use `\` as a line-continuation character. Here’s an example:
-
-<!-- -->
 
     SOURCES = foo.cc \
               bar.cc \

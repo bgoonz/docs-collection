@@ -1,6 +1,6 @@
----json {"title":"Application Structure"} ---
+—json {“title”:“Application Structure”} —
 
-{% include 'partials/nacl-warning.njk' %}
+{% include ‘partials/nacl-warning.njk’ %}
 
 ------------------------------------------------------------------------
 

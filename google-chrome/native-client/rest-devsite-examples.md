@@ -1,4 +1,4 @@
----json {"title":"Examples of ReST markup for chromesite (Document title)"} ---
+—json {“title”:“Examples of ReST markup for chromesite (Document title)”} —
 
 Document structure
 ------------------
@@ -110,7 +110,7 @@ Subsection.
 
 #### Sub-subsection heading
 
-That’s pretty deep...
+That’s pretty deep…
 
 ##### Sub-sub-subsection heading
 
@@ -157,4 +157,4 @@ The full scoop on tables is <a href="http://sphinx-doc.org/rest.html#tables" cla
 
 “Grid tables” are versatile but require more markup:
 
-<table><thead><tr class="header"><th>Header row, column 1 (header rows optional)</th><th>Header 2</th><th>Header 3</th><th>Header 4</th></tr></thead><tbody><tr class="odd"><td>body row 1, column 1</td><td>column 2</td><td>column 3</td><td>column 4</td></tr><tr class="even"><td>body row 2</td><td>...</td><td>...</td><td> </td></tr></tbody></table>
+<table><thead><tr class="header"><th>Header row, column 1 (header rows optional)</th><th>Header 2</th><th>Header 3</th><th>Header 4</th></tr></thead><tbody><tr class="odd"><td>body row 1, column 1</td><td>column 2</td><td>column 3</td><td>column 4</td></tr><tr class="even"><td>body row 2</td><td>…</td><td>…</td><td> </td></tr></tbody></table>

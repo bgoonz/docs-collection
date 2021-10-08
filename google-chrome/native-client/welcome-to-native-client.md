@@ -1,6 +1,6 @@
----json {"title":"Welcome to Native Client"} ---
+—json {“title”:“Welcome to Native Client”} —
 
-{% include 'partials/nacl-warning.njk' %}
+{% include ‘partials/nacl-warning.njk’ %}
 
 ------------------------------------------------------------------------
 
@@ -14,7 +14,7 @@ In short, Native Client brings the **performance** and **low-level control** of 
 
 This site uses several examples of Native Client. For the best experience, consider downloading the <a href="https://www.google.com/chrome/" class="reference external">latest version of Chrome</a>. When you come back, be sure to <a href="https://gonativeclient.appspot.com/demo" class="reference external">check out our demos</a>.
 
-{% YouTube id='MvKEomoiKBA' %}
+{% YouTube id=‘MvKEomoiKBA’ %}
 
 Two Types of Modules
 --------------------

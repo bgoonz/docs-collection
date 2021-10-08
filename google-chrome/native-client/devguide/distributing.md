@@ -1,6 +1,6 @@
----json {"title":"Distributing Your Application"} ---
+—json {“title”:“Distributing Your Application”} —
 
-{% include 'partials/nacl-warning.njk' %}
+{% include ‘partials/nacl-warning.njk’ %}
 
 ------------------------------------------------------------------------
 

@@ -1,4 +1,4 @@
----json {"title":"ppb\_video\_frame.h File Reference"} ---
+—json {“title”:“ppb\_video\_frame.h File Reference”} —
 
 Include dependency graph for ppb\_video\_frame.h:
 
@@ -12,7 +12,7 @@ Data Structures
 Defines
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__video__frame_8h#a4176d3adc972a5e92e02b9fb85dc78fd" class="el">PPB_VIDEOFRAME_INTERFACE</a>   "PPB_VideoFrame;0.1"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__video__frame_8h#ac161d8c49f583eda31622d9fc010cd0d" class="el">PPB_VIDEOFRAME_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__video__frame_8h#a4176d3adc972a5e92e02b9fb85dc78fd" class="el">PPB_VIDEOFRAME_INTERFACE</a></td></tr></tbody></table>
+<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__video__frame_8h#a4176d3adc972a5e92e02b9fb85dc78fd" class="el">PPB_VIDEOFRAME_INTERFACE</a>   “PPB_VideoFrame;0.1”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__video__frame_8h#ac161d8c49f583eda31622d9fc010cd0d" class="el">PPB_VIDEOFRAME_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__video__frame_8h#a4176d3adc972a5e92e02b9fb85dc78fd" class="el">PPB_VIDEOFRAME_INTERFACE</a></td></tr></tbody></table>
 
 Typedefs
 --------
@@ -47,4 +47,4 @@ Define Documentation
 
 <span id="a4176d3adc972a5e92e02b9fb85dc78fd" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__video__frame_8h#a4176d3adc972a5e92e02b9fb85dc78fd" class="el">PPB_VIDEOFRAME_INTERFACE</a>   "PPB_VideoFrame;0.1"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__video__frame_8h#a4176d3adc972a5e92e02b9fb85dc78fd" class="el">PPB_VIDEOFRAME_INTERFACE</a>   “PPB_VideoFrame;0.1”</td></tr></tbody></table>

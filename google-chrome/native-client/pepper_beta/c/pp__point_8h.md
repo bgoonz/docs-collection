@@ -1,4 +1,4 @@
----json {"title":"pp\_point.h File Reference"} ---
+—json {“title”:“pp\_point.h File Reference”} —
 
 Include dependency graph for pp\_point.h:
 
@@ -7,8 +7,8 @@ Include dependency graph for pp\_point.h:
 Data Structures
 ---------------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___point/" class="el">PP_Point</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <a href="/docs/native-client/pepper_beta/c/struct_p_p___point/" class="el" title="The PP_Point structure defines the integer x and y coordinates of a point.">PP_Point</a> structure defines the integer x and y coordinates of a point. <a href="/docs/native-client/pepper_beta/c/struct_p_p___point#details">More...</a><br />
-</td></tr><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___float_point/" class="el">PP_FloatPoint</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <a href="/docs/native-client/pepper_beta/c/struct_p_p___float_point/" class="el" title="The PP_FloatPoint structure defines the floating-point x and y coordinates of a point.">PP_FloatPoint</a> structure defines the floating-point x and y coordinates of a point. <a href="/docs/native-client/pepper_beta/c/struct_p_p___float_point#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___point/" class="el">PP_Point</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <a href="/docs/native-client/pepper_beta/c/struct_p_p___point/" class="el" title="The PP_Point structure defines the integer x and y coordinates of a point.">PP_Point</a> structure defines the integer x and y coordinates of a point. <a href="/docs/native-client/pepper_beta/c/struct_p_p___point#details">More…</a><br />
+</td></tr><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___float_point/" class="el">PP_FloatPoint</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <a href="/docs/native-client/pepper_beta/c/struct_p_p___float_point/" class="el" title="The PP_FloatPoint structure defines the floating-point x and y coordinates of a point.">PP_FloatPoint</a> structure defines the floating-point x and y coordinates of a point. <a href="/docs/native-client/pepper_beta/c/struct_p_p___float_point#details">More…</a><br />
 </td></tr></tbody></table>
 
 Functions

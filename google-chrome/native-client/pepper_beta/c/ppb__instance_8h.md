@@ -1,4 +1,4 @@
----json {"title":"ppb\_instance.h File Reference"} ---
+—json {“title”:“ppb\_instance.h File Reference”} —
 
 Include dependency graph for ppb\_instance.h:
 
@@ -7,13 +7,13 @@ Include dependency graph for ppb\_instance.h:
 Data Structures
 ---------------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___instance__1__0/" class="el">PPB_Instance</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The PPB_Instance interface contains pointers to functions related to the module instance on a web page. <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___instance__1__0#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___instance__1__0/" class="el">PPB_Instance</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The PPB_Instance interface contains pointers to functions related to the module instance on a web page. <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___instance__1__0#details">More…</a><br />
 </td></tr></tbody></table>
 
 Defines
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__instance_8h#ad3b639018921516cd4d2d3adcffdbc8f" class="el">PPB_INSTANCE_INTERFACE</a>   "PPB_Instance;1.0"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__instance_8h#ab707353c04e78fe57eba3783692a0eed" class="el">PPB_INSTANCE_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__instance_8h#ad3b639018921516cd4d2d3adcffdbc8f" class="el">PPB_INSTANCE_INTERFACE</a></td></tr></tbody></table>
+<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__instance_8h#ad3b639018921516cd4d2d3adcffdbc8f" class="el">PPB_INSTANCE_INTERFACE</a>   “PPB_Instance;1.0”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__instance_8h#ab707353c04e78fe57eba3783692a0eed" class="el">PPB_INSTANCE_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__instance_8h#ad3b639018921516cd4d2d3adcffdbc8f" class="el">PPB_INSTANCE_INTERFACE</a></td></tr></tbody></table>
 
 Typedefs
 --------
@@ -40,4 +40,4 @@ Define Documentation
 
 <span id="ad3b639018921516cd4d2d3adcffdbc8f" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__instance_8h#ad3b639018921516cd4d2d3adcffdbc8f" class="el">PPB_INSTANCE_INTERFACE</a>   "PPB_Instance;1.0"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__instance_8h#ad3b639018921516cd4d2d3adcffdbc8f" class="el">PPB_INSTANCE_INTERFACE</a>   “PPB_Instance;1.0”</td></tr></tbody></table>

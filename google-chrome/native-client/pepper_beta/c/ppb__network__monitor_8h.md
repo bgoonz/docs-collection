@@ -1,4 +1,4 @@
----json {"title":"ppb\_network\_monitor.h File Reference"} ---
+—json {“title”:“ppb\_network\_monitor.h File Reference”} —
 
 Include dependency graph for ppb\_network\_monitor.h:
 
@@ -7,13 +7,13 @@ Include dependency graph for ppb\_network\_monitor.h:
 Data Structures
 ---------------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___network_monitor__1__0/" class="el">PPB_NetworkMonitor</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_NetworkMonitor</code> allows to get network interfaces configuration and monitor network configuration changes. <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___network_monitor__1__0#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___network_monitor__1__0/" class="el">PPB_NetworkMonitor</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_NetworkMonitor</code> allows to get network interfaces configuration and monitor network configuration changes. <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___network_monitor__1__0#details">More…</a><br />
 </td></tr></tbody></table>
 
 Defines
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__network__monitor_8h#aa1c835159cc390a53f853281e62a969f" class="el">PPB_NETWORKMONITOR_INTERFACE</a>   "PPB_NetworkMonitor;1.0"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__network__monitor_8h#a1a8be64663de54d6d189673531f93008" class="el">PPB_NETWORKMONITOR_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__network__monitor_8h#aa1c835159cc390a53f853281e62a969f" class="el">PPB_NETWORKMONITOR_INTERFACE</a></td></tr></tbody></table>
+<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__network__monitor_8h#aa1c835159cc390a53f853281e62a969f" class="el">PPB_NETWORKMONITOR_INTERFACE</a>   “PPB_NetworkMonitor;1.0”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__network__monitor_8h#a1a8be64663de54d6d189673531f93008" class="el">PPB_NETWORKMONITOR_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__network__monitor_8h#aa1c835159cc390a53f853281e62a969f" class="el">PPB_NETWORKMONITOR_INTERFACE</a></td></tr></tbody></table>
 
 Typedefs
 --------
@@ -41,4 +41,4 @@ Define Documentation
 
 <span id="aa1c835159cc390a53f853281e62a969f" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__network__monitor_8h#aa1c835159cc390a53f853281e62a969f" class="el">PPB_NETWORKMONITOR_INTERFACE</a>   "PPB_NetworkMonitor;1.0"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__network__monitor_8h#aa1c835159cc390a53f853281e62a969f" class="el">PPB_NETWORKMONITOR_INTERFACE</a>   “PPB_NetworkMonitor;1.0”</td></tr></tbody></table>

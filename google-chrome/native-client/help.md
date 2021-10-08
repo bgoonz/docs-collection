@@ -1,6 +1,6 @@
----json {"title":"Help with NaCl"} ---
+—json {“title”:“Help with NaCl”} —
 
-{% include 'partials/nacl-warning.njk' %}
+{% include ‘partials/nacl-warning.njk’ %}
 
 ------------------------------------------------------------------------
 
@@ -18,7 +18,7 @@ Forums
 -   For new Native Client developers: <a href="http://stackoverflow.com/questions/tagged/google-nativeclient" class="reference external">Stack Overflow</a> is a great resource — check this forum first for answers to your questions.
 -   For in-depth technical discussions: <a href="https://groups.google.com/group/native-client-discuss" class="reference external">native-client-discuss mailing list</a> is a good group for detailed technical discussions about bugs and other Native Client issues.
 -   For announcements, follow the <a href="http://groups.google.com/group/native-client-announce" class="reference external">native-client-announce mailing list</a>.
--   For 140 character goodness follow <a href="https://twitter.com/nativeclient" class="reference external">@nativeclient</a> on Twitter.
+-   For 140 character goodness follow <a href="https://twitter.com/nativeclient" class="reference external"><span class="citation" data-cites="nativeclient">@nativeclient</span></a> on Twitter.
 
 <span id="report-issue"></span>Issue tracker
 --------------------------------------------

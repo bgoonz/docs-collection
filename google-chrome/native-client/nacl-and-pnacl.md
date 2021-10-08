@@ -1,6 +1,6 @@
----json {"title":"NaCl and PNaCl"} ---
+—json {“title”:“NaCl and PNaCl”} —
 
-{% include 'partials/nacl-warning.njk' %}
+{% include ‘partials/nacl-warning.njk’ %}
 
 ------------------------------------------------------------------------
 

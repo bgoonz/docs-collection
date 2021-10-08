@@ -1,6 +1,6 @@
----json {"title":"Dynamic Linking and Loading with glibc"} ---
+—json {“title”:“Dynamic Linking and Loading with glibc”} —
 
-{% include 'partials/nacl-warning.njk' %}
+{% include ‘partials/nacl-warning.njk’ %}
 
 ------------------------------------------------------------------------
 
@@ -23,7 +23,7 @@ This document describes how to create and deploy dynamically linked and loaded a
 
 The Native Client SDK comes with two C standard libraries — glibc and newlib. These libraries are described in the table below.
 
-<table><colgroup><col style="width: 33%" /><col style="width: 33%" /><col style="width: 33%" /></colgroup><thead><tr class="header"><th>Library</th><th>Linking</th><th>License</th></tr></thead><tbody><tr class="odd"><td><dl><dt>glibc</dt><dd>The GNU implementation of the <a href="http://en.wikipedia.org/wiki/POSIX" class="reference external">POSIX</a> standard runtime library for the C programming language. Designed for portability and performance, glibc is one of the most popular implementations of the C library. It is comprised of a set of interdependent libraries including libc, libpthreads, libdl, and others. For documentation, FAQs, and additional information about glibc, see <a href="http://www.gnu.org/software/libc/index.html" class="reference external">GLIBC</a>.</dd></dl></td><td>dynamic or static</td><td>GNU Lesser General Public License (LGPL)</td></tr><tr class="even"><td><dl><dt>newlib</dt><dd>newlib is a C library intended for use in embedded systems. Like glibc, newlib is a conglomeration of several libraries. It is available for use under BSD-type free software licenses, which generally makes it more suitable to link statically in commercial, closed-source applications. For documentation, FAQs, and additional information about newlib, see <a href="http://sourceware.org/newlib/" class="reference external">newlib</a>.</dd></dl></td><td>static</td><td>Berkeley Software Distribution (BSD) type free software licenses</td></tr></tbody></table>
+<table style="width:99%;"><colgroup><col style="width: 33%" /><col style="width: 33%" /><col style="width: 33%" /></colgroup><thead><tr class="header"><th>Library</th><th>Linking</th><th>License</th></tr></thead><tbody><tr class="odd"><td><dl><dt> glibc </dt><dd>The GNU implementation of the <a href="http://en.wikipedia.org/wiki/POSIX" class="reference external">POSIX</a> standard runtime library for the C programming language. Designed for portability and performance, glibc is one of the most popular implementations of the C library. It is comprised of a set of interdependent libraries including libc, libpthreads, libdl, and others. For documentation, FAQs, and additional information about glibc, see <a href="http://www.gnu.org/software/libc/index.html" class="reference external">GLIBC</a>.</dd></dl></td><td>dynamic or static</td><td>GNU Lesser General Public License (LGPL)</td></tr><tr class="even"><td><dl><dt> newlib </dt><dd>newlib is a C library intended for use in embedded systems. Like glibc, newlib is a conglomeration of several libraries. It is available for use under BSD-type free software licenses, which generally makes it more suitable to link statically in commercial, closed-source applications. For documentation, FAQs, and additional information about newlib, see <a href="http://sourceware.org/newlib/" class="reference external">newlib</a>.</dd></dl></td><td>static</td><td>Berkeley Software Distribution (BSD) type free software licenses</td></tr></tbody></table>
 
 For proprietary (closed-source) applications, your options are to either statically link to newlib, or dynamically link to glibc. We recommend dynamically linking to glibc, for a couple of reasons:
 
@@ -122,7 +122,7 @@ Take a look at the manifest file in the dlopen example to see how a glibc-style 
         },
     ... etc.
 
-In most cases, you can use the `create_nmf.py` script in the SDK to generate a manifest file for your application. The script is located in the tools directory (e.g. `pepper_28/tools`).
+In most cases, you can use the `create_nmf.py` script in the SDK to generate a manifest file for your application. The script is located in the tools directory (e.g. `pepper_28/tools`).
 
 The Makefile in the dlopen example generates the manifest automatically using the `NMF_RULE` provided by the SDK build system. Running `make V=1` will show the full command line which is used to generate the nmf:
 

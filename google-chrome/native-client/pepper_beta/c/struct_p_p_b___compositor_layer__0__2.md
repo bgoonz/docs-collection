@@ -1,4 +1,4 @@
----json {"title":"PPB\_CompositorLayer Struct Reference"} ---
+—json {“title”:“PPB\_CompositorLayer Struct Reference”} —
 
 Data Fields
 -----------
@@ -28,9 +28,8 @@ Field Documentation
 Determines if a resource is a compositor layer resource.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>The <code>PP_Resource</code> to test.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>The <code>PP_Resource</code> to test.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_Bool` with `PP_TRUE` if the given resource is a compositor layer resource or `PP_FALSE` otherwise.
@@ -78,9 +77,9 @@ An int32\_t containing a result code from `pp_errors.h`.
 
 Sets the image of an image layer.
 
-If the layer is uninitialized, it will initialize the layer first, and then set its image. The layer size will be set to the image's size. The source rect will be set to the full image. If the layer has been initialized to another kind of layer, the layer will not be changed, and `PP_ERROR_BADARGUMENT` will be returned.
+If the layer is uninitialized, it will initialize the layer first, and then set its image. The layer size will be set to the image’s size. The source rect will be set to the full image. If the layer has been initialized to another kind of layer, the layer will not be changed, and `PP_ERROR_BADARGUMENT` will be returned.
 
-param\[in\] layer A `PP_Resource` corresponding to a compositor layer resource. param\[in\] image\_data A `PP_Resource` corresponding to an image data resource. param\[in\] size A `PP_Size` for the size of the layer before transform. If NULL, the image's size will be used. param\[in\] cc A `PP_CompletionCallback` to be called when the image data is released by Chromium compositor.
+param\[in\] layer A `PP_Resource` corresponding to a compositor layer resource. param\[in\] image\_data A `PP_Resource` corresponding to an image data resource. param\[in\] size A `PP_Size` for the size of the layer before transform. If NULL, the image’s size will be used. param\[in\] cc A `PP_CompletionCallback` to be called when the image data is released by Chromium compositor.
 
 **Returns:**  
 An int32\_t containing a result code from `pp_errors.h`.

@@ -1,4 +1,4 @@
----json {"title":"Application Gallery"} ---
+—json {“title”:“Application Gallery”} —
 
 <span id="id1"></span>
 
@@ -8,12 +8,10 @@ Know an application that should be featured here? [Let us know!](mailto:salty@go
 
 A number of the applications below were produced using [middleware and other software packages that support Native Client](/docs/native-client/community/middleware/).
 
-  
-
 <table><tbody><tr class="odd"><td><a href="https://chrome.google.com/webstore/detail/lara-croft-and-the-guardi/dcfdbmpeeihbpddkneaploeinlbaaodn"><img src="/docs/native-client/images/lara-croft-guardian.png" /><br />
 Lara Croft and the Guardian of Light</a></td><td><a href="https://chrome.google.com/webstore/detail/crimson-steam-pirates/glfbkgkceahodalogdpenjoekbacjfcj?utm_source=chrome-ntp-icon&amp;gl=CA"><img src="/docs/native-client/images/pirates.png" /><br />
 Crimson: Steam Pirates</a></td><td><a href="https://chrome.google.com/webstore/detail/hiledapehlkhdehbhppgmekfalnlfajc"><img src="/docs/native-client/images/dontstarve.png" /><br />
-Don't Starve</a></td><td><a href="https://chrome.google.com/webstore/detail/amfalcbcdebaemokjapphcfnldiogddk"><img src="/docs/native-client/images/running-fred.png" /><br />
+Don’t Starve</a></td><td><a href="https://chrome.google.com/webstore/detail/amfalcbcdebaemokjapphcfnldiogddk"><img src="/docs/native-client/images/running-fred.png" /><br />
 Running Fred</a></td><td><a href="https://chrome.google.com/webstore/detail/oijfbknbncemokdnlboeabbcfhobechi"><img src="/docs/native-client/images/mini-ninjas.png" /><br />
 Mini Ninjas</a></td></tr><tr class="even"><td><a href="https://chrome.google.com/webstore/detail/acfbekphmapfjpdkfedomagjpccekhaa"><img src="/docs/native-client/images/dark-legends.png" /><br />
 Dark Legends</a></td><td><a href="https://chrome.google.com/webstore/detail/chcaflnbhnoegjedbjaamecefhglfamc"><img src="/docs/native-client/images/star-legends.png" /><br />

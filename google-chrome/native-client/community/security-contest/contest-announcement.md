@@ -1,6 +1,6 @@
----json {"title":"Native Client Security Contest"} ---
+—json {“title”:“Native Client Security Contest”} —
 
-{% include 'partials/nacl-warning.njk' %}
+{% include ‘partials/nacl-warning.njk’ %}
 
 ------------------------------------------------------------------------
 
@@ -46,7 +46,7 @@ Featured Video
 
 Watch a talk about Native Client at Stanford University.
 
-{% YouTube id='L8m9U7p\_Ntk' %}
+{% YouTube id=‘L8m9U7p\_Ntk’ %}
 
 Forum: native-client-announce
 -----------------------------

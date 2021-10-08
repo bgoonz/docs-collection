@@ -1,4 +1,4 @@
----json {"title":"pp\_rect.h File Reference"} ---
+—json {“title”:“pp\_rect.h File Reference”} —
 
 Include dependency graph for pp\_rect.h:
 
@@ -7,8 +7,8 @@ Include dependency graph for pp\_rect.h:
 Data Structures
 ---------------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___rect/" class="el">PP_Rect</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PP_Rect</code> struct contains the size and location of a 2D rectangle. <a href="/docs/native-client/pepper_beta/c/struct_p_p___rect#details">More...</a><br />
-</td></tr><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___float_rect/" class="el">PP_FloatRect</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PP_FloatRect</code> struct contains the size and location of a 2D rectangle. <a href="/docs/native-client/pepper_beta/c/struct_p_p___float_rect#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___rect/" class="el">PP_Rect</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PP_Rect</code> struct contains the size and location of a 2D rectangle. <a href="/docs/native-client/pepper_beta/c/struct_p_p___rect#details">More…</a><br />
+</td></tr><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___float_rect/" class="el">PP_FloatRect</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PP_FloatRect</code> struct contains the size and location of a 2D rectangle. <a href="/docs/native-client/pepper_beta/c/struct_p_p___float_rect#details">More…</a><br />
 </td></tr></tbody></table>
 
 Functions

@@ -1,6 +1,6 @@
----json {"title":"Development Cycle"} ---
+—json {“title”:“Development Cycle”} —
 
-{% include 'partials/nacl-warning.njk' %}
+{% include ‘partials/nacl-warning.njk’ %}
 
 ------------------------------------------------------------------------
 

@@ -1,4 +1,4 @@
----json {"title":"PPB\_AudioConfig Struct Reference"} ---
+—json {“title”:“PPB\_AudioConfig Struct Reference”} —
 
 Data Fields
 -----------
@@ -16,7 +16,7 @@ The `PPB_AudioConfig` interface contains pointers to several functions for estab
 
 This interface only supports 16-bit stereo output.
 
-Refer to the [Audio](/docs/native-client/devguide/coding/audio) chapter in the Developer's Guide for information on using this interface.
+Refer to the [Audio](/docs/native-client/devguide/coding/audio) chapter in the Developer’s Guide for information on using this interface.
 
 ------------------------------------------------------------------------
 
@@ -29,16 +29,15 @@ Field Documentation
 
 CreateStereo16bit() creates a 16 bit audio configuration resource.
 
-The `sample_rate` should be the result of calling `RecommendSampleRate` and `sample_frame_count` should be the result of calling `RecommendSampleFrameCount`. If the sample frame count or bit rate isn't supported, this function will fail and return a null resource.
+The `sample_rate` should be the result of calling `RecommendSampleRate` and `sample_frame_count` should be the result of calling `RecommendSampleFrameCount`. If the sample frame count or bit rate isn’t supported, this function will fail and return a null resource.
 
 A single sample frame on a stereo device means one value for the left channel and one value for the right channel.
 
-Buffer layout for a stereo int16 configuration: `int16_t *buffer16;` `buffer16[0]` is the first left channel sample. `buffer16[1]` is the first right channel sample. `buffer16[2]` is the second left channel sample. `buffer16[3]` is the second right channel sample. ... `buffer16[2 * (sample_frame_count - 1)]` is the last left channel sample. `buffer16[2 * (sample_frame_count - 1) + 1]` is the last right channel sample. Data will always be in the native endian format of the platform.
+Buffer layout for a stereo int16 configuration: `int16_t *buffer16;` `buffer16[0]` is the first left channel sample. `buffer16[1]` is the first right channel sample. `buffer16[2]` is the second left channel sample. `buffer16[3]` is the second right channel sample. … `buffer16[2 * (sample_frame_count - 1)]` is the last left channel sample. `buffer16[2 * (sample_frame_count - 1) + 1]` is the last right channel sample. Data will always be in the native endian format of the platform.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code> identifying one instance of a module.</td></tr><tr class="even"><td>[in]</td><td>sample_rate</td><td>A <code>PP_AudioSampleRate</code> which is either <code>PP_AUDIOSAMPLERATE_44100</code> or <code>PP_AUDIOSAMPLERATE_48000</code>.</td></tr><tr class="odd"><td>[in]</td><td>sample_frame_count</td><td>A <code>uint32_t</code> frame count returned from the <code>RecommendSampleFrameCount</code> function.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code> identifying one instance of a module.</td></tr><tr class="even"><td>[in]</td><td>sample_rate</td><td>A <code>PP_AudioSampleRate</code> which is either <code>PP_AUDIOSAMPLERATE_44100</code> or <code>PP_AUDIOSAMPLERATE_48000</code>.</td></tr><tr class="odd"><td>[in]</td><td>sample_frame_count</td><td>A <code>uint32_t</code> frame count returned from the <code>RecommendSampleFrameCount</code> function.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_Resource` containing the `PPB_Audio_Config` if successful or a null resource if the sample frame count or bit rate are not supported.
@@ -50,9 +49,8 @@ A `PP_Resource` containing the `PPB_Audio_Config` if successful or a null resour
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___audio_config__1__1#a743a6033adee1e3e8e4822d72e0ccc68" class="el" title="GetSampleFrameCount() returns the sample frame count for the given PPB_Audio_Config.">GetSampleFrameCount()</a> returns the sample frame count for the given `PPB_Audio_Config`.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>config</td><td>A <code>PP_Resource</code> corresponding to an audio config resource.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>config</td><td>A <code>PP_Resource</code> corresponding to an audio config resource.</td></tr></tbody></table>
 
 **Returns:**  
 A `uint32_t` containing sample frame count or 0 if the resource is invalid. Refer to <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___audio_config__1__1#ad8e61c620a5b2081302e741c94aef921" class="el" title="RecommendSampleFrameCount() returns the supported sample frame count closest to the requested count...">RecommendSampleFrameCount()</a> for more on sample frame counts.
@@ -64,9 +62,8 @@ A `uint32_t` containing sample frame count or 0 if the resource is invalid. Refe
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___audio_config__1__1#a3e9e2d57f89f78d5373f09e9a6bcac72" class="el" title="GetSampleRate() returns the sample rate for the given PPB_Audio_Config.">GetSampleRate()</a> returns the sample rate for the given `PPB_Audio_Config`.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>config</td><td>A <code>PP_Resource</code> corresponding to a <code>PPB_Audio_Config</code>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>config</td><td>A <code>PP_Resource</code> corresponding to a <code>PPB_Audio_Config</code>.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_AudioSampleRate` containing sample rate or `PP_AUDIOSAMPLERATE_NONE` if the resource is invalid.
@@ -78,9 +75,8 @@ A `PP_AudioSampleRate` containing sample rate or `PP_AUDIOSAMPLERATE_NONE` if th
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___audio_config__1__1#a51282d6afa187ef1fc3a3a559735e209" class="el" title="IsAudioConfig() determines if the given resource is a PPB_Audio_Config.">IsAudioConfig()</a> determines if the given resource is a `PPB_Audio_Config`.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to an audio config resource.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to an audio config resource.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_Bool` containing `PP_TRUE` if the given resource is an `AudioConfig` resource, otherwise `PP_FALSE`.
@@ -91,16 +87,15 @@ A `PP_Bool` containing `PP_TRUE` if the given resource is an `AudioConfig` resou
 
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___audio_config__1__1#ad8e61c620a5b2081302e741c94aef921" class="el" title="RecommendSampleFrameCount() returns the supported sample frame count closest to the requested count...">RecommendSampleFrameCount()</a> returns the supported sample frame count closest to the requested count.
 
-The sample frame count determines the overall latency of audio. Since one "frame" is always buffered in advance, smaller frame counts will yield lower latency, but higher CPU utilization.
+The sample frame count determines the overall latency of audio. Since one “frame” is always buffered in advance, smaller frame counts will yield lower latency, but higher CPU utilization.
 
-Supported sample frame counts will vary by hardware and system (consider that the local system might be anywhere from a cell phone or a high-end audio workstation). Sample counts less than `PP_AUDIOMINSAMPLEFRAMECOUNT` and greater than `PP_AUDIOMAXSAMPLEFRAMECOUNT` are never supported on any system, but values in between aren't necessarily valid. This function will return a supported count closest to the requested frame count.
+Supported sample frame counts will vary by hardware and system (consider that the local system might be anywhere from a cell phone or a high-end audio workstation). Sample counts less than `PP_AUDIOMINSAMPLEFRAMECOUNT` and greater than `PP_AUDIOMAXSAMPLEFRAMECOUNT` are never supported on any system, but values in between aren’t necessarily valid. This function will return a supported count closest to the requested frame count.
 
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___audio_config__1__1#ad8e61c620a5b2081302e741c94aef921" class="el" title="RecommendSampleFrameCount() returns the supported sample frame count closest to the requested count...">RecommendSampleFrameCount()</a> result is intended for audio output devices.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td></td></tr><tr class="even"><td>[in]</td><td>sample_rate</td><td>A <code>PP_AudioSampleRate</code> which is either <code>PP_AUDIOSAMPLERATE_44100</code> or <code>PP_AUDIOSAMPLERATE_48000.</code></td></tr><tr class="odd"><td>[in]</td><td>requested_sample_frame_count</td><td>A <code>uint_32t</code> requested frame count.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td></td></tr><tr class="even"><td>[in]</td><td>sample_rate</td><td>A <code>PP_AudioSampleRate</code> which is either <code>PP_AUDIOSAMPLERATE_44100</code> or <code>PP_AUDIOSAMPLERATE_48000.</code></td></tr><tr class="odd"><td>[in]</td><td>requested_sample_frame_count</td><td>A <code>uint_32t</code> requested frame count.</td></tr></tbody></table>
 
 **Returns:**  
 A `uint32_t` containing the recommended sample frame count if successful.
@@ -114,9 +109,8 @@ A `uint32_t` containing the recommended sample frame count if successful.
 Applications that use the recommended sample rate will have potentially better latency and fidelity. The return value is intended for audio output devices. If the output sample rate cannot be determined, this function can return PP\_AUDIOSAMPLERATE\_NONE.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td></td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td></td></tr></tbody></table>
 
 **Returns:**  
 A `uint32_t` containing the recommended sample frame count if successful.

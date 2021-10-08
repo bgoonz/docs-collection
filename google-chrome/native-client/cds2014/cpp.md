@@ -1,6 +1,6 @@
----json {"title":"A Saga of Fire and Water - Codelab"} ---
+—json {“title”:“A Saga of Fire and Water - Codelab”} —
 
-{% include 'partials/nacl-warning.njk' %}
+{% include ‘partials/nacl-warning.njk’ %}
 
 ------------------------------------------------------------------------
 
@@ -10,10 +10,9 @@ Introduction
 Learn the basics of using PPAPI to do 2D graphics from a C++ program running in Native Client. Modify our sample to turn fire into water. Develop inside Google Chrome, using our NaCl Development Environment Chrome App. While this codelab currently targets conventional Native Client using our GCC + GlibC based toolchain, the techniques involved are generally applicable.
 
 Requirements:  
--   An x86 (sorry no arm) Desktop / Laptop Windows, Mac, Linux, or ChromeOS browser  
-    <span id="cpp_compat" style="color: #cccc00">Checking browser compatibility...</span>  
--   A fast broadband connection (500MB download)
--   Can read and write C++
+- An x86 (sorry no arm) Desktop / Laptop Windows, Mac, Linux, or ChromeOS browser  
+<span id="cpp_compat" style="color: #cccc00">Checking browser compatibility…</span>  
+- A fast broadband connection (500MB download) - Can read and write C++
 
 Setup
 -----
@@ -36,7 +35,7 @@ On the first run, it will download several packages. Once download is complete, 
 
 These development tools are a <a href="/docs/native-client/cds2014/nacldev/" class="reference external">work in progress</a>. At this point, they are a learning tool and demonstration of NaCl’s flexibility, but are not the recommended tools for a production application. In the future, that may change, but for the moment, to develop a substantial application for Native Client / Portable Native Client, we recommend you use the <a href="/docs/native-client/sdk/download" class="reference external">Native Client SDK</a>.
 
-**NOTE: The NaCl Development Environment is not yet stable. Ideally, user data is preserved, but currently it can be lost during updates or sporadically. We're working to resolve this.**
+**NOTE: The NaCl Development Environment is not yet stable. Ideally, user data is preserved, but currently it can be lost during updates or sporadically. We’re working to resolve this.**
 
 ### Navigating in the Dev Environment
 
@@ -54,10 +53,8 @@ Many of the steps in this tutorial will be easier to copy and paste into the Dev
 
 On your platform use:
 
--   <span id="copy_key">Loading...</span>
-    to Copy
--   <span id="paste_key">Loading...</span>
-    to Paste
+-   <span id="copy_key">Loading…</span> to Copy
+-   <span id="paste_key">Loading…</span> to Paste
 
 #### Editing
 
@@ -117,8 +114,8 @@ While working, you can see what you’ve changed by running:
 
     git diff
 
-Fire is cool, let’s burn some stuff...
---------------------------------------
+Fire is cool, let’s burn some stuff…
+------------------------------------
 
 Indulging your inner child, lets make some virtual fire! Use the following shockingly intuitive incantation:
 
@@ -149,7 +146,7 @@ The task of turning fire into water involves two key challenges:
 
 At this point you’ll want to open up water.cc in the editor you picked earlier.
 
-### I see a red door and I want it painted... blue
+### I see a red door and I want it painted… blue
 
 While PPAPI’s 2D graphics API uses multi-component RGB pixels, our flame effect is actually monochrome. A single intensity value is used in the flame simulation. This is then converted to color based on a multi-color gradient. To alter the color-scheme, locate this palette, and exchange the red component (first) with the blue one (third).
 
@@ -159,7 +156,7 @@ You can test you changes at any time with:
 
     make water
 
-### What goes up...
+### What goes up…
 
 Now there’s the small matter of gravity. While smoke, and well flame, rises, we want our water to go down.
 
@@ -176,7 +173,7 @@ Hint: You’ll want to change the area that the UpdateCoals function mutates.
 What you’ve learned
 -------------------
 
-In addition to learning a new appreciation for fire, you’ve also made water... And while dusting off your C/C++ image manipulation skills, you’ve discovered how easy it is to modify, build, and run a NaCl application that uses PPAPI.
+In addition to learning a new appreciation for fire, you’ve also made water… And while dusting off your C/C++ image manipulation skills, you’ve discovered how easy it is to modify, build, and run a NaCl application that uses PPAPI.
 
 2D graphics is fun, but now you’re ready to check out the wealth of other <a href="https://src.chromium.org/viewvc/chrome/trunk/src/ppapi/cpp/" class="reference external">PPAPI interfaces available</a>.
 

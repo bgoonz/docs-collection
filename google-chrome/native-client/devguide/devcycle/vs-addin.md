@@ -1,6 +1,6 @@
----json {"title":"Debugging with Visual Studio"} ---
+—json {“title”:“Debugging with Visual Studio”} —
 
-{% include 'partials/nacl-warning.njk' %}
+{% include ‘partials/nacl-warning.njk’ %}
 
 ------------------------------------------------------------------------
 
@@ -111,7 +111,7 @@ Before you run the installer you must define two Windows environment variables. 
 
 To set environment variables in Windows 7, go to the Start menu and search for “environment.” One of the links in the results is “Edit environment variables for your account.” (You can also reach this link from the `Control Panel` under `User Accounts`.) Click on the link and use the buttons in the window to create or change these user variables (the values shown below are only for example):
 
-<table><thead><tr class="header"><th>Variable Name</th><th>Description</th></tr></thead><tbody><tr class="odd"><td><code>NACL_SDK_ROOT</code></td><td>The path to the pepper directory in the SDK. For example: <code>C:\nacl_sdk\pepper_23</code></td></tr><tr class="even"><td><code>CHROME_PATH</code></td><td>The path to the .exe file for the version of Chrome you are testing with. For example: <code>C:\Users\fred\AppData\Local\Google\Chrome SxS\Application\chrome.exe</code></td></tr></tbody></table>
+<table><thead><tr class="header"><th>Variable Name</th><th>Description</th></tr></thead><tbody><tr class="odd"><td><code>NACL_SDK_ROOT</code></td><td>The path to the pepper directory in the SDK. For example: <code>C:_sdk_23</code></td></tr><tr class="even"><td><code>CHROME_PATH</code></td><td>The path to the .exe file for the version of Chrome you are testing with. For example: <code>C:SxS.exe</code></td></tr></tbody></table>
 
 ### Download the add-in
 

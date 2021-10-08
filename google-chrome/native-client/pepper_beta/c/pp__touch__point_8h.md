@@ -1,4 +1,4 @@
----json {"title":"pp\_touch\_point.h File Reference"} ---
+—json {“title”:“pp\_touch\_point.h File Reference”} —
 
 Include dependency graph for pp\_touch\_point.h:
 
@@ -7,7 +7,7 @@ Include dependency graph for pp\_touch\_point.h:
 Data Structures
 ---------------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___touch_point/" class="el">PP_TouchPoint</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PP_TouchPoint</code> struct represents all information about a single touch point, such as position, id, rotation angle, and pressure. <a href="/docs/native-client/pepper_beta/c/struct_p_p___touch_point#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___touch_point/" class="el">PP_TouchPoint</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PP_TouchPoint</code> struct represents all information about a single touch point, such as position, id, rotation angle, and pressure. <a href="/docs/native-client/pepper_beta/c/struct_p_p___touch_point#details">More…</a><br />
 </td></tr></tbody></table>
 
 Functions

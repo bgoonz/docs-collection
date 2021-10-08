@@ -1,6 +1,6 @@
----json {"title":"NaCl Dev Environment"} ---
+—json {“title”:“NaCl Dev Environment”} —
 
-{% include 'partials/nacl-warning.njk' %}
+{% include ‘partials/nacl-warning.njk’ %}
 
 ------------------------------------------------------------------------
 
@@ -30,7 +30,7 @@ Here is a summary of feature status. We hope to overcome these limitations in th
         -   Unsupported:
 
             -   Targeting Newlib
-            -   Targeting PNaCl (getting close...)
+            -   Targeting PNaCl (getting close…)
             -   Forking in bash
             -   Pipes / Redirection
             -   Symbolic and hard links

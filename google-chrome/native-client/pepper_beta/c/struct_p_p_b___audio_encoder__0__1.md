@@ -1,4 +1,4 @@
----json {"title":"PPB\_AudioEncoder Struct Reference"} ---
+—json {“title”:“PPB\_AudioEncoder Struct Reference”} —
 
 Data Fields
 -----------
@@ -19,7 +19,7 @@ Typical usage:
 -   Call <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___audio_encoder__0__1#a116d0908bcdd955e33e00cbd9ae04110" class="el" title="Creates a new audio encoder resource.">Create()</a> to create a new audio encoder resource.
 -   Call <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___audio_encoder__0__1#a2ad5e2334abb35ede4c413e50e92ec61" class="el" title="Gets an array of supported audio encoder profiles.">GetSupportedProfiles()</a> to determine which codecs and profiles are available.
 -   Call <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___audio_encoder__0__1#a676b09b0a98069daea08678a8c9e5d70" class="el" title="Initializes an audio encoder resource.">Initialize()</a> to initialize the encoder for a supported profile.
--   Call <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___audio_encoder__0__1#ac154730ff2248134c73d5155c4a7095f" class="el" title="Gets a blank audio buffer (with metadata given by the Initialize() call) which can be filled with aud...">GetBuffer()</a> to get an empty buffer and fill it in, or get an audio buffer from another resource, e.g. `PPB_MediaStreamAudioTrack`.
+-   Call <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___audio_encoder__0__1#ac154730ff2248134c73d5155c4a7095f" class="el" title="Gets a blank audio buffer (with metadata given by the Initialize() call) which can be filled with aud...">GetBuffer()</a> to get an empty buffer and fill it in, or get an audio buffer from another resource, e.g. `PPB_MediaStreamAudioTrack`.
 -   Call <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___audio_encoder__0__1#a61e9304df6da6bbb97236805d702d0a3" class="el" title="Encodes an audio buffer.">Encode()</a> to push the audio buffer to the encoder. If an external buffer is pushed, wait for completion to recycle the buffer.
 -   Call <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___audio_encoder__0__1#a7386d14006ed634530d0ad2ecdb61529" class="el" title="Gets the next encoded bitstream buffer from the encoder.">GetBitstreamBuffer()</a> continuously (waiting for each previous call to complete) to pull encoded buffers from the encoder.
 -   Call <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___audio_encoder__0__1#a8046882d9584418d02e017130aa55d80" class="el" title="Recycles a bitstream buffer back to the encoder.">RecycleBitstreamBuffer()</a> after consuming the data in the bitstream buffer.
@@ -41,6 +41,7 @@ Closes the audio encoder, and cancels any pending encodes.
 Any pending callbacks will still run, reporting `PP_ERROR_ABORTED` . It is not valid to call any encoder functions after a call to this method. **Note:** Destroying the audio encoder closes it implicitly, so you are not required to call <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___audio_encoder__0__1#ad472829d0944505ce8cfb2a2b6308165" class="el" title="Closes the audio encoder, and cancels any pending encodes.">Close()</a>.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>audio_encoder</td><td>A <code>PP_Resource</code> identifying the audio encoder.</td></tr></tbody></table>
 
 <span id="a116d0908bcdd955e33e00cbd9ae04110" class="anchor" style="margin: 0;"></span>
@@ -50,9 +51,8 @@ Any pending callbacks will still run, reporting `PP_ERROR_ABORTED` . It is not v
 Creates a new audio encoder resource.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code> identifying the instance with the audio encoder.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code> identifying the instance with the audio encoder.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_Resource` corresponding to an audio encoder if successful or 0 otherwise.
@@ -64,9 +64,8 @@ A `PP_Resource` corresponding to an audio encoder if successful or 0 otherwise.
 Encodes an audio buffer.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>audio_encoder</td><td>A <code>PP_Resource</code> identifying the audio encoder.</td></tr><tr class="even"><td>[in]</td><td>audio_buffer</td><td>The <code>PPB_AudioBuffer</code> to be encoded.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion. Plugins that pass <code>PPB_AudioBuffer</code> resources owned by other resources should wait for completion before reusing them.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>audio_encoder</td><td>A <code>PP_Resource</code> identifying the audio encoder.</td></tr><tr class="even"><td>[in]</td><td>audio_buffer</td><td>The <code>PPB_AudioBuffer</code> to be encoded.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion. Plugins that pass <code>PPB_AudioBuffer</code> resources owned by other resources should wait for completion before reusing them.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing an error code from `pp_errors.h`. Returns PP\_ERROR\_FAILED if <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___audio_encoder__0__1#a676b09b0a98069daea08678a8c9e5d70" class="el" title="Initializes an audio encoder resource.">Initialize()</a> has not successfully completed.
@@ -78,9 +77,8 @@ An int32\_t containing an error code from `pp_errors.h`. Returns PP\_ERROR\_FAIL
 Gets the next encoded bitstream buffer from the encoder.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>audio_encoder</td><td>A <code>PP_Resource</code> identifying the audio encoder.</td></tr><tr class="even"><td>[out]</td><td>bitstream_buffer</td><td>A <code>PP_BitstreamBuffer</code> containing encoded audio data.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion. The plugin can call GetBitstreamBuffer from the callback in order to continuously "pull" bitstream buffers from the encoder.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>audio_encoder</td><td>A <code>PP_Resource</code> identifying the audio encoder.</td></tr><tr class="even"><td>[out]</td><td>bitstream_buffer</td><td>A <code>PP_BitstreamBuffer</code> containing encoded audio data.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion. The plugin can call GetBitstreamBuffer from the callback in order to continuously “pull” bitstream buffers from the encoder.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing an error code from `pp_errors.h`. Returns PP\_ERROR\_FAILED if <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___audio_encoder__0__1#a676b09b0a98069daea08678a8c9e5d70" class="el" title="Initializes an audio encoder resource.">Initialize()</a> has not successfully completed. Returns PP\_ERROR\_INPROGRESS if a prior call to <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___audio_encoder__0__1#a7386d14006ed634530d0ad2ecdb61529" class="el" title="Gets the next encoded bitstream buffer from the encoder.">GetBitstreamBuffer()</a> has not completed.
@@ -92,9 +90,8 @@ An int32\_t containing an error code from `pp_errors.h`. Returns PP\_ERROR\_FAIL
 Gets a blank audio buffer (with metadata given by the <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___audio_encoder__0__1#a676b09b0a98069daea08678a8c9e5d70" class="el" title="Initializes an audio encoder resource.">Initialize()</a> call) which can be filled with audio data and passed to the encoder.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>audio_encoder</td><td>A <code>PP_Resource</code> identifying the audio encoder.</td></tr><tr class="even"><td>[out]</td><td>audio_buffer</td><td>A blank <code>PPB_AudioBuffer</code> resource.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>audio_encoder</td><td>A <code>PP_Resource</code> identifying the audio encoder.</td></tr><tr class="even"><td>[out]</td><td>audio_buffer</td><td>A blank <code>PPB_AudioBuffer</code> resource.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing an error code from `pp_errors.h`. Returns PP\_ERROR\_FAILED if <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___audio_encoder__0__1#a676b09b0a98069daea08678a8c9e5d70" class="el" title="Initializes an audio encoder resource.">Initialize()</a> has not successfully completed.
@@ -108,9 +105,8 @@ Gets the number of audio samples per channel that audio buffers must contain in 
 This will be the number of samples per channels contained in buffers returned by <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___audio_encoder__0__1#ac154730ff2248134c73d5155c4a7095f" class="el" title="Gets a blank audio buffer (with metadata given by the Initialize() call) which can be filled with aud...">GetBuffer()</a>.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>audio_encoder</td><td>A <code>PP_Resource</code> identifying the audio encoder.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>audio_encoder</td><td>A <code>PP_Resource</code> identifying the audio encoder.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing the number of samples required, or an error code from `pp_errors.h`. Returns PP\_ERROR\_FAILED if <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___audio_encoder__0__1#a676b09b0a98069daea08678a8c9e5d70" class="el" title="Initializes an audio encoder resource.">Initialize()</a> has not successfully completed.
@@ -124,9 +120,8 @@ Gets an array of supported audio encoder profiles.
 These can be used to choose a profile before calling <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___audio_encoder__0__1#a676b09b0a98069daea08678a8c9e5d70" class="el" title="Initializes an audio encoder resource.">Initialize()</a>.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>audio_encoder</td><td>A <code>PP_Resource</code> identifying the audio encoder.</td></tr><tr class="even"><td>[in]</td><td>output</td><td>A <code>PP_ArrayOutput</code> to receive the supported <code>PP_AudioProfileDescription</code> structs.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>audio_encoder</td><td>A <code>PP_Resource</code> identifying the audio encoder.</td></tr><tr class="even"><td>[in]</td><td>output</td><td>A <code>PP_ArrayOutput</code> to receive the supported <code>PP_AudioProfileDescription</code> structs.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
 **Returns:**  
 If &gt;= 0, the number of supported profiles returned, otherwise an error code from `pp_errors.h`.
@@ -140,9 +135,8 @@ Initializes an audio encoder resource.
 The plugin should call <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___audio_encoder__0__1#a676b09b0a98069daea08678a8c9e5d70" class="el" title="Initializes an audio encoder resource.">Initialize()</a> successfully before calling any of the functions below.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>audio_encoder</td><td>A <code>PP_Resource</code> identifying the audio encoder.</td></tr><tr class="even"><td>[in]</td><td>channels</td><td>The number of audio channels to encode.</td></tr><tr class="odd"><td>[in]</td><td>input_sampling_rate</td><td>The sampling rate of the input audio buffer.</td></tr><tr class="even"><td>[in]</td><td>input_sample_size</td><td>The sample size of the input audio buffer.</td></tr><tr class="odd"><td>[in]</td><td>output_profile</td><td>A <code>PP_AudioProfile</code> specifying the codec profile of the encoded output stream.</td></tr><tr class="even"><td>[in]</td><td>initial_bitrate</td><td>The initial bitrate for the encoder.</td></tr><tr class="odd"><td>[in]</td><td>acceleration</td><td>A <code>PP_HardwareAcceleration</code> specifying whether to use a hardware accelerated or a software implementation.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>audio_encoder</td><td>A <code>PP_Resource</code> identifying the audio encoder.</td></tr><tr class="even"><td>[in]</td><td>channels</td><td>The number of audio channels to encode.</td></tr><tr class="odd"><td>[in]</td><td>input_sampling_rate</td><td>The sampling rate of the input audio buffer.</td></tr><tr class="even"><td>[in]</td><td>input_sample_size</td><td>The sample size of the input audio buffer.</td></tr><tr class="odd"><td>[in]</td><td>output_profile</td><td>A <code>PP_AudioProfile</code> specifying the codec profile of the encoded output stream.</td></tr><tr class="even"><td>[in]</td><td>initial_bitrate</td><td>The initial bitrate for the encoder.</td></tr><tr class="odd"><td>[in]</td><td>acceleration</td><td>A <code>PP_HardwareAcceleration</code> specifying whether to use a hardware accelerated or a software implementation.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing an error code from `pp_errors.h`. Returns PP\_ERROR\_NOTSUPPORTED if audio encoding is not available, or the requested codec profile is not supported.
@@ -154,9 +148,8 @@ An int32\_t containing an error code from `pp_errors.h`. Returns PP\_ERROR\_NOTS
 Determines if the given resource is an audio encoder.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> identifying a resource.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> identifying a resource.</td></tr></tbody></table>
 
 **Returns:**  
 `PP_TRUE` if the resource is a `PPB_AudioEncoder`, `PP_FALSE` if the resource is invalid or some other type.
@@ -168,6 +161,7 @@ Determines if the given resource is an audio encoder.
 Recycles a bitstream buffer back to the encoder.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>audio_encoder</td><td>A <code>PP_Resource</code> identifying the audio encoder.</td></tr><tr class="even"><td>[in]</td><td>bitstream_buffer</td><td>A <code>PP_BitstreamBuffer</code> that is no longer needed by the plugin.</td></tr></tbody></table>
 
 <span id="ac5a8cbc3578816a15f3418882b6b720c" class="anchor" style="margin: 0;"></span>
@@ -179,6 +173,7 @@ Requests a change to the encoding bitrate.
 This is only a request, fulfilled on a best-effort basis.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>audio_encoder</td><td>A <code>PP_Resource</code> identifying the audio encoder.</td></tr><tr class="even"><td>[in]</td><td>bitrate</td><td>The requested new bitrate, in bits per second.</td></tr></tbody></table>
 
 ------------------------------------------------------------------------

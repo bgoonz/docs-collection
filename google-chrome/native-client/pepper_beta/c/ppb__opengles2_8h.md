@@ -1,4 +1,4 @@
----json {"title":"ppb\_opengles2.h File Reference"} ---
+—json {“title”:“ppb\_opengles2.h File Reference”} —
 
 Include dependency graph for ppb\_opengles2.h:
 
@@ -12,7 +12,7 @@ Data Structures
 Defines
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#ad557f98c8d78c0704377488bb9878b6a" class="el">PPB_OPENGLES2_INTERFACE</a>   "PPB_OpenGLES2;1.0"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#ab9f1a398bb5caf6e6ac2044c181e4cb4" class="el">PPB_OPENGLES2_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#ad557f98c8d78c0704377488bb9878b6a" class="el">PPB_OPENGLES2_INTERFACE</a></td></tr><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#a63baff589b60f79fac2b62ffe476fe52" class="el">PPB_OPENGLES2_INSTANCEDARRAYS_INTERFACE</a>   "PPB_OpenGLES2InstancedArrays;1.0"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#ade96920455b0451b4a84dedde8706f0c" class="el">PPB_OPENGLES2_INSTANCEDARRAYS_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#a63baff589b60f79fac2b62ffe476fe52" class="el">PPB_OPENGLES2_INSTANCEDARRAYS_INTERFACE</a></td></tr><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#ad035ea2ecebeb7dcdb46e69404149b0a" class="el">PPB_OPENGLES2_FRAMEBUFFERBLIT_INTERFACE</a>   "PPB_OpenGLES2FramebufferBlit;1.0"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#a2f416acbeae9d68c9c2207683b556da1" class="el">PPB_OPENGLES2_FRAMEBUFFERBLIT_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#ad035ea2ecebeb7dcdb46e69404149b0a" class="el">PPB_OPENGLES2_FRAMEBUFFERBLIT_INTERFACE</a></td></tr><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#a7eaf092d0b7bf7f3da2b3b5bbb44175c" class="el">PPB_OPENGLES2_FRAMEBUFFERMULTISAMPLE_INTERFACE</a>   "PPB_OpenGLES2FramebufferMultisample;1.0"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#a8842ed3cc24ad8e5c3e1c63a30479e81" class="el">PPB_OPENGLES2_FRAMEBUFFERMULTISAMPLE_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#a7eaf092d0b7bf7f3da2b3b5bbb44175c" class="el">PPB_OPENGLES2_FRAMEBUFFERMULTISAMPLE_INTERFACE</a></td></tr><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#ad776fe5d283c4097adc3054cf950f294" class="el">PPB_OPENGLES2_CHROMIUMENABLEFEATURE_INTERFACE</a>   "PPB_OpenGLES2ChromiumEnableFeature;1.0"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#af73caac234005d5680c4212ee0414acf" class="el">PPB_OPENGLES2_CHROMIUMENABLEFEATURE_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#ad776fe5d283c4097adc3054cf950f294" class="el">PPB_OPENGLES2_CHROMIUMENABLEFEATURE_INTERFACE</a></td></tr><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#a76831e822b9bd007659a516630b1b81b" class="el">PPB_OPENGLES2_CHROMIUMMAPSUB_INTERFACE</a>   "PPB_OpenGLES2ChromiumMapSub;1.0"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#a0d5f52bc61032e26152508badb6293c6" class="el">PPB_OPENGLES2_CHROMIUMMAPSUB_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#a76831e822b9bd007659a516630b1b81b" class="el">PPB_OPENGLES2_CHROMIUMMAPSUB_INTERFACE</a></td></tr><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#af9179ad2e31022ca51f19b7f3fd17f39" class="el">PPB_OPENGLES2_QUERY_INTERFACE</a>   "PPB_OpenGLES2Query;1.0"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#a5966bff19c1b85d79bfaa773ff919798" class="el">PPB_OPENGLES2_QUERY_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#af9179ad2e31022ca51f19b7f3fd17f39" class="el">PPB_OPENGLES2_QUERY_INTERFACE</a></td></tr><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#abbc21d78bab2083560b49175e50394de" class="el">PPB_OPENGLES2_VERTEXARRAYOBJECT_INTERFACE</a>   "PPB_OpenGLES2VertexArrayObject;1.0"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#a2df0836cfb081e5cca1b639f7983b9a6" class="el">PPB_OPENGLES2_VERTEXARRAYOBJECT_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#abbc21d78bab2083560b49175e50394de" class="el">PPB_OPENGLES2_VERTEXARRAYOBJECT_INTERFACE</a></td></tr></tbody></table>
+<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#ad557f98c8d78c0704377488bb9878b6a" class="el">PPB_OPENGLES2_INTERFACE</a>   “PPB_OpenGLES2;1.0”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#ab9f1a398bb5caf6e6ac2044c181e4cb4" class="el">PPB_OPENGLES2_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#ad557f98c8d78c0704377488bb9878b6a" class="el">PPB_OPENGLES2_INTERFACE</a></td></tr><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#a63baff589b60f79fac2b62ffe476fe52" class="el">PPB_OPENGLES2_INSTANCEDARRAYS_INTERFACE</a>   “PPB_OpenGLES2InstancedArrays;1.0”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#ade96920455b0451b4a84dedde8706f0c" class="el">PPB_OPENGLES2_INSTANCEDARRAYS_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#a63baff589b60f79fac2b62ffe476fe52" class="el">PPB_OPENGLES2_INSTANCEDARRAYS_INTERFACE</a></td></tr><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#ad035ea2ecebeb7dcdb46e69404149b0a" class="el">PPB_OPENGLES2_FRAMEBUFFERBLIT_INTERFACE</a>   “PPB_OpenGLES2FramebufferBlit;1.0”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#a2f416acbeae9d68c9c2207683b556da1" class="el">PPB_OPENGLES2_FRAMEBUFFERBLIT_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#ad035ea2ecebeb7dcdb46e69404149b0a" class="el">PPB_OPENGLES2_FRAMEBUFFERBLIT_INTERFACE</a></td></tr><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#a7eaf092d0b7bf7f3da2b3b5bbb44175c" class="el">PPB_OPENGLES2_FRAMEBUFFERMULTISAMPLE_INTERFACE</a>   “PPB_OpenGLES2FramebufferMultisample;1.0”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#a8842ed3cc24ad8e5c3e1c63a30479e81" class="el">PPB_OPENGLES2_FRAMEBUFFERMULTISAMPLE_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#a7eaf092d0b7bf7f3da2b3b5bbb44175c" class="el">PPB_OPENGLES2_FRAMEBUFFERMULTISAMPLE_INTERFACE</a></td></tr><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#ad776fe5d283c4097adc3054cf950f294" class="el">PPB_OPENGLES2_CHROMIUMENABLEFEATURE_INTERFACE</a>   “PPB_OpenGLES2ChromiumEnableFeature;1.0”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#af73caac234005d5680c4212ee0414acf" class="el">PPB_OPENGLES2_CHROMIUMENABLEFEATURE_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#ad776fe5d283c4097adc3054cf950f294" class="el">PPB_OPENGLES2_CHROMIUMENABLEFEATURE_INTERFACE</a></td></tr><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#a76831e822b9bd007659a516630b1b81b" class="el">PPB_OPENGLES2_CHROMIUMMAPSUB_INTERFACE</a>   “PPB_OpenGLES2ChromiumMapSub;1.0”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#a0d5f52bc61032e26152508badb6293c6" class="el">PPB_OPENGLES2_CHROMIUMMAPSUB_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#a76831e822b9bd007659a516630b1b81b" class="el">PPB_OPENGLES2_CHROMIUMMAPSUB_INTERFACE</a></td></tr><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#af9179ad2e31022ca51f19b7f3fd17f39" class="el">PPB_OPENGLES2_QUERY_INTERFACE</a>   “PPB_OpenGLES2Query;1.0”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#a5966bff19c1b85d79bfaa773ff919798" class="el">PPB_OPENGLES2_QUERY_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#af9179ad2e31022ca51f19b7f3fd17f39" class="el">PPB_OPENGLES2_QUERY_INTERFACE</a></td></tr><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#abbc21d78bab2083560b49175e50394de" class="el">PPB_OPENGLES2_VERTEXARRAYOBJECT_INTERFACE</a>   “PPB_OpenGLES2VertexArrayObject;1.0”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#a2df0836cfb081e5cca1b639f7983b9a6" class="el">PPB_OPENGLES2_VERTEXARRAYOBJECT_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#abbc21d78bab2083560b49175e50394de" class="el">PPB_OPENGLES2_VERTEXARRAYOBJECT_INTERFACE</a></td></tr></tbody></table>
 
 Typedefs
 --------
@@ -26,7 +26,7 @@ Typedefs
 Detailed Description
 --------------------
 
-This file is auto-generated from gpu/command\_buffer/build\_gles2\_cmd\_buffer.py It's formatted by clang-format using chromium coding style: clang-format -i -style=chromium filename DO NOT EDIT!
+This file is auto-generated from gpu/command\_buffer/build\_gles2\_cmd\_buffer.py It’s formatted by clang-format using chromium coding style: clang-format -i -style=chromium filename DO NOT EDIT!
 
 ------------------------------------------------------------------------
 
@@ -39,7 +39,7 @@ Define Documentation
 
 <span id="ad776fe5d283c4097adc3054cf950f294" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#ad776fe5d283c4097adc3054cf950f294" class="el">PPB_OPENGLES2_CHROMIUMENABLEFEATURE_INTERFACE</a>   "PPB_OpenGLES2ChromiumEnableFeature;1.0"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#ad776fe5d283c4097adc3054cf950f294" class="el">PPB_OPENGLES2_CHROMIUMENABLEFEATURE_INTERFACE</a>   “PPB_OpenGLES2ChromiumEnableFeature;1.0”</td></tr></tbody></table>
 
 <span id="a0d5f52bc61032e26152508badb6293c6" class="anchor" style="margin: 0;"></span>
 
@@ -47,7 +47,7 @@ Define Documentation
 
 <span id="a76831e822b9bd007659a516630b1b81b" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#a76831e822b9bd007659a516630b1b81b" class="el">PPB_OPENGLES2_CHROMIUMMAPSUB_INTERFACE</a>   "PPB_OpenGLES2ChromiumMapSub;1.0"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#a76831e822b9bd007659a516630b1b81b" class="el">PPB_OPENGLES2_CHROMIUMMAPSUB_INTERFACE</a>   “PPB_OpenGLES2ChromiumMapSub;1.0”</td></tr></tbody></table>
 
 <span id="a2f416acbeae9d68c9c2207683b556da1" class="anchor" style="margin: 0;"></span>
 
@@ -55,7 +55,7 @@ Define Documentation
 
 <span id="ad035ea2ecebeb7dcdb46e69404149b0a" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#ad035ea2ecebeb7dcdb46e69404149b0a" class="el">PPB_OPENGLES2_FRAMEBUFFERBLIT_INTERFACE</a>   "PPB_OpenGLES2FramebufferBlit;1.0"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#ad035ea2ecebeb7dcdb46e69404149b0a" class="el">PPB_OPENGLES2_FRAMEBUFFERBLIT_INTERFACE</a>   “PPB_OpenGLES2FramebufferBlit;1.0”</td></tr></tbody></table>
 
 <span id="a8842ed3cc24ad8e5c3e1c63a30479e81" class="anchor" style="margin: 0;"></span>
 
@@ -63,7 +63,7 @@ Define Documentation
 
 <span id="a7eaf092d0b7bf7f3da2b3b5bbb44175c" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#a7eaf092d0b7bf7f3da2b3b5bbb44175c" class="el">PPB_OPENGLES2_FRAMEBUFFERMULTISAMPLE_INTERFACE</a>   "PPB_OpenGLES2FramebufferMultisample;1.0"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#a7eaf092d0b7bf7f3da2b3b5bbb44175c" class="el">PPB_OPENGLES2_FRAMEBUFFERMULTISAMPLE_INTERFACE</a>   “PPB_OpenGLES2FramebufferMultisample;1.0”</td></tr></tbody></table>
 
 <span id="ade96920455b0451b4a84dedde8706f0c" class="anchor" style="margin: 0;"></span>
 
@@ -71,7 +71,7 @@ Define Documentation
 
 <span id="a63baff589b60f79fac2b62ffe476fe52" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#a63baff589b60f79fac2b62ffe476fe52" class="el">PPB_OPENGLES2_INSTANCEDARRAYS_INTERFACE</a>   "PPB_OpenGLES2InstancedArrays;1.0"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#a63baff589b60f79fac2b62ffe476fe52" class="el">PPB_OPENGLES2_INSTANCEDARRAYS_INTERFACE</a>   “PPB_OpenGLES2InstancedArrays;1.0”</td></tr></tbody></table>
 
 <span id="ab9f1a398bb5caf6e6ac2044c181e4cb4" class="anchor" style="margin: 0;"></span>
 
@@ -79,7 +79,7 @@ Define Documentation
 
 <span id="ad557f98c8d78c0704377488bb9878b6a" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#ad557f98c8d78c0704377488bb9878b6a" class="el">PPB_OPENGLES2_INTERFACE</a>   "PPB_OpenGLES2;1.0"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#ad557f98c8d78c0704377488bb9878b6a" class="el">PPB_OPENGLES2_INTERFACE</a>   “PPB_OpenGLES2;1.0”</td></tr></tbody></table>
 
 <span id="a5966bff19c1b85d79bfaa773ff919798" class="anchor" style="margin: 0;"></span>
 
@@ -87,7 +87,7 @@ Define Documentation
 
 <span id="af9179ad2e31022ca51f19b7f3fd17f39" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#af9179ad2e31022ca51f19b7f3fd17f39" class="el">PPB_OPENGLES2_QUERY_INTERFACE</a>   "PPB_OpenGLES2Query;1.0"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#af9179ad2e31022ca51f19b7f3fd17f39" class="el">PPB_OPENGLES2_QUERY_INTERFACE</a>   “PPB_OpenGLES2Query;1.0”</td></tr></tbody></table>
 
 <span id="a2df0836cfb081e5cca1b639f7983b9a6" class="anchor" style="margin: 0;"></span>
 
@@ -95,7 +95,7 @@ Define Documentation
 
 <span id="abbc21d78bab2083560b49175e50394de" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#abbc21d78bab2083560b49175e50394de" class="el">PPB_OPENGLES2_VERTEXARRAYOBJECT_INTERFACE</a>   "PPB_OpenGLES2VertexArrayObject;1.0"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__opengles2_8h#abbc21d78bab2083560b49175e50394de" class="el">PPB_OPENGLES2_VERTEXARRAYOBJECT_INTERFACE</a>   “PPB_OpenGLES2VertexArrayObject;1.0”</td></tr></tbody></table>
 
 ------------------------------------------------------------------------
 

@@ -1,4 +1,4 @@
----json {"title":"pp\_var.h File Reference"} ---
+—json {“title”:“pp\_var.h File Reference”} —
 
 Include dependency graph for pp\_var.h:
 
@@ -7,8 +7,8 @@ Include dependency graph for pp\_var.h:
 Data Structures
 ---------------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">union  </td><td><a href="/docs/native-client/pepper_beta/c/union_p_p___var_value/" class="el">PP_VarValue</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <a href="/docs/native-client/pepper_beta/c/union_p_p___var_value/" class="el" title="The PP_VarValue union stores the data for any one of the types listed in the PP_VarType enum...">PP_VarValue</a> union stores the data for any one of the types listed in the PP_VarType enum. <a href="/docs/native-client/pepper_beta/c/union_p_p___var_value#details">More...</a><br />
-</td></tr><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___var/" class="el">PP_Var</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PP_VAR</code> struct is a variant data type and can contain any value of one of the types named in the <code>PP_VarType</code> enum. <a href="/docs/native-client/pepper_beta/c/struct_p_p___var#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">union  </td><td><a href="/docs/native-client/pepper_beta/c/union_p_p___var_value/" class="el">PP_VarValue</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <a href="/docs/native-client/pepper_beta/c/union_p_p___var_value/" class="el" title="The PP_VarValue union stores the data for any one of the types listed in the PP_VarType enum...">PP_VarValue</a> union stores the data for any one of the types listed in the PP_VarType enum. <a href="/docs/native-client/pepper_beta/c/union_p_p___var_value#details">More…</a><br />
+</td></tr><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___var/" class="el">PP_Var</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PP_VAR</code> struct is a variant data type and can contain any value of one of the types named in the <code>PP_VarType</code> enum. <a href="/docs/native-client/pepper_beta/c/struct_p_p___var#details">More…</a><br />
 </td></tr></tbody></table>
 
 Enumerations

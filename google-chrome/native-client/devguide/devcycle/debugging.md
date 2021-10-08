@@ -1,6 +1,6 @@
----json {"title":"Debugging"} ---
+—json {“title”:“Debugging”} —
 
-{% include 'partials/nacl-warning.njk' %}
+{% include ‘partials/nacl-warning.njk’ %}
 
 ------------------------------------------------------------------------
 

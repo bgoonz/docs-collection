@@ -1,4 +1,4 @@
----json {"title":"PPB\_Audio Struct Reference"} ---
+—json {“title”:“PPB\_Audio Struct Reference”} —
 
 Data Fields
 -----------
@@ -14,7 +14,7 @@ Detailed Description
 
 The `PPB_Audio` interface contains pointers to several functions for handling audio resources.
 
-Refer to the [Audio](/docs/native-client/devguide/coding/audio) chapter in the Developer's Guide for information on using this interface. Please see descriptions for each `PPB_Audio` and `PPB_AudioConfig` function for more details. A C example using `PPB_Audio` and `PPB_AudioConfig` follows.
+Refer to the [Audio](/docs/native-client/devguide/coding/audio) chapter in the Developer’s Guide for information on using this interface. Please see descriptions for each `PPB_Audio` and `PPB_AudioConfig` function for more details. A C example using `PPB_Audio` and `PPB_AudioConfig` follows.
 
 **Example:**
 
@@ -49,12 +49,11 @@ Field Documentation
 
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___audio__1__1#a9714ecad5eeefae9d5d98c5ea29ac5ce" class="el" title="Create() creates an audio resource.">Create()</a> creates an audio resource.
 
-No sound will be heard until <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___audio__1__1#a764b5ba357af0f781839c4f696615a23" class="el" title="StartPlayback() starts the playback of the audio resource and begins periodically calling the callbac...">StartPlayback()</a> is called. The callback is called with the buffer address and given user data whenever the buffer needs to be filled. From within the callback, you should not call `PPB_Audio` functions. The callback will be called on a different thread than the one which created the interface. For performance-critical applications (i.e. low-latency audio), the callback should avoid blocking or calling functions that can obtain locks, such as malloc. The layout and the size of the buffer passed to the audio callback will be determined by the device configuration and is specified in the `AudioConfig` documentation.
+No sound will be heard until <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___audio__1__1#a764b5ba357af0f781839c4f696615a23" class="el" title="StartPlayback() starts the playback of the audio resource and begins periodically calling the callbac...">StartPlayback()</a> is called. The callback is called with the buffer address and given user data whenever the buffer needs to be filled. From within the callback, you should not call `PPB_Audio` functions. The callback will be called on a different thread than the one which created the interface. For performance-critical applications (i.e. low-latency audio), the callback should avoid blocking or calling functions that can obtain locks, such as malloc. The layout and the size of the buffer passed to the audio callback will be determined by the device configuration and is specified in the `AudioConfig` documentation.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code> identifying one instance of a module.</td></tr><tr class="even"><td>[in]</td><td>config</td><td>A <code>PP_Resource</code> corresponding to an audio config resource.</td></tr><tr class="odd"><td>[in]</td><td>audio_callback</td><td>A <code>PPB_Audio_Callback</code> callback function that the browser calls when it needs more samples to play.</td></tr><tr class="even"><td>[in]</td><td>user_data</td><td>A pointer to user data used in the callback function.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code> identifying one instance of a module.</td></tr><tr class="even"><td>[in]</td><td>config</td><td>A <code>PP_Resource</code> corresponding to an audio config resource.</td></tr><tr class="odd"><td>[in]</td><td>audio_callback</td><td>A <code>PPB_Audio_Callback</code> callback function that the browser calls when it needs more samples to play.</td></tr><tr class="even"><td>[in]</td><td>user_data</td><td>A pointer to user data used in the callback function.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_Resource` containing the audio resource if successful or 0 if the configuration cannot be honored or the callback is null.
@@ -66,9 +65,8 @@ A `PP_Resource` containing the audio resource if successful or 0 if the configur
 GetCurrrentConfig() returns an audio config resource for the given audio resource.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>config</td><td>A <code>PP_Resource</code> corresponding to an audio resource.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>config</td><td>A <code>PP_Resource</code> corresponding to an audio resource.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_Resource` containing the audio config resource if successful.
@@ -80,9 +78,8 @@ A `PP_Resource` containing the audio config resource if successful.
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___audio__1__1#af516cae7c19f1439d630fd58049db85b" class="el" title="IsAudio() determines if the provided resource is an audio resource.">IsAudio()</a> determines if the provided resource is an audio resource.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a generic resource.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a generic resource.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_Bool` containing containing `PP_TRUE` if the given resource is an Audio resource, otherwise `PP_FALSE`.
@@ -94,9 +91,8 @@ A `PP_Bool` containing containing `PP_TRUE` if the given resource is an Audio re
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___audio__1__1#a764b5ba357af0f781839c4f696615a23" class="el" title="StartPlayback() starts the playback of the audio resource and begins periodically calling the callbac...">StartPlayback()</a> starts the playback of the audio resource and begins periodically calling the callback.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>config</td><td>A <code>PP_Resource</code> corresponding to an audio resource.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>config</td><td>A <code>PP_Resource</code> corresponding to an audio resource.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_Bool` containing `PP_TRUE` if successful, otherwise `PP_FALSE`. Also returns `PP_TRUE` (and be a no-op) if called while playback is already in progress.
@@ -108,9 +104,8 @@ A `PP_Bool` containing `PP_TRUE` if successful, otherwise `PP_FALSE`. Also retur
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___audio__1__1#a82049c2fbe4f151839fd13f8d10e8395" class="el" title="StopPlayback() stops the playback of the audio resource.">StopPlayback()</a> stops the playback of the audio resource.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>config</td><td>A <code>PP_Resource</code> corresponding to an audio resource.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>config</td><td>A <code>PP_Resource</code> corresponding to an audio resource.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_Bool` containing `PP_TRUE` if successful, otherwise `PP_FALSE`. Also returns `PP_TRUE` (and is a no-op) if called while playback is already stopped. If a callback is in progress, <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___audio__1__1#a82049c2fbe4f151839fd13f8d10e8395" class="el" title="StopPlayback() stops the playback of the audio resource.">StopPlayback()</a> will block until the callback completes.

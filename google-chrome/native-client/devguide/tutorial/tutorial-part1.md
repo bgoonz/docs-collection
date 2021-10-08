@@ -1,6 +1,6 @@
----json {"title":"C++ Tutorial: Getting Started (Part 1)"} ---
+—json {“title”:“C++ Tutorial: Getting Started (Part 1)”} —
 
-{% include 'partials/nacl-warning.njk' %}
+{% include ‘partials/nacl-warning.njk’ %}
 
 ------------------------------------------------------------------------
 
@@ -95,7 +95,7 @@ To compile the Native Client module, run `make`:
 
 Since the sample is located within the SDK tree, the Makefile knows how to find the PNaCl toolchain automatically and use it to build the module. If you’re building applications outside the NaCl SDK tree, you should set the `$NACL_SDK_ROOT` environment variable. See <a href="/docs/native-client/devguide/devcycle/building" class="reference internal"><em>Building Native Client Modules</em></a> for more details.
 
-Assuming the local server was started according to the instructions in <a href="#tutorial-step-2" class="reference internal"><em>Step 2</em></a>, you can now load the sample by pointing Chrome to `http://localhost:5103/part1`. Chrome should load the Native Client module successfully and the Status text should change from “LOADING...” to “SUCCESS”. If you run into problems, check out the <a href="#tutorial-troubleshooting" class="reference internal"><em>Troubleshooting section</em></a> below.
+Assuming the local server was started according to the instructions in <a href="#tutorial-step-2" class="reference internal"><em>Step 2</em></a>, you can now load the sample by pointing Chrome to `http://localhost:5103/part1`. Chrome should load the Native Client module successfully and the Status text should change from “LOADING…” to “SUCCESS”. If you run into problems, check out the <a href="#tutorial-troubleshooting" class="reference internal"><em>Troubleshooting section</em></a> below.
 
 Step 6: Modify the JavaScript code to send a message to the Native Client module
 --------------------------------------------------------------------------------

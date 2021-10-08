@@ -1,6 +1,6 @@
----json {"title":"Native Client Modules"} ---
+—json {“title”:“Native Client Modules”} —
 
-{% include 'partials/nacl-warning.njk' %}
+{% include ‘partials/nacl-warning.njk’ %}
 
 ------------------------------------------------------------------------
 

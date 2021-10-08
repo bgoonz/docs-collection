@@ -1,4 +1,4 @@
----json {"title":"ppb\_media\_stream\_audio\_track.h File Reference"} ---
+—json {“title”:“ppb\_media\_stream\_audio\_track.h File Reference”} —
 
 Include dependency graph for ppb\_media\_stream\_audio\_track.h:
 
@@ -12,7 +12,7 @@ Data Structures
 Defines
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__media__stream__audio__track_8h#a1f573797be0968778c819a0d800f5293" class="el">PPB_MEDIASTREAMAUDIOTRACK_INTERFACE</a>   "PPB_MediaStreamAudioTrack;0.1"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__media__stream__audio__track_8h#ac5ee5a08983cb99fffd2565e0f6a44f9" class="el">PPB_MEDIASTREAMAUDIOTRACK_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__media__stream__audio__track_8h#a1f573797be0968778c819a0d800f5293" class="el">PPB_MEDIASTREAMAUDIOTRACK_INTERFACE</a></td></tr></tbody></table>
+<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__media__stream__audio__track_8h#a1f573797be0968778c819a0d800f5293" class="el">PPB_MEDIASTREAMAUDIOTRACK_INTERFACE</a>   “PPB_MediaStreamAudioTrack;0.1”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__media__stream__audio__track_8h#ac5ee5a08983cb99fffd2565e0f6a44f9" class="el">PPB_MEDIASTREAMAUDIOTRACK_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__media__stream__audio__track_8h#a1f573797be0968778c819a0d800f5293" class="el">PPB_MEDIASTREAMAUDIOTRACK_INTERFACE</a></td></tr></tbody></table>
 
 Typedefs
 --------
@@ -50,4 +50,4 @@ Define Documentation
 
 <span id="a1f573797be0968778c819a0d800f5293" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__media__stream__audio__track_8h#a1f573797be0968778c819a0d800f5293" class="el">PPB_MEDIASTREAMAUDIOTRACK_INTERFACE</a>   "PPB_MediaStreamAudioTrack;0.1"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__media__stream__audio__track_8h#a1f573797be0968778c819a0d800f5293" class="el">PPB_MEDIASTREAMAUDIOTRACK_INTERFACE</a>   “PPB_MediaStreamAudioTrack;0.1”</td></tr></tbody></table>

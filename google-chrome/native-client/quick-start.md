@@ -1,6 +1,6 @@
----json {"title":"Quick-start"} ---
+—json {“title”:“Quick-start”} —
 
-{% include 'partials/nacl-warning.njk' %}
+{% include ‘partials/nacl-warning.njk’ %}
 
 ------------------------------------------------------------------------
 

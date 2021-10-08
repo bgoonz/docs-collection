@@ -1,6 +1,6 @@
----json {"title":"Security Contest FAQ"} ---
+—json {“title”:“Security Contest FAQ”} —
 
-{% include 'partials/nacl-warning.njk' %}
+{% include ‘partials/nacl-warning.njk’ %}
 
 ------------------------------------------------------------------------
 
@@ -258,7 +258,7 @@ After the contest ends, all submitted Summaries will be judged by a panel of at 
 When and how are we going to find out the results of the contest?
 -----------------------------------------------------------------
 
-We will contact all prospective winners at the email address provided to us at the registration process. You may request a list of winners after December 7th, 2009 by writing to: Native Client Security Contest Google Inc. 1600 Amphitheater Parkway Mountain View, CA 94043 USA
+We will contact all prospective winners at the email address provided to us at the registration process. You may request a list of winners after December 7th, 2009 by writing to: Native Client Security Contest Google Inc. 1600 Amphitheater Parkway Mountain View, CA 94043 USA
 
 What will Google do with my data?
 ---------------------------------

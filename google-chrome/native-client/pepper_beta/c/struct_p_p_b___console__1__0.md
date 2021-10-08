@@ -1,4 +1,4 @@
----json {"title":"PPB\_Console Struct Reference"} ---
+—json {“title”:“PPB\_Console Struct Reference”} —
 
 Data Fields
 -----------
@@ -26,7 +26,7 @@ Logs a message to the console with the given source information rather than usin
 
 The name must be a string var.
 
-The regular log function will automatically prepend the name of your plugin to the message as the "source" of the message. Some plugins may wish to override this. For example, if your plugin is a Python interpreter, you would want log messages to contain the source .py file doing the log statement rather than have "python" show up in the console.
+The regular log function will automatically prepend the name of your plugin to the message as the “source” of the message. Some plugins may wish to override this. For example, if your plugin is a Python interpreter, you would want log messages to contain the source .py file doing the log statement rather than have “python” show up in the console.
 
 ------------------------------------------------------------------------
 

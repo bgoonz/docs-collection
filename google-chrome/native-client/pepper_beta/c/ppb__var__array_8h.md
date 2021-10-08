@@ -1,4 +1,4 @@
----json {"title":"ppb\_var\_array.h File Reference"} ---
+—json {“title”:“ppb\_var\_array.h File Reference”} —
 
 Include dependency graph for ppb\_var\_array.h:
 
@@ -12,7 +12,7 @@ Data Structures
 Defines
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__var__array_8h#a244ad07738d77a4d11d8009a7d69a5aa" class="el">PPB_VAR_ARRAY_INTERFACE</a>   "PPB_VarArray;1.0"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__var__array_8h#a45d67f25be216695420b237b1deeca3f" class="el">PPB_VAR_ARRAY_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__var__array_8h#a244ad07738d77a4d11d8009a7d69a5aa" class="el">PPB_VAR_ARRAY_INTERFACE</a></td></tr></tbody></table>
+<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__var__array_8h#a244ad07738d77a4d11d8009a7d69a5aa" class="el">PPB_VAR_ARRAY_INTERFACE</a>   “PPB_VarArray;1.0”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__var__array_8h#a45d67f25be216695420b237b1deeca3f" class="el">PPB_VAR_ARRAY_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__var__array_8h#a244ad07738d77a4d11d8009a7d69a5aa" class="el">PPB_VAR_ARRAY_INTERFACE</a></td></tr></tbody></table>
 
 Typedefs
 --------
@@ -39,4 +39,4 @@ Define Documentation
 
 <span id="a244ad07738d77a4d11d8009a7d69a5aa" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__var__array_8h#a244ad07738d77a4d11d8009a7d69a5aa" class="el">PPB_VAR_ARRAY_INTERFACE</a>   "PPB_VarArray;1.0"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/c/ppb__var__array_8h#a244ad07738d77a4d11d8009a7d69a5aa" class="el">PPB_VAR_ARRAY_INTERFACE</a>   “PPB_VarArray;1.0”</td></tr></tbody></table>
