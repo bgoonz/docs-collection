@@ -1,10 +1,10 @@
 ---
-layout: "layouts/doc-post.njk" 
-title: Offline-First Trusted Web Activities 
-date: 2021-05-11 
-description: How to display a fallback offline screen, if the first time the user opens the app, there's no connectivity. 
+layout: "layouts/doc-post.njk"
+title: Offline-First Trusted Web Activities
+date: 2021-05-11
+description: How to display a fallback offline screen, if the first time the user opens the app, there's no connectivity.
 authors:
-    - demianrenzulli
+  - demianrenzulli
 ---
 
 The first time a user launches a Progressive Web App (PWA) via Trusted Web
@@ -26,11 +26,11 @@ alt="TWA offline: the standard offline page", width="533", height="372" %}
 This guide explains how to display your own activity in this situation by
 checking the status of the network before launching the Trusted Web Activity.
 
-{% Aside %} 
+{% Aside %}
 A prerequisite of this guide is to have a Trusted Web Activity app
 running. Follow the steps in the [Integration
 Guide][1]
-to create a basic Trusted Web Activity project. 
+to create a basic Trusted Web Activity project.
 {% endAside%}
 
 ## Create a custom LauncherActivity
@@ -73,7 +73,7 @@ Next, register the Activity in `AndroidManifest.xml`:
 
 The previous code registers `OfflineFirstTWALauncherActivity` as a launcher
 activity and defines [https://airhorner.com](https://airhorner.com) as the URL
-to open when the TWA launches. 
+to open when the TWA launches.
 
 ## Handle offline scenarios
 
@@ -160,7 +160,7 @@ The previous code calls the `launchTWA()` from the parent class, and saves the
 has launched successfully, at least once.
 
 The remaining helper method, `renderOfflineFallback()` renders an Android
-offline screen. 
+offline screen.
 
 ```java
 private void renderOfflineFallback() {

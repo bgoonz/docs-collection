@@ -137,13 +137,12 @@ is that you can automate unit tests for your site across different platforms.
   device and can't see the bug on any of the options in the previous guides.
 - [LambdaTest (commercial)][14] will help you to perform manual cross browser testing on a combination
   of 2000+ browsers & operating systems. Users will be able to record video of complex bugs and eve
-  share it via integrations like MS Teams, Slack and more. Users can speed-up their testing by 
+  share it via integrations like MS Teams, Slack and more. Users can speed-up their testing by
   running tests in parallel.
 
 [1]: https://developer.mozilla.org/en-US/docs/Tools/Responsive_Design_Mode
 [2]: https://docs.microsoft.com/en-us/microsoft-edge/devtools-guide/emulation
-[3]:
-  https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/samples/dn255001(v=vs.85)
+[3]: https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/samples/dn255001(v=vs.85)
 [4]: https://developer.android.com/studio
 [5]: https://developer.android.com/studio/run/managing-avds
 [6]: https://developer.android.com/studio/run/emulator

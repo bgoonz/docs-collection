@@ -85,8 +85,8 @@ To get the full path of the file the user selected, `fileEntry`, call `getDispla
 
 ```js
 function displayPath(fileEntry) {
-  chrome.fileSystem.getDisplayPath(fileEntry, function(path) {
-    console.log(path)
+  chrome.fileSystem.getDisplayPath(fileEntry, function (path) {
+    console.log(path);
   });
 }
 ```
@@ -99,7 +99,7 @@ from a `DataTransferItem` via drag-and-drop. In this example, the `fileEntry` is
 dropped item.
 
 ```js
-var dnd = new DnDFileController('body', function(data) {
+var dnd = new DnDFileController("body", function (data) {
   var fileEntry = data.items[0].webkitGetAsEntry();
   displayPath(fileEntry);
 });
@@ -113,20 +113,19 @@ the file doesn't exist, an error is thrown.
 ```js
 var chosenFileEntry = null;
 
-chooseFileButton.addEventListener('click', function(e) {
-  chrome.fileSystem.chooseEntry({type: 'openFile'}, function(readOnlyEntry) {
-
-    readOnlyEntry.file(function(file) {
+chooseFileButton.addEventListener("click", function (e) {
+  chrome.fileSystem.chooseEntry({ type: "openFile" }, function (readOnlyEntry) {
+    readOnlyEntry.file(function (file) {
       var reader = new FileReader();
 
       reader.onerror = errorHandler;
-      reader.onloadend = function(e) {
+      reader.onloadend = function (e) {
         console.log(e.target.result);
       };
 
       reader.readAsText(file);
     });
-	});
+  });
 });
 ```
 
@@ -136,31 +135,37 @@ The two common use-cases for writing a file are "Save" and "Save as". The follow
 `writableEntry` from the read-only `chosenFileEntry` and writes the selected file to it.
 
 ```js
- chrome.fileSystem.getWritableEntry(chosenFileEntry, function(writableFileEntry) {
-    writableFileEntry.createWriter(function(writer) {
+chrome.fileSystem.getWritableEntry(
+  chosenFileEntry,
+  function (writableFileEntry) {
+    writableFileEntry.createWriter(function (writer) {
       writer.onerror = errorHandler;
       writer.onwriteend = callback;
 
-    chosenFileEntry.file(function(file) {
-      writer.write(file);
-    });
-  }, errorHandler);
-});
+      chosenFileEntry.file(function (file) {
+        writer.write(file);
+      });
+    }, errorHandler);
+  }
+);
 ```
 
 The following code creates a new file with "Save as" functionality and writes the new blob to the
 file using the `writer.write()` method.
 
 ```js
-chrome.fileSystem.chooseEntry({type: 'saveFile'}, function(writableFileEntry) {
-    writableFileEntry.createWriter(function(writer) {
+chrome.fileSystem.chooseEntry(
+  { type: "saveFile" },
+  function (writableFileEntry) {
+    writableFileEntry.createWriter(function (writer) {
       writer.onerror = errorHandler;
-      writer.onwriteend = function(e) {
-        console.log('write complete');
+      writer.onwriteend = function (e) {
+        console.log("write complete");
       };
-      writer.write(new Blob(['1234567890'], {type: 'text/plain'}));
+      writer.write(new Blob(["1234567890"], { type: "text/plain" }));
     }, errorHandler);
-});
+  }
+);
 ```
 
 ## Using the Chrome Sync Filesystem API {: #sync-filesystem }
@@ -188,8 +193,13 @@ This method returns a syncable filesystem backed by Google Drive, for example:
 
 ```js
 chrome.syncFileSystem.requestFileSystem(function (fs) {
-   // FileSystem API should just work on the returned 'fs'.
-   fs.root.getFile('test.txt', {create:true}, getEntryCallback, errorCallback);
+  // FileSystem API should just work on the returned 'fs'.
+  fs.root.getFile(
+    "test.txt",
+    { create: true },
+    getEntryCallback,
+    errorCallback
+  );
 });
 ```
 
@@ -251,12 +261,12 @@ imported to the user's local storage on a particular client. Any music found get
 client:
 
 ```js
-chrome.syncFileSystem.onFileStatusChanged.addListener(function(fileInfo) {
-  if (fileInfo.status === 'synced') {
-    if (fileInfo.direction === 'remote_to_local') {
-      if (fileInfo.action === 'added') {
+chrome.syncFileSystem.onFileStatusChanged.addListener(function (fileInfo) {
+  if (fileInfo.status === "synced") {
+    if (fileInfo.direction === "remote_to_local") {
+      if (fileInfo.action === "added") {
         db.add(fileInfo.fileEntry);
-      } else if (fileInfo.action === 'deleted') {
+      } else if (fileInfo.action === "deleted") {
         db.remove(fileInfo.fileEntry);
       }
     }
@@ -271,8 +281,8 @@ usage bytes returned by [syncFileSystem.getUsageAndQuota][27]:
 
 ```js
 chrome.syncFileSystem.getUsageAndQuota(fileSystem, function (storageInfo) {
-   updateUsageInfo(storageInfo.usageBytes);
-   updateQuotaInfo(storageInfo.quotaBytes);
+  updateUsageInfo(storageInfo.usageBytes);
+  updateQuotaInfo(storageInfo.quotaBytes);
 });
 ```
 

@@ -146,11 +146,13 @@ The following code snippet shows how you can ask about storage space:
 ```js
 // Request storage usage and capacity left
 // Choose either Temporary or Persistent
-navigator.webkitTemporaryStorage.queryUsageAndQuota (
-    function(usedBytes, grantedBytes) {
-        console.log('we are using ', usedBytes, ' of ', grantedBytes, 'bytes');
-    },
-    function(e) { console.log('Error', e);  }
+navigator.webkitTemporaryStorage.queryUsageAndQuota(
+  function (usedBytes, grantedBytes) {
+    console.log("we are using ", usedBytes, " of ", grantedBytes, "bytes");
+  },
+  function (e) {
+    console.log("Error", e);
+  }
 );
 ```
 
@@ -227,18 +229,19 @@ The following are `webkitStorageInfo` constants, which indicate the type of stor
 Check the storage size that is being used and the available space left for the host.
 
 ```js
- // you could also use it from webkitPersistentStorage
+// you could also use it from webkitPersistentStorage
 navigator.webkitTemporaryStorage.queryUsageAndQuota(
-      successCallback,
-      errorCallback);
+  successCallback,
+  errorCallback
+);
 ```
 
-* `successCallback`: Optional callback with two parameters:
+- `successCallback`: Optional callback with two parameters:
 
   - The current number of bytes the app is using.
   - The number of bytes left in the quota.
 
-* `errorCallback`: Optional error callback.
+- `errorCallback`: Optional error callback.
 
 #### requestQuota {: #requestQuota }
 
@@ -246,18 +249,19 @@ Ask for more storage. The browser presents an info bar to prompt user to grant o
 permission to have more storage.
 
 ```js
- // you could also use it from webkitTemporaryStorage
-navigator.webkitPersistentStorage.requestQuota (
-      newQuotaInBytes,
-      quotaCallback,
-      errorCallback);
+// you could also use it from webkitTemporaryStorage
+navigator.webkitPersistentStorage.requestQuota(
+  newQuotaInBytes,
+  quotaCallback,
+  errorCallback
+);
 ```
 
 ##### Parameters
 
-* `newQuotaInBytes`: The amount of bytes you want in your storage quota.
-* `successCallback`: Optional callback that passes the amount of bytes granted.
-* `errorCallback`: Optional error callback.
+- `newQuotaInBytes`: The amount of bytes you want in your storage quota.
+- `successCallback`: Optional callback that passes the amount of bytes granted.
+- `errorCallback`: Optional error callback.
 
 ## Future development {: #future }
 

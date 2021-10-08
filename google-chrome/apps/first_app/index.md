@@ -66,12 +66,12 @@ detail):
 Next create a new file called `background.js` with the following content:
 
 ```js
-chrome.app.runtime.onLaunched.addListener(function() {
-  chrome.app.window.create('window.html', {
-    'outerBounds': {
-      'width': 400,
-      'height': 500
-    }
+chrome.app.runtime.onLaunched.addListener(function () {
+  chrome.app.window.create("window.html", {
+    outerBounds: {
+      width: 400,
+      height: 500,
+    },
   });
 });
 ```
@@ -88,8 +88,7 @@ Create your `window.html` file:
 ```html
 <!DOCTYPE html>
 <html>
-  <head>
-  </head>
+  <head> </head>
   <body>
     <div>Hello, world!</div>
   </body>

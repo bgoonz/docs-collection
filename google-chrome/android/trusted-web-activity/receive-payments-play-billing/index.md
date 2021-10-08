@@ -36,9 +36,9 @@ different. This also means it is a great time to test the API yourself, and
 There are two ways your application can monetize with Google Play Billing on the Play Store:
 
 - [In-app purchases][7] allow selling both durable and consumable virtual goods, like additional
-features, or removing ads.
+  features, or removing ads.
 - [Subscriptions][8], offer your users ongoing access to content or services for a recurring fee,
-like news subscriptions or memberships.
+  like news subscriptions or memberships.
 
 Note: The Play Store allows selling applications on the store and users can only download the
 application after purchasing it. We don't recommend this for PWAs as the web application needs to
@@ -51,9 +51,9 @@ free on the store and enable features via in-app purchases.
 In order to setup Google Play Billing, you will need:
 
 - A [Google Play Developer account][9] and a [Google Payment merchant account][10] that are
-[linked to each other][11].
+  [linked to each other][11].
 - A [Play Store listing][12] with a
-[release on the public, closed testing or internal testing track][13].
+  [release on the public, closed testing or internal testing track][13].
 - To [create and configure][14] your app's products and subscriptions on the Play Store.
 - A [Bubblewrap generated project][15] with a working [Digital Asset Links configuration][16].
 
@@ -70,7 +70,7 @@ If you don't have Bubblewrap installed, you will need to install it. See the
 [Quick Start Guide][18] for details on how to get started. If you already have Bubblewrap, make
 sure to update to version 1.8.2 or above.
 
-Since the Digital Goods API  is in Origin Trial, Bubblewrap also has the feature behind a flag. In
+Since the Digital Goods API is in Origin Trial, Bubblewrap also has the feature behind a flag. In
 order to enable it, you will need to modify the project configuration in the `twa-manifest.json`,
 located at the root of the project and enable both `alphaDependencies` and the `playBilling`
 feature:
@@ -81,13 +81,14 @@ feature:
   "features": {
     "playBilling": {
       "enabled": true
-    }   
-  },  
+    }
+  },
   "alphaDependencies": {
     "enabled": true
   },
   ...
 ```
+
 With the configuration file updated, run `bubblewrap update` to apply the configuration to the
 project, followed by `bubblewrap build`, to generate a new Android package and upload this
 package to the Play Store.
@@ -103,8 +104,8 @@ Trusted Web Activity, and it is possible to detect if it is available by checkin
 `getDigitalGoodsService` on the `window` object:
 
 ```js
-if ('getDigitalGoodsService' in window) {
- // Digital Goods API is supported!
+if ("getDigitalGoodsService" in window) {
+  // Digital Goods API is supported!
 }
 ```
 
@@ -114,13 +115,14 @@ check if a particular store backend is supported, you will need to invoke
 by the string `https://play.google.com/billing`:
 
 ```js
-if ('getDigitalGoodsService' in window) {
- // Digital Goods API is supported!
- const service =
-     await window.getDigitalGoodsService('https://play.google.com/billing');
- if (service) {
-   // Google Play Billing is supported!
- }
+if ("getDigitalGoodsService" in window) {
+  // Digital Goods API is supported!
+  const service = await window.getDigitalGoodsService(
+    "https://play.google.com/billing"
+  );
+  if (service) {
+    // Google Play Billing is supported!
+  }
 }
 ```
 
@@ -129,20 +131,24 @@ if ('getDigitalGoodsService' in window) {
 The Digital Goods API provides `getDetails()`, which allows retrieving the information like the
 product title, description, and most importantly, the price, from the payments backend.
 
-You can then use this information in your use interface and provide more details to the user: 
+You can then use this information in your use interface and provide more details to the user:
 
 ```js
-const skuDetails = await itemService.getDetails(['shiny_sword', 'gem']);
+const skuDetails = await itemService.getDetails(["shiny_sword", "gem"]);
 for (item of skuDetails) {
   // Format the price according to the user locale.
-  const localizedPrice = new Intl.NumberFormat(
-      navigator.language,
-      {style: 'currency', currency: item.price.currency}
-    ).format(item.price.value);
+  const localizedPrice = new Intl.NumberFormat(navigator.language, {
+    style: "currency",
+    currency: item.price.currency,
+  }).format(item.price.value);
 
   // Render the price to the UI.
   renderProductDetails(
-        item.itemId, item.title, localizedPrice, item.description);
+    item.itemId,
+    item.title,
+    localizedPrice,
+    item.description
+  );
 }
 ```
 
@@ -175,21 +181,21 @@ async function makePurchase(service, sku) {
 ```
 
 Even though the payment details are required, the Play Billing will ignore those values and use the
-values set when creating the SKU  in the Play Console, so they  can be filled with bogus values:
+values set when creating the SKU in the Play Console, so they can be filled with bogus values:
 
 ```js
 const paymentDetails = {
-    total: {
-        label: `Total`,
-        amount: {currency: `USD`, value: `0`}
-    }
+  total: {
+    label: `Total`,
+    amount: { currency: `USD`, value: `0` },
+  },
 };
 
 const request = new PaymentRequest(paymentMethods, paymentDetails);
 ```
 
 Call the `show()` on the payment request object to start the payment flow. If the Promise succeeds
-that will may be payment was successful. If it fails, the user likely aborted the payment. 
+that will may be payment was successful. If it fails, the user likely aborted the payment.
 
 If the promise succeeds, you will need to verify the purchase in order to protect against fraud.
 Due to the sensitivity of the data, this step must be implemented using your backend. Check out the
@@ -197,7 +203,7 @@ Due to the sensitivity of the data, this step must be implemented using your bac
 
 When the validation passes in your backend, you will then use the Digital Goods API to acknowledge
 the purchase, otherwise,
- [after three days, the user will receive a refund and Google Play will revoke the purchase][22].
+[after three days, the user will receive a refund and Google Play will revoke the purchase][22].
 
 ```js
 ...
@@ -236,50 +242,51 @@ Putting everything together, a purchase method looks like the following:
 
 ```js
 async function makePurchase(service, sku) {
-    // Define the preferred payment method and item ID
-    const paymentMethods = [{
-        supportedMethods: "https://play.google.com/billing",
-        data: {
-            sku: sku,
-        }
-    }];
+  // Define the preferred payment method and item ID
+  const paymentMethods = [
+    {
+      supportedMethods: "https://play.google.com/billing",
+      data: {
+        sku: sku,
+      },
+    },
+  ];
 
-    // The "total" member of the paymentDetails is required by the Payment
-    // Request API, but is not used when using Google Play Billing. We can
-    // set it up with bogus details.
-    const paymentDetails = {
-        total: {
-            label: `Total`,
-            amount: {currency: `USD`, value: `0`}
-        }
-    };
+  // The "total" member of the paymentDetails is required by the Payment
+  // Request API, but is not used when using Google Play Billing. We can
+  // set it up with bogus details.
+  const paymentDetails = {
+    total: {
+      label: `Total`,
+      amount: { currency: `USD`, value: `0` },
+    },
+  };
 
-    const request = new PaymentRequest(paymentMethods, paymentDetails);
-    try {
-        const paymentResponse = await request.show();
-        const {purchaseToken} = paymentResponse.details;
+  const request = new PaymentRequest(paymentMethods, paymentDetails);
+  try {
+    const paymentResponse = await request.show();
+    const { purchaseToken } = paymentResponse.details;
 
-        // Call backend to validate the purchase.
-        if (validatePurchaseOnBackend(purchaseToken)) {
-            // Acknowledge using the Digital Goods API. Use ‘onetime' for
-            // items that can only be purchased once and ‘repeatable for
-            // items that can be purchased multiple times.
-            await service.acknowledge(purchaseToken, 'onetime');
+    // Call backend to validate the purchase.
+    if (validatePurchaseOnBackend(purchaseToken)) {
+      // Acknowledge using the Digital Goods API. Use ‘onetime' for
+      // items that can only be purchased once and ‘repeatable for
+      // items that can be purchased multiple times.
+      await service.acknowledge(purchaseToken, "onetime");
 
-            // Optional: tell the PaymentRequest API the validation was
-            // successful. The user-agent may show a "payment successful"
-            // message to the user.
-            const paymentComplete =
-                    await paymentResponse.complete('success');
-        } else {
-            // Optional: tell the PaymentRequest API the validation failed.
-            // The user agent may show a message to the user.
-            const paymentComplete = await paymentResponse.complete('fail');
-        }
-    } catch(e) {
-        // The purchase failed, and we can handle the failure here.
-        // AbortError usually means a user cancellation
+      // Optional: tell the PaymentRequest API the validation was
+      // successful. The user-agent may show a "payment successful"
+      // message to the user.
+      const paymentComplete = await paymentResponse.complete("success");
+    } else {
+      // Optional: tell the PaymentRequest API the validation failed.
+      // The user agent may show a message to the user.
+      const paymentComplete = await paymentResponse.complete("fail");
     }
+  } catch (e) {
+    // The purchase failed, and we can handle the failure here.
+    // AbortError usually means a user cancellation
+  }
 }
 ```
 
@@ -329,14 +336,14 @@ for (const p of existingPurchases) {
 It is possible to enable the Digital Goods API on an development Android device for testing, even
 without enabling the Origin Trial:
 
- - Ensure you are on Android 9 or greater with [developer mode enabled][23].
- - Install Chrome 88 or above.
- - Enable the following flags in Chrome by navigating to `chrome://flags` and searching for the
-   flag by name:  
-     - `#enable-experimental-web-platform-features`
-     - `#enable-web-payments-experimental-features`
-     - `#enable-debug-for-store-billing`
- - Ensure that the site is hosted using a https protocol. Using http will cause the API to be `undefined`
+- Ensure you are on Android 9 or greater with [developer mode enabled][23].
+- Install Chrome 88 or above.
+- Enable the following flags in Chrome by navigating to `chrome://flags` and searching for the
+  flag by name:
+  - `#enable-experimental-web-platform-features`
+  - `#enable-web-payments-experimental-features`
+  - `#enable-debug-for-store-billing`
+- Ensure that the site is hosted using a https protocol. Using http will cause the API to be `undefined`
 
 Note: The `#enable-debug-for-store-billing` flag is not required when the application is downloaded
 from the Play Store.
@@ -346,18 +353,18 @@ from the Play Store.
 The Digital Goods API will be available on Chrome OS stable starting with version 89. In the
 meantime, it is possible to test the Digital Goods API:
 
- - Enable the [Chrome OS dev channel][24], 
- - Enable the following flags in Chrome by navigating to `chrome://flags` and searching for the
-   flag by name: 
-     - `#enable-experimental-web-platform-features`
-     - `#enable-web-payments-experimental-features`
- - Install your app from the Play Store on the device.
- - Ensure that the site is hosted using a https protocol. Using http will cause the API to be `undefined`
+- Enable the [Chrome OS dev channel][24],
+- Enable the following flags in Chrome by navigating to `chrome://flags` and searching for the
+  flag by name:
+  - `#enable-experimental-web-platform-features`
+  - `#enable-web-payments-experimental-features`
+- Install your app from the Play Store on the device.
+- Ensure that the site is hosted using a https protocol. Using http will cause the API to be `undefined`
 
 ## With test users and QA teams
 
 In order to test with a broader audience, you will need to sign-up for the Origin Trial, as asking
-every user to enable the Chrome flags is not practical. 
+every user to enable the Chrome flags is not practical.
 
 The Play Store also provides affordances for testing, including user test accounts and test SKUs.
 Checkout the [Google Play Billing test documentation][25] for more information.
@@ -367,17 +374,17 @@ Checkout the [Google Play Billing test documentation][25] for more information.
 As discussed in this document, the Play Billing API has client-side components, which are managed
 by the Digital Goods API, and server-side components.
 
- - Take a look at Peter Conn's sample at [https://github.com/PEConn/beer][26]
- - Check out the Play documentation on [purchase verification][21].
- - Consider using one of the [Google Play Developer API client libraries][27], which are available
- in [multiple languages][28].
- - If implementing a subscriptions model in your application, check out the
- [Play Billing subscriptions documentation][29].
- - Implement [Real-Time developer notifications][30] (RTDN) and subscribe for notifications so your
- backend is notified  when the state of a subscription changes instead of polling their status on
- Play.
- - Implement `linkedPurchaseToken` to prevent duplicate subscriptions. Read [this blogpost][31] on
- how to implement it correctly. 
+- Take a look at Peter Conn's sample at [https://github.com/PEConn/beer][26]
+- Check out the Play documentation on [purchase verification][21].
+- Consider using one of the [Google Play Developer API client libraries][27], which are available
+  in [multiple languages][28].
+- If implementing a subscriptions model in your application, check out the
+  [Play Billing subscriptions documentation][29].
+- Implement [Real-Time developer notifications][30] (RTDN) and subscribe for notifications so your
+  backend is notified when the state of a subscription changes instead of polling their status on
+  Play.
+- Implement `linkedPurchaseToken` to prevent duplicate subscriptions. Read [this blogpost][31] on
+  how to implement it correctly.
 
 [1]: https://developer.android.com/google/play/billing
 [2]: /docs/android/trusted-web-activity/
@@ -410,4 +417,3 @@ by the Digital Goods API, and server-side components.
 [29]: https://developer.android.com/google/play/billing/billing_subscriptions#Allow-upgrade
 [30]: https://developer.android.com/google/play/billing/getting-ready#configure-rtdn
 [31]: https://medium.com/androiddevelopers/implementing-linkedpurchasetoken-correctly-to-prevent-duplicate-subscriptions-82dfbf7167da
-

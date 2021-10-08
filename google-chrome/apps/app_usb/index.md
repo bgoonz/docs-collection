@@ -127,10 +127,10 @@ Example:
 
 ```js
 function onDeviceFound(devices) {
-  this.devices=devices;
+  this.devices = devices;
   if (devices) {
     if (devices.length > 0) {
-      console.log("Device(s) found: "+devices.length);
+      console.log("Device(s) found: " + devices.length);
     } else {
       console.log("Device could not be found");
     }
@@ -139,7 +139,10 @@ function onDeviceFound(devices) {
   }
 }
 
-chrome.usb.getDevices({"vendorId": vendorId, "productId": productId}, onDeviceFound);
+chrome.usb.getDevices(
+  { vendorId: vendorId, productId: productId },
+  onDeviceFound
+);
 ```
 
 ## Opening a device {: #usb_open }
@@ -153,7 +156,7 @@ Example:
 
 ```js
 var usbConnection = null;
-var onOpenCallback = function(connection) {
+var onOpenCallback = function (connection) {
   if (connection) {
     usbConnection = connection;
     console.log("Device opened.");
@@ -181,34 +184,41 @@ To simplify the opening process, you can use the [usb.findDevices][19] method, w
 requests access, and opens devices in one call:
 
 ```js
-chrome.usb.findDevices({"vendorId": vendorId, "productId": productId, "interfaceId": interfaceId}, callback);
+chrome.usb.findDevices(
+  { vendorId: vendorId, productId: productId, interfaceId: interfaceId },
+  callback
+);
 ```
 
 which is equivalent to:
 
 ```js
-chrome.usb.getDevices({"vendorId": vendorId, "productId": productId}, function (devices) {
-  if (!devices) {
-    console.log("Error enumerating devices.");
-    callback();
-    return;
-  }
-  var connections = [], pendingAccessRequests = devices.length;
-  devices.forEach(function (device) {
-    chrome.usb.requestAccess(interfaceId, function () {
-      // No need to check for errors at this point.
-      // Nothing can be done if an error occurs anyway. You should always try
-      // to open the device.
-      chrome.usb.openDevices(device, function (connection) {
-        if (connection) connections.push(connection);
-        pendingAccessRequests--;
-        if (pendingAccessRequests == 0) {
-          callback(connections);
-        }
+chrome.usb.getDevices(
+  { vendorId: vendorId, productId: productId },
+  function (devices) {
+    if (!devices) {
+      console.log("Error enumerating devices.");
+      callback();
+      return;
+    }
+    var connections = [],
+      pendingAccessRequests = devices.length;
+    devices.forEach(function (device) {
+      chrome.usb.requestAccess(interfaceId, function () {
+        // No need to check for errors at this point.
+        // Nothing can be done if an error occurs anyway. You should always try
+        // to open the device.
+        chrome.usb.openDevices(device, function (connection) {
+          if (connection) connections.push(connection);
+          pendingAccessRequests--;
+          if (pendingAccessRequests == 0) {
+            callback(connections);
+          }
+        });
       });
     });
-  })
-});
+  }
+);
 ```
 
 ## USB transfers and receiving data from a device {: #usb_transfers }
@@ -233,10 +243,10 @@ following properties:
 Example:
 
 ```js
-var onTransferCallback = function(event) {
-   if (event && event.resultCode === 0 && event.data) {
-     console.log("got " + event.data.byteLength + " bytes");
-   }
+var onTransferCallback = function (event) {
+  if (event && event.resultCode === 0 && event.data) {
+    console.log("got " + event.data.byteLength + " bytes");
+  }
 };
 
 chrome.usb.bulkTransfer(connectionHandle, transferInfo, onTransferCallback);
@@ -249,7 +259,7 @@ device. The controlTransfer method always sends to/reads from endpoint 0, and no
 required. The method is simple and receives three parameters:
 
 ```js
-chrome.usb.controlTransfer(connectionHandle, transferInfo, transferCallback)
+chrome.usb.controlTransfer(connectionHandle, transferInfo, transferCallback);
 ```
 
 <table class="simple"><tbody><tr><th scope="col">Parameter (types)</th><th scope="col">Description</th></tr><tr><td>connectionHandle</td><td>Object received in <a href="/apps/usb#method-openDevice">usb.openDevice</a> callback.</td></tr><tr><td>transferInfo</td><td>Parameter object with values from the table below. Check your USB device protocol specification for details.</td></tr><tr><td>transferCallback()</td><td>Invoked when the transfer has completed.</td></tr></tbody></table>
@@ -262,14 +272,14 @@ Example:
 
 ```js
 var transferInfo = {
-  "requestType": "vendor",
-   "recipient": "device",
-  "direction": "out",
-  "request":  0x31,
-  "value": 120,
-  "index": 0,
+  requestType: "vendor",
+  recipient: "device",
+  direction: "out",
+  request: 0x31,
+  value: 120,
+  index: 0,
   // Note that the ArrayBuffer, not the TypedArray itself is used.
-  "data": new Uint8Array([4, 8, 15, 16, 23, 42]).buffer
+  data: new Uint8Array([4, 8, 15, 16, 23, 42]).buffer,
 };
 chrome.usb.controlTransfer(connectionHandle, transferInfo, optionalCallback);
 ```
@@ -281,7 +291,11 @@ of data, like video and sound. To initiate an isochronous transfer (either inbou
 must use the [usb.isochronousTransfer][25] method:
 
 ```js
-chrome.usb.isochronousTransfer(connectionHandle, isochronousTransferInfo, transferCallback)
+chrome.usb.isochronousTransfer(
+  connectionHandle,
+  isochronousTransferInfo,
+  transferCallback
+);
 ```
 
 <table class="simple"><tbody><tr><th scope="col">Parameter</th><th scope="col">Description</th></tr><tr><td>connectionHandle</td><td>Object received in <a href="/apps/usb#method-openDevice">usb.openDevice</a> callback.</td></tr><tr><td>isochronousTransferInfo</td><td>Parameter object with the values in the table below.</td></tr><tr><td>transferCallback()</td><td>Invoked when the transfer has completed.</td></tr></tbody></table>
@@ -294,18 +308,22 @@ Example:
 
 ```js
 var transferInfo = {
-  "direction": "in",
-  "endpoint": 1,
-  "length": 2560
+  direction: "in",
+  endpoint: 1,
+  length: 2560,
 };
 
 var isoTransferInfo = {
-  "transferInfo": transferInfo,
-  "packets": 20,
-  "packetLength": 128
+  transferInfo: transferInfo,
+  packets: 20,
+  packetLength: 128,
 };
 
-chrome.usb.isochronousTransfer(connectionHandle, isoTransferInfo, optionalCallback);
+chrome.usb.isochronousTransfer(
+  connectionHandle,
+  isoTransferInfo,
+  optionalCallback
+);
 ```
 
 {% Aside %}
@@ -341,9 +359,9 @@ Example:
 
 ```js
 var transferInfo = {
-  "direction": "out",
-  "endpoint": 1,
-  "data": new Uint8Array([4, 8, 15, 16, 23, 42]).buffer
+  direction: "out",
+  endpoint: 1,
+  data: new Uint8Array([4, 8, 15, 16, 23, 42]).buffer,
 };
 ```
 
@@ -368,9 +386,9 @@ Example:
 
 ```js
 var transferInfo = {
-  "direction": "in",
-  "endpoint": 1,
-  "length": 2
+  direction: "in",
+  endpoint: 1,
+  length: 2,
 };
 chrome.usb.interruptTransfer(connectionHandle, transferInfo, optionalCallback);
 ```

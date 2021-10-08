@@ -30,7 +30,7 @@ those who are **not** using Bubblewrap to update their app.
 ## build.gradle
 
 The billing extension library itself depends on version `2.1.0` of `android-browser-helper`. Ensure
-your application is using a version that is equal or greater than that. 
+your application is using a version that is equal or greater than that.
 
 You will also need to add an implementation declaration for the billing extension library:
 
@@ -132,4 +132,3 @@ application in production.
 [9]: https://github.com/GoogleChromeLabs/bubblewrap
 [10]: https://github.com/GoogleChromeLabs/bubblewrap/issues/376
 [11]: https://web.dev/origin-trials/
-

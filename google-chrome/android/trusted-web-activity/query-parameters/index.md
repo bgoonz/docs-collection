@@ -87,7 +87,7 @@ including schema and domain must be used.
 
 In other cases, developers may want to create parameters that change across users or sessions, for
 instance. In most cases, this will involve collecting details from the Android side of the
-application to pass it to the Progressive Web App. 
+application to pass it to the Progressive Web App.
 
 ### Step 1: Create a custom LauncherActivity
 
@@ -115,6 +115,7 @@ public class CustomQueryStringLauncherActivity extends LauncherActivity {
 ```
 
 ### Step 2: Modify the `AndroidManifest.xml` to use the custom LauncherActivity
+
 ```xml
 <activity android:name="com.myapp.CustomQueryStringLauncherActivity"
     android:label="@string/app_name">
@@ -134,13 +135,13 @@ interested in hearing from developers who have the need for this feature. Check 
 Passing information from the native part to the web part of an application can be achieved by using
 query parameters. When a parameter is added to the query string, it will be accessible to scripts
 running on the page and may also be part of the referral when users navigate to a different page or
-the developer implements a share action. 
+the developer implements a share action.
 
 Developers must be aware of those implications, and can mitigate them using
 [link rel=noreferrer][1] or cleaning-up the URL using the [page location API][2].
 
 The Trusted Web Activity protocol doesn't currently provide a mechanism to exchange messages with
-the native part of the application after the web part is invoked. 
+the native part of the application after the web part is invoked.
 
 We believe existing or upcoming Web Platform APIs enable most use cases needed by developers. If
 you are looking for new or upcoming Web APIs, check out the [New Capabilities status page][7].

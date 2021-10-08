@@ -5,8 +5,7 @@ authors:
   - kaycebasques
 date: 2021-06-09
 #updated: YYYY-MM-DD
-description:
-  "How to move Chrome DevTools to the bottom or left of your viewport, or to a separate window."
+description: "How to move Chrome DevTools to the bottom or left of your viewport, or to a separate window."
 ---
 
 By default DevTools is docked to the right of your viewport. You can also dock to bottom, dock to

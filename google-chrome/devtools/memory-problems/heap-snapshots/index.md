@@ -5,8 +5,7 @@ authors:
   - megginkearney
 date: 2015-06-08
 #updated: YYYY-MM-DD
-description:
-  "Learn how to record heap snapshots with the Chrome DevTools heap profiler and find memory leaks."
+description: "Learn how to record heap snapshots with the Chrome DevTools heap profiler and find memory leaks."
 ---
 
 Learn how to record heap snapshots with the Chrome DevTools heap profiler and find memory leaks.
@@ -180,13 +179,14 @@ For example, this example does not use named functions:
 
 ```js
 function createLargeClosure() {
-  var largeStr = new Array(1000000).join('x');
+  var largeStr = new Array(1000000).join("x");
 
-  var lC = function() { // this is NOT a named function
-    return largeStr;
-  };
+  var lC = function () {
+    // this is NOT a named function
+    return largeStr;
+  };
 
-  return lC;
+  return lC;
 }
 ```
 
@@ -194,13 +194,14 @@ Whilst this example does:
 
 ```js
 function createLargeClosure() {
-  var largeStr = new Array(1000000).join('x');
+  var largeStr = new Array(1000000).join("x");
 
-  var lC = function lC() { // this IS a named function
-    return largeStr;
-  };
+  var lC = function lC() {
+    // this IS a named function
+    return largeStr;
+  };
 
-  return lC;
+  return lC;
 }
 ```
 
@@ -255,21 +256,16 @@ leaks happening due to forgotten detached DOM subtrees floating around.
 DOM leaks can be bigger than you think. Consider the following sample - when is the #tree GC?
 
 ```js
-  var select = document.querySelector;
-  var treeRef = select("#tree");
-  var leafRef = select("#leaf");
-  var body = select("body");
+var select = document.querySelector;
+var treeRef = select("#tree");
+var leafRef = select("#leaf");
+var body = select("body");
 
-  body.removeChild(treeRef);
+body.removeChild(treeRef); //#tree can't be GC yet due to treeRef
 
-  //#tree can't be GC yet due to treeRef
-  treeRef = null;
+treeRef = null; //#tree can't be GC yet due to indirect //reference from leafRef
 
-  //#tree can't be GC yet due to indirect
-  //reference from leafRef
-
-  leafRef = null;
-  //#NOW can be #tree GC
+leafRef = null; //#NOW can be #tree GC
 ```
 
 `#leaf` maintains a reference to it's parent (parentNode) and recursively up to `#tree`, so only
@@ -289,8 +285,7 @@ leaks with the Chrome DevTools][20] by Gonzalo Ruiz de Villa.
 [1]: /docs/devtools/memory-problems/memory-101/#objects_retaining_tree
 [2]: /docs/devtools/memory-problems/memory-101/#object-sizes
 [3]: https://github.com/GoogleChrome/devtools-docs/blob/master/docs/demos/memory/example3.html
-[4]:
-  /docs/devtools/memory-problems/#overview
+[4]: /docs/devtools/memory-problems/#overview
 [5]: /docs/devtools/memory-problems/memory-101/#dominators
 [6]: /docs/devtools/memory-problems/memory-101/#object-sizes
 [7]: /docs/devtools/memory-problems/memory-101/#object-sizes

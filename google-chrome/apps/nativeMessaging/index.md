@@ -30,9 +30,7 @@ defines the native messaging host configuration. Below is an example of the mani
   "description": "My Application",
   "path": "C:\\Program Files\\My Application\\chrome_native_messaging_host.exe",
   "type": "stdio",
-  "allowed_origins": [
-    "chrome-extension://knldjmfmopnpolahpmmgbagdohdnhkik/"
-  ]
+  "allowed_origins": ["chrome-extension://knldjmfmopnpolahpmmgbagdohdnhkik/"]
 }
 ```
 
@@ -71,18 +69,18 @@ browser (Google Chrome or Chromium). The system-wide native messaging hosts are 
 location, while the user-level native messaging hosts are looked up in a subdirectory within the
 [user profile directory][6] called `NativeMessagingHosts`.
 
-* OS X (system-wide)
-  * Google Chrome: `/Library/Google/Chrome/NativeMessagingHosts/_com.my_company.my_application_.json`
-  * Chromium: `/Library/Application Support/Chromium/NativeMessagingHosts/_com.my_company.my_application_.json`
-* OS X (user-specific, _default_ path)
-  * Google Chrome: `~/Library/Application Support/Google/Chrome/NativeMessagingHosts/_com.my_company.my_application_.json`
-  * Chromium: `~/Library/Application Support/Chromium/NativeMessagingHosts/_com.my_company.my_application_.json`
-* Linux (system-wide)
-  * Google Chrome: `/etc/opt/chrome/native-messaging-hosts/_com.my_company.my_application_.json`
-  * Chromium: `/etc/chromium/native-messaging-hosts/_com.my_company.my_application_.json`
-* Linux (user-specific, _default_ path)
-  * Google Chrome: `~/.config/google-chrome/NativeMessagingHosts/_com.my_company.my_application_.json`
-  * Chromium: `~/.config/chromium/NativeMessagingHosts/_com.my_company.my_application_.json`
+- OS X (system-wide)
+  - Google Chrome: `/Library/Google/Chrome/NativeMessagingHosts/_com.my_company.my_application_.json`
+  - Chromium: `/Library/Application Support/Chromium/NativeMessagingHosts/_com.my_company.my_application_.json`
+- OS X (user-specific, _default_ path)
+  - Google Chrome: `~/Library/Application Support/Google/Chrome/NativeMessagingHosts/_com.my_company.my_application_.json`
+  - Chromium: `~/Library/Application Support/Chromium/NativeMessagingHosts/_com.my_company.my_application_.json`
+- Linux (system-wide)
+  - Google Chrome: `/etc/opt/chrome/native-messaging-hosts/_com.my_company.my_application_.json`
+  - Chromium: `/etc/chromium/native-messaging-hosts/_com.my_company.my_application_.json`
+- Linux (user-specific, _default_ path)
+  - Google Chrome: `~/.config/google-chrome/NativeMessagingHosts/_com.my_company.my_application_.json`
+  - Chromium: `~/.config/chromium/NativeMessagingHosts/_com.my_company.my_application_.json`
 
 ### Native messaging protocol {: #native-messaging-host-protocol }
 
@@ -126,11 +124,11 @@ The Following example creates a [runtime.Port][16] object that's connected to na
 message:
 
 ```js
-var port = chrome.runtime.connectNative('com.my_company.my_application');
-port.onMessage.addListener(function(msg) {
+var port = chrome.runtime.connectNative("com.my_company.my_application");
+port.onMessage.addListener(function (msg) {
   console.log("Received" + msg);
 });
-port.onDisconnect.addListener(function() {
+port.onDisconnect.addListener(function () {
   console.log("Disconnected");
 });
 port.postMessage({ text: "Hello, my_application" });
@@ -140,11 +138,13 @@ port.postMessage({ text: "Hello, my_application" });
 a port, e.g.:
 
 ```js
-chrome.runtime.sendNativeMessage('com.my_company.my_application',
+chrome.runtime.sendNativeMessage(
+  "com.my_company.my_application",
   { text: "Hello" },
-  function(response) {
+  function (response) {
     console.log("Received " + response);
-  });
+  }
+);
 ```
 
 ## Debugging native messaging {: #native-messaging-debugging }
@@ -156,16 +156,16 @@ terminal. On Windows, use `--enable-logging` as explained at [How to enable logg
 
 Here are some errors and tips for solving the issues:
 
-* Failed to start native messaging host.
-  * Check whether you have sufficient permissions to execute the file.
-* Invalid native messaging host name specified.
-  * Check whether the name contains any invalid characters. Only lowercase alphanumeric characters,
+- Failed to start native messaging host.
+  - Check whether you have sufficient permissions to execute the file.
+- Invalid native messaging host name specified.
+  - Check whether the name contains any invalid characters. Only lowercase alphanumeric characters,
     underscores and dots are allowed. A name cannot start or end with a dot, and a dot cannot be
     followed by another dot.
-* Native host has exited.
-  * The pipe to the native messaging host was broken before the message was read by Chrome. This is most
+- Native host has exited.
+  - The pipe to the native messaging host was broken before the message was read by Chrome. This is most
     likely initiated from your native messaging host.
-* Specified native messaging host not found.
+- Specified native messaging host not found.
   - Is the name spelled correctly in the extension and in the manifest file?
   - Is the manifest put in the right directory and with the correct name? See [native messaging host
     location][19] for the expected formats.
@@ -173,14 +173,14 @@ Here are some errors and tips for solving the issues:
     values match the definition of a [native messaging host manifest][20]?
   - Does the file specified in `path` exist? On Windows, paths may be relative, but on OS X and Linux,
     the paths must be absolute.
-* Native messaging host _host name_ is not registered. (Windows-only)
-  * The native messaging host was not found in the Windows registry. Double-check using `regedit`
+- Native messaging host _host name_ is not registered. (Windows-only)
+  - The native messaging host was not found in the Windows registry. Double-check using `regedit`
     whether the key was really created and matches the required format as documented at [native
     messaging host location][21].
-* Access to the specified native messaging host is forbidden.
-  * Is the extension's origin listed in `allowed_origins`?
-* Error when communicating with the native messaging host.
-  * This is a very common error and indicates an incorrect implementation of the communication protocol
+- Access to the specified native messaging host is forbidden.
+  - Is the extension's origin listed in `allowed_origins`?
+- Error when communicating with the native messaging host.
+  - This is a very common error and indicates an incorrect implementation of the communication protocol
     in the native messaging host.
     - Make sure that all output in `stdout` adheres to the [native messaging protocol][22]. If you want
       to print some data for debugging purposes, write to `stderr`.

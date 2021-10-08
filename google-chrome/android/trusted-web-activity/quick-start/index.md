@@ -15,27 +15,26 @@ covering all the gotchas.
 
 By the end of this guide, you will:
 
-* Have used [Bubblewrap](https://github.com/GoogleChromeLabs/bubblewrap) to build an application
-that uses a Trusted Web Activity and passes verification.
-* Understand when your signing keys are used.
-* Be able to determine the signature your Android Application is being built with.
-* Know how to create a basic [Digital Asset Links](/digital-asset-links/v1/getting-started) file.
+- Have used [Bubblewrap](https://github.com/GoogleChromeLabs/bubblewrap) to build an application
+  that uses a Trusted Web Activity and passes verification.
+- Understand when your signing keys are used.
+- Be able to determine the signature your Android Application is being built with.
+- Know how to create a basic [Digital Asset Links](/digital-asset-links/v1/getting-started) file.
 
 To follow this guide you'll need:
 
-* [Node.js](https://nodejs.org/en/) 10 or above installed on the development computer.
-* An Android phone or emulator connected and set up for development
-([Enable USB debugging](https://developer.android.com/studio/debug/dev-options.html#enable) if
-you're using a physical phone).
-* A browser that supports Trusted Web Activity on your development phone.
+- [Node.js](https://nodejs.org/en/) 10 or above installed on the development computer.
+- An Android phone or emulator connected and set up for development
+  ([Enable USB debugging](https://developer.android.com/studio/debug/dev-options.html#enable) if
+  you're using a physical phone).
+- A browser that supports Trusted Web Activity on your development phone.
   Chrome 72 or later will work. Support in other browsers is on its way.
-* A website you'd like to view in the Trusted Web Activity.
+- A website you'd like to view in the Trusted Web Activity.
 
 A Trusted Web Activity lets your Android App launch a full screen Browser Tab without
 any browser UI.
 This capability is restricted to websites that you own, and you prove this by setting
 up Digital Asset Links. We'll talk [more about them later](#creating-your-asset-link-file).
-
 
 When you launch a Trusted Web Activity, the browser will check that the Digital Asset Links check
 out, this is called **verification**.

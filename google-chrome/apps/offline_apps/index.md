@@ -34,18 +34,18 @@ app should follow these rules:
 Use local data whenever possible.
 
 : When using resources from the internet, use `XMLHttpRequest` to get it, and then save the data
-  locally. You can use the Chrome Storage API, IndexedDB, or Filesystem API to save data locally.
+locally. You can use the Chrome Storage API, IndexedDB, or Filesystem API to save data locally.
 
 Separate your app's UI from its data.
 
 : Separating the UI and data not only improves your app's design and eases the task of enabling
-  offline usage, but also lets you provide other views of the user's data. An MVC framework can help
-  you keep the UI and data separate.
+offline usage, but also lets you provide other views of the user's data. An MVC framework can help
+you keep the UI and data separate.
 
 Assume your app can be closed at any time.
 
 : Save application state (both locally and remotely, when possible) so that users can pick up wherever
-  they left off.
+they left off.
 
 Test your app thoroughly.
 
@@ -63,7 +63,7 @@ Chrome Apps are limited in where they can place their resources:
   data using `XMLHttpRequest` (see [Referencing external resources][6]). Then either refer to the
   data with a blob URL or (better yet) save and then load the data using the [Filesystem
   API][7].
-  
+
   {% Aside %}
 
   **Note:** Styles can be inline or in separate `.css` files.

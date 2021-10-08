@@ -9,7 +9,7 @@ authors:
 ---
 
 [Web Share Target][1] enables PWAs to receive shared content from other applications installed on
-the device. This feature can be used, for instance,  by applications such as image editors to
+the device. This feature can be used, for instance, by applications such as image editors to
 receive an image from a camera app, or a social network to receive an image or a video for sharing.
 
 Starting with Chrome 86, Web Share Target is now also available to applications using
@@ -120,9 +120,10 @@ included and the markup should be inside the application tag and look like the f
 ```
 
 Finally, two new items need to be added to the LauncherActivity activity tag:
- - A `meta-data` tag that references the JSON defined in strings.xml.
- - An `intent-filter` that declares which mime-types the application is able to handle to other
-apps on the device.
+
+- A `meta-data` tag that references the JSON defined in strings.xml.
+- An `intent-filter` that declares which mime-types the application is able to handle to other
+  apps on the device.
 
 ```xml
 <meta-data
@@ -138,6 +139,7 @@ apps on the device.
     <data android:mimeType="video/*" />
 </intent-filter>
 ```
+
 As can be seen in the markup above, a `data` element should be added for each `mime-type` declared
 in the `share_target` JSON.
 
@@ -164,8 +166,8 @@ category, and `mime-types` handled by the application.
 
 There are a few things that can cause this. This is a checklist of things to look at:
 
- - Ensure that the Digital Asset Links validation is successful.
- - Check the JSON inside strings.xml for correctness.
+- Ensure that the Digital Asset Links validation is successful.
+- Check the JSON inside strings.xml for correctness.
 
 [1]: https://web.dev/web-share-target/
 [2]: /docs/android/trusted-web-activity/

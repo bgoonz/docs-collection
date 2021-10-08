@@ -93,13 +93,13 @@ To demonstrate Timeline memory recordings, consider the code below:
 var x = [];
 
 function grow() {
-  for (var i = 0; i < 10000; i++) {
-    document.body.appendChild(document.createElement('div'));
-  }
-  x.push(new Array(1000000).join('x'));
+  for (var i = 0; i < 10000; i++) {
+    document.body.appendChild(document.createElement("div"));
+  }
+  x.push(new Array(1000000).join("x"));
 }
 
-document.getElementById('grow').addEventListener('click', grow);
+document.getElementById("grow").addEventListener("click", grow);
 ```
 
 Every time that the button referenced in the code is pressed, ten thousand `div` nodes are appended
@@ -138,15 +138,15 @@ Here's a simple example of detached DOM nodes.
 var detachedTree;
 
 function create() {
-  var ul = document.createElement('ul');
-  for (var i = 0; i < 10; i++) {
-    var li = document.createElement('li');
-    ul.appendChild(li);
-  }
-  detachedTree = ul;
+  var ul = document.createElement("ul");
+  for (var i = 0; i < 10; i++) {
+    var li = document.createElement("li");
+    ul.appendChild(li);
+  }
+  detachedTree = ul;
 }
 
-document.getElementById('create').addEventListener('click', create);
+document.getElementById("create").addEventListener("click", create);
 ```
 
 Clicking the button referenced in the code creates a `ul` node with ten `li` children. These nodes
@@ -196,10 +196,10 @@ To demonstrate the Allocation Timeline consider the following code:
 var x = [];
 
 function grow() {
-  x.push(new Array(1000000).join('x'));
+  x.push(new Array(1000000).join("x"));
 }
 
-document.getElementById('grow').addEventListener('click', grow);
+document.getElementById("grow").addEventListener("click", grow);
 ```
 
 Every time that the button referenced in the code is pushed, a string of one million characters is

@@ -41,13 +41,13 @@ For example, suppose you're debugging the following code:
 
 ```js
 function updateHeader() {
-  var day = new Date().getDay();
-  var name = getName(); // A
-  updateName(name); // D
+  var day = new Date().getDay();
+  var name = getName(); // A
+  updateName(name); // D
 }
 function getName() {
-  var name = app.first + ' ' + app.last; // B
-  return name; // C
+  var name = app.first + " " + app.last; // B
+  return name; // C
 }
 ```
 
@@ -69,13 +69,13 @@ For example, suppose you're debugging the following code:
 
 ```js
 function updateHeader() {
-  var day = new Date().getDay();
-  var name = getName(); // A
-  updateName(name);
+  var day = new Date().getDay();
+  var name = getName(); // A
+  updateName(name);
 }
 function getName() {
-  var name = app.first + ' ' + app.last; // B
-  return name;
+  var name = app.first + " " + app.last; // B
+  return name;
 }
 ```
 
@@ -96,13 +96,13 @@ For example, suppose you're debugging the following code:
 
 ```js
 function updateHeader() {
-  var day = new Date().getDay();
-  var name = getName();
-  updateName(name); // C
+  var day = new Date().getDay();
+  var name = getName();
+  updateName(name); // C
 }
 function getName() {
-  var name = app.first + ' ' + app.last; // A
-  return name; // B
+  var name = app.first + " " + app.last; // A
+  return name; // B
 }
 ```
 
@@ -124,7 +124,6 @@ runs all of the code up to that point, and then pauses on that line.
 {% Img src="image/admin/weTYHv4ceNfpam1GEJC9.png", alt="Selecting 'Continue to here'.", width="800", height="573" %}
 
 **Figure 4**. Selecting **Continue to here**
-
 
 ### Resume script execution {: #resume }
 
@@ -220,9 +219,9 @@ For example, suppose you're stepping through this code:
 
 ```js
 function animate() {
-  prepare();
-  lib.doFancyStuff(); // A
-  render();
+  prepare();
+  lib.doFancyStuff(); // A
+  render();
 }
 ```
 

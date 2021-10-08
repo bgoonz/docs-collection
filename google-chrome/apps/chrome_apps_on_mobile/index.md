@@ -384,24 +384,20 @@ The Chrome ADT for Android is currently in a pre-alpha release. To try it out, v
 [24]: https://github.com/phonegap/ios-sim
 [25]: https://github.com/GoogleChrome/chrome-app-samples#mobile-support
 [26]: http://software.intel.com/en-us/articles/intel-hardware-accelerated-execution-manager/
-[27]:
-  http://stackoverflow.com/questions/3362652/what-is-a-provisioning-profile-used-for-when-developing-iphone-applications
+[27]: http://stackoverflow.com/questions/3362652/what-is-a-provisioning-profile-used-for-when-developing-iphone-applications
 [28]: https://github.com/phonegap/phonegap/wiki/Debugging-in-PhoneGap
 [29]: https://developer.apple.com/library/ios/qa/qa1686/_index.html
-[30]:
-  https://developer.apple.com/library/ios/documentation/userexperience/conceptual/mobilehig/IconMatrix.html
+[30]: https://developer.apple.com/library/ios/documentation/userexperience/conceptual/mobilehig/IconMatrix.html
 [31]: http://developer.android.com/tools/building/building-cmdline.html#ReleaseMode
 [32]: https://play.google.com/apps/publish
-[33]:
-  https://developer.apple.com/library/ios/documentation/IDEs/Conceptual/AppDistributionGuide/Introduction/Introduction.html
+[33]: https://developer.apple.com/library/ios/documentation/IDEs/Conceptual/AppDistributionGuide/Introduction/Introduction.html
 [34]: /apps/app_deprecated
 [35]: http://www.html5rocks.com/en/mobile/mobifying/#toc-mediaqueries
 [36]: /docs/extensions/reference/app_window
 [37]: https://github.com/ftlabs/fastclick
 [38]: http://updates.html5rocks.com/2013/12/300ms-tap-delay-gone-away
 [39]: /docs/extensions/reference/identity
-[40]:
-  https://github.com/MobileChromeApps/mobile-chrome-apps/blob/master/chrome-cordova/plugins/google.payments/README.md
+[40]: https://github.com/MobileChromeApps/mobile-chrome-apps/blob/master/chrome-cordova/plugins/google.payments/README.md
 [41]: /docs/extensions/reference/pushMessaging
 [42]: /docs/extensions/reference/socket
 [43]: /docs/extensions/reference/notifications
