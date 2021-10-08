@@ -1,4 +1,6 @@
-versionhistory
-==============
-
-<table><thead><tr class="header"><th></th><th>Name</th><th>Size</th><th>Modified</th><th></th></tr></thead><tbody><tr class="odd"><td></td><td><span class="goup">..</span></td><td>—</td><td>—</td><td></td></tr><tr class="even"><td></td><td><span class="name">examples</span></td><td>—</td><td>Fri Oct 8 12:03:20 2021</td><td></td></tr><tr class="odd"><td></td><td><span class="name">guide</span></td><td>—</td><td>Fri Oct 8 12:03:20 2021</td><td></td></tr><tr class="even"><td></td><td><span class="name">reference</span></td><td>—</td><td>Fri Oct 8 12:03:20 2021</td><td></td></tr><tr class="odd"><td></td><td><span class="name">index.md</span></td><td>169 bytes</td><td>Fri Oct 8 11:33:16 2021</td><td></td></tr></tbody></table>
+---
+title: VersionHistory API
+description: >
+  A web service API for retrieving information about Chrome versions and releases.
+layout: 'layouts/project-landing.njk'
+---
