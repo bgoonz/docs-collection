@@ -1,133 +1,68 @@
-This API reference is organized by resource type. Each resource type has one or more data representations and one or more methods.
+---
+layout: "layouts/doc-post.njk"
+title: "Chrome Web Store API Reference"
+#date: TODO
+#updated: TODO
+#description: TODO
+---
 
-Resource types
---------------
+This API reference is organized by resource type. Each resource type has one or more data
+representations and one or more methods.
 
-1.  [InAppProducts](#InAppProducts)
-2.  [Items](#Items)
-3.  [Licenses](#Licenses)
-4.  [UserLicenses](#userLicenses)
-5.  [Payments](#Payments)
+## Resource types
 
-InAppProducts {: \#InAppProducts }
-----------------------------------
+1.  [InAppProducts][1]
+2.  [Items][2]
+3.  [Licenses][3]
+4.  [UserLicenses][4]
+5.  [Payments][5]
 
-For InAppProducts Resource details, see the [resource representation](/docs/webstore/webstore_api/inAppProducts/#resource) page.
+## InAppProducts {: #InAppProducts }
 
-Method
+For InAppProducts Resource details, see the [resource representation][6] page.
 
-HTTP request
+<table><thead><tr><th>Method</th><th>HTTP request</th><th>Description</th></tr></thead><tbody><tr class="alt"><td colspan="3">URIs relative to https://www.googleapis.com/chromewebstore/v1.1, unless otherwise noted</td></tr><tr><td><a href="/webstore/webstore_api/inAppProducts/get/">get</a></td><td><code>GET&nbsp; /items/<var>itemId</var>/skus/<var>sku</var></code></td><td>Gets the in-app product information of an item.</td></tr><tr><td><a href="/webstore/webstore_api/inAppProducts/list/">list</a></td><td><code>GET&nbsp; /items/<var>itemId</var>/skus</code></td><td>Lists the in-app product information of an item.</td></tr></tbody></table>
 
-Description
+## Items {: #Items }
 
-URIs relative to https://www.googleapis.com/chromewebstore/v1.1, unless otherwise noted
+For Items Resource details, see the [resource representation][9] page.
 
-[get](/webstore/webstore_api/inAppProducts/get/)
+<table><thead><tr><th>Method</th><th>HTTP request</th><th>Description</th></tr></thead><tbody><tr class="alt"><td colspan="3">URIs relative to https://www.googleapis.com, unless otherwise noted</td></tr><tr><td><a href="/webstore/webstore_api/items/get/">get</a></td><td><code>GET<br>/chromewebstore/v1.1/items/<var>itemId</var></code></td><td>Gets a Chrome Web Store item. Provide <code>projection="DRAFT"</code> in URL (case sensitive).</td></tr><tr><td><a href="/webstore/webstore_api/items/insert/">insert</a></td><td><code>POST<br>/upload/chromewebstore/v1.1/items</code></td><td>Inserts a new item.</td></tr><tr><td><a href="/webstore/webstore_api/items/publish/">publish</a></td><td><code>POST&nbsp; /chromewebstore/v1.1/<br>items/<var>itemId</var>/publish</code></td><td>Publishes an item. Provide defined <code>publishTarget</code> in URL (case sensitive): <code>publishTarget = "trustedTesters"</code> or <code>publishTarget = "default"</code>.</td></tr><tr><td><a href="/webstore/webstore_api/items/update/">update</a></td><td><code>PUT<br>/upload/chromewebstore/v1.1/<br>items/<var>itemId</var></code><br>&nbsp;<br>and<br>&nbsp;<br><code>PUT&nbsp; /items/<var>itemId</var></code></td><td>Updates an existing item.</td></tr></tbody></table>
 
-`GET  /items/itemId/skus/sku`
+## Licenses {: #Licenses }
 
-Gets the in-app product information of an item.
+For Licenses Resource details, see the [resource representation][14] page.
 
-[list](/webstore/webstore_api/inAppProducts/list/)
+<table><thead><tr><th>Method</th><th>HTTP request</th><th>Description</th></tr></thead><tbody><tr class="alt"><td colspan="3">URIs relative to https://www.googleapis.com/chromewebstore/v1.1, unless otherwise noted</td></tr><tr><td><a href="/webstore/webstore_api/licenses/get/">get</a></td><td><code>GET&nbsp; /licenses/<var>appId</var>/<var>userId</var></code></td><td>Gets the licenses for Chrome hosted apps.</td></tr></tbody></table>
 
-`GET  /items/itemId/skus`
+## UserLicenses {: #userLicenses }
 
-Lists the in-app product information of an item.
+For UserLicenses Resource details, see the [resource representation][16] page.
 
-Items {: \#Items }
-------------------
+<table><thead><tr><th>Method</th><th>HTTP request</th><th>Description</th></tr></thead><tbody><tr class="alt"><td colspan="3">URIs relative to https://www.googleapis.com/chromewebstore/v1.1, unless otherwise noted</td></tr><tr><td><a href="/webstore/webstore_api/userLicenses/getUserLicense/">getUserLicense</a></td><td><code>GET&nbsp; /userlicenses/<var>appId</var></code></td><td>Gets the user licenses for Chrome Apps and Chrome Extensions.</td></tr></tbody></table>
 
-For Items Resource details, see the [resource representation](/docs/webstore/webstore_api/items/#resource) page.
+## Payments {: #Payments }
 
-Method
+For Payments Resource details, see the [resource representation][18] page.
 
-HTTP request
+<table><thead><tr><th>Method</th><th>HTTP request</th><th>Description</th></tr></thead><tbody><tr class="alt"><td colspan="3">URIs relative to https://www.googleapis.com/chromewebstore/v1.1, unless otherwise noted</td></tr><tr><td><a href="/webstore/webstore_api/payments/list/">list</a></td><td><code>GET&nbsp; /items/<var>itemId</var>/payments</code></td><td>Lists the in-app products that the user has purchased.</td></tr></tbody></table>
 
-Description
-
-URIs relative to https://www.googleapis.com, unless otherwise noted
-
-[get](/webstore/webstore_api/items/get/)
-
-`GET/chromewebstore/v1.1/items/itemId`
-
-Gets a Chrome Web Store item. Provide `projection=“DRAFT”` in URL (case sensitive).
-
-[insert](/webstore/webstore_api/items/insert/)
-
-`POST/upload/chromewebstore/v1.1/items`
-
-Inserts a new item.
-
-[publish](/webstore/webstore_api/items/publish/)
-
-`POST  /chromewebstore/v1.1/items/itemId/publish`
-
-Publishes an item. Provide defined `publishTarget` in URL (case sensitive): `publishTarget = “trustedTesters”` or `publishTarget = “default”`.
-
-[update](/webstore/webstore_api/items/update/)
-
-`PUT/upload/chromewebstore/v1.1/items/itemId`  
-   
-and  
-   
-`PUT  /items/itemId`
-
-Updates an existing item.
-
-Licenses {: \#Licenses }
-------------------------
-
-For Licenses Resource details, see the [resource representation](/docs/webstore/webstore_api/licenses/#resource) page.
-
-Method
-
-HTTP request
-
-Description
-
-URIs relative to https://www.googleapis.com/chromewebstore/v1.1, unless otherwise noted
-
-[get](/webstore/webstore_api/licenses/get/)
-
-`GET  /licenses/appId/userId`
-
-Gets the licenses for Chrome hosted apps.
-
-UserLicenses {: \#userLicenses }
---------------------------------
-
-For UserLicenses Resource details, see the [resource representation](/docs/webstore/webstore_api/userLicenses/#resource) page.
-
-Method
-
-HTTP request
-
-Description
-
-URIs relative to https://www.googleapis.com/chromewebstore/v1.1, unless otherwise noted
-
-[getUserLicense](/webstore/webstore_api/userLicenses/getUserLicense/)
-
-`GET  /userlicenses/appId`
-
-Gets the user licenses for Chrome Apps and Chrome Extensions.
-
-Payments {: \#Payments }
-------------------------
-
-For Payments Resource details, see the [resource representation](/docs/webstore/webstore_api/payments/#resource) page.
-
-Method
-
-HTTP request
-
-Description
-
-URIs relative to https://www.googleapis.com/chromewebstore/v1.1, unless otherwise noted
-
-[list](/webstore/webstore_api/payments/list/)
-
-`GET  /items/itemId/payments`
-
-Lists the in-app products that the user has purchased.
+[1]: #InAppProducts
+[2]: #Items
+[3]: #Licenses
+[4]: #userLicenses
+[5]: #Payments
+[6]: /docs/webstore/webstore_api/inAppProducts/#resource
+[7]: /docs/webstore/webstore_api/inAppProducts/get/
+[8]: /docs/webstore/webstore_api/inAppProducts/list/
+[9]: /docs/webstore/webstore_api/items/#resource
+[10]: /docs/webstore/webstore_api/items/get/
+[11]: /docs/webstore/webstore_api/items/insert/
+[12]: /docs/webstore/webstore_api/items/publish/
+[13]: /docs/webstore/webstore_api/items/update/
+[14]: /docs/webstore/webstore_api/licenses/#resource
+[15]: /docs/webstore/webstore_api/licenses/get/
+[16]: /docs/webstore/webstore_api/userLicenses/#resource
+[17]: /docs/webstore/webstore_api/userLicenses/getUserLicense/
+[18]: /docs/webstore/webstore_api/payments/#resource
+[19]: /docs/webstore/webstore_api/payments/list/
