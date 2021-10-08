@@ -1,232 +1,185 @@
----
-layout: "layouts/doc-post.njk"
-title: "Extension development overview"
-date: 2012-09-17
-updated: 2018-06-12
-description: An overview of Chrome Extension capabilities and components.
----
+2012-09-17
 
-{% include 'partials/extensions/mv2-legacy-page.md' %}
+{% include ‘partials/extensions/mv2-legacy-page.md’ %}
 
-After reading the [Getting Started][1] tutorial and [Overview][2], use this guide as an outline to
-extension components and abilities. Developers are encouraged to explore and expand extension
-functionality.
+After reading the [Getting Started](/docs/extensions/mv2/getstarted) tutorial and [Overview](/docs/extensions/mv2/overview), use this guide as an outline to extension components and abilities. Developers are encouraged to explore and expand extension functionality.
 
-<table class="width-full">
-  <tbody>
-    <tr>
-      <th colspan="2"><strong>Customize extension user interface</strong></th>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/reference/browserAction">Browser&nbsp;Actions</a></td>
-      <td>Add an icon, tooltip, badge, and popup to the toolbar.</td>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/reference/commands">Commands</a></td>
-      <td>Add keyboard shortcuts that trigger actions.</td>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/reference/contextMenus">Context&nbsp;Menus</a></td>
-      <td>Add items to Google Chrome's context menu.</td>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/reference/omnibox">Omnibox</a></td>
-      <td>Add keyword functionality to the address bar.</td>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/mv2/override">Override&nbsp;Pages</a></td>
-      <td>Create a version of the New Tab, Bookmark, or History page.</td>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/reference/pageAction">Page&nbsp;Actions</a></td>
-      <td>Dynamically display icons in the toolbar.</td>
-    </tr>
-  </tbody>
-</table>
+**Customize extension user interface**
 
-<table class="width-full">
-  <tbody>
-    <tr>
-      <th colspan="2"><strong>Build extension utilities</strong></th>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/mv2/a11y">Accessibility (a11y)</a></td>
-      <td>Make an extension accessible to people with disabilities.</td>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/mv2/background_pages">Background Scripts</a></td>
-      <td>Detect and react when something interesting happens.</td>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/reference/i18n">Internationalization</a></td>
-      <td>Work with language and locale.</td>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/reference/identity">Identity</a></td>
-      <td>Get OAuth2 access tokens.</td>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/reference/management">Management</a></td>
-      <td>Manage extensions that are installed and running.</td>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/mv2/messaging">Message&nbsp;Passing</a></td>
-      <td>Communicate from a content script to its parent extension, or vice versa.</td>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/mv2/options">Options&nbsp;Pages</a></td>
-      <td>Let users customize an extension.</td>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/reference/permissions">Permissions</a></td>
-      <td>Modify an extension's permissions.</td>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/reference/storage">Storage</a></td>
-      <td>Store and retrieve data.</td>
-    </tr>
-  </tbody>
-</table>
+[Browser Actions](/docs/extensions/reference/browserAction)
 
-<table class="width-full">
-  <tbody>
-    <tr>
-      <th colspan="2"><strong>Modify and observe the Chrome Browser</strong></th>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/reference/bookmarks">Bookmarks</a></td>
-      <td>Create, organize, and manipulate bookmark behavior.</td>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/reference/browsingData">Browsing&nbsp;Data</a></td>
-      <td>Remove browsing data from a user's local profile.</td>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/reference/downloads">Downloads</a></td>
-      <td>Programmatically initiate, monitor, manipulate, and search for downloads.</td>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/reference/fontSettings">Font&nbsp;Settings</a></td>
-      <td>Manage Chrome's font settings.</td>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/reference/history">History</a></td>
-      <td>Interact with the browser's record of visited pages.</td>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/reference/privacy">Privacy</a></td>
-      <td>Control Chrome privacy features.</td>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/reference/proxy">Proxy</a></td>
-      <td>Manage Chrome's proxy settings.</td>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/reference/sessions">Sessions</a></td>
-      <td>Query and restore tabs and windows from a browsing session.</td>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/reference/tabs">Tabs</a></td>
-      <td>Create, modify, and rearrange tabs in the browser.</td>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/reference/topSites">Top&nbsp;Sites</a></td>
-      <td>Access users most visited URLs.</td>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/mv2/themes">Themes</a></td>
-      <td>Change the overall appearance of the browser.</td>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/reference/windows">Windows</a></td>
-      <td>Create, modify, and rearrange windows in the browser.</td>
-    </tr>
-  </tbody>
-</table>
+Add an icon, tooltip, badge, and popup to the toolbar.
 
-<table class="width-full">
-  <tbody>
-    <tr>
-      <th colspan="2"><strong>Modify and observe the web</strong></th>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/mv2/manifest/activeTab">Active&nbsp;Tab</a></td>
-      <td>Securely access websites by removing most needs for <code>&lt;all_urls&gt;</code> host permission.</td>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/reference/contentSettings">Content&nbsp;Settings</a></td>
-      <td>Customize websites features such as cookies, JavaScript, and plugins.</td>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/mv2/content_scripts">Content&nbsp;Scripts</a></td>
-      <td>Run JavaScript code in the context of web pages.</td>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/reference/cookies">Cookies</a></td>
-      <td>Explore and modify the browser's cookie system.</td>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/mv2/xhr">Cross-Origin&nbsp;XHR</a></td>
-      <td>Use XMLHttpRequest to send and receive data from remote servers.</td>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/reference/declarativeContent">Declarative&nbsp;Content</a></td>
-      <td>Perform actions on the content of a page without requiring permission.</td>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/reference/desktopCapture">Desktop&nbsp;Capture</a></td>
-      <td>Capture content of screen, individual windows or tabs.</td>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/reference/pageCapture">Page&nbsp;Capture</a></td>
-      <td>Save a tab's source information as MHTML.</td>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/reference/tabCapture">Tab&nbsp;Capture</a></td>
-      <td>Interact with tab media streams.</td>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/reference/webNavigation">Web&nbsp;Navigation</a></td>
-      <td>Status updates of navigation requests in-flight.</td>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/reference/webRequest">Web&nbsp;Request</a></td>
-      <td>Observe and analyze traffic. Intercept block, or modify requests in-flight.</td>
-    </tr>
-  </tbody>
-</table>
+[Commands](/docs/extensions/reference/commands)
 
-<table class="width-full">
-  <tbody>
-    <tr>
-      <th colspan="2"><strong>Package, deploy and update</strong></th>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/mv2/hosting">Chrome Web Store</a></td>
-      <td>Hosting and updating extensions with the Chrome Web Store.</td>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/mv2/external_extensions">Other&nbsp;Deployment&nbsp;Options</a></td>
-      <td>Distribute extensions on a designated network or with other software.</td>
-    </tr>
-  </tbody>
-</table>
+Add keyboard shortcuts that trigger actions.
 
-<table class="width-full">
-  <tbody>
-    <tr>
-      <th colspan="2"><strong>Expand Chrome DevTools</strong></th>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/reference/debugger">Debugger</a></td>
-      <td>Instrument network interaction, debug JavaScript, mutate the DOM and CSS.</td>
-    </tr>
-    <tr>
-      <td><a href="/docs/extensions/mv2/devtools">Devtools</a></td>
-      <td>Add features to Chrome Developer Tools.</td>
-    </tr>
-  </tbody>
-</table>
+[Context Menus](/docs/extensions/reference/contextMenus)
 
-[1]: /docs/extensions/mv2/getstarted
-[2]: /docs/extensions/mv2/overview
+Add items to Google Chrome’s context menu.
+
+[Omnibox](/docs/extensions/reference/omnibox)
+
+Add keyword functionality to the address bar.
+
+[Override Pages](/docs/extensions/mv2/override)
+
+Create a version of the New Tab, Bookmark, or History page.
+
+[Page Actions](/docs/extensions/reference/pageAction)
+
+Dynamically display icons in the toolbar.
+
+**Build extension utilities**
+
+[Accessibility (a11y)](/docs/extensions/mv2/a11y)
+
+Make an extension accessible to people with disabilities.
+
+[Background Scripts](/docs/extensions/mv2/background_pages)
+
+Detect and react when something interesting happens.
+
+[Internationalization](/docs/extensions/reference/i18n)
+
+Work with language and locale.
+
+[Identity](/docs/extensions/reference/identity)
+
+Get OAuth2 access tokens.
+
+[Management](/docs/extensions/reference/management)
+
+Manage extensions that are installed and running.
+
+[Message Passing](/docs/extensions/mv2/messaging)
+
+Communicate from a content script to its parent extension, or vice versa.
+
+[Options Pages](/docs/extensions/mv2/options)
+
+Let users customize an extension.
+
+[Permissions](/docs/extensions/reference/permissions)
+
+Modify an extension’s permissions.
+
+[Storage](/docs/extensions/reference/storage)
+
+Store and retrieve data.
+
+**Modify and observe the Chrome Browser**
+
+[Bookmarks](/docs/extensions/reference/bookmarks)
+
+Create, organize, and manipulate bookmark behavior.
+
+[Browsing Data](/docs/extensions/reference/browsingData)
+
+Remove browsing data from a user’s local profile.
+
+[Downloads](/docs/extensions/reference/downloads)
+
+Programmatically initiate, monitor, manipulate, and search for downloads.
+
+[Font Settings](/docs/extensions/reference/fontSettings)
+
+Manage Chrome’s font settings.
+
+[History](/docs/extensions/reference/history)
+
+Interact with the browser’s record of visited pages.
+
+[Privacy](/docs/extensions/reference/privacy)
+
+Control Chrome privacy features.
+
+[Proxy](/docs/extensions/reference/proxy)
+
+Manage Chrome’s proxy settings.
+
+[Sessions](/docs/extensions/reference/sessions)
+
+Query and restore tabs and windows from a browsing session.
+
+[Tabs](/docs/extensions/reference/tabs)
+
+Create, modify, and rearrange tabs in the browser.
+
+[Top Sites](/docs/extensions/reference/topSites)
+
+Access users most visited URLs.
+
+[Themes](/docs/extensions/mv2/themes)
+
+Change the overall appearance of the browser.
+
+[Windows](/docs/extensions/reference/windows)
+
+Create, modify, and rearrange windows in the browser.
+
+**Modify and observe the web**
+
+[Active Tab](/docs/extensions/mv2/manifest/activeTab)
+
+Securely access websites by removing most needs for `<all_urls>` host permission.
+
+[Content Settings](/docs/extensions/reference/contentSettings)
+
+Customize websites features such as cookies, JavaScript, and plugins.
+
+[Content Scripts](/docs/extensions/mv2/content_scripts)
+
+Run JavaScript code in the context of web pages.
+
+[Cookies](/docs/extensions/reference/cookies)
+
+Explore and modify the browser’s cookie system.
+
+[Cross-Origin XHR](/docs/extensions/mv2/xhr)
+
+Use XMLHttpRequest to send and receive data from remote servers.
+
+[Declarative Content](/docs/extensions/reference/declarativeContent)
+
+Perform actions on the content of a page without requiring permission.
+
+[Desktop Capture](/docs/extensions/reference/desktopCapture)
+
+Capture content of screen, individual windows or tabs.
+
+[Page Capture](/docs/extensions/reference/pageCapture)
+
+Save a tab’s source information as MHTML.
+
+[Tab Capture](/docs/extensions/reference/tabCapture)
+
+Interact with tab media streams.
+
+[Web Navigation](/docs/extensions/reference/webNavigation)
+
+Status updates of navigation requests in-flight.
+
+[Web Request](/docs/extensions/reference/webRequest)
+
+Observe and analyze traffic. Intercept block, or modify requests in-flight.
+
+**Package, deploy and update**
+
+[Chrome Web Store](/docs/extensions/mv2/hosting)
+
+Hosting and updating extensions with the Chrome Web Store.
+
+[Other Deployment Options](/docs/extensions/mv2/external_extensions)
+
+Distribute extensions on a designated network or with other software.
+
+**Expand Chrome DevTools**
+
+[Debugger](/docs/extensions/reference/debugger)
+
+Instrument network interaction, debug JavaScript, mutate the DOM and CSS.
+
+[Devtools](/docs/extensions/mv2/devtools)
+
+Add features to Chrome Developer Tools.
