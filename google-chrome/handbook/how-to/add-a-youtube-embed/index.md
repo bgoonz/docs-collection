@@ -1,37 +1,4 @@
----
-layout: 'layouts/doc-post.njk'
-title: Add a YouTube Embed
-description: 'Add a YouTube embed to a post.'
-date: 2020-11-30
----
+add-a-youtube-embed
+===================
 
-## Add a YouTube Embed
-
-To add an YouTube embed to a post you can use a custom shortcode.
-
-{% raw %}
-
-```md
-{% YouTube
-  id='whnms4CLJys'
-%}
-```
-
-{% endraw %}
-
-{% YouTube
-  id='whnms4CLJys'
-%}
-
-You can also specify the startTime in the second parameter.
-
-{% raw %}
-
-```md
-{% YouTube
-  id='whnms4CLJys',
-  startTime='123'
-%}
-```
-
-{% endraw %}
+<table><thead><tr class="header"><th></th><th>Name</th><th>Size</th><th>Modified</th><th></th></tr></thead><tbody><tr class="odd"><td></td><td><span class="goup">..</span></td><td>—</td><td>—</td><td></td></tr><tr class="even"><td></td><td><span class="name">index.md</span></td><td>472 bytes</td><td>Fri Oct 8 11:33:23 2021</td><td></td></tr></tbody></table>

@@ -1,30 +1,4 @@
----
-layout: 'layouts/doc-post.njk'
-title: Add a tag
-description: 'Add a new tag.'
-date: 2021-01-11
----
+add-a-tag
+=========
 
-## Add the tag to the list of supported tags
-
-- Add your tag to `site/_data/i18n/tags.yml`. The `en` and `es` fields correspond
-to different languages. For now, just add your tag using the `en` field.
-
-```yaml
-news:
-  en: News
-```
-
-## Add the tag to your post
-
-In the front matter for your post you can add a list of tags:
-
-```md
----
-title: My first post
-tags:
-  - news
-  - feature-policy
-  - encryption
----
-```
+<table><thead><tr class="header"><th></th><th>Name</th><th>Size</th><th>Modified</th><th></th></tr></thead><tbody><tr class="odd"><td></td><td><span class="goup">..</span></td><td>—</td><td>—</td><td></td></tr><tr class="even"><td></td><td><span class="name">index.md</span></td><td>516 bytes</td><td>Fri Oct 8 11:33:22 2021</td><td></td></tr></tbody></table>

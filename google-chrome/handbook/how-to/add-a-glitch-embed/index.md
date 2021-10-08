@@ -1,38 +1,4 @@
----
-layout: 'layouts/doc-post.njk'
-title: Add a Glitch Embed
-description: 'Add a Glitch embed to a post.'
-date: 2020-11-23
----
+add-a-glitch-embed
+==================
 
-## Add a Glitch Embed
-
-To add an Glitch embed to a post you can use a custom shortcode which optimizes
-Glitch embeds on the site.
-
-{% raw %}
-
-```md
-{% Glitch
-  id='fav-kitties-compress-starter'
-%}
-```
-
-{% endraw %}
-
-{% Glitch
-  id='fav-kitties-compress-starter'
-%}
-
-The Glitch embed shortcode supports additional properties though. Below is an
-example interface of the accepted argument:
-
-```typescript
-interface GlitchArgs {
-  allow?: string | string[];
-  height?: number;
-  id: string;
-  path?: string;
-  previewSize?: number;
-}
-```
+<table><thead><tr class="header"><th></th><th>Name</th><th>Size</th><th>Modified</th><th></th></tr></thead><tbody><tr class="odd"><td></td><td><span class="goup">..</span></td><td>—</td><td>—</td><td></td></tr><tr class="even"><td></td><td><span class="name">index.md</span></td><td>663 bytes</td><td>Fri Oct 8 11:33:20 2021</td><td></td></tr></tbody></table>

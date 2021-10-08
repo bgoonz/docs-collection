@@ -1,28 +1,4 @@
----
-api: pageCapture
----
+pageCapture
+===========
 
-MHTML is a [standard format][1] supported by most browsers. It encapsulates in a single file a page
-and all its resources (CSS files, images..).
-
-Note that for security reasons a MHTML file can only be loaded from the file system and that it can
-only be loaded in the main frame.
-
-## Manifest
-
-You must declare the "pageCapture" permission in the [extension manifest][2] to use the pageCapture
-API. For example:
-
-```json
-{
-  "name": "My extension",
-  ...
-  "permissions": [
-    "pageCapture"
-  ],
-  ...
-}
-```
-
-[1]: https://tools.ietf.org/html/rfc2557
-[2]: /docs/extensions/mv2/tabs
+<table><thead><tr class="header"><th></th><th>Name</th><th>Size</th><th>Modified</th><th></th></tr></thead><tbody><tr class="odd"><td></td><td><span class="goup">..</span></td><td>—</td><td>—</td><td></td></tr><tr class="even"><td></td><td><span class="name">index.md</span></td><td>608 bytes</td><td>Fri Oct 8 11:36:17 2021</td><td></td></tr></tbody></table>

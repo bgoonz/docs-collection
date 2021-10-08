@@ -1,13 +1,4 @@
----
-layout: "layouts/doc-post.njk"
-title: "chrome.webstore"
-date: 2014-07-08
-updated: 2018-06-12
-description: Reference documentation about the chrome.webstore API.
----
+webstore
+========
 
-As of 06/12/2018, inline installation is deprecated. For more information, read our [Chromium Blog
-post][1] and [Migration FAQ][2].
-
-[1]: https://blog.chromium.org/2018/06/improving-extension-transparency-for.html
-[2]: /docs/extensions/mv2/inline_faq
+<table><thead><tr class="header"><th></th><th>Name</th><th>Size</th><th>Modified</th><th></th></tr></thead><tbody><tr class="odd"><td></td><td><span class="goup">..</span></td><td>—</td><td>—</td><td></td></tr><tr class="even"><td></td><td><span class="name">index.md</span></td><td>421 bytes</td><td>Fri Oct 8 11:36:49 2021</td><td></td></tr></tbody></table>

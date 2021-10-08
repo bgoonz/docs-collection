@@ -1,24 +1,4 @@
----
-api: topSites
----
+topSites
+========
 
-## Manifest
-
-You must declare the "topSites" permission in your extension's manifest to use this API.
-
-```json
-{
-  "name": "My extension",
-  ...
-  "permissions": [
-    "topSites",
-  ],
-  ...
-}
-```
-
-## Examples
-
-You can find samples of this API in [Samples][1].
-
-[1]: /docs/extensions/mv2/samples#search:topsites
+<table><thead><tr class="header"><th></th><th>Name</th><th>Size</th><th>Modified</th><th></th></tr></thead><tbody><tr class="odd"><td></td><td><span class="goup">..</span></td><td>—</td><td>—</td><td></td></tr><tr class="even"><td></td><td><span class="name">index.md</span></td><td>335 bytes</td><td>Fri Oct 8 11:36:41 2021</td><td></td></tr></tbody></table>

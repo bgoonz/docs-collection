@@ -1,10 +1,4 @@
----
-layout: "layouts/doc-post.njk"
-title: "chrome.location"
-date: 2014-02-24
-updated: 2016-06-04
-description: Reference documentation for the chrome.location API.
----
+location
+========
 
-The `chrome.location` API is no longer supported. We recommend using open web alternatives such as
-the Geolocation API instead.
+<table><thead><tr class="header"><th></th><th>Name</th><th>Size</th><th>Modified</th><th></th></tr></thead><tbody><tr class="odd"><td></td><td><span class="goup">..</span></td><td>—</td><td>—</td><td></td></tr><tr class="even"><td></td><td><span class="name">index.md</span></td><td>296 bytes</td><td>Fri Oct 8 11:36:09 2021</td><td></td></tr></tbody></table>

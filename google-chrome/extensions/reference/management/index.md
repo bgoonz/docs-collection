@@ -1,27 +1,4 @@
----
-api: management
----
+management
+==========
 
-## Manifest
-
-You must declare the "management" permission in the [extension manifest][1] to use the management
-API. For example:
-
-```json
-{
-  "name": "My extension",
-  ...
-  "permissions": [
-    "management"
-  ],
-  ...
-}
-```
-
-[`management.getPermissionWarningsByManifest`][2], [`management.uninstallSelf`][3], and
-[`management.getSelf`][4] do not require the management permission.
-
-[1]: /docs/extensions/mv2/tabs
-[2]: #method-getPermissionWarningsByManifest
-[3]: #method-uninstallSelf
-[4]: #method-getSelf
+<table><thead><tr class="header"><th></th><th>Name</th><th>Size</th><th>Modified</th><th></th></tr></thead><tbody><tr class="odd"><td></td><td><span class="goup">..</span></td><td>—</td><td>—</td><td></td></tr><tr class="even"><td></td><td><span class="name">index.md</span></td><td>532 bytes</td><td>Fri Oct 8 11:36:11 2021</td><td></td></tr></tbody></table>
