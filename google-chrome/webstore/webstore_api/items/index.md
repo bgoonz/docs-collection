@@ -1,4 +1,0 @@
-items
-=====
-
-<table><thead><tr class="header"><th></th><th>Name</th><th>Size</th><th>Modified</th><th></th></tr></thead><tbody><tr class="odd"><td></td><td><span class="goup">..</span></td><td>—</td><td>—</td><td></td></tr><tr class="even"><td></td><td><span class="name">get</span></td><td>—</td><td>Fri Oct 8 12:03:24 2021</td><td></td></tr><tr class="odd"><td></td><td><span class="name">insert</span></td><td>—</td><td>Fri Oct 8 12:03:24 2021</td><td></td></tr><tr class="even"><td></td><td><span class="name">publish</span></td><td>—</td><td>Fri Oct 8 12:03:24 2021</td><td></td></tr><tr class="odd"><td></td><td><span class="name">update</span></td><td>—</td><td>Fri Oct 8 12:03:25 2021</td><td></td></tr><tr class="even"><td></td><td><span class="name">index.md</span></td><td>2 KB</td><td>Fri Oct 8 11:33:52 2021</td><td></td></tr></tbody></table>
