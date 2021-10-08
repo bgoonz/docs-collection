@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="dcterms.date" content="2021-05-18" />
+  <title>Trust Tokens</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Trust Tokens</h1>
+<p class="date">2021-05-18</p>
+</header>
+<h2 id="implementation-status">Implementation status</h2>
+<ul>
+<li><a href="https://web.dev/origin-trials/">In origin trial</a> Chrome 84 to 94.</li>
+<li><a href="https://developer.chrome.com/origintrials/#/view_trial/2479231594867458049">Register for the trial</a>.</li>
+<li><a href="https://trust-token-demo.glitch.me/">Demo</a>.</li>
+<li><a href="https://developers.google.com/web/updates/2021/01/devtools?utm_source=devtools#trust-token">Chrome DevTools integration</a>.</li>
+<li><a href="https://www.chromestatus.com/feature/5078049450098688">Chrome Platform Status</a>.</li>
+</ul>
+<h2 id="what-are-trust-tokens">What are Trust Tokens?</h2>
+<p>{% YouTube id=‘bXB1Iwq6Eq4’ %}</p>
+<p>Trust Tokens enable trust in a user’s authenticity to be conveyed from one context to another, to help sites combat fraud and distinguish bots from real humans—without passive tracking.</p>
+<ul>
+<li>An <strong>issuer</strong> website can issue tokens to the web browser of a user who shows that they’re trustworthy, for example through continued account usage, by completing a transaction, or by getting an acceptable <a href="https://developers.google.com/recaptcha">reCAPTCHA score</a>.</li>
+<li>A <strong>redeemer</strong> website can confirm that a user is not fake by checking if they have tokens from an issuer the redeemer trusts, and then redeeming tokens as necessary.</li>
+</ul>
+<p>Trust tokens are encrypted, so it isn’t possible to identify an individual or connect trusted and untrusted instances to discover user identity.</p>
+<p>{% Aside ‘caution’ %} Trust Tokens are not a replacement for reCAPTCHA or other mechanisms for determining whether or not a user is who they say they are.</p>
+<p>Trust Tokens are a way to <strong>convey</strong> trust in a user, not <strong>establish</strong> trust in a user. {% endAside %}</p>
+<h2 id="why-do-we-need-trust-tokens">Why do we need Trust Tokens?</h2>
+<p>The web needs ways to establish and convey trust signals which show that a user is who they say they are, and not a bot pretending to be a human or a malicious third-party defrauding a real person or service. Fraud protection is particularly important for advertisers, ad providers, and <a href="https://www.cloudflare.com/en-gb/learning/cdn/what-is-a-cdn/">CDNs</a>.</p>
+<p>Unfortunately, many existing mechanisms to gauge and propagate trustworthiness—to work out if an interaction with a site is from a real human, for example—take advantage of techniques that can also be used for fingerprinting. Mechanisms to convey trust must preserve privacy, enabling trust to be propagated across sites without individual user tracking.</p>
+<p>With the Trust Tokens API, a website can issue cryptographic tokens to a user it trusts, which can later be used elsewhere. The tokens are stored securely by the user’s browser, and can then be redeemed in other contexts to confirm the user’s authenticity. This allows trust of a user on one website (such as a social media site or email service) to be conveyed to another website (such as a publisher or online store) without identifying the user or linking identities across sites.</p>
+<p>{% Aside ‘key-term’ %}<br />
+<a href="https://w3c.github.io/fingerprinting-guidance/#passive">Fingerprinting</a> enables sites to identify and track individual users by getting data about their device, operating system, and browser setup (such as language preferences, <a href="https://developer.mozilla.org/en-US/docs/Web/API/NavigatorID/userAgent">user agent</a>, and available fonts) or changes in device state. This may be done on the server by checking request headers or on the client with JavaScript.</p>
+<p>Fingerprinting uses mechanisms that users aren’t aware of and can’t control. Sites such as <a href="https://panopticlick.eff.org/">Panopticlick</a> and <a href="https://amiunique.org/">amiunique.org</a> show how fingerprint data can be combined to identify you as an individual.<br />
+{% endAside %}</p>
+<h2 id="how-do-trust-tokens-work">How do Trust Tokens work?</h2>
+<p>In this example a publisher website wants to check if a user is a real human, and not a bot, before displaying an ad.</p>
+<ol type="1">
+<li>A user visits a website (known as an <strong>issuer</strong>) and performs actions that lead the site to believe that the user is a real human, such as making purchases, using an email account or successfully completing reCAPTCHA.</li>
+<li>The issuer site uses the Trust Tokens JavaScript API to trigger a request for trust tokens for the user’s browser.</li>
+<li>The issuer site responds with token data.</li>
+<li>The user’s browser securely stores data for the trust token.</li>
+<li>The user visits a different website (such as a news publisher) that wants to verify if the user is a real human: for example, when displaying ads.</li>
+<li>The site uses the Trust Tokens API to check if the user’s browser has trust tokens stored for issuers that the site trusts.</li>
+<li>Trust tokens are found for the issuer the user visited previously.</li>
+<li>The publisher site makes a request to the issuer to redeem the trust tokens.</li>
+<li>The issuer site responds with a Redemption Record.</li>
+<li>The publisher site makes a request to an ad platform, including the Redemption Record to show that the user is trusted by the issuer to be a real human.</li>
+<li>The ad platform provides the data required to display an ad.</li>
+<li>The publisher site displays the ad.</li>
+<li>An ad view impression is counted.</li>
+</ol>
+<p>{% Aside %} For more detail about the JavaScript calls in this example, see <a href="https://web.dev/trust-tokens/#sample-api-usage">Sample API usage</a>. {% endAside %}</p>
+<hr />
+<h2 id="engage-and-share-feedback">Engage and share feedback</h2>
+<ul>
+<li><strong>Origin trial</strong>: Register and take part in the <a href="https://developer.chrome.com/origintrials/#/view_trial/2479231594867458049">Chrome origin trial</a>.</li>
+<li><strong>Demo</strong>: Try out trust token <a href="https://trust-token-demo.glitch.me/">issuance and redemption</a>.</li>
+<li><strong>GitHub</strong>: Read the <a href="https://github.com/WICG/trust-token-api">proposal</a>, <a href="https://github.com/WICG/trust-token-api/issues">raise questions and follow discussion</a>.</li>
+<li><strong>W3C</strong>: Discuss industry use cases in the <a href="https://www.w3.org/community/web-adv/participants">Improving Web Advertising Business Group</a>.</li>
+<li><strong>IETF</strong>: Provide technical input for the underlying protocol in the IETF <a href="https://datatracker.ietf.org/wg/privacypass/about/">Privacy Pass working group</a>.</li>
+<li><strong>Developer support</strong>: Ask questions and join discussions on the <a href="https://github.com/GoogleChromeLabs/privacy-sandbox-dev-support">Privacy Sandbox Developer Support repo</a>.</li>
+</ul>
+<h2 id="find-out-more">Find out more</h2>
+<ul>
+<li><a href="https://github.com/dvorak42/trust-token-api">Trust Token API technical explainer</a></li>
+<li><a href="https://web.dev/trust-tokens/">Getting started with Trust Tokens</a>: an overview for web developers</li>
+<li><a href="https://web.dev/origin-trials">Getting started with Chrome’s origin trials</a></li>
+<li><a href="https://web.dev/digging-into-the-privacy-sandbox">Digging into the Privacy Sandbox</a></li>
+</ul>
+</body>
+</html>

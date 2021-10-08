@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="dcterms.date" content="2021-05-18" />
+  <title>Attribution Reporting</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Attribution Reporting</h1>
+<p class="date">2021-05-18</p>
+</header>
+<p>{% Aside ‘caution’ %} The Attribution Reporting API was previously known as the Conversion Measurement API. {% endAside %}</p>
+<p>{% YouTube id=‘UGA74CIcom8’ %}</p>
+<h2 id="implementation-status">Implementation status</h2>
+<p>See <a href="/docs/privacy-sandbox/attribution-reporting-introduction/#status">Status</a>.</p>
+<h2 id="glossary">Glossary</h2>
+<p>{% Aside %}</p>
+<p>You may also want to consult the complete <a href="/docs/privacy-sandbox/glossary/">Privacy Sandbox glossary</a>.</p>
+<p>{% endAside %}</p>
+<ul>
+<li><strong>Adtech platforms</strong>: companies that provide software and tools to enable brands or agencies to target, deliver, and analyze their digital advertising.</li>
+<li><strong>Advertisers</strong>: companies paying for advertising.</li>
+<li><strong>Publishers</strong>: companies that display ads on their websites.</li>
+<li><strong>Click-through conversion</strong>: conversion that is attributed to an ad click.</li>
+<li><strong>View-through conversion</strong>: conversion that is attributed to an ad impression (if the user doesn’t interact with the ad, then later converts).</li>
+</ul>
+<h2 id="who-needs-to-know-about-this-api-adtech-platforms-advertisers-and-publishers">Who needs to know about this API: adtech platforms, advertisers, and publishers</h2>
+<ul>
+<li>Adtech platforms such as <a href="https://en.wikipedia.org/wiki/Demand-side_platform">demand-side platforms</a> (DSP) or <a href="https://en.wikipedia.org/wiki/Data_management_platform">data management platforms</a> (DMP) may use this API to support functionality that currently relies on third-party cookies.</li>
+<li>Advertisers and publishers relying on custom code for advertising or conversion measurement may use this API to replace existing techniques.</li>
+<li>Advertisers and publishers relying on adtech platforms for conversion measurement don’t need to use the API directly, but may be interested in understanding it if they’re working with adtech platforms that may integrate the API.</li>
+</ul>
+<p>{% Aside %} There may be use cases that are non-ads-related. <a href="#engage">Engage</a> to share your use case! {% endAside %}</p>
+<h2 id="why-is-this-api-needed-why-is-this-api-needed">Why is this API needed? {: #why-is-this-api-needed }</h2>
+<p>Today, ad conversion measurement often relies on <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#Third-party_cookies">third-party cookies</a>. Browsers are restricting access to third-party cookies because these can be used to track users across sites and hinder user privacy. This API enables those measurements in a privacy-preserving way, without third-party cookies.</p>
+<h2 id="how-does-the-attribution-reporting-api-work-and-what-are-its-features">How does the Attribution Reporting API work and what are its features?</h2>
+<p>{% Aside %} This API is being incubated and developed in the open. It is subject to change. Your feedback is welcome. See <a href="#engage">how to engage</a>. {% endAside %}</p>
+<p>The Attribution Reporting API enables the measurement of two events that are linked together: an event on a publisher’s website, such as a user viewing or clicking an ad, with a subsequent conversion on an advertiser site.</p>
+<p>This API supports click-through conversion attribution measurement (available in the first implementation of this API, currently in <a href="https://web.dev/conversion-measurement/#browser-support">origin trial</a>) and view-through attribution measurement (<a href="https://github.com/WICG/conversion-measurement-api/blob/main/event_attribution_reporting_views.md">see public explainer</a>).</p>
+<p>The API offers two types of attribution reports than can be used for different use cases:</p>
+<ul>
+<li><strong>Event-level reports</strong> associate a particular ad click or view (on the ad side) with data on the conversion side. To preserve user privacy by preventing the joining of user identity across sites, conversion-side data is very limited, and the data is ‘noised’ (meaning that for a small percentage of cases, random data is sent). As an extra privacy protection, reports are not sent immediately.</li>
+<li><strong>Aggregate reports</strong> are not tied with a specific event on the ad side. These reports provide richer, higher-fidelity conversion data than event-level reports. A combination of privacy techniques across cryptography, distribution of trust, and differential privacy help reduce the risk of identity joining across sites. Both report types can be used simultaneously. They’re complementary. Other features that are designed in this API include <a href="https://github.com/WICG/conversion-measurement-api/blob/main/cross_device.md">cross-device attribution reporting</a> and <a href="https://github.com/WICG/conversion-measurement-api/blob/main/app_to_web.md">app-to-web attribution reporting</a>.</li>
+</ul>
+<h2 id="engage-and-share-feedback-engage">Engage and share feedback {: #engage }</h2>
+<ul>
+<li><strong>Origin trial</strong>: <a href="https://developer.chrome.com/origintrials/#/view_trial/3411476717733150721">register for the first origin trial (click only)</a> or <a href="https://goo.gle/demo-event-level-conversion-measurement-api">see the first demo (click only)</a>.</li>
+<li>To stay tuned about the next implementation of this API that will offer more features and be available for experimentation in Chrome (origin trial), join the <a href="https://groups.google.com/u/1/a/chromium.org/g/attribution-reporting-api-dev">mailing list for developers</a>.</li>
+<li><strong>GitHub</strong>: Read the <a href="https://github.com/WICG/conversion-measurement-api/">proposal</a>, <a href="https://github.com/WICG/conversion-measurement-api/issues">raise questions and follow the discussion</a>.</li>
+<li><strong>W3C</strong>: Discuss industry use cases in the <a href="https://www.w3.org/community/web-adv/participants">Improving Web Advertising Business Group</a> and join the <a href="https://www.w3.org/community/privacycg/">Privacy Community Group</a> for discussions around the WebKit/Safari API.</li>
+<li><strong>Developer support</strong>: Ask questions and join discussions on the <a href="https://github.com/GoogleChromeLabs/privacy-sandbox-dev-support">Privacy Sandbox Developer Support repo</a>.</li>
+</ul>
+<h2 id="find-out-more">Find out more</h2>
+<ul>
+<li><a href="/docs/privacy-sandbox/attribution-reporting-introduction">Introduction to Attribution Reporting (Conversion Measurement)</a></li>
+<li><a href="https://github.com/WICG/conversion-measurement-api/">API technical explainers</a></li>
+<li>(⚠️ obsolete) <a href="https://web.dev/conversion-measurement/">A more private way to measure ad conversions</a>: overview of the first iteration of this API for web developers</li>
+<li>(⚠️ obsolete) <a href="https://www.youtube.com/watch?v=jcDfOoWwZcM">A more private way to measure ad conversions - Video</a>: demo of the first iteration of this API (clicks only)</li>
+<li>(⚠️ obsolete) <a href="https://web.dev/using-conversion-measurement/">Using the Event Conversion Measurement API</a>: how to experiment with the first iteration of this API for web developers</li>
+<li><a href="https://web.dev/digging-into-the-privacy-sandbox">Digging into the Privacy Sandbox</a></li>
+<li><a href="/blog/new-in-devtools-93/#attribution-reporting">Debug the API with Chrome DevTools</a></li>
+</ul>
+</body>
+</html>

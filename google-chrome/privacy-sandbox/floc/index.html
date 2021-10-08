@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="dcterms.date" content="2021-05-18" />
+  <title>FLoC</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">FLoC</h1>
+<p class="date">2021-05-18</p>
+</header>
+<h2 id="implementation-status">Implementation status</h2>
+<ul>
+<li>Initial <a href="https://web.dev/origin-trials">origin trial</a> now closed.</li>
+<li><a href="https://floc.glitch.me/">Demo</a> of initial version (origin trial now closed).</li>
+<li><a href="https://groups.google.com/a/chromium.org/g/blink-dev/c/MmijXrmwrJs">Intent to Experiment</a> in <a href="https://www.chromium.org/blink">Blink</a>.</li>
+</ul>
+<h2 id="why-do-we-need-floc">Why do we need FLoC?</h2>
+<p>Many people are concerned about the privacy implications of tailored advertising, which currently relies on techniques such as tracking cookies and device fingerprinting which can reveal your browsing history across sites to advertisers or ad platforms. The FLoC proposal aims to allow ad selection in a way that better protects privacy.</p>
+<h2 id="what-is-the-floc-proposal">What is the FLoC proposal?</h2>
+<p>FLoC provides a privacy-preserving mechanism for interest-based selection of ads and other content.</p>
+<p>As a user moves around the web, their browser uses the FLoC algorithm to work out its “interest cohort”, which will be the same for thousands of browsers with a similar recent browsing history. The browser recalculates its cohort periodically, on the user’s device, without sharing individual browsing data with the browser vendor or anyone else.</p>
+<p>Advertisers (sites that pay for advertisements) can include code on their own websites to gather and provide cohort data to their adtech platforms (companies that provide software and tools to deliver advertising). For example, an adtech platform might learn from an online shoe store that browsers from cohorts 1101 and 1354 seem interested in the store’s hiking gear. From other advertisers, the adtech platform learns about other interests of those cohorts.</p>
+<p>Subsequently, the ad platform can use this data to select relevant ads when a browser from one of those cohorts visits a page from a site that displays ads, such as a news website.</p>
+<h2 id="what-can-floc-be-used-for">What can FLoC be used for?</h2>
+<ul>
+<li>Show ads to people whose browsers belong to a cohort that has been observed to frequently visit an advertiser’s site or shows interest in relevant topics.</li>
+<li>Use machine learning models to predict the probability a user will convert based on their cohort, in order to inform ad auction bidding behavior.</li>
+<li>Recommend content to users. For example, suppose a news site observes that their sports podcast page has become especially popular with visitors from cohorts 1234 and 14159. They can recommend that content to other visitors from those cohorts.</li>
+</ul>
+<h2 id="how-does-floc-work">How does FLoC work?</h2>
+<p><a href="https://web.dev/floc/#how-does-floc-work">What is FLoC?</a> provides a simple, step-by-step explanation of how FloC works.</p>
+<p>The diagram below shows an example of the different roles in selecting and delivering a relevant ad by using FLoC.</p>
+<p>{% Img src=“image/80mq7dk16vVEg8BBhsVe42n6zn82/oH6SuZegrVJMbkTsl9mq.png”, alt=“Diagram showing, step by step, the different roles in selecting and delivering a relevant ad by using FLoC: FLoC service, Browser, Advertisers, Publisher (to observe cohorts), Adtech, Publisher (to display ads)”, width=“800”, height=“359” %}</p>
+<hr />
+<h2 id="engage-and-share-feedback">Engage and share feedback</h2>
+<ul>
+<li><strong>GitHub</strong>: Read the <a href="https://github.com/WICG/floc">proposal</a>, <a href="https://github.com/WICG/floc/issues">raise questions and follow discussion</a>.</li>
+<li><strong>W3C</strong>: Discuss industry use cases in the <a href="https://www.w3.org/community/web-adv/participants">Improving Web Advertising Business Group</a>.</li>
+<li><strong>Developer support</strong>: Ask questions and join discussions on the <a href="https://github.com/GoogleChromeLabs/privacy-sandbox-dev-support">Privacy Sandbox Developer Support repo</a>.</li>
+</ul>
+<h2 id="find-out-more">Find out more</h2>
+<ul>
+<li><a href="https://www.web.dev">What is FLoC?</a></li>
+<li><a href="https://github.com/WICG/floc">FLoC API technical explainer</a></li>
+<li><a href="https://web.dev/digging-into-the-privacy-sandbox">Digging into the Privacy Sandbox</a></li>
+</ul>
+</body>
+</html>

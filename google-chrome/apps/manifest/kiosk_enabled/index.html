@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="dcterms.date" content="2013-05-11" />
+  <title>Kiosk Apps</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Kiosk Apps</h1>
+<p class="date">2013-05-11</p>
+</header>
+<p>{% Aside ‘caution’ %}</p>
+<p><strong>Important:</strong> Chrome will be removing support for Chrome Apps on all platforms. Chrome browser and the Chrome Web Store will continue to support extensions. <a href="https://blog.chromium.org/2020/08/changes-to-chrome-app-support-timeline.html"><strong>Read the announcement</strong></a> and learn more about <a href="/apps/migration"><strong>migrating your app</strong></a>.</p>
+<p>{% endAside %}</p>
+<p>Kiosk Apps are Chrome Apps that are designed to always run fullscreen using <a href="https://support.google.com/chromebook/answer/3134673">Single App Kiosk Mode</a> on Chrome OS and do not allow the user to exit the app. They’re great for a purpose-built Chrome device, such as a guest registration desk, a library catalog station, or a point-of-sale system in a store.</p>
+<p>A Kiosk App can be launched manually or set to automatically launch when the device boots up. You can use a Chrome device as a kiosk by turning on Single App Kiosk mode <a href="https://support.google.com/chromebook/answer/3134673">manually for each device</a>, or across multiple devices using the <a href="https://support.google.com/chrome/a/answer/3017014">Chrome management console</a>.</p>
+<h2 id="how-they-look-look">How they look {: #Look }</h2>
+<p>Once the Kiosk App starts, the user experience is dedicated to the tasks defined by the app. The app does not look like the traditional Chrome browser: there is no window frame, no Omnibox (address bar), no tab strip, and no other browser interface elements. So as a developer, every pixel of the screen is yours to use as you wish.</p>
+<h2 id="how-they-behave-behavior">How they behave {: #Behavior }</h2>
+<p>When a Kiosk App is configured to run on Chrome OS using <a href="https://support.google.com/chromebook/answer/3134673">Single App Kiosk Mode</a>, the user has no control over the app’s lifecycle. The user cannot exit the app or switch to another task. However, as an app developer, you can offer a “logout” or “exit” button within the app to close all its windows, which terminates the session and returns the user to the login screen.</p>
+<p>Single App Kiosk Mode optimizes bandwidth use and speed by downloading and installing the app so it can launch each time without installation delays. Each time a Kiosk App launches, the system checks for updates in the Chrome Web Store to ensure that the latest app version is installed, unless the app is set to be <a href="/apps/manifest/offline_enabled">enabled offline</a>. Thereafter, the system checks for updates every five hours and installs the update if available. If the device is offline, the update is rescheduled to a later time when the app is back online.</p>
+<p>Any data the app stores using the <a href="/apps/fileSystem">FileSystem</a> API persists across executions of the app, allowing you to download and cache any assets your app may need while offline. As a developer, you need to ensure that user data is stored locally while offline, then synced to your data server once online (see <a href="/docs/apps/offline_apps">Offline First</a>).</p>
+<p>Once the app is installed, it is available to anyone who walks up to the Chrome OS device. There is no need for users to log in before using Single App Kiosk Mode.</p>
+<h2 id="how-to-develop-a-kiosk-app-develop">How to develop a Kiosk App {: #Develop }</h2>
+<p>If you know how to build a <a href="/apps/about_apps">Chrome App</a>, then you know how to build a Kiosk App because they use the same <a href="/apps/app_architecture">app architecture</a>. All you have to do is set <code>"kiosk_enabled"</code> to <code>true</code> in your app’s <a href="/apps/manifest">manifest file</a>. Your app can then run in either a regular session or Single App Kiosk Mode. If you want your app to run in Single App Kiosk Mode only, then also set <code>"kiosk_only"</code> to <code>true</code>. This prevents the app from being launched in a regular session. For example:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="dt">&quot;app&quot;</span> <span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-3" title="3">    <span class="dt">&quot;background&quot;</span> <span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-4" title="4">      <span class="dt">&quot;scripts&quot;</span> <span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;background.js&quot;</span><span class="ot">]</span></a>
+<a class="sourceLine" id="cb1-5" title="5">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-6" title="6">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb1-7" title="7">  <span class="dt">&quot;manifest_version&quot;</span> <span class="fu">:</span> <span class="dv">2</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-8" title="8">  <span class="dt">&quot;name&quot;</span> <span class="fu">:</span> <span class="st">&quot;My Kiosk App&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-9" title="9">  <span class="dt">&quot;version&quot;</span> <span class="fu">:</span> <span class="st">&quot;1.0&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-10" title="10">  <span class="er">...</span></a>
+<a class="sourceLine" id="cb1-11" title="11"></a>
+<a class="sourceLine" id="cb1-12" title="12">  <span class="er">//</span> <span class="er">Set</span> <span class="er">as</span> <span class="er">Kiosk</span> <span class="er">App</span></a>
+<a class="sourceLine" id="cb1-13" title="13">  <span class="dt">&quot;kiosk_enabled&quot;</span> <span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-14" title="14">  <span class="dt">&quot;kiosk_only&quot;</span> <span class="fu">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb1-15" title="15"><span class="fu">}</span></a></code></pre></div>
+<p>To determine whether the app is being run in a regular session or Single App Kiosk Mode, you can inspect the <code>isKioskSession</code> boolean that’s included in the <code>launchData</code> object from the <a href="/apps/app_runtime#event-onLaunched">app.runtime.onLaunched</a> event.</p>
+<p>If you want to monetize your app, your app must handle all payment logic. You cannot monetize a Kiosk App through the <a href="/webstore/money">Chrome web store payment flow</a>.</p>
+<h3 id="sample-apps-samples">Sample apps {: #Samples }</h3>
+<ul>
+<li><a href="https://github.com/KioskApps/InfoHub">LiveStream/Interactive display app</a></li>
+<li><a href="https://github.com/KioskApps/SalesPoint">Point of sale app</a></li>
+<li><a href="https://github.com/KioskApps/QuickTicket">Movie theater app</a></li>
+<li><a href="https://chrome.google.com/webstore/category/collection/kiosk-apps">Kiosk apps in the Chrome Web Store</a></li>
+</ul>
+</body>
+</html>

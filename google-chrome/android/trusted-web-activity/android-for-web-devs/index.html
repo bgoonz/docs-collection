@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="dcterms.date" content="2021-07-22" />
+  <title>Android Concepts (for Web Developers)</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Android Concepts (for Web Developers)</h1>
+<p class="date">2021-07-22</p>
+</header>
+<p>If you’re a Web developer who is new to Android and Google Play, there are some details you should be aware of. There already exist many resources and documentation for this (thanks to the Android team) but here we’ll highlight some important concepts and how they relate to Bubblewrap.</p>
+<h2 id="upload-vs.-signing-key-upload-vs-signing-key">Upload vs. Signing Key {: #upload-vs-signing-key }</h2>
+<p>If you plan to use Bubblewrap to generate an Android App Bundle (AAB) (Note: Starting in August 2021, <a href="https://android-developers.googleblog.com/2020/11/new-android-app-bundle-and-target-api.html">Google Play will require all new apps to use the Android App Bundle format</a>) or APK to upload and publish to Google Play, you’ll need to sign your app with a signing key. Google Play gives you two options for how you can handle this:</p>
+<ul>
+<li><strong>Play App Signing (highly recommended)</strong>: Google will manage and protect your app’s signing key for you. It uses it to sign your APKs for distribution. Play App Signing uses two keys. The “app signing key” which Google will manage for you and the “upload key” which you keep and should stay private to you. You use the upload key to sign your app for uploading to the Play Console. This system makes it possible for you to reset your upload key if it ever gets lost or compromised, by <a href="https://support.google.com/googleplay/android-developer/contact/key">contacting the Play support team</a>. Currently, Google Play lets you upload your app as an AAB or APK:
+<ul>
+<li><a href="https://developer.android.com/platform/technology/app-bundle">Android App Bundle</a> (AAB): When you upload an AAB to the Play Console, you defer the building and generation of APKs to the Google Play Store. When a user downloads and installs your app, Google Play will distribute it to them as a signed APK. Therefore, the signing of the APKs will also need to be done by Google Play. So, by default, if you upload your app as an AAB to the Play Console, it will require you to use Play App Signing.</li>
+<li>APK: With APKs, you have the choice to opt in to Play App Signing. Opting in to Play App Signing is highly recommended because it increases the security of your signing key. As noted before, Google Play will soon require all new apps be uploaded in the AAB format, so we recommend doing that instead of uploading APKs.</li>
+</ul></li>
+<li><strong>Manage your own signing key</strong>: If you choose to manage your own key and not opt in to Play App Signing, you are fully responsible for your app’s signing key. Unlike with Play App Signing, it is not possible to reset it if you lose the key. Therefore, losing your app’s signing key means you also lose the ability to update your app.</li>
+</ul>
+<p>During the <code>bubblewrap init</code> setup, when you get to the <strong>“Signing key information (5/5)”</strong> portion, you’ll be prompted to enter a <strong>“Key store location”</strong> and <strong>“Key name”</strong>, or use the defaults. The default key store location is the file <code>android.keystore</code> in your project directory and the default key name is <code>android</code>. If Bubblewrap doesn’t find an existing keystore with that key name at the location, it will create one for you and also prompt you for passwords. Take note of the passwords you entered as you’ll need them during the build process (<code>bubblewrap build</code>) where it will use the key to sign your app. If you opt in to Play App Signing, then the signing key that Bubblewrap generated and used to sign your app becomes the “upload key”. Whether you choose to use the Bubblewrap generated key as your signing or upload key, you should guard and keep the key private. We don’t recommend committing it to version control. Instead, limit the number of individuals with access to it.</p>
+<h2 id="digital-asset-links-digital-asset-links">Digital Asset Links {: #digital-asset-links }</h2>
+<p>Digital Asset Links are needed to declare the relationship between your website and your Android app. To ensure that your Android app generated by Bubblewrap is verified properly and launches as a Trusted Web Activity (instead of a Chrome Custom Tab), you’ll need to add the appropriate key to your <code>assetlinks.json</code> file. Then upload it to your website at <code>.well-known/assetlinks.json</code> (relative to the root). Your <code>assetlinks.json</code> file should follow this format:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb1-1" title="1"><span class="ot">[</span><span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-2" title="2"> <span class="dt">&quot;relation&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;delegate_permission/common.handle_all_urls&quot;</span><span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-3" title="3"> <span class="dt">&quot;target&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-4" title="4">   <span class="dt">&quot;namespace&quot;</span><span class="fu">:</span> <span class="st">&quot;android_app&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-5" title="5">   <span class="dt">&quot;package_name&quot;</span><span class="fu">:</span> <span class="st">&quot;com.your.package_name&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-6" title="6">   <span class="dt">&quot;sha256_cert_fingerprints&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb1-7" title="7">     <span class="st">&quot;XX:XX:XX:...&quot;</span></a>
+<a class="sourceLine" id="cb1-8" title="8">   <span class="ot">]</span></a>
+<a class="sourceLine" id="cb1-9" title="9"> <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-10" title="10"><span class="fu">}</span><span class="ot">]</span></a></code></pre></div>
+<h3 id="get-the-sha256-certificate-fingerprint-get-sha256-cert-fingerprint">Get the SHA256 certificate fingerprint {: #get-sha256-cert-fingerprint }</h3>
+<p>To create the <code>assetlinks.json</code> file, you’ll need the SHA 256 certificate fingerprint associated with your app’s signing key. The important thing to note is that the fingerprints associated with your <a href="#upload-vs-signing-key">signing and upload keys</a> will be different. It’s important to keep this distinction in mind, especially if you observe your app launching as a Chrome Custom Tab (with the browser bar visible). Then, it’s likely your <code>assetlinks.json</code> file does not have the fingerprint that corresponds to the appropriate key.</p>
+<p>It’s useful to have both your signing and upload certificate’s fingerprint in your assetlinks.json to more easily debug your app locally. See <a href="#adding-more-keys">Adding More Keys</a> below for more information on how to have both keys in the <code>assetlinks.json</code> file.</p>
+<p>There are a couple of different ways to get the fingerprint which are detailed in the next sections. They should all give you the same fingerprints so feel free to choose the method that is most convenient.</p>
+<h4 id="via-play-console">Via Play Console</h4>
+<p>Depending on if you opt in to Play App Signing or not, you may have one or two keys. To retrieve the appropriate SHA256 fingerprint for each key:</p>
+<ol type="1">
+<li>Go to the <a href="https://play.google.com/apps/publish/">Play Console</a></li>
+<li>Select the app you’re interested in</li>
+<li>In the navigation menu on the left, under <strong>Release</strong>, go to <strong>Setup</strong> -&gt; <strong>App Integrity</strong>.</li>
+<li>Copy the SHA256 for the appropriate key:</li>
+</ol>
+<p>{% Img src=“image/ttTommHYbJXsEL29zNB1wXBvH4z1/Ce3CxXhEO8ibSQRYE9Ik.png”, alt=“Retrieve the appropriate SHA256 certificate fingerprint for your signing or upload key”, width=“800”, height=“385” %}</p>
+<ul>
+<li><p><strong>Signing key</strong>: Copy the SHA256 fingerprint for the <strong>“App signing key certificate”</strong>. This fingerprint will correspond to your app if you download it from the Google Play Store since Google Play distributes your app signed with the signing key.</p></li>
+<li><p><strong>Upload key</strong>: Copy the SHA256 fingerprint for the <strong>“Upload key certificate”</strong>. This fingerprint will correspond to your app if you install it locally (via ADB over USB for example). That APK (on your local machine) was built by Bubblewrap, and therefore, signed by the key it created for you as well (during the <code>init</code> setup). Remember that this may be the signing key for your locally installed app, but this actually becomes the “upload key” once you publish your app through Play.</p></li>
+</ul>
+<h4 id="via-keytool">Via <code>keytool</code></h4>
+<p><a href="https://docs.oracle.com/javase/6/docs/technotes/tools/windows/keytool.html">keytool</a> is a key and certificate management tool. You can use keytool to extract the SHA 256 fingerprint associated with the APK or AAB Bubblewrap generated. Note that this fingerprint is for the local signing key and if you upload your app to Play and opt in to Play App Signing, this key becomes the “upload key”.</p>
+<pre class="shell"><code>keytool -printcert -jarfile [path to APK or AAB] | grep SHA256</code></pre>
+<h4 id="via-asset-link-tool">Via Asset Link Tool</h4>
+<p>Another way to get the correct Digital Asset Links file for your app, is to use the <a href="https://play.google.com/store/apps/details?id=dev.conn.assetlinkstool">Asset Link Tool</a>:</p>
+<ol type="1">
+<li>Install the <a href="https://play.google.com/store/apps/details?id=dev.conn.assetlinkstool">Asset Link Tool</a> from the Play Store.</li>
+<li>On the same device, download your app from the Google Play Store or install it locally.</li>
+<li>Open the Asset Link Tool app, and you’ll be given a list of all applications installed on your device by package name. Filter the list by the application ID you chose earlier during <code>bubblewrap init</code> and click on that entry.</li>
+<li>You’ll see a page listing your app’s signature and a generated Digital Asset Link. Click on the Copy or Share buttons at the bottom to export it however you like (e.g., save to Google Keep, email it to yourself).</li>
+</ol>
+<p>The same idea applies as before with signing or upload keys. If you installed your app from the Google Play Store, the Asset Link Tool will get you the fingerprint for your app’s signing key. If you installed the app directly from your local machine, then the fingerprint is for the key Bubblewrap generated.</p>
+<h3 id="ensuring-your-asset-link-file-is-accessible-ensuring-your-asset-link-file-is-accessible">Ensuring your asset link file is accessible {: #ensuring-your-asset-link-file-is-accessible }</h3>
+<p>Now that you’ve uploaded it, make sure you can access your asset link file in a browser. Check that <code>https://example.com/.well-known/assetlinks.json</code> resolves to the file you just uploaded.</p>
+<h4 id="jekyll-based-websites">Jekyll based websites</h4>
+<p>If your website is generated by Jekyll (such as GitHub Pages), you’ll need to add a line of configuration so that the <code>.well-known</code> directory is included in the output. GitHub help has <a href="https://help.github.com/en/articles/files-that-start-with-an-underscore-are-missing">more information on this topic</a>. Create a file called <code>_config.yml</code> at the root of your site (or add to it if it already exists) and enter:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode yml"><code class="sourceCode yaml"><a class="sourceLine" id="cb3-1" title="1"><span class="co"># Folders with dotfiles are ignored by default.</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="fu">include:</span><span class="at"> </span><span class="kw">[</span>.well-known<span class="kw">]</span></a></code></pre></div>
+<h3 id="adding-more-keys-adding-more-keys">Adding more keys {: #adding-more-keys }</h3>
+<p>A Digital Asset Link file can contain more than one app, and for each app, it can contain more than one key. For example, to add a second key, just use the <a href="https://play.google.com/store/apps/details?id=dev.conn.assetlinkstool">Asset Link Tool</a> to determine the key and add it as a second entry. The code in Chrome that parses this JSON is quite strict, so make sure you don’t accidentally add an extra comma at the end of the list.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb4-1" title="1"><span class="ot">[</span><span class="fu">{</span></a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="dt">&quot;relation&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;delegate_permission/common.handle_all_urls&quot;</span><span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb4-3" title="3">  <span class="dt">&quot;target&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb4-4" title="4">    <span class="dt">&quot;namespace&quot;</span><span class="fu">:</span> <span class="st">&quot;android_app&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb4-5" title="5">    <span class="dt">&quot;package_name&quot;</span><span class="fu">:</span> <span class="st">&quot;com.your.package_name&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb4-6" title="6">    <span class="dt">&quot;sha256_cert_fingerprints&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb4-7" title="7">      <span class="st">&quot;XX:XX:XX:...&quot;</span></a>
+<a class="sourceLine" id="cb4-8" title="8">    <span class="ot">]</span></a>
+<a class="sourceLine" id="cb4-9" title="9">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb4-10" title="10"><span class="fu">}</span><span class="ot">,</span><span class="fu">{</span></a>
+<a class="sourceLine" id="cb4-11" title="11">  <span class="dt">&quot;relation&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;delegate_permission/common.handle_all_urls&quot;</span><span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb4-12" title="12">  <span class="dt">&quot;target&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb4-13" title="13">    <span class="dt">&quot;namespace&quot;</span><span class="fu">:</span> <span class="st">&quot;android_app&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb4-14" title="14">    <span class="dt">&quot;package_name&quot;</span><span class="fu">:</span> <span class="st">&quot;com.your.package_name&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb4-15" title="15">    <span class="dt">&quot;sha256_cert_fingerprints&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb4-16" title="16">      <span class="st">&quot;XX:XX:XX:...&quot;</span></a>
+<a class="sourceLine" id="cb4-17" title="17">    <span class="ot">]</span></a>
+<a class="sourceLine" id="cb4-18" title="18">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb4-19" title="19"><span class="fu">}</span><span class="ot">]</span></a></code></pre></div>
+<h3 id="troubleshooting">Troubleshooting</h3>
+<p>Chrome logs the reason that Digital Asset Links verification fails and you can view the logs on an Android device with <code>adb logcat</code>. If you’re developing on Linux/Mac, you can see the relevant logs from a connected device with:</p>
+<pre class="shell"><code>&gt; adb logcat -v brief | grep -e OriginVerifier -e digital_asset_links</code></pre>
+<p>For example, if you see the message <code>Statement failure matching fingerprint.</code>, you should use the Asset Link Tool to see your app’s signature and make sure it matches that in your <code>assetlinks.json</code> file.</p>
+</body>
+</html>

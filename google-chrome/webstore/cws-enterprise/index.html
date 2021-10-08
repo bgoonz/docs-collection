@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Enterprise publishing options</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Enterprise publishing options</h1>
+</header>
+<p>When you are in a Google Workspace organization, there are some additional options available for publishing extensions to your domain. This article summarizes these options, but they are detailed as part of the <a href="https://support.google.com/chrome/a/answer/9296680">Chrome enterprise documentation</a>.</p>
+<p>Some of these enterprise features involve how the Chrome Web Store works within a Google Workspace:</p>
+<ul>
+<li><p><strong>Domain publishing</strong> — Lets you publish only to your organization’s private Chrome Web Store.</p></li>
+<li><p><strong>Collections</strong> — These provide curated collections of extensions specific to your organization.</p></li>
+<li><p><strong>Blocklist and allowlist</strong> — These options that let your admins manage which extensions can be used in your org.</p></li>
+<li><p><strong>Force install</strong> — Administrators can set policies that automatically and silently install extensions for users in the organization. Once installed, users cannot disable or remove these extensions.</p></li>
+</ul>
+<p>The following sections provide a brief overview of these features. See the cited enterprise documentation for each topic to learn about them in more detail.</p>
+<h2 id="private-chrome-web-store-for-your-organization-private-cws">Private Chrome Web Store for your organization {: #private-cws }</h2>
+<p>Any Google Workspace organization can have its own private instance of the Chrome Web Store. To access it, users must be signed into Chrome with their organization credentials.</p>
+<p>You also need to use a slightly different URL than that of the public store, which specifies your Google Workspace domain:</p>
+<ul>
+<li><strong>Public Chrome Web Store:</strong>   <code>chrome.google.com/webstore</code></li>
+<li><strong>Private Chrome Web Store:</strong>   <code>chrome.google.com/webstore/a/example.com</code></li>
+</ul>
+<p>The option that enables this is available to administrators at <strong>Devices &gt; Chrome &gt; Apps &amp; extensions &gt; Users &amp; browsers &gt; Additional settings &gt; Chrome Web store permissions</strong>:</p>
+<p>{% Img src=“image/SHhb2PDKzXTggPGAYpv8JgR81pX2/o8yqCGh07bdtYmRbKSKa.png”, alt=“Screenshot of option to enable private domain publishing”, width=“800”, height=“121”, class=“screenshot” %}</p>
+<h2 id="domain-publishing-domain-publishing">Domain publishing {: #domain-publishing }</h2>
+<p>This option lets you publish an extension that appears on your organization’s private Chrome Web Store, so any users in your organization can install it. Nobody outside of your organization can see this private instance of the Chrome Web Store.</p>
+<p>{% Aside %} In addition to the privacy and availability benefits of publishing to your Workspace domain, a nice side effect is that domain-published extensions usually get through the review process more quickly. {% endAside %}</p>
+<p>If domain publishing is enabled for your organization, an additional option appears in the distribution page of the developer console:</p>
+<p>{% Img src=“image/SHhb2PDKzXTggPGAYpv8JgR81pX2/zpV6tBHuf3HLBpRjGsNA.png”, alt=“Screenshot showing the domain publishing option in the developer console”, width=“643”, height=“200”, class=“screenshot” %}</p>
+<p>Select this option to publish privately to your domain.</p>
+<p>For further instructions on how to publish to your organization’s domain, see <a href="https://cloud.google.com/blog/products/chrome-enterprise/publishing-extensions-for-the-enterprise">Chrome Insider: Publishing custom extensions for the enterprise</a>.</p>
+<h2 id="managing-domain-chrome-web-store-extensions-manage-domain-extensions">Managing domain Chrome Web Store extensions {: #manage-domain-extensions }</h2>
+<p>There are also features that you don’t use directly as an extension developer, but which you should be aware of.</p>
+<p><strong>Collections:</strong> Administrators in your organization can curate <em>collections</em> of extensions that are appropriate to your org. These collections can include both public and privately published extensions. These collections are like the ones in the public Chrome Web Store, such as Editor’s Picks, but appear in your private Chrome Web Store.</p>
+<p>The article <a href="https://support.google.com/chrome/a/answer/2649489">Create a Chrome app collection</a> provides instructions for administrators to add collections to your private Chrome Web Store.</p>
+<p><strong>Blocklist and allowlist:</strong> These are options that your organization’s administrators can use to explicitly control which extensions may or that may not be installed by members of the org.</p>
+<p>These and other enterprise extension controls are set by administrators using policies in the <a href="https://chromeenterprise.google/policies/atomic-groups/#Extensions">extensions atomic policy group</a>.</p>
+<h2 id="non-webstore-installations-side-loading">Non-webstore installations {: #side-loading }</h2>
+<p>There are ways to install enterprise extensions without requiring users to go to the Chrome Web Store, such as those described in this section.</p>
+<p><strong>Force install:</strong> Administrators can set policies that automatically and silently install extensions for users in the organization. This is typically used for extensions that support workflows and other core business operations.</p>
+<p>{% Aside %} Users can’t remove extensions that are force installed. {% endAside %}</p>
+<p>See the <a href="https://chromeenterprise.google/policies/?policy=ExtensionInstallForcelist">ExtensionInstallForcelist</a> documentation to learn more about this feature.</p>
+<h2 id="troubleshooting-tips-for-domain-extensions-troubleshooting">Troubleshooting tips for domain extensions {: #troubleshooting }</h2>
+<p>This section addresses a few common issues that extension developers may encounter when publishing to a domain.</p>
+<p><strong>I don’t see the “Only to my domain” option under the private publishing option.</strong></p>
+<p>This option is only available to domain users when it has been enabled for the domain. Make sure that:</p>
+<ul>
+<li>You are logged in using your domain identity, and not a public (gmail) or other non-domain identity.</li>
+<li>Your administrator has configured domain publishing.</li>
+</ul>
+<p><strong>Why are my users not getting extension updates after I publish them?</strong></p>
+<p>It can take a while for Chrome to pull updates from the Chrome Web Store. Make sure your users are staying logged into Chrome with their domain identity for at least a few hours at a time.</p>
+<p><strong>I published an extension to my domain but I don’t see it on the Chrome Web Store.</strong></p>
+<p>Here are a few things to check:</p>
+<ul>
+<li><p>Remember that there is a review that takes place between the time you submit your item to the Chrome Web Store and when it is available for installation. This review can be quicker for domain-published extensions, but still takes some time.</p></li>
+<li><p>Also note that extensions roll out over a period of time, so—especially if your organization has a large user base—some users may see the update before others.</p></li>
+<li><p>Make sure you’re checking the [private Chrome Web Store][#private-cws] and not the public one.</p></li>
+</ul>
+</body>
+</html>

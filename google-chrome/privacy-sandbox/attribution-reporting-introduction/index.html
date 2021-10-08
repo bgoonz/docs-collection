@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="dcterms.date" content="2021-08-09" />
+  <title>Introduction to Attribution Reporting (Conversion Measurement)</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Introduction to Attribution Reporting (Conversion Measurement)</h1>
+<p class="date">2021-08-09</p>
+</header>
+<p>{% Aside %}<br />
+This API is a proposal and will expand over time. This blog post describes its current state, and will be updated as the API evolves. {% endAside %}</p>
+<p>Updates:</p>
+<ul>
+<li>Early 2021: aggregate reports and view-through measurement are added to the proposal.</li>
+<li>Early 2021: the API is renamed to “Attribution Reporting API”.</li>
+</ul>
+<p>{% Aside ‘caution’ %}</p>
+<ul>
+<li>This post focuses on advertising use cases, but the Attribution Reporting API can serve use cases that are not related to advertising as well.</li>
+<li>The advertising use cases for this API focus on linking ad clicks or views to conversions (Conversion Measurement).<br />
+{% endAside %}</li>
+</ul>
+<h2 id="introduction">Introduction</h2>
+<p>The Attribution Reporting API makes it possible to measure when an <strong>ad click or view</strong> leads to a <strong>conversion</strong> on an advertiser site, such as a sale or a sign-up. The API doesn’t rely on third-party cookies or mechanisms that can be used to identify individual users across sites.</p>
+<p>This proposal is being incubated in the open. The proposal and discussions live in the <a href="https://github.com/WICG/conversion-measurement-api">WICG GitHub repository</a>.</p>
+<p>{% Aside %}<br />
+This API is a part of Privacy Sandbox, a series of proposals to satisfy third-party use cases without third-party cookies or other cross-site tracking mechanisms. See <a href="https://developers.chrome.com/docs/privacy-sandbox">Privacy Sandbox proposals</a>.<br />
+{% endAside %}</p>
+<h2 id="why-is-this-api-needed">Why is this API needed?</h2>
+<p>Today, ad conversion measurement often relies on <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#Third-party_cookies">third-party cookies</a>. Browsers are restricting access to third-party cookies because these can be used to track users across sites and hinder user privacy. This API enables those measurements in a privacy-preserving way, without third-party cookies.</p>
+<h2 id="who-needs-to-know-about-this-api">Who needs to know about this API?</h2>
+<ul>
+<li>Adtech platforms such as <a href="https://en.wikipedia.org/wiki/Demand-side_platform">demand-side platforms</a> (DSP) or <a href="https://en.wikipedia.org/wiki/Data_management_platform">data management platforms</a> (DMP) may use this API to support functionality that currently relies on third-party cookies.</li>
+<li>Advertisers and publishers relying on custom code for advertising or conversion measurement may use this API to replace existing techniques.</li>
+<li>Advertisers and publishers relying on adtech platforms for conversion measurement don’t need to use the API directly, but may be interested in understanding it if they’re working with adtech platforms that may integrate the API.</li>
+</ul>
+<h2 id="debug-the-api-errors-with-chrome-devtools">Debug the API errors with Chrome DevTools</h2>
+<p><a href="/blog/new-in-devtools-93/#attribution-reporting">Available from Chrome 93</a>. Attribution Reporting API errors are now reported in <a href="/docs/devtools">DevTools</a> under the <a href="/docs/devtools/issues/">Issues tab</a>.</p>
+<p>{% Img src=“image/dPDCek3EhZgLQPGtEG3y0fTn4v82/bkEGVEv5kKc9M6qBUmLz.png”, alt=“Attribution Reporting API errors in the Issues tab”, width=“800”, height=“501” %}</p>
+<h2 id="participate">Participate</h2>
+<p>{% Aside %}<br />
+<strong>Your participation is needed!</strong> This API may need to support a wide variety of conversion measurement and optimization use cases. Ecosystem input is vital to ensure that solutions to support these use cases are discussed in the open. {% endAside %}</p>
+<p>To engage, join the discussion and try the API. Doing both is optimal, but you’re welcome to join the discussion whether or not you’ve tried the API.</p>
+<h3 id="join-the-discussion">Join the discussion</h3>
+<ul>
+<li><a href="https://github.com/WICG/conversion-measurement-api/issues/80">Join the bi-weekly meetings</a> (every second week). In these calls, participants discuss API design proposals and how the API could support various measurement use cases. You can <a href="https://docs.google.com/document/d/1zUSm9nX2nUsCa_fbI96UJoRCEr3eAPwWLU7HmClhIJk/edit">add topics</a> to the next meeting’s agenda at any time. Everyone is welcome to join these discussions⏤only make sure to <a href="https://www.w3.org/community/wicg/">join the WICG</a>.</li>
+<li><a href="https://github.com/WICG/conversion-measurement-api/issues/new">Open an issue</a> to ask questions, propose features, or discuss use cases. If you’re unsure how to formulate your issue, see examples like <a href="https://github.com/WICG/conversion-measurement-api/issues/147">this issue</a> and <a href="https://github.com/WICG/conversion-measurement-api/issues/68">this issue</a>. You can also join the conversation in <a href="https://github.com/WICG/conversion-measurement-api/issues">existing issues</a>.</li>
+</ul>
+<h3 id="try-the-api">Try the API</h3>
+<p>{% Aside ‘caution’ %}</p>
+<p>If you’re experimenting with the API in Chrome, you’ll have access to all the features that are <strong>currently</strong> implemented. Not all features discussed in the <a href="https://github.com/WICG/conversion-measurement-api/">repository</a> and <a href="https://github.com/WICG/conversion-measurement-api/issues/80">meeting</a> are implemented in the Chrome origin trial. See the current feature status in <a href="#status">Status</a>. The features available for experimentation are also a subset of what will ultimately be supported by the API, and are subject to change as the API is being incubated in the open and as ecosystem feedback is collected.</p>
+<p>{% endAside %}</p>
+<h4 id="experiment-locally-or-with-a-demo">Experiment locally or with a demo</h4>
+<ol type="1">
+<li>To enable the API locally in your browser, turn on the flag <code>#enable-experimental-web-platform-features</code>. A Chrome flag is a toggle that tells your browser to enable certain experimental functionalities. To turn on that flag, paste <code>chrome://flags/#enable-experimental-web-platform-features</code> in Chrome’s search bar and click <strong>Enable</strong>.</li>
+<li>Run the <a href="#demo">demo</a> locally (or try the <a href="#demo">live demo</a>).</li>
+<li><a href="#demo">Fork the demo code</a> and customize it, or build your own demo from scratch.</li>
+</ol>
+<h4 id="experiment-with-end-users-on-a-deployed-site">Experiment with end users on a deployed site</h4>
+<ol type="1">
+<li><p>Enable the API for end users by registering for an <a href="https://developer.chrome.com/blog/origin-trials/">origin trial</a> if available. An origin trial gives you access to an experimental feature, to build functionality you can try out for a limited time. Note that <a href="https://developer.chrome.com/blog/third-party-origin-trials/">third-party origin trials</a> make it possible for third-party actors such as ad serving and measurement providers to test an API across multiple sites. <strong>To see the currently available origin trials for this API, head over to <a href="#status">Status</a></strong>. To be informed of future origin trials, join the <a href="https://groups.google.com/u/1/a/chromium.org/g/attribution-reporting-api-dev">Attribution Reporting mailing list for developers</a>.</p></li>
+<li><p>Integrate the API into your sites and systems.</p></li>
+</ol>
+<p>{% Aside %}<br />
+If you have implementation questions, join the <a href="https://groups.google.com/u/1/a/chromium.org/g/attribution-reporting-api-dev">Attribution Reporting mailing list for developers</a> and ask.</p>
+<p>If you have general technical questions about your use case, consider opening an issue on the <a href="https://github.com/GoogleChromeLabs/privacy-sandbox-dev-support">Privacy Sandbox dev support repository</a>.<br />
+{% endAside %}</p>
+<h2 id="demo">Demo</h2>
+<p>A few demos are available for you to try.</p>
+<ul>
+<li><p>Event-level reports, clicks only:</p>
+<ul>
+<li><a href="https://goo.gle/sppi-devrel-eventlevel">Live demo</a>.</li>
+<li><a href="https://github.com/GoogleChromeLabs/trust-safety-demo/tree/main/conversion-measurement">Source code</a> for this demo, that you can <a href="https://github.com/GoogleChromeLabs/trust-safety-demo/tree/main/conversion-measurement#fork-and-customize">fork and customize</a> as needed.</li>
+</ul></li>
+</ul>
+<h2 id="use-cases-and-features">Use cases and features</h2>
+<p>{% Aside %}</p>
+<p>This API is a work in progress and will evolve over time, depending on ecosystem feedback and input.</p>
+<p>All the features this API supports are proposals. <strong>Each of these proposals is open to discussion and feedback</strong>, including those that have an initial browser implementation ready.</p>
+<p>This API is being incubated and developed in the open. <a href="#participate">Consider participating</a> in the discussion.</p>
+<p>{% endAside %}</p>
+<p>This API enables sites to measure conversions in the following cases:</p>
+<ul>
+<li>Ad <strong>clicks</strong> and <strong>views</strong>.</li>
+<li>Ads in a <strong>third-party</strong> iframe, such as ads on a publisher site that uses a third-party adtech provider.</li>
+<li>Ads in a <strong>first-party</strong> context, such as ads on a social network or a search engine results page, or a publisher serving their own ads.</li>
+</ul>
+<p>A flexible <strong>attribution model</strong> is supported. See details in <a href="#status">Status</a>.</p>
+<p>This API gives access to different types of insights via two types of reports that can be sent to an advertiser or a third-party adtech provider. These two types of reports can be used simultaneously; they’re complementary.</p>
+<p><strong>Event-level reports</strong> associate an ad click or view with coarse conversion data.</p>
+<figure>
+{% Img src=“image/O2RNUyVSLubjvENAT3e7JSdqSOx1/8PZhfv4UXYxt2vTKRNI2.png”, alt=“event-level report”, width=“400”, height=“180” %}
+<figcaption>
+Example event-level report: Click ID 200400600 on <code>news.example</code> (attached to user ID Bob_Doe on <code>news.example</code>) has led to a purchase on <code>shop.example</code>.
+</figcaption>
+</figure>
+<p>Event-level reports are suited to:</p>
+<ul>
+<li><strong>Optimization</strong> use cases. Event-level reports help answer questions such as <em>“How can I improve my return on investment?”</em>. In particular, they can be used to optimize for ad placement, since a unique ID for the ad side can be made available in the reports. Event-level reports can provide training data for machine learning models.</li>
+<li><strong>Coarse reporting</strong> use cases where very little information is needed about the conversion. The current limitation is 3 bits of conversion data for clicks⏤which means that a conversion can be assigned one of eight categories⏤and 1 bit for views. Encoding of granular conversion-side data, such as a specific price or conversion time, is hence not supported in event-level reports.</li>
+<li><strong>Fraud detection</strong> use cases. The data in some reports can be useful for ad fraud detection and analysis, by allowing you to understand patterns that can be used to identify spammy or invalid activity.</li>
+</ul>
+<p><strong>Aggregate reports</strong>, on the other hand, offer more detailed conversion data, and more flexibility for joining click/view data and conversion data.</p>
+<figure>
+{% Img src=“image/O2RNUyVSLubjvENAT3e7JSdqSOx1/TxgT3W5pNEZhWgDSYIY3.png”, alt=“aggregate report”, width=“400”, height=“180”%}
+<figcaption>
+Example of insights from aggregate reports: CampaignID 1234567 on <code>news.example</code> has led to 518 conversions on <code>shoes.example</code>, and to a total spend of $38174. Half of the conversions were from users in NYC, USA.
+</figcaption>
+</figure>
+<p>Aggregate reports are best suited for <strong>reporting</strong> use cases. They help answer questions such as <em>“What is my return on investment?”</em>.<br />
+Usage of aggregate reports for <strong>optimization</strong> use cases—for example, to optimize for a purchase value, which is not supported by event-level reports because the conversion data is too coarse—is an area of active research. See <a href="#open-questions">Open questions</a>.</p>
+<p>{% Details %}<br />
+{% DetailsSummary ‘h3’ %}<br />
+Why are two types of reports needed?<br />
+{% endDetailsSummary %}</p>
+<p>Event-level reports only offer coarse conversion data in order to preserve user privacy.</p>
+<p>But this coarse data may not be sufficient to measure campaign effectiveness. Marketers may need to learn details about conversions, such as the purchase value, the aggregated advertiser-side demographics for users who converted, the categories of the products that were purchased, whether converted users are first-time or recurring customers, the carts’ contents, etc.</p>
+<p>This is why aggregate reports have been designed.<br />
+{% endDetails %}</p>
+<p>Other features proposed in this API are <a href="https://github.com/WICG/conversion-measurement-api/blob/main/app_to_web.md">app-to-web attribution</a> (see or click an ad in an app and convert on the web) and <a href="https://github.com/WICG/conversion-measurement-api/blob/main/cross_device.md">cross-device attribution</a> (see or click an ad on mobile and convert on desktop).</p>
+<p>{% Aside %}<br />
+In a future without third-party cookies, this API would be combined with other privacy-preserving ads APIs in order to cover end-to-end use cases:</p>
+<ul>
+<li>Remarketing: see <a href="https://developer.chrome.com/docs/privacy-sandbox/fledge/">FLEDGE</a></li>
+<li>Interest-based ad selection: see <a href="https://developer.chrome.com/docs/privacy-sandbox/floc/">FLoC</a></li>
+</ul>
+<p>{% endAside %}</p>
+<h2 id="status">Status</h2>
+<p><strong>🕙 Last updated: August 2021</strong></p>
+<p>Statuses:</p>
+<ul>
+<li><code>🤿 Under exploration</code>: this idea is in the early discussion stages.</li>
+<li><code>🥚 Proposal</code>: an initial design is ready and under public incubation.</li>
+<li><code>🏗️ Under development (BROWSER_NAME)</code>: the feature is being implemented in BROWSER_NAME.</li>
+<li><code>🧪 Experiment (BROWSER_NAME)</code>: an experiment is available in BROWSER_NAME. In Chrome, an experiment is called an origin trial.</li>
+<li><code>🚀 Stable (BROWSER_NAME)</code>: the feature is shipped by default in BROWSER_NAME.</li>
+</ul>
+<p>{% Aside %}<br />
+<a href="https://developer.chrome.com/origintrials/#/view_trial/3411476717733150721">Current origin trial</a> (Chrome experiment 🧪) {% endAside %}</p>
+<p>{% Aside ‘caution’ %}<br />
+Multiple origin trials (experiments) will be run. Each round is used to improve and adjust the API based on ecosystem feedback. {% endAside %}</p>
+<table class="simple width-full fixed-table with-heading-tint">
+<thead>
+<tr>
+<th style="text-align: left;">
+Proposal
+</th>
+<th style="text-align: left;">
+Status
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Event-level reports for clicks<br><a href="https://github.com/WICG/conversion-measurement-api/blob/main/event_attribution_reporting_clicks.md">Explainer</a>
+</td>
+<td>
+<code>🧪 Experiment (Chrome)</code>
+</td>
+</tr>
+<tr>
+<td>
+Event-level reports for views<br><a href="https://github.com/WICG/conversion-measurement-api/blob/main/event_attribution_reporting_views.md">Explainer</a>
+</td>
+<td>
+<code>🏗️ Under development (Chrome)</code>
+</td>
+</tr>
+<tr>
+<td>
+Aggregate reports for clicks and views<br><a href="https://github.com/WICG/conversion-measurement-api/blob/main/AGGREGATE.md">Explainer</a>
+</td>
+<td>
+<code>🥚 Proposal</code>
+</td>
+</tr>
+<tr>
+<td>
+Conversion journey: cross-device<br><a href="https://github.com/WICG/conversion-measurement-api/blob/main/cross_device.md">Explainer</a>
+</td>
+<td>
+<code>🥚 Proposal</code>
+</td>
+</tr>
+<tr>
+<td>
+Conversion journey: app-to-web<br><a href="https://github.com/WICG/conversion-measurement-api/blob/main/app_to_web.md">Explainer</a>
+</td>
+<td>
+<code>🥚 Proposal</code>
+</td>
+</tr>
+<tr>
+<td>
+Attribution model: last click<br><a href="https://github.com/WICG/conversion-measurement-api/blob/main/event_attribution_reporting_clicks.md#multiple-sources-for-the-same-trigger-multi-touch">Explainer</a>
+</td>
+<td>
+<code>🧪 Experiment (Chrome)</code>
+</td>
+</tr>
+<tr>
+<td>
+Attribution model: priority-based<br><a href="https://github.com/WICG/conversion-measurement-api/blob/main/event_attribution_reporting_views.md#controlling-which-attribution-source-to-triggerd">Explainer</a>
+</td>
+<td>
+<code>🏗️ Under development (Chrome)</code>
+</td>
+</tr>
+<tr>
+<td>
+Attribution model: flexible
+</td>
+<td>
+<code>🤿 Under exploration</code>
+</td>
+</tr>
+</tbody>
+</table>
+<p>{% Details %}<br />
+{% DetailsSummary ‘h3’ %}<br />
+About attribution models<br />
+{% endDetailsSummary %}</p>
+<p>With the priority-based model, the browser can associate a priority with each attribution source. This can be used to:</p>
+<ul>
+<li>Decide whether a click or a view was the most likely cause of the conversion (a click is usually considered a more direct signal of user interest).</li>
+<li>Set a <strong>first-touch</strong> <strong>attribution</strong> model, by setting <code>attributionsourcepriority</code> to be relative to time.</li>
+<li>Set a (probabilistically) <strong>linear attribution</strong> model, by choosing the priority uniformly at random.</li>
+</ul>
+<p>Other attribution models may be supported in the future. In aggregate reports, the <a href="https://github.com/WICG/conversion-measurement-api/blob/main/AGGREGATE.md#attribution-trigger-registration">worklet-based scheme</a> possibly allows for more flexible attribution options, including specifying partial credit for multiple previous attribution sources.</p>
+<p>{% endDetails %}</p>
+<h2 id="browser-support">Browser support</h2>
+<ul>
+<li>Firefox and Edge <a href="https://chromestatus.com/feature/6412002824028160">haven’t shared signals</a>.</li>
+<li>Safari/Webkit is <a href="https://chromestatus.com/feature/6412002824028160">negative</a> and proposed a different API to measure ad conversions, called <a href="https://developer.apple.com/videos/play/wwdc2021/10033/">Private Click Measurement</a>.</li>
+</ul>
+<p>Though the two APIs are different, Chrome and WebKit are working together in the open to simplify the developer experience, for example by aligning on the attribute names and on the <a href="https://github.com/privacycg/private-click-measurement/issues/30">JSON structure for reports</a>.</p>
+<p>{% Details %}<br />
+{% DetailsSummary ‘h3’ %}<br />
+Differences between the API proposed by Chrome and the API proposed by WebKit<br />
+{% endDetailsSummary %}<br />
+The feature set of the Attribution Reporting API proposed by Chrome is different from that of the Private Click Measurement API proposed by Safari/WebKit.<br />
+Most notably, with the Attribution Reporting API proposed by Chrome:</p>
+<ul>
+<li>View-through measurement is supported.</li>
+<li>Event-level reports can be provided.</li>
+<li>Both ads links in a first-party context (such as ads on a social network or a search engine results page, or a publisher serving their own ads) <strong>and</strong> ads links in a third-party iframe (such as ads on a publisher site that uses a third-party adtech provider) are supported.</li>
+<li>Third parties such as adtech platforms can receive reports on behalf of publishers and advertisers.</li>
+</ul>
+<p>{% endDetails %}</p>
+<h2 id="how-it-works">How it works</h2>
+<h3 id="event-level-reports">Event-level reports</h3>
+<figure>
+{% Img src=“image/O2RNUyVSLubjvENAT3e7JSdqSOx1/bdnt0qHKdPJJYzxU03Xm.png”, alt=“event-level report”, width=“800”, height=“521” %}
+<figcaption>
+Event-level reports are generated as follows: the browser matches clicks or views (“attribution source events”) with conversion data (“attribution trigger data”) defined by an adtech. Later, the browser sends the resulting reports to a predefined endpoint, with some delay and noise.
+</figcaption>
+</figure>
+<p>{% Details %}<br />
+{% DetailsSummary ‘h3’ %}<br />
+How it works in detail: event-level reports<br />
+{% endDetailsSummary %}<br />
+Ad links can be configured with attributes that are specific to ad conversions:</p>
+<ul>
+<li>Custom data to attach to an ad click (or view) on the publisher’s side, for example a click ID or campaign ID.</li>
+<li>The site for which a conversion is expected for this ad.</li>
+<li>The reporting endpoint that should be notified of successful conversions, that is, receive the reports.</li>
+<li>The cut-off date for when conversions can no longer be counted for this ad.</li>
+</ul>
+<p>Note: it’s also possible to register an attribution source for navigations <a href="https://github.com/WICG/conversion-measurement-api/blob/main/event_attribution_reporting_clicks.md#registering-attribution-sources-for-windowopen-navigations">initiated by <code>window.open()</code></a> or, for views, via a <a href="https://github.com/WICG/conversion-measurement-api/blob/main/event_attribution_reporting_views.md#registering-attribution-sources-with-javascript">JavaScript API</a>.</p>
+<p>When the user clicks or sees a specially configured ad, the browser—on the user’s local device—records this event, alongside the attribution configuration data that was specified.</p>
+<p>Later on, the user visits the advertiser’s website and performs an action that the advertiser or their adtech provider categorizes as a conversion, such as a purchase. When this happens, the advertiser or adtech provider triggers an attribution: it asks the browser to record a conversion with a certain value <code>trigger-data</code>, and the ad click (or view) and conversion event are matched by the user’s browser.</p>
+<p>The browser finally schedules a report to be sent to the endpoint specified on the ad side. This report includes:</p>
+<ul>
+<li>Custom ad-side data that was attached to the ad click or view that led to this conversion.</li>
+<li>Custom conversion-side data, with some noise.</li>
+</ul>
+<p>If several conversions are registered for a given ad click (or view), corresponding reports are scheduled to be sent. A single report can be sent for views, and up to three reports for clicks.</p>
+<p>Reports are sent by the browser after a delay⏤days or sometimes weeks after a conversion.</p>
+<p>{% endDetails %}</p>
+<h3 id="aggregate-reports">Aggregate reports</h3>
+<figure>
+{% Img src=“image/O2RNUyVSLubjvENAT3e7JSdqSOx1/HAl0ppkoxoGCtttWDk2A.png”, alt=“ALT_TEXT_HERE”, width=“800”, height=“1140” %}
+<figcaption>
+Aggregate reports are generated as follows: the browser matches detailed clicks or views (“attribution source events”) with detailed conversion data (“attribution trigger data”) defined by an adtech. Adtech-defined code runs in a worklet to define contributions that will be sent by the browser in order to be used to compute aggregate reports. Aggregation services are responsible for privately computing aggregate reports for adtech.
+</figcaption>
+</figure>
+<p>{% Details %}<br />
+{% DetailsSummary ‘h3’ %}<br />
+How it works in detail: aggregate reports<br />
+{% endDetailsSummary %}</p>
+<p>Ad links can be configured with attributes that are specific to ad conversions.</p>
+<p>When the user clicks or sees a specially configured ad, the browser—on the user’s local device—records this event, alongside the attribution configuration data that was specified.</p>
+<p>Adtech-defined code is then executed within a worklet to define contributions, namely joints of ad-side and conversion-side data.</p>
+<p>These contributions (raw reports) are sent encrypted to an adtech server, and then over to aggregation services that will compute aggregate reports in a <a href="#privacy">private</a> way.</p>
+<p>Note that aggregate reports are not be delayed to the same extent as event-level reports.</p>
+<p>{% endDetails %}</p>
+<h2 id="privacy">Privacy</h2>
+<h3 id="overview">Overview</h3>
+<p>Let’s take a person named Bob. Bob sees an ad while reading the news on <code>news.com</code>. One week later, Bob buys shoes on <code>shoes.example</code>.</p>
+<p>Today, this conversion would be tracked by a third-party cookie used as a <strong>cross-site identifier</strong>. With third-party cookies, an adtech company can access a lot of details on Bob’s activity on <code>news.example</code> <strong>and</strong> on <code>shoes.example</code>, and merge these pieces of information together to build a detailed profile of Bob. An adtech company can end up knowing Bob’s location, browsing habits and preferred reads on <code>news.com</code>⏤<strong>as well as</strong> purchases, activity, and credit card information on <code>shoes.com</code>. This cross-site joint is useful to measure ad conversions. But it hinders user privacy: Bob’s activity is tracked across sites with a high level of detail.</p>
+<p>On the other hand, the Attribution Reporting API enables advertising companies to gain insights into conversions <strong>without tracking an individual’s activity across sites</strong>. A small amount of information is joined across sites⏤enough to measure conversions, but not enough to track Bob’s activity across sites in detail. Bob’s activity on <code>news.example</code> and on <code>shoes.example</code> remains separate.</p>
+<p>{% Img src=“image/O2RNUyVSLubjvENAT3e7JSdqSOx1/aurePszyAGz9Osu3G0XN.jpg”, alt=“Diagram: side-by-side view of today’s web (joined identity) and tomorrow’s web (partitioned identity)”, width=“800”, height=“314” %}</p>
+<h3 id="in-detail">In detail</h3>
+<figure>
+{% Img src=“image/O2RNUyVSLubjvENAT3e7JSdqSOx1/UMXwDWt4RSo98PTS0Wvd.png”, alt=“ALT_TEXT_HERE”, width=“800”, height=“1237” %}
+<figcaption>
+Unlike third-party cookies, the Attribution Reporting API provide insights without cross-site identifiers in order to preserving identity partitioning per site.<br> Event-level reports link an ad-side identifier with only a small amount of conversion-side data. So they do provide cross-site information about a conversion, but the conversion-side information is too coarse to join user identity across sites.<br> Aggregate reports provide detailed insights, but only at an aggregated level; on account of differential privacy techniques, private computation and cryptography, aggregate reports can’t be used to track an individual user’s activity across sites.<br>Additional privacy protections such as rate limitations are imposed on both event-level and aggregate reports.
+</figcaption>
+</figure>
+<p>{% Details %}<br />
+{% DetailsSummary ‘h3’ %}<br />
+In detail: event-level reports and privacy {% endDetailsSummary %}</p>
+<p>Event-level reports provide conversion insights without tracking users across sites, by following the following privacy mechanisms:</p>
+<ul>
+<li>No cross-site identifier is used and no detailed cross-site browsing activity leaves the device. Event-level reports associate 64 bits of information on the ad side (<code>news.example</code>) with only 1 bit or 3 bits on the conversion side (<code>shop.example</code>). 64 bits <strong>are enough information to be mapped to an individual user identifier, but these 64 bits can only be linked with very little cross-site information:</strong> 1 bit or 3 bits, which are not enough to hold an identifier. Note: the ad-side 64 bits are not new information. A user ID can already be available on the ad side today. <code>news.example</code> or <code>adtech.example</code> already knows about a certain user’s activity on <code>news.example</code>.</li>
+<li><p>Additional protections are applied to prevent abuse and cross-site tracking:</p>
+<ul>
+<li>The reports are sent with a <strong>delay</strong>.</li>
+<li>The conversion data is <strong>noised</strong>: a certain percentage of the time (5% in Chrome), the real conversion data is replaced with a random value.</li>
+<li>The number of attributed conversion reports is limited per click or view.</li>
+</ul></li>
+</ul>
+<p>{% Aside %}<br />
+It’s possible to recover the true conversion count in a privacy-preserving way. See the <a href="https://github.com/WICG/conversion-measurement-api/blob/main/noise_corrector.py">example script</a>. {% endAside %}</p>
+<p>{% endDetails %}</p>
+<p>{% Details %}<br />
+{% DetailsSummary ‘h3’ %}<br />
+In detail: aggregate reports and privacy {% endDetailsSummary %}</p>
+<p>Aggregate reports associate a detailed click or view event with detailed conversion data. However, they provide conversion insights without tracking users across sites by following the following privacy mechanisms:</p>
+<ul>
+<li>No cross-site identifier is used.</li>
+<li>Each attribution can make multiple contributions to a resulting aggregate report, and a given user can trigger multiple attributions for a particular click (or view) and conversion. But the contributions any user can make in a given time window is limited.</li>
+<li>Data is aggregated up to the level of many events (many users) and no individual events can be observed precisely. <a href="https://en.wikipedia.org/wiki/Differential_privacy">Differential privacy</a> is used to keep the output data unusable to link user identity across sites: when drilling down into the aggregated data, as the level of detail increases, the relative noise on that data increases as well. This leads to a greater relative error, and ensures that no individual events (or users) can be observed precisely. On the other hand, slices of data that aggregate a lot of events and users are more accurate to preserve usefulness.</li>
+<li><p>The raw reports that associate a detailed click or view event with detailed conversion data are encrypted and not readable by the adtech company. Aggregate data is then computed from these reports in a private way via a trusted server. A few computation options are under consideration:</p>
+<ul>
+<li>Secure multi-party computation (MPC). Trust is distributed across multiple servers. Each server gets one slice of the data that is meaningless on its own. Once each helper has run computations, the output from these helpers is combined to form a meaningful whole.</li>
+<li>Single-server computation. One helper server computes the output. This option is less secure and less private. But it’s easier to set up, which means that it can enable more diverse ecosystem actors to experiment with this API and provide feedback. <strong>This option is not intended to be a long-term solution</strong>. With sufficient notice and migration time, it will be deprecated as ecosystem feedback is integrated and as this API matures, in favor of the more secure approaches, MPC or secure single-server.</li>
+<li>Secure single-server computation. A single server, but with confidential compute properties that are similar (but not equivalent) to MPC.</li>
+<li>In the long-term, servers will need to process data exclusively with secure multi-party computation (secure single-server or secure multi-party).</li>
+</ul></li>
+<li><p>Additional protections are applied to prevent abuse and cross-site tracking:</p>
+<ul>
+<li>Reports are sent with random delays.</li>
+<li>Queries on different slices of the data are rate-limited.</li>
+</ul></li>
+</ul>
+<p>{% endDetails %}</p>
+<h2 id="sites-and-user-control">Sites and user control</h2>
+<ul>
+<li>Users can opt out via the user settings at <code>chrome://settings/privacySandbox</code>.</li>
+<li>By default, the feature is enabled in top-level contexts. Arbitrary third-parties can’t use the API without a publisher’s knowledge, because the Attribution Reporting API needs to be enabled in child iframes via a <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Feature-Policy">Permission policy</a>.</li>
+</ul>
+<h2 id="open-questions">Open questions</h2>
+<p>A number of questions remain open and will be resolved as the API is incubated in the open. You’re encouraged to <a href="#participate">participate</a> in these discussions. In particular:</p>
+<ul>
+<li>What is the right amount of noise to preserve privacy and usefulness?</li>
+<li>How to support custom attribution models?</li>
+<li>How to optimize for any conversion-side data that has a certain level of detail, such as a purchase value?</li>
+<li>What will qualify as a trusted server? One solution that is being assessed is to run regular open-source audits. <a href="https://github.com/WICG/conversion-measurement-api/issues/116">Join the discussion</a>.</li>
+<li>How to offer more reporting flexibility, for example support delegation to more reporting endpoints? <a href="https://github.com/WICG/conversion-measurement-api/issues/96">Join the discussion</a>.</li>
+<li>How to prevent fraud, e.g. via authentication using anonymous credentials? <a href="https://github.com/WICG/conversion-measurement-api/labels/anti-fraud%20%2F%20auth">Join the discussion</a>.</li>
+<li>If you’re thinking of using this API for non-advertising use cases: what’s missing, how could the API be improved? <a href="https://github.com/WICG/conversion-measurement-api/issues">Open an issue</a></li>
+<li>How can implementers customize the privacy settings? <a href="https://github.com/WICG/conversion-measurement-api/issues/99">Join the discussion</a>.</li>
+</ul>
+<p>{% Aside %}<br />
+This API combines multiple privacy techniques in order to achieve <strong>privacy and usefulness</strong>. This means that the 3-bit (or 1-bit for views) data limitation and other privacy mechanisms used by this API are a means to an end. They’re subject to change. If there are ways for adtech companies to get more useful data for their use cases while achieving strong privacy guarantees, this API will evolve accordingly. {% endAside %}</p>
+</body>
+</html>
