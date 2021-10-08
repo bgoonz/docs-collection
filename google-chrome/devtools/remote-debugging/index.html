@@ -1,96 +1,275 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html>
 <head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <meta name="dcterms.date" content="2015-04-13" />
-  <title>Remote debug Android devices</title>
-  <style type="text/css">
-      code{white-space: pre-wrap;}
-      span.smallcaps{font-variant: small-caps;}
-      span.underline{text-decoration: underline;}
-      div.column{display: inline-block; vertical-align: top; width: 50%;}
-  </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+    * { padding: 0; margin: 0; }
+    body {
+        font-family: sans-serif;
+        text-rendering: optimizespeed;
+        background-color: #ffffff;
+    }
+    a {
+        color: #006ed3;
+        text-decoration: none;
+    }
+    a:hover,
+    h1 a:hover {
+        color: #319cff;
+    }
+    header,
+    #summary {
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+    th:first-child,
+    td:first-child {
+        width: 5%;
+    }
+    th:last-child,
+    td:last-child {
+        width: 5%;
+    }
+    header {
+        padding-top: 25px;
+        padding-bottom: 15px;
+        background-color: #f2f2f2;
+    }
+    h1 {
+        font-size: 20px;
+        font-weight: normal;
+        white-space: nowrap;
+        overflow-x: hidden;
+        text-overflow: ellipsis;
+        color: #999;
+    }
+    h1 a {
+        color: #000;
+        margin: 0 4px;
+    }
+    h1 a:hover {
+        text-decoration: underline;
+    }
+    h1 a:first-child {
+        margin: 0;
+    }
+    main {
+        display: block;
+    }
+    .meta {
+        font-size: 12px;
+        font-family: Verdana, sans-serif;
+        border-bottom: 1px solid #9C9C9C;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    .meta-item {
+        margin-right: 1em;
+    }
+    #filter {
+        padding: 4px;
+        border: 1px solid #CCC;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    tr {
+        border-bottom: 1px dashed #dadada;
+    }
+    tbody tr:hover {
+        background-color: #ffffec;
+    }
+    th,
+    td {
+        text-align: left;
+        padding: 10px 0;
+    }
+    th {
+        padding-top: 15px;
+        padding-bottom: 15px;
+        font-size: 16px;
+        white-space: nowrap;
+    }
+    th a {
+        color: black;
+    }
+    th svg {
+        vertical-align: middle;
+    }
+    td {
+        white-space: nowrap;
+        font-size: 14px;
+    }
+    td:nth-child(2) {
+        width: 80%;
+    }
+    td:nth-child(3) {
+        padding: 0 20px 0 20px;
+    }
+    th:nth-child(4),
+    td:nth-child(4) {
+        text-align: right;
+    }
+    td:nth-child(2) svg {
+        position: absolute;
+    }
+    td .name {
+        margin-left: 1.75em;
+        word-break: break-all;
+        overflow-wrap: break-word;
+        white-space: pre-wrap;
+    }
+    td .goup {
+        margin-left: 1.75em;
+        padding: 0;
+        word-break: break-all;
+        overflow-wrap: break-word;
+        white-space: pre-wrap;
+    }
+    .icon {
+        margin-right: 5px;
+    }
+    tr.clickable { 
+        cursor: pointer; 
+    } 
+    tr.clickable a { 
+        display: block; 
+    } 
+    @media (max-width: 600px) {
+        * {
+            font-size: 1.06rem;
+        }
+        .hideable {
+            display: none;
+        }
+        td:nth-child(2) {
+            width: auto;
+        }
+        th:nth-child(3),
+        td:nth-child(3) {
+            padding-right: 5%;
+            text-align: right;
+        }
+        h1 {
+            color: #000;
+        }
+        h1 a {
+            margin: 0;
+        }
+        #filter {
+            max-width: 100px;
+        }
+    }
+    </style>
 </head>
 <body>
-<header id="title-block-header">
-<h1 class="title">Remote debug Android devices</h1>
-<p class="date">2015-04-13</p>
-</header>
-<p>Remote debug live content on an Android device from your Windows, Mac, or Linux computer. This tutorial teaches you how to:</p>
-<ul>
-<li>Set up your Android device for remote debugging, and discover it from your development machine.</li>
-<li>Inspect and debug live content on your Android device from your development machine.</li>
-<li>Screencast content from your Android device onto a DevTools instance on your development machine.</li>
-</ul>
-<p>{% Img src=“image/BrQidfK9jaQyIHwdw91aVpkPiib2/NIeeTMc8eH6hDiA3IX0Y.png”, alt=“Remote debugging diagram”, width=“800”, height=“317” %}</p>
-<p><strong>Figure 1</strong>. Remote Debugging lets you inspect a page running on an Android device from your development machine.</p>
-<h2 id="step-1-discover-your-android-device-discover">Step 1: Discover your Android device {: #discover }</h2>
-<p>The workflow below works for most users. See <a href="#troubleshooting">Troubleshooting: DevTools is not detecting the Android device</a> for more help.</p>
-<ol type="1">
-<li>Open the <strong>Developer Options</strong> screen on your Android. See <a href="https://developer.android.com/studio/debug/dev-options.html">Configure On-Device Developer Options</a>.</li>
-<li>Select <strong>Enable USB Debugging</strong>.</li>
-<li>On your development machine, open Chrome.</li>
-<li>Go to <code>chrome://inspect#devices</code>.</li>
-<li><p>Make sure that the <strong>Discover USB devices</strong> checkbox is enabled.</p>
-<p>{% Img src=“image/BrQidfK9jaQyIHwdw91aVpkPiib2/4P4G0Hmt3CbDkqMoTOiY.png”, alt=“The Discover USB Devices checkbox is enabled.”, width=“800”, height=“587” %}</p>
-<p><strong>Figure 2</strong>. The <strong>Discover USB Devices</strong> checkbox is enabled</p></li>
-<li><p>Connect your Android device directly to your development machine using a USB cable. The first time you do this, you usually see that DevTools has detected an offline device. If you see the model name of your Android device, then DevTools has successfully established the connection to your device. Continue to <a href="#debug">Step 2</a>.</p>
-<p>{% Img src=“image/BrQidfK9jaQyIHwdw91aVpkPiib2/7Iy1yVH62Xz40tbiwgRg.png”, alt=“The Remote Target has successfully detected an offline device that is pending authorization.”, width=“800”, height=“587” %}</p>
-<p><strong>Figure 3</strong>. The <strong>Remote Target</strong> has successfully detected an offline device that is pending authorization</p></li>
-<li><p>If your device is showing up as <strong>Offline</strong>, accept the <strong>Allow USB Debugging</strong> permission prompt on your Android device.</p></li>
-</ol>
-<h3 id="troubleshooting-devtools-is-not-detecting-the-android-device-troubleshooting">Troubleshooting: DevTools is not detecting the Android device {: #troubleshooting }</h3>
-<p>Make sure that your hardware is set up correctly:</p>
-<ul>
-<li>If you’re using a USB hub, try connecting your Android device directly to your development machine instead.</li>
-<li>Try unplugging the USB cable between your Android device and development machine, and then plugging it back in. Do it while your Android and development machine screens are unlocked.</li>
-<li>Make sure that your USB cable works. You should be able to inspect files on your Android device from your development machine.</li>
-</ul>
-<p>Make sure that your software is set up correctly:</p>
-<ul>
-<li>If your development machine is running Windows, try manually installing the USB drivers for your Android device. See <a href="https://developer.android.com/tools/extras/oem-usb.html">Install OEM USB Drivers</a>.</li>
-<li>Some combinations of Windows and Android devices (especially Samsung) require extra set up. See <a href="https://stackoverflow.com/questions/21925992">Chrome DevTools Devices does not detect device when plugged in</a>.</li>
-</ul>
-<p>If you don’t see the <strong>Allow USB Debugging</strong> prompt on your Android device try:</p>
-<ul>
-<li>Disconnecting and then re-connecting the USB cable while DevTools is in focus on your development machine and your Android homescreen is showing. In other words, sometimes the prompt doesn’t show up when your Android or development machine screens are locked.</li>
-<li>Updating the display settings for your Android device and development machine so that they never go to sleep.</li>
-<li>Setting Android’s USB mode to PTP. See <a href="https://android.stackexchange.com/questions/101933">Galaxy S4 does not show Authorize USB debugging dialog box</a>.</li>
-<li>Select <strong>Revoke USB Debugging Authorizations</strong> from the <strong>Developer Options</strong> screen on your Android device to reset it to a fresh state.</li>
-</ul>
-<p>If you find a solution that is not mentioned in this section or in <a href="https://stackoverflow.com/questions/21925992">Chrome DevTools Devices does not detect device when plugged in</a>, please add an answer to that Stack Overflow question, or <a href="https://github.com/google/webfundamentals/issues/new?title=%5BRemote%20Debugging%5D">open an issue in the webfundamentals repository</a>!</p>
-<h2 id="step-2-debug-content-on-your-android-device-from-your-development-machine-debug">Step 2: Debug content on your Android device from your development machine {: #debug }</h2>
-<ol type="1">
-<li>Open Chrome on your Android device.</li>
-<li><p>In the <strong><code>chrome://inspect/#devices</code></strong>, you see your Android device’s model name, followed by its serial number. Below that, you can see the version of Chrome that’s running on the device, with the version number in parentheses. Each open Chrome tab gets its own section. You can interact with that tab from this section. If there are any apps using WebView, you see a section for each of those apps, too. In <strong>Figure 5</strong> there are no tabs or WebViews open.</p>
-<p>{% Img src=“image/BrQidfK9jaQyIHwdw91aVpkPiib2/y1pMOU5sSvCLPct4J480.png”, alt=“A connected remote device.”, width=“800”, height=“587” %}</p>
-<p><strong>Figure 4</strong>. A connected remote device</p></li>
-<li>In the <strong>Open tab with url</strong> text box, enter a URL and then click <strong>Open</strong>. The page opens in a new tab on your Android device.</li>
-<li><p>Click <strong>Inspect</strong> next to the URL that you just opened. A new DevTools instance opens. The version of Chrome running on your Android device determines the version of DevTools that opens on your development machine. So, if your Android device is running a very old version of Chrome, the DevTools instance may look very different than what you’re used to.</p></li>
-</ol>
-<h3 id="more-actions-pause-focus-reload-or-close-a-tab-more-actions">More actions: pause, focus, reload, or close a tab {: #more-actions }</h3>
-<p>Below the URL you can find a menu to pause, focus, reload or close a tab.</p>
-<p>{% Img src=“image/BrQidfK9jaQyIHwdw91aVpkPiib2/JaZPnZlDhAywdFkn8vNm.png”, alt=“The menu for pausing, reloading, focusing, or closing a tab.”, width=“800”, height=“255” %}</p>
-<p><strong>Figure 5</strong>. The menu for pausing, reloading, focusing, or closing a tab</p>
-<h3 id="inspect-elements-inspect">Inspect elements {: #inspect }</h3>
-<p>Go to the <strong>Elements</strong> panel of your DevTools instance, and hover over an element to highlight it in the viewport of your Android device.</p>
-<p>You can also tap an element on your Android device screen to select it in the <strong>Elements</strong> panel. Click <strong>Select Element</strong> {% Img src=“image/BrQidfK9jaQyIHwdw91aVpkPiib2/y9AaD4jeSmPRG4sQSylM.png”, alt=“Select Element”, width=“42”, height=“40” %} on your DevTools instance, and then tap the element on your Android device screen. Note that <strong>Select Element</strong> is disabled after the first touch, so you need to re-enable it every time you want to use this feature.</p>
-<h3 id="screencast-your-android-screen-to-your-development-machine-screencast">Screencast your Android screen to your development machine {: #screencast }</h3>
-<p>Click <strong>Toggle Screencast</strong> {% Img src=“image/BrQidfK9jaQyIHwdw91aVpkPiib2/A5AtRECWSgsdtMZkI6g5.png”, alt=“Toggle Screencast”, width=“44”, height=“44” %} to view the content of your Android device in your DevTools instance.</p>
-<p>You can interact with the screencast in multiple ways:</p>
-<ul>
-<li>Clicks are translated into taps, firing proper touch events on the device.</li>
-<li>Keystrokes on your computer are sent to the device.</li>
-<li>To simulate a pinch gesture, hold Shift while dragging.</li>
-<li>To scroll, use your trackpad or mouse wheel, or fling with your mouse pointer.</li>
-</ul>
-<p>Some notes on screencasts:</p>
-<ul>
-<li>Screencasts only display page content. Transparent portions of the screencast represent device interfaces, such as the Chrome address bar, the Android status bar, or the Android keyboard.</li>
-<li>Screencasts negatively affect frame rates. Disable screencasting while measuring scrolls or animations to get a more accurate picture of your page’s performance.</li>
-<li>If your Android device screen locks, the content of your screencast disappears. Unlock your Android device screen to automatically resume the screencast.</li>
-</ul>
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="0" width="0" style="position: absolute;">
+    <defs>
+        <!-- Go-up -->
+        <g id="go-up">
+            <path d="M10,9V5L3,12L10,19V14.9C15,14.9 18.5,16.5 21,20C20,15 17,10 10,9Z" fill="#696969"/>
+        </g>
+        <!-- Folder -->
+        <g id="folder" fill-rule="nonzero" fill="none">
+            <path d="M285.22 37.55h-142.6L110.9 0H31.7C14.25 0 0 16.9 0 37.55v75.1h316.92V75.1c0-20.65-14.26-37.55-31.7-37.55z" fill="#FFA000"/>
+            <path d="M285.22 36H31.7C14.25 36 0 50.28 0 67.74v158.7c0 17.47 14.26 31.75 31.7 31.75H285.2c17.44 0 31.7-14.3 31.7-31.75V67.75c0-17.47-14.26-31.75-31.7-31.75z" fill="#FFCA28"/>
+        </g>
+        <g id="folder-shortcut" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+            <g id="folder-shortcut-group" fill-rule="nonzero">
+                <g id="folder-shortcut-shape">
+                    <path d="M285.224876,37.5486902 L142.612438,37.5486902 L110.920785,0 L31.6916529,0 C14.2612438,0 0,16.8969106 0,37.5486902 L0,112.646071 L316.916529,112.646071 L316.916529,75.0973805 C316.916529,54.4456008 302.655285,37.5486902 285.224876,37.5486902 Z" id="Shape" fill="#FFA000"></path>
+                    <path d="M285.224876,36 L31.6916529,36 C14.2612438,36 0,50.2838568 0,67.7419039 L0,226.451424 C0,243.909471 14.2612438,258.193328 31.6916529,258.193328 L285.224876,258.193328 C302.655285,258.193328 316.916529,243.909471 316.916529,226.451424 L316.916529,67.7419039 C316.916529,50.2838568 302.655285,36 285.224876,36 Z" id="Shape" fill="#FFCA28"></path>
+                </g>
+                <path d="M126.154134,250.559184 C126.850974,251.883673 127.300549,253.006122 127.772602,254.106122 C128.469442,255.206122 128.919016,256.104082 129.638335,257.002041 C130.559962,258.326531 131.728855,259 133.100057,259 C134.493737,259 135.415364,258.55102 136.112204,257.67551 C136.809044,257.002041 137.258619,255.902041 137.258619,254.577551 C137.258619,253.904082 137.258619,252.804082 137.033832,251.457143 C136.786566,249.908163 136.561779,249.032653 136.561779,248.583673 C136.089726,242.814286 135.864939,237.920408 135.864939,233.273469 C135.864939,225.057143 136.786566,217.514286 138.180246,210.846939 C139.798713,204.202041 141.889234,198.634694 144.429328,193.763265 C147.216689,188.869388 150.678411,184.873469 154.836973,181.326531 C158.995535,177.779592 163.626149,174.883673 168.481552,172.661224 C173.336954,170.438776 179.113983,168.665306 185.587852,167.340816 C192.061722,166.218367 198.760378,165.342857 205.481514,164.669388 C212.18017,164.220408 219.598146,163.995918 228.162535,163.995918 L246.055591,163.995918 L246.055591,195.514286 C246.055591,197.736735 246.752431,199.510204 248.370899,201.059184 C250.214153,202.608163 252.079886,203.506122 254.372715,203.506122 C256.463236,203.506122 258.531277,202.608163 260.172223,201.059184 L326.102289,137.797959 C327.720757,136.24898 328.642384,134.47551 328.642384,132.253061 C328.642384,130.030612 327.720757,128.257143 326.102289,126.708163 L260.172223,63.4469388 C258.553756,61.8979592 256.463236,61 254.395194,61 C252.079886,61 250.236632,61.8979592 248.393377,63.4469388 C246.77491,64.9959184 246.07807,66.7693878 246.07807,68.9918367 L246.07807,100.510204 L228.162535,100.510204 C166.863084,100.510204 129.166282,117.167347 115.274437,150.459184 C110.666301,161.54898 108.350993,175.310204 108.350993,191.742857 C108.350993,205.279592 113.903236,223.912245 124.760454,247.438776 C125.00772,248.112245 125.457294,249.010204 126.154134,250.559184 Z" id="Shape" fill="#FFFFFF" transform="translate(218.496689, 160.000000) scale(-1, 1) translate(-218.496689, -160.000000) "></path>
+            </g>
+        </g>
+        <!-- File -->
+        <g id="file" stroke="#000" stroke-width="25" fill="#FFF" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M13 24.12v274.76c0 6.16 5.87 11.12 13.17 11.12H239c7.3 0 13.17-4.96 13.17-11.12V136.15S132.6 13 128.37 13H26.17C18.87 13 13 17.96 13 24.12z"/>
+            <path d="M129.37 13L129 113.9c0 10.58 7.26 19.1 16.27 19.1H249L129.37 13z"/>
+        </g>
+        <g id="file-shortcut" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+            <g id="file-shortcut-group" transform="translate(13.000000, 13.000000)">
+                <g id="file-shortcut-shape" stroke="#000000" stroke-width="25" fill="#FFFFFF" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M0,11.1214886 L0,285.878477 C0,292.039924 5.87498876,296.999983 13.1728373,296.999983 L225.997983,296.999983 C233.295974,296.999983 239.17082,292.039942 239.17082,285.878477 L239.17082,123.145388 C239.17082,123.145388 119.58541,2.84217094e-14 115.369423,2.84217094e-14 L13.1728576,2.84217094e-14 C5.87500907,-1.71479982e-05 0,4.96022995 0,11.1214886 Z" id="rect1171"></path>
+                    <path d="M116.37005,0 L116,100.904964 C116,111.483663 123.258008,120 132.273377,120 L236,120 L116.37005,0 L116.37005,0 Z" id="rect1794"></path>
+                </g>
+                <path d="M47.803141,294.093878 C48.4999811,295.177551 48.9495553,296.095918 49.4216083,296.995918 C50.1184484,297.895918 50.5680227,298.630612 51.2873415,299.365306 C52.2089688,300.44898 53.3778619,301 54.7490634,301 C56.1427436,301 57.0643709,300.632653 57.761211,299.916327 C58.4580511,299.365306 58.9076254,298.465306 58.9076254,297.381633 C58.9076254,296.830612 58.9076254,295.930612 58.6828382,294.828571 C58.4355724,293.561224 58.2107852,292.844898 58.2107852,292.477551 C57.7387323,287.757143 57.5139451,283.753061 57.5139451,279.95102 C57.5139451,273.228571 58.4355724,267.057143 59.8292526,261.602041 C61.44772,256.165306 63.5382403,251.610204 66.0783349,247.62449 C68.8656954,243.620408 72.3274172,240.35102 76.4859792,237.44898 C80.6445412,234.546939 85.2751561,232.177551 90.1305582,230.359184 C94.9859603,228.540816 100.76299,227.089796 107.236859,226.006122 C113.710728,225.087755 120.409385,224.371429 127.13052,223.820408 C133.829177,223.453061 141.247152,223.269388 149.811542,223.269388 L167.704598,223.269388 L167.704598,249.057143 C167.704598,250.87551 168.401438,252.326531 170.019905,253.593878 C171.86316,254.861224 173.728893,255.595918 176.021722,255.595918 C178.112242,255.595918 180.180284,254.861224 181.82123,253.593878 L247.751296,201.834694 C249.369763,200.567347 250.291391,199.116327 250.291391,197.297959 C250.291391,195.479592 249.369763,194.028571 247.751296,192.761224 L181.82123,141.002041 C180.202763,139.734694 178.112242,139 176.044201,139 C173.728893,139 171.885639,139.734694 170.042384,141.002041 C168.423917,142.269388 167.727077,143.720408 167.727077,145.538776 L167.727077,171.326531 L149.811542,171.326531 C88.5120908,171.326531 50.8152886,184.955102 36.9234437,212.193878 C32.3153075,221.267347 30,232.526531 30,245.971429 C30,257.046939 35.5522422,272.291837 46.4094607,291.540816 C46.6567266,292.091837 47.1063009,292.826531 47.803141,294.093878 Z" id="Shape-Copy" fill="#000000" fill-rule="nonzero" transform="translate(140.145695, 220.000000) scale(-1, 1) translate(-140.145695, -220.000000) "></path>
+            </g>
+        </g>
+    </defs>
+    </svg>
+<header>
+    <h1>remote-debugging</h1>
+                 </header>
+                 <main>
+                 <div class="listing">
+                     <table aria-describedby="summary">
+                         <thead>
+                         <tr>
+                             <th></th>
+                             <th>Name</th>
+                             <th>Size</th>
+                             <th class="hideable">
+                                 Modified
+                             </th>
+                             <th class="hideable"></th>
+                         </tr>
+                         </thead>
+                         <tbody>
+                         <tr class="clickable">
+                             <td></td>
+                             <td><a href=".."><svg width="1.5em" height="1em" version="1.1" viewBox="0 0 24 24"><use xlink:href="#go-up"></use></svg>
+                 <span class="goup">..</span></a></td>
+                             <td>&mdash;</td>
+                             <td class="hideable">&mdash;</td>
+                             <td class="hideable"></td>
+                         </tr>
+                 
+        <tr class="file">
+            <td></td>
+            <td>
+                <a href="local-server/">
+                    <svg width="1.5em" height="1em" version="1.1" viewBox="0 0 265 323"><use xlink:href="#folder"></use></svg>
+                    <span class="name">local-server</span>
+                </a>
+            </td>
+            <td data-order="-1">&mdash;</td>
+            <td class="hideable"><time datetime="2021-10-08T12:03:45">Fri Oct  8 12:03:45 2021</time></td>
+            <td class="hideable"></td>
+        </tr>
+
+        <tr class="file">
+            <td></td>
+            <td>
+                <a href="webviews/">
+                    <svg width="1.5em" height="1em" version="1.1" viewBox="0 0 265 323"><use xlink:href="#folder"></use></svg>
+                    <span class="name">webviews</span>
+                </a>
+            </td>
+            <td data-order="-1">&mdash;</td>
+            <td class="hideable"><time datetime="2021-10-08T12:03:45">Fri Oct  8 12:03:45 2021</time></td>
+            <td class="hideable"></td>
+        </tr>
+
+        <tr class="file">
+            <td></td>
+            <td>
+                <a href="index.md">
+                    <svg width="1.5em" height="1em" version="1.1" viewBox="0 0 265 323"><use xlink:href="#file"></use></svg>
+                    <span class="name">index.md</span>
+                </a>
+            </td>
+            <td data-order="8248">8 KB</td>
+            <td class="hideable"><time datetime="2021-10-08T11:34:09">Fri Oct  8 11:34:09 2021</time></td>
+            <td class="hideable"></td>
+        </tr>
+
+            </tbody>
+        </table>
+    </div>
+</main>
 </body>
 </html>

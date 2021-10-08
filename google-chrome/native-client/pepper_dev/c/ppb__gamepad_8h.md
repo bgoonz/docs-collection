@@ -1,4 +1,4 @@
----json {"title":"ppb\_gamepad.h File Reference"} ---
+—json {“title”:“ppb\_gamepad.h File Reference”} —
 
 Include dependency graph for ppb\_gamepad.h:
 
@@ -7,15 +7,15 @@ Include dependency graph for ppb\_gamepad.h:
 Data Structures
 ---------------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p___gamepad_sample_data/" class="el">PP_GamepadSampleData</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The data for one gamepad device. <a href="/docs/native-client/pepper_dev/c/struct_p_p___gamepad_sample_data#details">More...</a><br />
-</td></tr><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p___gamepads_sample_data/" class="el">PP_GamepadsSampleData</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The data for all gamepads connected to the system. <a href="/docs/native-client/pepper_dev/c/struct_p_p___gamepads_sample_data#details">More...</a><br />
-</td></tr><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p_b___gamepad__1__0/" class="el">PPB_Gamepad</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_Gamepad</code> interface allows retrieving data from gamepad/joystick devices that are connected to the system. <a href="/docs/native-client/pepper_dev/c/struct_p_p_b___gamepad__1__0#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p___gamepad_sample_data/" class="el">PP_GamepadSampleData</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The data for one gamepad device. <a href="/docs/native-client/pepper_dev/c/struct_p_p___gamepad_sample_data#details">More…</a><br />
+</td></tr><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p___gamepads_sample_data/" class="el">PP_GamepadsSampleData</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The data for all gamepads connected to the system. <a href="/docs/native-client/pepper_dev/c/struct_p_p___gamepads_sample_data#details">More…</a><br />
+</td></tr><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p_b___gamepad__1__0/" class="el">PPB_Gamepad</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_Gamepad</code> interface allows retrieving data from gamepad/joystick devices that are connected to the system. <a href="/docs/native-client/pepper_dev/c/struct_p_p_b___gamepad__1__0#details">More…</a><br />
 </td></tr></tbody></table>
 
 Defines
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__gamepad_8h#ae18db8da1163096b8ea10071317305b2" class="el">PPB_GAMEPAD_INTERFACE</a>   "PPB_Gamepad;1.0"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__gamepad_8h#aca090c38021f6dcef779de7a255313f3" class="el">PPB_GAMEPAD_INTERFACE</a>   <a href="/docs/native-client/pepper_dev/c/ppb__gamepad_8h#ae18db8da1163096b8ea10071317305b2" class="el">PPB_GAMEPAD_INTERFACE</a></td></tr></tbody></table>
+<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__gamepad_8h#ae18db8da1163096b8ea10071317305b2" class="el">PPB_GAMEPAD_INTERFACE</a>   “PPB_Gamepad;1.0”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__gamepad_8h#aca090c38021f6dcef779de7a255313f3" class="el">PPB_GAMEPAD_INTERFACE</a>   <a href="/docs/native-client/pepper_dev/c/ppb__gamepad_8h#ae18db8da1163096b8ea10071317305b2" class="el">PPB_GAMEPAD_INTERFACE</a></td></tr></tbody></table>
 
 Typedefs
 --------
@@ -47,4 +47,4 @@ Define Documentation
 
 <span id="ae18db8da1163096b8ea10071317305b2" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_dev/c/ppb__gamepad_8h#ae18db8da1163096b8ea10071317305b2" class="el">PPB_GAMEPAD_INTERFACE</a>   "PPB_Gamepad;1.0"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_dev/c/ppb__gamepad_8h#ae18db8da1163096b8ea10071317305b2" class="el">PPB_GAMEPAD_INTERFACE</a>   “PPB_Gamepad;1.0”</td></tr></tbody></table>

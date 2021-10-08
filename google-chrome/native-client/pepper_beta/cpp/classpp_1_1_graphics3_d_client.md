@@ -1,4 +1,4 @@
----json {"title":"pp::Graphics3DClient Class Reference"} ---
+—json {“title”:“pp::Graphics3DClient Class Reference”} —
 
 [List of all members.](/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics3_d_client-members/)
 
@@ -19,6 +19,7 @@ Constructor & Destructor Documentation
 A constructor for creating a <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics3_d_client/" class="el">Graphics3DClient</a>.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance that will own the new <code>Graphics3DClient</code>.</td></tr></tbody></table>
 
 <span id="ae92f30610f425d3e530fc3f9a1276aae" class="anchor" style="margin: 0;"></span>

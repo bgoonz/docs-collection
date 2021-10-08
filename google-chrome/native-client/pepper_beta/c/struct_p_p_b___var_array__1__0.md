@@ -1,4 +1,4 @@
----json {"title":"PPB\_VarArray Struct Reference"} ---
+—json {“title”:“PPB\_VarArray Struct Reference”} —
 
 Data Fields
 -----------
@@ -28,9 +28,8 @@ An empty array var, whose reference count is set to 1 on behalf of the caller.
 Gets an element from the array.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>array</td><td>An array var.</td></tr><tr class="even"><td>[in]</td><td>index</td><td>An index indicating which element to return.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>array</td><td>An array var.</td></tr><tr class="even"><td>[in]</td><td>index</td><td>An index indicating which element to return.</td></tr></tbody></table>
 
 **Returns:**  
 The element at the specified position. The reference count of the element returned is incremented on behalf of the caller. If `index` is larger than or equal to the array length, an undefined var is returned.
@@ -42,9 +41,8 @@ The element at the specified position. The reference count of the element return
 Gets the array length.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>array</td><td>An array var.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>array</td><td>An array var.</td></tr></tbody></table>
 
 **Returns:**  
 The array length.
@@ -56,9 +54,8 @@ The array length.
 Sets the value of an element in the array.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>array</td><td>An array var.</td></tr><tr class="even"><td>[in]</td><td>index</td><td>An index indicating which element to modify. If <code>index</code> is larger than or equal to the array length, the length is updated to be <code>index</code> + 1. Any position in the array that hasn't been set before is set to undefined, i.e., <code>PP_Var</code> of type <code>PP_VARTYPE_UNDEFINED</code>.</td></tr><tr class="odd"><td>[in]</td><td>value</td><td>The value to set. The array holds a reference to it on success.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>array</td><td>An array var.</td></tr><tr class="even"><td>[in]</td><td>index</td><td>An index indicating which element to modify. If <code>index</code> is larger than or equal to the array length, the length is updated to be <code>index</code> + 1. Any position in the array that hasn’t been set before is set to undefined, i.e., <code>PP_Var</code> of type <code>PP_VARTYPE_UNDEFINED</code>.</td></tr><tr class="odd"><td>[in]</td><td>value</td><td>The value to set. The array holds a reference to it on success.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_Bool` indicating whether the operation succeeds.
@@ -70,9 +67,8 @@ A `PP_Bool` indicating whether the operation succeeds.
 Sets the array length.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>array</td><td>An array var.</td></tr><tr class="even"><td>[in]</td><td>length</td><td>The new array length. If <code>length</code> is smaller than its current value, the array is truncated to the new length; any elements that no longer fit are removed and the references to them will be released. If <code>length</code> is larger than its current value, undefined vars are appended to increase the array to the specified length.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>array</td><td>An array var.</td></tr><tr class="even"><td>[in]</td><td>length</td><td>The new array length. If <code>length</code> is smaller than its current value, the array is truncated to the new length; any elements that no longer fit are removed and the references to them will be released. If <code>length</code> is larger than its current value, undefined vars are appended to increase the array to the specified length.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_Bool` indicating whether the operation succeeds.

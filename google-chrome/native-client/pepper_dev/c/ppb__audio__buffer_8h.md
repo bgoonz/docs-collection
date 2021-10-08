@@ -1,4 +1,4 @@
----json {"title":"ppb\_audio\_buffer.h File Reference"} ---
+—json {“title”:“ppb\_audio\_buffer.h File Reference”} —
 
 Include dependency graph for ppb\_audio\_buffer.h:
 
@@ -12,7 +12,7 @@ Data Structures
 Defines
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__audio__buffer_8h#a4fddf6d285021552ba11f4460ba47445" class="el">PPB_AUDIOBUFFER_INTERFACE</a>   "PPB_AudioBuffer;0.1"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__audio__buffer_8h#a97463b49d90a036ddcb00968c33a8dfa" class="el">PPB_AUDIOBUFFER_INTERFACE</a>   <a href="/docs/native-client/pepper_dev/c/ppb__audio__buffer_8h#a4fddf6d285021552ba11f4460ba47445" class="el">PPB_AUDIOBUFFER_INTERFACE</a></td></tr></tbody></table>
+<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__audio__buffer_8h#a4fddf6d285021552ba11f4460ba47445" class="el">PPB_AUDIOBUFFER_INTERFACE</a>   “PPB_AudioBuffer;0.1”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__audio__buffer_8h#a97463b49d90a036ddcb00968c33a8dfa" class="el">PPB_AUDIOBUFFER_INTERFACE</a>   <a href="/docs/native-client/pepper_dev/c/ppb__audio__buffer_8h#a4fddf6d285021552ba11f4460ba47445" class="el">PPB_AUDIOBUFFER_INTERFACE</a></td></tr></tbody></table>
 
 Typedefs
 --------
@@ -48,4 +48,4 @@ Define Documentation
 
 <span id="a4fddf6d285021552ba11f4460ba47445" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_dev/c/ppb__audio__buffer_8h#a4fddf6d285021552ba11f4460ba47445" class="el">PPB_AUDIOBUFFER_INTERFACE</a>   "PPB_AudioBuffer;0.1"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_dev/c/ppb__audio__buffer_8h#a4fddf6d285021552ba11f4460ba47445" class="el">PPB_AUDIOBUFFER_INTERFACE</a>   “PPB_AudioBuffer;0.1”</td></tr></tbody></table>

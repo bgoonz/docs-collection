@@ -1,4 +1,4 @@
----json {"title":"ppb\_var\_array\_buffer.h File Reference"} ---
+—json {“title”:“ppb\_var\_array\_buffer.h File Reference”} —
 
 Include dependency graph for ppb\_var\_array\_buffer.h:
 
@@ -7,13 +7,13 @@ Include dependency graph for ppb\_var\_array\_buffer.h:
 Data Structures
 ---------------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p_b___var_array_buffer__1__0/" class="el">PPB_VarArrayBuffer</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_VarArrayBuffer</code> interface provides a way to interact with JavaScript ArrayBuffers, which represent a contiguous sequence of bytes. <a href="/docs/native-client/pepper_dev/c/struct_p_p_b___var_array_buffer__1__0#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p_b___var_array_buffer__1__0/" class="el">PPB_VarArrayBuffer</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_VarArrayBuffer</code> interface provides a way to interact with JavaScript ArrayBuffers, which represent a contiguous sequence of bytes. <a href="/docs/native-client/pepper_dev/c/struct_p_p_b___var_array_buffer__1__0#details">More…</a><br />
 </td></tr></tbody></table>
 
 Defines
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__var__array__buffer_8h#aacd03d05467e3a617c0a1c068fa422c7" class="el">PPB_VAR_ARRAY_BUFFER_INTERFACE</a>   "PPB_VarArrayBuffer;1.0"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__var__array__buffer_8h#a2b7e1cca43218ed9eb3c92b24089ecac" class="el">PPB_VAR_ARRAY_BUFFER_INTERFACE</a>   <a href="/docs/native-client/pepper_dev/c/ppb__var__array__buffer_8h#aacd03d05467e3a617c0a1c068fa422c7" class="el">PPB_VAR_ARRAY_BUFFER_INTERFACE</a></td></tr></tbody></table>
+<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__var__array__buffer_8h#aacd03d05467e3a617c0a1c068fa422c7" class="el">PPB_VAR_ARRAY_BUFFER_INTERFACE</a>   “PPB_VarArrayBuffer;1.0”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__var__array__buffer_8h#a2b7e1cca43218ed9eb3c92b24089ecac" class="el">PPB_VAR_ARRAY_BUFFER_INTERFACE</a>   <a href="/docs/native-client/pepper_dev/c/ppb__var__array__buffer_8h#aacd03d05467e3a617c0a1c068fa422c7" class="el">PPB_VAR_ARRAY_BUFFER_INTERFACE</a></td></tr></tbody></table>
 
 Typedefs
 --------
@@ -41,4 +41,4 @@ Define Documentation
 
 <span id="aacd03d05467e3a617c0a1c068fa422c7" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_dev/c/ppb__var__array__buffer_8h#aacd03d05467e3a617c0a1c068fa422c7" class="el">PPB_VAR_ARRAY_BUFFER_INTERFACE</a>   "PPB_VarArrayBuffer;1.0"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_dev/c/ppb__var__array__buffer_8h#aacd03d05467e3a617c0a1c068fa422c7" class="el">PPB_VAR_ARRAY_BUFFER_INTERFACE</a>   “PPB_VarArrayBuffer;1.0”</td></tr></tbody></table>

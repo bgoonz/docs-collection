@@ -1,4 +1,4 @@
----json {"title":"PPB\_NetworkProxy Struct Reference"} ---
+—json {“title”:“PPB\_NetworkProxy Struct Reference”} —
 
 Data Fields
 -----------
@@ -27,12 +27,11 @@ Field Documentation
 
 Retrieves the proxy that will be used for the given URL.
 
-The result will be a string in PAC format. For more details about PAC format, please see <http://en.wikipedia.org/wiki/Proxy_auto-config>
+The result will be a string in PAC format. For more details about PAC format, please see <a href="http://en.wikipedia.org/wiki/Proxy_auto-config" class="uri">http://en.wikipedia.org/wiki/Proxy_auto-config</a>
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code> identifying one instance of a module.</td></tr><tr class="even"><td>[in]</td><td>url</td><td>A string <code>PP_Var</code> containing a URL.</td></tr><tr class="odd"><td>[out]</td><td>proxy_string</td><td>A <code>PP_Var</code> that GetProxyForURL will set upon successful completion. If the call fails, <code>proxy_string </code> will be unchanged. Otherwise, it will be set to a string <code> PP_Var</code> containing the appropriate PAC string for <code>url</code>. If set, <code>proxy_string</code> will have a reference count of 1 which the plugin must manage.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code> identifying one instance of a module.</td></tr><tr class="even"><td>[in]</td><td>url</td><td>A string <code>PP_Var</code> containing a URL.</td></tr><tr class="odd"><td>[out]</td><td>proxy_string</td><td>A <code>PP_Var</code> that GetProxyForURL will set upon successful completion. If the call fails, <code>proxy_string </code> will be unchanged. Otherwise, it will be set to a string <code> PP_Var</code> containing the appropriate PAC string for <code>url</code>. If set, <code>proxy_string</code> will have a reference count of 1 which the plugin must manage.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing an error code from `pp_errors.h`.

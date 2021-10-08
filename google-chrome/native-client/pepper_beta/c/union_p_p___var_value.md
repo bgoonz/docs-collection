@@ -1,4 +1,4 @@
----json {"title":"PP\_VarValue Union Reference"} ---
+—json {“title”:“PP\_VarValue Union Reference”} —
 
 Data Fields
 -----------
@@ -37,7 +37,7 @@ If `type` is `PP_VARTYPE_DOUBLE`, `as_double` represents the value of this `PP_V
 
 If `type` is `PP_VARTYPE_STRING`, `PP_VARTYPE_OBJECT`, `PP_VARTYPE_ARRAY`, `PP_VARTYPE_DICTIONARY`, `PP_VARTYPE_ARRAY_BUFFER`, or `PP_VARTYPE_RESOURCE`, `as_id` represents the value of this `PP_Var` as an opaque handle assigned by the browser.
 
-This handle is guaranteed never to be 0, so a module can initialize this ID to 0 to indicate a "NULL handle."
+This handle is guaranteed never to be 0, so a module can initialize this ID to 0 to indicate a “NULL handle.”
 
 <span id="a74da1e2b62153f138ae49147842f6d2c" class="anchor" style="margin: 0;"></span>
 

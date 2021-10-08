@@ -1,4 +1,4 @@
----json {"title":"graphics\_3d\_client.h File Reference"} ---
+—json {“title”:“graphics\_3d\_client.h File Reference”} —
 
 Include dependency graph for graphics\_3d\_client.h:
 

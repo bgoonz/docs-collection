@@ -1,4 +1,4 @@
----json {"title":"image\_data.h File Reference"} ---
+—json {“title”:“image\_data.h File Reference”} —
 
 Include dependency graph for image\_data.h:
 

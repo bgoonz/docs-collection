@@ -1,4 +1,4 @@
----json {"title":"ppb\_tcp\_socket.h File Reference"} ---
+—json {“title”:“ppb\_tcp\_socket.h File Reference”} —
 
 Include dependency graph for ppb\_tcp\_socket.h:
 
@@ -7,13 +7,13 @@ Include dependency graph for ppb\_tcp\_socket.h:
 Data Structures
 ---------------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p_b___t_c_p_socket__1__2/" class="el">PPB_TCPSocket</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_TCPSocket</code> interface provides TCP socket operations. <a href="/docs/native-client/pepper_dev/c/struct_p_p_b___t_c_p_socket__1__2#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p_b___t_c_p_socket__1__2/" class="el">PPB_TCPSocket</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_TCPSocket</code> interface provides TCP socket operations. <a href="/docs/native-client/pepper_dev/c/struct_p_p_b___t_c_p_socket__1__2#details">More…</a><br />
 </td></tr></tbody></table>
 
 Defines
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__tcp__socket_8h#a2f1cedfee70f4bfe4c35849be53fd73f" class="el">PPB_TCPSOCKET_INTERFACE</a>   "PPB_TCPSocket;1.2"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__tcp__socket_8h#a29ecaef1552f19b223e6c93475d8788c" class="el">PPB_TCPSOCKET_INTERFACE</a>   <a href="/docs/native-client/pepper_dev/c/ppb__tcp__socket_8h#a2f1cedfee70f4bfe4c35849be53fd73f" class="el">PPB_TCPSOCKET_INTERFACE</a></td></tr></tbody></table>
+<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__tcp__socket_8h#a2f1cedfee70f4bfe4c35849be53fd73f" class="el">PPB_TCPSOCKET_INTERFACE</a>   “PPB_TCPSocket;1.2”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__tcp__socket_8h#a29ecaef1552f19b223e6c93475d8788c" class="el">PPB_TCPSOCKET_INTERFACE</a>   <a href="/docs/native-client/pepper_dev/c/ppb__tcp__socket_8h#a2f1cedfee70f4bfe4c35849be53fd73f" class="el">PPB_TCPSOCKET_INTERFACE</a></td></tr></tbody></table>
 
 Typedefs
 --------
@@ -50,4 +50,4 @@ Define Documentation
 
 <span id="a2f1cedfee70f4bfe4c35849be53fd73f" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_dev/c/ppb__tcp__socket_8h#a2f1cedfee70f4bfe4c35849be53fd73f" class="el">PPB_TCPSOCKET_INTERFACE</a>   "PPB_TCPSocket;1.2"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_dev/c/ppb__tcp__socket_8h#a2f1cedfee70f4bfe4c35849be53fd73f" class="el">PPB_TCPSOCKET_INTERFACE</a>   “PPB_TCPSocket;1.2”</td></tr></tbody></table>

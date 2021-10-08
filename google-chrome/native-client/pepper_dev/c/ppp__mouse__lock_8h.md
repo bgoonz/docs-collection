@@ -1,4 +1,4 @@
----json {"title":"ppp\_mouse\_lock.h File Reference"} ---
+—json {“title”:“ppp\_mouse\_lock.h File Reference”} —
 
 Include dependency graph for ppp\_mouse\_lock.h:
 
@@ -7,13 +7,13 @@ Include dependency graph for ppp\_mouse\_lock.h:
 Data Structures
 ---------------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p_p___mouse_lock__1__0/" class="el">PPP_MouseLock</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPP_MouseLock</code> interface contains a function that you must implement to receive mouse lock events from the browser. <a href="/docs/native-client/pepper_dev/c/struct_p_p_p___mouse_lock__1__0#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p_p___mouse_lock__1__0/" class="el">PPP_MouseLock</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPP_MouseLock</code> interface contains a function that you must implement to receive mouse lock events from the browser. <a href="/docs/native-client/pepper_dev/c/struct_p_p_p___mouse_lock__1__0#details">More…</a><br />
 </td></tr></tbody></table>
 
 Defines
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppp__mouse__lock_8h#a71f74bf4d04a8ac6901b473452f4d7e6" class="el">PPP_MOUSELOCK_INTERFACE</a>   "PPP_MouseLock;1.0"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppp__mouse__lock_8h#a2ce52a0566f0ee91721052673ca521ec" class="el">PPP_MOUSELOCK_INTERFACE</a>   <a href="/docs/native-client/pepper_dev/c/ppp__mouse__lock_8h#a71f74bf4d04a8ac6901b473452f4d7e6" class="el">PPP_MOUSELOCK_INTERFACE</a></td></tr></tbody></table>
+<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppp__mouse__lock_8h#a71f74bf4d04a8ac6901b473452f4d7e6" class="el">PPP_MOUSELOCK_INTERFACE</a>   “PPP_MouseLock;1.0”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppp__mouse__lock_8h#a2ce52a0566f0ee91721052673ca521ec" class="el">PPP_MOUSELOCK_INTERFACE</a>   <a href="/docs/native-client/pepper_dev/c/ppp__mouse__lock_8h#a71f74bf4d04a8ac6901b473452f4d7e6" class="el">PPP_MOUSELOCK_INTERFACE</a></td></tr></tbody></table>
 
 Typedefs
 --------
@@ -40,4 +40,4 @@ Define Documentation
 
 <span id="a71f74bf4d04a8ac6901b473452f4d7e6" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_dev/c/ppp__mouse__lock_8h#a71f74bf4d04a8ac6901b473452f4d7e6" class="el">PPP_MOUSELOCK_INTERFACE</a>   "PPP_MouseLock;1.0"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_dev/c/ppp__mouse__lock_8h#a71f74bf4d04a8ac6901b473452f4d7e6" class="el">PPP_MOUSELOCK_INTERFACE</a>   “PPP_MouseLock;1.0”</td></tr></tbody></table>

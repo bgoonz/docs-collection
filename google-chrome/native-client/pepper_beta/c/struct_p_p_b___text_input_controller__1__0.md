@@ -1,4 +1,4 @@
----json {"title":"PPB\_TextInputController Struct Reference"} ---
+—json {“title”:“PPB\_TextInputController Struct Reference”} —
 
 Data Fields
 -----------
@@ -49,7 +49,7 @@ Informs the browser about the current text selection and surrounding text.
 
 `text` is a UTF-8 string that contains the current range of text selection in the plugin. `caret` is the byte-index of the caret position within `text`. `anchor` is the byte-index of the anchor position (i.e., if a range of text is selected, it is the other edge of selection different from `caret`. If there are no selection, `anchor` is equal to `caret`.
 
-Typical use of this information in the browser is to enable "reconversion" features of IME that puts back the already committed text into the pre-commit composition state. Another use is to improve the precision of suggestion of IME by taking the context into account (e.g., if the caret looks to be on the beginning of a sentence, suggest capital letters in a virtual keyboard).
+Typical use of this information in the browser is to enable “reconversion” features of IME that puts back the already committed text into the pre-commit composition state. Another use is to improve the precision of suggestion of IME by taking the context into account (e.g., if the caret looks to be on the beginning of a sentence, suggest capital letters in a virtual keyboard).
 
 When the focus is not on text, call this function setting `text` to an empty string and `caret` and `anchor` to zero. Also, the plugin should send the empty text when it does not want to reveal the selection to IME (e.g., when the surrounding text is containing password text).
 

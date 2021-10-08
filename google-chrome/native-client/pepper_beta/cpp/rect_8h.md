@@ -1,4 +1,4 @@
----json {"title":"rect.h File Reference"} ---
+—json {“title”:“rect.h File Reference”} —
 
 Include dependency graph for rect.h:
 
@@ -7,8 +7,8 @@ Include dependency graph for rect.h:
 Classes
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_rect/" class="el">pp::Rect</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>A 2 dimensional rectangle. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_rect#details">More...</a><br />
-</td></tr><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_float_rect/" class="el">pp::FloatRect</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>A 2 dimensional rectangle. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_float_rect#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_rect/" class="el">pp::Rect</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>A 2 dimensional rectangle. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_rect#details">More…</a><br />
+</td></tr><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_float_rect/" class="el">pp::FloatRect</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>A 2 dimensional rectangle. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_float_rect#details">More…</a><br />
 </td></tr></tbody></table>
 
 Namespaces
@@ -42,9 +42,8 @@ Function Documentation
 This function determines whether two Rects are not equal.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>lhs</td><td>The <code>Rect</code> on the left-hand side of the equation.</td></tr><tr class="even"><td>[in]</td><td>rhs</td><td>The <code>Rect</code> on the right-hand side of the equation.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>lhs</td><td>The <code>Rect</code> on the left-hand side of the equation.</td></tr><tr class="even"><td>[in]</td><td>rhs</td><td>The <code>Rect</code> on the right-hand side of the equation.</td></tr></tbody></table>
 
 **Returns:**  
 true if the given Rects are equal, otherwise false.
@@ -56,9 +55,8 @@ true if the given Rects are equal, otherwise false.
 This function determines whether two Rects are not equal.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>lhs</td><td>The <code>FloatRect</code> on the left-hand side of the equation.</td></tr><tr class="even"><td>[in]</td><td>rhs</td><td>The <code>FloatRect</code> on the right-hand side of the equation.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>lhs</td><td>The <code>FloatRect</code> on the left-hand side of the equation.</td></tr><tr class="even"><td>[in]</td><td>rhs</td><td>The <code>FloatRect</code> on the right-hand side of the equation.</td></tr></tbody></table>
 
 **Returns:**  
 true if the given Rects are equal, otherwise false.
@@ -70,9 +68,8 @@ true if the given Rects are equal, otherwise false.
 This function determines whether the x, y, width, and height values of two rectangles and are equal.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>lhs</td><td>The <code>Rect</code> on the left-hand side of the equation.</td></tr><tr class="even"><td>[in]</td><td>rhs</td><td>The <code>Rect</code> on the right-hand side of the equation.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>lhs</td><td>The <code>Rect</code> on the left-hand side of the equation.</td></tr><tr class="even"><td>[in]</td><td>rhs</td><td>The <code>Rect</code> on the right-hand side of the equation.</td></tr></tbody></table>
 
 **Returns:**  
 true if they are equal, false if unequal.
@@ -84,9 +81,8 @@ true if they are equal, false if unequal.
 This function determines whether the x, y, width, and height values of two rectangles and are equal.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>lhs</td><td>The <code>FloatRect</code> on the left-hand side of the equation.</td></tr><tr class="even"><td>[in]</td><td>rhs</td><td>The <code>FloatRect</code> on the right-hand side of the equation.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>lhs</td><td>The <code>FloatRect</code> on the left-hand side of the equation.</td></tr><tr class="even"><td>[in]</td><td>rhs</td><td>The <code>FloatRect</code> on the right-hand side of the equation.</td></tr></tbody></table>
 
 **Returns:**  
 true if they are equal, false if unequal.

@@ -1,4 +1,4 @@
----json {"title":"pp::MouseInputEvent Class Reference"} ---
+—json {“title”:“pp::MouseInputEvent Class Reference”} —
 
 Inheritance diagram for pp::MouseInputEvent:
 
@@ -42,6 +42,7 @@ This constructor constructs a mouse input event object from the provided generic
 If the given event is itself <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_resource#a859068e34cdc2dc0b78754c255323aa9" class="el" title="This functions determines if this resource is invalid or uninitialized.">is_null()</a> or is not a mouse input event, the mouse object will be <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_resource#a859068e34cdc2dc0b78754c255323aa9" class="el" title="This functions determines if this resource is invalid or uninitialized.">is_null()</a>.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>event</td><td>An <code>InputEvent</code>.</td></tr></tbody></table>
 
 <span id="a4e2f16fb54382135f07cf53e22905d3a" class="anchor" style="margin: 0;"></span>
@@ -51,6 +52,7 @@ If the given event is itself <a href="/docs/native-client/pepper_beta/cpp/classp
 This constructor manually constructs a mouse event from the provided parameters.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance for which this event occurred.</td></tr><tr class="even"><td>[in]</td><td>type</td><td>A <code>PP_InputEvent_Type</code> identifying the type of input event.</td></tr><tr class="odd"><td>[in]</td><td>time_stamp</td><td>A <code>PP_TimeTicks</code> indicating the time when the event occurred.</td></tr><tr class="even"><td>[in]</td><td>modifiers</td><td>A bit field combination of the <code>PP_InputEvent_Modifier</code> flags.</td></tr><tr class="odd"><td>[in]</td><td>mouse_button</td><td>The button that changed for mouse down or up events. This value will be <code>PP_EVENT_MOUSEBUTTON_NONE</code> for mouse move, enter, and leave events.</td></tr><tr class="even"><td>[in]</td><td>mouse_position</td><td>A <code>Point</code> containing the x and y position of the mouse when the event occurred.</td></tr><tr class="odd"><td>[in]</td><td>click_count</td><td></td></tr><tr class="even"><td>[in]</td><td>mouse_movement</td><td>The change in position of the mouse.</td></tr></tbody></table>
 
 ------------------------------------------------------------------------
@@ -77,7 +79,7 @@ The mouse button associated with mouse down and up events. This value will be PP
 
 Returns the change in position of the mouse.
 
-When the mouse is locked, although the mouse position doesn't actually change, this function still provides movement information, which indicates what the change in position would be had the mouse not been locked.
+When the mouse is locked, although the mouse position doesn’t actually change, this function still provides movement information, which indicates what the change in position would be had the mouse not been locked.
 
 **Returns:**  
 The change in position of the mouse, relative to the previous position.

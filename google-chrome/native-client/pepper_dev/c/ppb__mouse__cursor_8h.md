@@ -1,4 +1,4 @@
----json {"title":"ppb\_mouse\_cursor.h File Reference"} ---
+—json {“title”:“ppb\_mouse\_cursor.h File Reference”} —
 
 Include dependency graph for ppb\_mouse\_cursor.h:
 
@@ -7,13 +7,13 @@ Include dependency graph for ppb\_mouse\_cursor.h:
 Data Structures
 ---------------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p_b___mouse_cursor__1__0/" class="el">PPB_MouseCursor</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_MouseCursor</code> allows setting the mouse cursor. <a href="/docs/native-client/pepper_dev/c/struct_p_p_b___mouse_cursor__1__0#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p_b___mouse_cursor__1__0/" class="el">PPB_MouseCursor</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_MouseCursor</code> allows setting the mouse cursor. <a href="/docs/native-client/pepper_dev/c/struct_p_p_b___mouse_cursor__1__0#details">More…</a><br />
 </td></tr></tbody></table>
 
 Defines
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__mouse__cursor_8h#a5108cd274942fbb6aa1726d32b7b82eb" class="el">PPB_MOUSECURSOR_INTERFACE</a>   "PPB_MouseCursor;1.0"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__mouse__cursor_8h#a9f058eab16725eb940b802f90acb11a9" class="el">PPB_MOUSECURSOR_INTERFACE</a>   <a href="/docs/native-client/pepper_dev/c/ppb__mouse__cursor_8h#a5108cd274942fbb6aa1726d32b7b82eb" class="el">PPB_MOUSECURSOR_INTERFACE</a></td></tr></tbody></table>
+<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__mouse__cursor_8h#a5108cd274942fbb6aa1726d32b7b82eb" class="el">PPB_MOUSECURSOR_INTERFACE</a>   “PPB_MouseCursor;1.0”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__mouse__cursor_8h#a9f058eab16725eb940b802f90acb11a9" class="el">PPB_MOUSECURSOR_INTERFACE</a>   <a href="/docs/native-client/pepper_dev/c/ppb__mouse__cursor_8h#a5108cd274942fbb6aa1726d32b7b82eb" class="el">PPB_MOUSECURSOR_INTERFACE</a></td></tr></tbody></table>
 
 Typedefs
 --------
@@ -62,4 +62,4 @@ Define Documentation
 
 <span id="a5108cd274942fbb6aa1726d32b7b82eb" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_dev/c/ppb__mouse__cursor_8h#a5108cd274942fbb6aa1726d32b7b82eb" class="el">PPB_MOUSECURSOR_INTERFACE</a>   "PPB_MouseCursor;1.0"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_dev/c/ppb__mouse__cursor_8h#a5108cd274942fbb6aa1726d32b7b82eb" class="el">PPB_MOUSECURSOR_INTERFACE</a>   “PPB_MouseCursor;1.0”</td></tr></tbody></table>

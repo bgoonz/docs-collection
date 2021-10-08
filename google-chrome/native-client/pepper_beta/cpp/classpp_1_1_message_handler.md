@@ -1,4 +1,4 @@
----json {"title":"pp::MessageHandler Class Reference"} ---
+—json {“title”:“pp::MessageHandler Class Reference”} —
 
 [List of all members.](/docs/native-client/pepper_beta/cpp/classpp_1_1_message_handler-members/)
 
@@ -36,25 +36,25 @@ Member Function Documentation
 
 <table><tbody><tr class="odd"><td>virtual <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var/" class="el">pp::Var</a> <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_message_handler#a37212226dba86f1bf900016116fabdfe" class="el">pp::MessageHandler::HandleBlockingMessage</a></td><td>(</td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance_handle/" class="el">pp::InstanceHandle</a> </td><td><em>instance</em>,</td></tr><tr class="even"><td></td><td></td><td>const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var/" class="el">Var</a> &amp; </td><td><em>message_data</em> </td></tr><tr class="odd"><td></td><td>)</td><td></td><td><code> [pure virtual]</code></td></tr></tbody></table>
 
-Invoked as a result of JavaScript invoking postMessageAndAwaitResponse() on the plugin's DOM element.
+Invoked as a result of JavaScript invoking postMessageAndAwaitResponse() on the plugin’s DOM element.
 
 NOTE: JavaScript execution is blocked during the duration of this call. Hence, the plugin should respond as quickly as possible. For this reason, blocking completion callbacks are disallowed while handling a blocking message.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>An <code>InstanceHandle</code> identifying one instance of a module.</td></tr><tr class="even"><td>[in]</td><td>message_data</td><td>A copy of the parameter that JavaScript provided to postMessage().</td></tr></tbody></table>
 
-<!-- -->
-
 **Returns:**  
-Returns a <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var/" class="el" title="A generic type used for passing data types between the module and the page.">pp::Var</a> that is then copied to a JavaScript object which is returned as the result of JavaScript's call of postMessageAndAwaitResponse().
+Returns a <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var/" class="el" title="A generic type used for passing data types between the module and the page.">pp::Var</a> that is then copied to a JavaScript object which is returned as the result of JavaScript’s call of postMessageAndAwaitResponse().
 
 <span id="a1040f95297420067a69000612bbe6c06" class="anchor" style="margin: 0;"></span>
 
 <table><tbody><tr class="odd"><td>virtual void <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_message_handler#a1040f95297420067a69000612bbe6c06" class="el">pp::MessageHandler::HandleMessage</a></td><td>(</td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance_handle/" class="el">pp::InstanceHandle</a> </td><td><em>instance</em>,</td></tr><tr class="even"><td></td><td></td><td>const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var/" class="el">Var</a> &amp; </td><td><em>message_data</em> </td></tr><tr class="odd"><td></td><td>)</td><td></td><td><code> [pure virtual]</code></td></tr></tbody></table>
 
-Invoked as a result of JavaScript invoking postMessage() on the plugin's DOM element.
+Invoked as a result of JavaScript invoking postMessage() on the plugin’s DOM element.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>An <code>InstanceHandle</code> identifying one instance of a module.</td></tr><tr class="even"><td>[in]</td><td>message_data</td><td>A copy of the parameter that JavaScript provided to postMessage().</td></tr></tbody></table>
 
 <span id="ac19edb6318796c337865e39d764ed322" class="anchor" style="margin: 0;"></span>
@@ -66,6 +66,7 @@ Invoked when this <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_messa
 After this, no more calls will be made to this object.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>An <code>InstanceHandle</code> identifying one instance of a module.</td></tr></tbody></table>
 
 ------------------------------------------------------------------------

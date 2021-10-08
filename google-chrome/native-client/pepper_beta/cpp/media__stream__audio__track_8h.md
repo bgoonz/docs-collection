@@ -1,4 +1,4 @@
----json {"title":"media\_stream\_audio\_track.h File Reference"} ---
+—json {“title”:“media\_stream\_audio\_track.h File Reference”} —
 
 Include dependency graph for media\_stream\_audio\_track.h:
 
@@ -7,7 +7,7 @@ Include dependency graph for media\_stream\_audio\_track.h:
 Classes
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_media_stream_audio_track/" class="el">pp::MediaStreamAudioTrack</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>MediaStreamAudioTrack</code> class contains methods for receiving audio buffers from a MediaStream audio track in the browser. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_media_stream_audio_track#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_media_stream_audio_track/" class="el">pp::MediaStreamAudioTrack</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>MediaStreamAudioTrack</code> class contains methods for receiving audio buffers from a MediaStream audio track in the browser. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_media_stream_audio_track#details">More…</a><br />
 </td></tr></tbody></table>
 
 Namespaces

@@ -1,4 +1,4 @@
----json {"title":"instance.h File Reference"} ---
+—json {“title”:“instance.h File Reference”} —
 
 Include dependency graph for instance.h:
 

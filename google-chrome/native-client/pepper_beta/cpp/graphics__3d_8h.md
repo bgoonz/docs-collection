@@ -1,4 +1,4 @@
----json {"title":"graphics\_3d.h File Reference"} ---
+—json {“title”:“graphics\_3d.h File Reference”} —
 
 Include dependency graph for graphics\_3d.h:
 
@@ -7,7 +7,7 @@ Include dependency graph for graphics\_3d.h:
 Classes
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics3_d/" class="el">pp::Graphics3D</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>This class represents a 3D rendering context in the browser. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics3_d#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics3_d/" class="el">pp::Graphics3D</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>This class represents a 3D rendering context in the browser. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_graphics3_d#details">More…</a><br />
 </td></tr></tbody></table>
 
 Namespaces

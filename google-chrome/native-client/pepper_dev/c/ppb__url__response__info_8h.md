@@ -1,4 +1,4 @@
----json {"title":"ppb\_url\_response\_info.h File Reference"} ---
+—json {“title”:“ppb\_url\_response\_info.h File Reference”} —
 
 Include dependency graph for ppb\_url\_response\_info.h:
 
@@ -7,13 +7,13 @@ Include dependency graph for ppb\_url\_response\_info.h:
 Data Structures
 ---------------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p_b___u_r_l_response_info__1__0/" class="el">PPB_URLResponseInfo</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The PPB_URLResponseInfo interface contains APIs for examining URL responses. <a href="/docs/native-client/pepper_dev/c/struct_p_p_b___u_r_l_response_info__1__0#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p_b___u_r_l_response_info__1__0/" class="el">PPB_URLResponseInfo</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The PPB_URLResponseInfo interface contains APIs for examining URL responses. <a href="/docs/native-client/pepper_dev/c/struct_p_p_b___u_r_l_response_info__1__0#details">More…</a><br />
 </td></tr></tbody></table>
 
 Defines
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__url__response__info_8h#a3703eb2a16b1386517bcd3d7074e94ff" class="el">PPB_URLRESPONSEINFO_INTERFACE</a>   "PPB_URLResponseInfo;1.0"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__url__response__info_8h#a788cf0f4f93d8cbfbc834b5921188f35" class="el">PPB_URLRESPONSEINFO_INTERFACE</a>   <a href="/docs/native-client/pepper_dev/c/ppb__url__response__info_8h#a3703eb2a16b1386517bcd3d7074e94ff" class="el">PPB_URLRESPONSEINFO_INTERFACE</a></td></tr></tbody></table>
+<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__url__response__info_8h#a3703eb2a16b1386517bcd3d7074e94ff" class="el">PPB_URLRESPONSEINFO_INTERFACE</a>   “PPB_URLResponseInfo;1.0”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__url__response__info_8h#a788cf0f4f93d8cbfbc834b5921188f35" class="el">PPB_URLRESPONSEINFO_INTERFACE</a>   <a href="/docs/native-client/pepper_dev/c/ppb__url__response__info_8h#a3703eb2a16b1386517bcd3d7074e94ff" class="el">PPB_URLRESPONSEINFO_INTERFACE</a></td></tr></tbody></table>
 
 Typedefs
 --------
@@ -54,4 +54,4 @@ Define Documentation
 
 <span id="a3703eb2a16b1386517bcd3d7074e94ff" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_dev/c/ppb__url__response__info_8h#a3703eb2a16b1386517bcd3d7074e94ff" class="el">PPB_URLRESPONSEINFO_INTERFACE</a>   "PPB_URLResponseInfo;1.0"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_dev/c/ppb__url__response__info_8h#a3703eb2a16b1386517bcd3d7074e94ff" class="el">PPB_URLRESPONSEINFO_INTERFACE</a>   “PPB_URLResponseInfo;1.0”</td></tr></tbody></table>

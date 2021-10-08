@@ -1,4 +1,4 @@
----json {"title":"websocket.h File Reference"} ---
+—json {“title”:“websocket.h File Reference”} —
 
 Include dependency graph for websocket.h:
 
@@ -7,7 +7,7 @@ Include dependency graph for websocket.h:
 Classes
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket/" class="el">pp::WebSocket</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>WebSocket</code> class providing bi-directional, full-duplex, communications over a single TCP socket. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket/" class="el">pp::WebSocket</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>WebSocket</code> class providing bi-directional, full-duplex, communications over a single TCP socket. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_web_socket#details">More…</a><br />
 </td></tr></tbody></table>
 
 Namespaces

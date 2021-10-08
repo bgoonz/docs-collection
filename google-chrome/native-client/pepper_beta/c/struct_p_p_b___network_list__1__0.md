@@ -1,4 +1,4 @@
----json {"title":"PPB\_NetworkList Struct Reference"} ---
+—json {“title”:“PPB\_NetworkList Struct Reference”} —
 
 Data Fields
 -----------
@@ -28,9 +28,8 @@ Field Documentation
 Gets number of interfaces in the list.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a network list.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a network list.</td></tr></tbody></table>
 
 **Returns:**  
 Returns number of available network interfaces or 0 if the list has never been updated.
@@ -42,9 +41,8 @@ Returns number of available network interfaces or 0 if the list has never been u
 Gets display name of a network interface.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a network list.</td></tr><tr class="even"><td>[in]</td><td>index</td><td>Index of the network interface.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a network list.</td></tr><tr class="even"><td>[in]</td><td>index</td><td>Index of the network interface.</td></tr></tbody></table>
 
 **Returns:**  
 Returns display name for the network interface with the specified `index`.
@@ -56,9 +54,8 @@ Returns display name for the network interface with the specified `index`.
 Gets list of IP addresses for a network interface.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a network list.</td></tr><tr class="even"><td>[in]</td><td>index</td><td>Index of the network interface.</td></tr><tr class="odd"><td>[in]</td><td>output</td><td>An output array which will receive <code>PPB_NetAddress</code> resources on success. Please note that the ref count of those resources has already been increased by 1 for the caller.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a network list.</td></tr><tr class="even"><td>[in]</td><td>index</td><td>Index of the network interface.</td></tr><tr class="odd"><td>[in]</td><td>output</td><td>An output array which will receive <code>PPB_NetAddress</code> resources on success. Please note that the ref count of those resources has already been increased by 1 for the caller.</td></tr></tbody></table>
 
 **Returns:**  
 An error code from `pp_errors.h`.
@@ -70,9 +67,8 @@ An error code from `pp_errors.h`.
 Gets MTU (Maximum Transmission Unit) of a network interface.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a network list.</td></tr><tr class="even"><td>[in]</td><td>index</td><td>Index of the network interface.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a network list.</td></tr><tr class="even"><td>[in]</td><td>index</td><td>Index of the network interface.</td></tr></tbody></table>
 
 **Returns:**  
 Returns MTU for the network interface with the specified `index` or 0 if MTU is unknown.
@@ -84,9 +80,8 @@ Returns MTU for the network interface with the specified `index` or 0 if MTU is 
 Gets name of a network interface.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a network list.</td></tr><tr class="even"><td>[in]</td><td>index</td><td>Index of the network interface.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a network list.</td></tr><tr class="even"><td>[in]</td><td>index</td><td>Index of the network interface.</td></tr></tbody></table>
 
 **Returns:**  
 Returns name for the network interface with the specified `index`.
@@ -98,9 +93,8 @@ Returns name for the network interface with the specified `index`.
 Gets state of a network interface.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a network list.</td></tr><tr class="even"><td>[in]</td><td>index</td><td>Index of the network interface.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a network list.</td></tr><tr class="even"><td>[in]</td><td>index</td><td>Index of the network interface.</td></tr></tbody></table>
 
 **Returns:**  
 Returns current state of the network interface with the specified `index`.
@@ -112,9 +106,8 @@ Returns current state of the network interface with the specified `index`.
 Gets type of a network interface.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a network list.</td></tr><tr class="even"><td>[in]</td><td>index</td><td>Index of the network interface.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a network list.</td></tr><tr class="even"><td>[in]</td><td>index</td><td>Index of the network interface.</td></tr></tbody></table>
 
 **Returns:**  
 Returns type of the network interface with the specified `index`.
@@ -126,9 +119,8 @@ Returns type of the network interface with the specified `index`.
 Determines if the specified `resource` is a `NetworkList` object.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> resource.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> resource.</td></tr></tbody></table>
 
 **Returns:**  
 Returns `PP_TRUE` if `resource` is a `PPB_NetworkList`, `PP_FALSE` otherwise.

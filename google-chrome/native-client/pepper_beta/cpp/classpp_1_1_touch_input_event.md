@@ -1,4 +1,4 @@
----json {"title":"pp::TouchInputEvent Class Reference"} ---
+—json {“title”:“pp::TouchInputEvent Class Reference”} —
 
 Inheritance diagram for pp::TouchInputEvent:
 
@@ -39,6 +39,7 @@ If the given event is itself <a href="/docs/native-client/pepper_beta/cpp/classp
 Constructs a touch input even from the given parameters.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance for which this event occurred.</td></tr><tr class="even"><td>[in]</td><td>type</td><td>A <code>PP_InputEvent_Type</code> identifying the type of input event.</td></tr><tr class="odd"><td>[in]</td><td>time_stamp</td><td>A <code>PP_TimeTicks</code> indicating the time when the event occurred.</td></tr><tr class="even"><td>[in]</td><td>modifiers</td><td>A bit field combination of the <code>PP_InputEvent_Modifier</code> flags.</td></tr></tbody></table>
 
 ------------------------------------------------------------------------

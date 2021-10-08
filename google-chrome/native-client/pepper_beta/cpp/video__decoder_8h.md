@@ -1,4 +1,4 @@
----json {"title":"video\_decoder.h File Reference"} ---
+—json {“title”:“video\_decoder.h File Reference”} —
 
 Include dependency graph for video\_decoder.h:
 
@@ -7,7 +7,7 @@ Include dependency graph for video\_decoder.h:
 Classes
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_video_decoder/" class="el">pp::VideoDecoder</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>Video decoder interface. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_video_decoder#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_video_decoder/" class="el">pp::VideoDecoder</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>Video decoder interface. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_video_decoder#details">More…</a><br />
 </td></tr></tbody></table>
 
 Namespaces

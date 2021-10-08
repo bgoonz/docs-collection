@@ -1,4 +1,4 @@
----json {"title":"pp::Module Class Reference"} ---
+—json {“title”:“pp::Module Class Reference”} —
 
 [List of all members.](/docs/native-client/pepper_beta/cpp/classpp_1_1_module-members/)
 
@@ -26,7 +26,7 @@ Protected Member Functions
 Friends
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">PP_Bool </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_module#ab0f2ba24fd03fa31fc2e47d4f8ceb158" class="el">Instance_DidCreate</a> (PP_Instance pp_instance, uint32_t argc, const char *argn[], const char *argv[])</td></tr><tr class="even"><td style="text-align: right;">void </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_module#accf4ce5410f02db9c87dcca045043128" class="el">Instance_DidDestroy</a> (PP_Instance instance)</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td style="text-align: right;">PP_Bool </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_module#ab0f2ba24fd03fa31fc2e47d4f8ceb158" class="el">Instance_DidCreate</a> (PP_Instance pp_instance, uint32_t argc, const char <em>argn[], const char</em> argv[])</td></tr><tr class="even"><td style="text-align: right;">void </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_module#accf4ce5410f02db9c87dcca045043128" class="el">Instance_DidDestroy</a> (PP_Instance instance)</td></tr></tbody></table>
 
 ------------------------------------------------------------------------
 
@@ -79,6 +79,7 @@ In general, modules will not need to call this directly. Instead, the C++ wrappe
 This function may be called more than once with the same interface name and vtable with no effect. However, it may not be used to register a different vtable for an already-registered interface. It will assert for a different registration for an already-registered interface in debug mode, and just ignore the registration in release mode.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>interface_name</td><td>The interface name that will receive a handler.</td></tr><tr class="even"><td>[in,out]</td><td>vtable</td><td>The vtable to return for <code>interface_name</code>.</td></tr></tbody></table>
 
 <span id="afd1d02002faaa6a4531ad06ca0423c9f" class="anchor" style="margin: 0;"></span>
@@ -101,9 +102,8 @@ The core interface for doing basic global operations.
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_module#a648f236af50501bac40ce40296611825" class="el" title="CreateInstance() should be overridden to create your own module type.">CreateInstance()</a> should be overridden to create your own module type.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code>.</td></tr></tbody></table>
 
 **Returns:**  
 The resulting instance.
@@ -144,6 +144,7 @@ A `PPB_GetInterface` internal pointer.
 PPB interfaces).
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>interface_name</td><td>The browser interface for the module to get.</td></tr></tbody></table>
 
 <span id="a8c8c946f741e140ff7dd21b36b1a42a5" class="anchor" style="margin: 0;"></span>
@@ -155,6 +156,7 @@ PPB interfaces).
 If you need to provide your own implementations of new interfaces, use <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_module#aeddc6021140b4bdea3a83c36e7b8ec7e" class="el" title="AddPluginInterface() adds a handler for a provided interface name.">AddPluginInterface()</a> which this function will use.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>interface_name</td><td>The module interface for the browser to get.</td></tr></tbody></table>
 
 <span id="a873a824f0e462008d1167e34544ad360" class="anchor" style="margin: 0;"></span>
@@ -177,9 +179,8 @@ true if successful, otherwise false.
 This should only be called from the main thread! This instance object may be destroyed at any time on the main thread, so using it on other threads may cause a crash.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>This <code>PP_Instance</code>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>This <code>PP_Instance</code>.</td></tr></tbody></table>
 
 **Returns:**  
 The object associated with this `PP_Instance`, or NULL if one is not found.
@@ -191,9 +192,8 @@ The object associated with this `PP_Instance`, or NULL if one is not found.
 function that can be overridden by the base classes.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>mod</td><td>A <code>PP_Module</code>.</td></tr><tr class="even"><td>[in]</td><td>get_browser_interface</td><td>The browser interface to set.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>mod</td><td>A <code>PP_Module</code>.</td></tr><tr class="even"><td>[in]</td><td>get_browser_interface</td><td>The browser interface to set.</td></tr></tbody></table>
 
 **Returns:**  
 true if successful, otherwise false.

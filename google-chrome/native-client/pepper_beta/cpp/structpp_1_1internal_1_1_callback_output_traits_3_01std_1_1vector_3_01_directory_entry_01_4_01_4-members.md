@@ -1,4 +1,4 @@
----json {"title":"Member List"} ---
+—json {“title”:“Member List”} —
 
 This is the complete list of members for <a href="/docs/native-client/pepper_beta/cpp/structpp_1_1internal_1_1_callback_output_traits_3_01std_1_1vector_3_01_directory_entry_01_4_01_4/" class="el">pp::internal::CallbackOutputTraits&lt; std::vector&lt; DirectoryEntry &gt; &gt;</a>, including all inherited members.
 

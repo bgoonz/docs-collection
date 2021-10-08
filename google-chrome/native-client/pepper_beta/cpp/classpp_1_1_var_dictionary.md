@@ -1,4 +1,4 @@
----json {"title":"pp::VarDictionary Class Reference"} ---
+—json {“title”:“pp::VarDictionary Class Reference”} —
 
 Inheritance diagram for pp::VarDictionary:
 
@@ -33,6 +33,7 @@ Constructs a `VarDictionary` given a var for which <a href="/docs/native-client/
 This will refer to the same dictionary var, but allow you to access methods specific to dictionary.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>var</td><td>A dictionary var.</td></tr></tbody></table>
 
 <span id="aaca1887754d80b56503cd0c329397f74" class="anchor" style="margin: 0;"></span>
@@ -42,6 +43,7 @@ This will refer to the same dictionary var, but allow you to access methods spec
 Constructs a `VarDictionary` given a `PP_Var` of type PP\_VARTYPE\_DICTIONARY.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>var</td><td>A <code>PP_Var</code> of type PP_VARTYPE_DICTIONARY.</td></tr></tbody></table>
 
 <span id="a42546bb501a2e5d74f1092e88cf162ac" class="anchor" style="margin: 0;"></span>
@@ -66,6 +68,7 @@ Member Function Documentation
 Deletes the specified key and its associated value, if the key exists.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>key</td><td>A string var.</td></tr></tbody></table>
 
 <span id="a2221719e6c6f35e4333f426f8366451b" class="anchor" style="margin: 0;"></span>
@@ -75,12 +78,11 @@ Deletes the specified key and its associated value, if the key exists.
 Gets the value associated with the specified key.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>key</td><td>A string var.</td></tr></tbody></table>
 
-<!-- -->
-
 **Returns:**  
-The value that is associated with `key`. If `key` is not a string var, or it doesn't exist in the dictionary, an undefined var is returned.
+The value that is associated with `key`. If `key` is not a string var, or it doesn’t exist in the dictionary, an undefined var is returned.
 
 <span id="a90073effa08ca9664e357027ba4c8c48" class="anchor" style="margin: 0;"></span>
 
@@ -98,9 +100,8 @@ An array var which contains all the keys of the dictionary. The elements are str
 Checks whether a key exists.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>key</td><td>A string var.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>key</td><td>A string var.</td></tr></tbody></table>
 
 **Returns:**  
 A `bool` indicating whether the key exists.
@@ -118,9 +119,8 @@ Assignment operator.
 The `Var` assignment operator is overridden here so that we can check for assigning a non-dictionary var to a `VarDictionary`.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>The dictionary var to be assigned.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>The dictionary var to be assigned.</td></tr></tbody></table>
 
 **Returns:**  
 The resulting `VarDictionary` (as a `Var`&).
@@ -134,9 +134,8 @@ Reimplemented from <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var#
 Sets the value associated with the specified key.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>key</td><td>A string var. If this key hasn't existed in the dictionary, it is added and associated with <code>value</code>; otherwise, the previous value is replaced with <code>value</code>.</td></tr><tr class="even"><td>[in]</td><td>value</td><td>The value to set.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>key</td><td>A string var. If this key hasn’t existed in the dictionary, it is added and associated with <code>value</code>; otherwise, the previous value is replaced with <code>value</code>.</td></tr><tr class="even"><td>[in]</td><td>value</td><td>The value to set.</td></tr></tbody></table>
 
 **Returns:**  
 A `bool` indicating whether the operation succeeds.

@@ -1,4 +1,4 @@
----json {"title":"pp::Var::OutException Class Reference"} ---
+—json {“title”:“pp::Var::OutException Class Reference”} —
 
 [List of all members.](/docs/native-client/pepper_beta/cpp/classpp_1_1_var_1_1_out_exception-members/)
 
@@ -16,9 +16,9 @@ Detailed Description
 
 This class is used when calling the raw C PPAPI when using the C++ `Var` as a possible NULL exception.
 
-This class will handle getting the address of the internal value out if it's non-NULL and fixing up the reference count.
+This class will handle getting the address of the internal value out if it’s non-NULL and fixing up the reference count.
 
-**Warning:** this will only work for things with exception semantics, i.e. that the value will not be changed if it's a non-undefined exception. Otherwise, this class will mess up the refcounting.
+**Warning:** this will only work for things with exception semantics, i.e. that the value will not be changed if it’s a non-undefined exception. Otherwise, this class will mess up the refcounting.
 
 This is a bit subtle:
 

@@ -1,4 +1,4 @@
----json {"title":"pp::VpnProvider Class Reference"} ---
+—json {“title”:“pp::VpnProvider Class Reference”} —
 
 Inheritance diagram for pp::VpnProvider:
 
@@ -33,9 +33,9 @@ Typical usage:
 
 -   Create a `VpnProvider` instance.
 -   Register the callback for `VpnProvider.ReceivePacket()`.
--   In the extension follow the usual workflow for configuring a VPN connection via the `chrome.vpnProvider` API until the step for notifying the connection state as "connected".
+-   In the extension follow the usual workflow for configuring a VPN connection via the `chrome.vpnProvider` API until the step for notifying the connection state as “connected”.
 -   Bind to the previously created connection using `VpnProvider.Bind()`.
--   Notify the connection state as "connected" from JavaScript using `chrome.vpnProvider.notifyConnectionStateChanged`.
+-   Notify the connection state as “connected” from JavaScript using `chrome.vpnProvider.notifyConnectionStateChanged`.
 -   When the steps above are completed without errors, a virtual tunnel is created to the network stack of Chrome OS. IP packets can be sent through the tunnel using `VpnProvider.SendPacket()` and any packets originating on the Chrome OS device will be received using the callback registered for `VpnProvider.ReceivePacket()`.
 -   When the user disconnects from the VPN configuration or there is an error the extension will be notfied via `chrome.vpnProvider.onPlatformMessage`.
 
@@ -51,6 +51,7 @@ Constructor & Destructor Documentation
 Constructs a <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_vpn_provider/" class="el" title="The VpnProvider class enhances the chrome.vpnProvider JavaScript API by providing a high performance ...">VpnProvider</a> object.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance with which this resource will be associated.</td></tr></tbody></table>
 
 <span id="a0ae82ce542bed9af72da27fb4c94ec42" class="anchor" style="margin: 0;"></span>
@@ -73,12 +74,11 @@ Binds to an existing configuration created from JavaScript by `chrome.vpnProvide
 All packets will be routed via `SendPacket` and `ReceivePacket`. The user should register the callback for `ReceivePacket` before calling `Bind()`.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>configuration_id</td><td>The configuration id from the callback of <code>chrome.vpnProvider.createConfig</code>. This <code>Var</code> must be of string type.</td></tr><tr class="even"><td>[in]</td><td>configuration_name</td><td>The configuration name as defined by the user when calling <code>chrome.vpnProvider.createConfig</code>. This <code>Var</code> must be of string type.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>CompletionCallback</code> to be called on completion.</td></tr></tbody></table>
 
-<!-- -->
-
 **Returns:**  
-An int32\_t containing an error code from `pp_errors.h`. Returns `PP_ERROR_INPROGRESS` if a previous call to `Bind()` has not completed. Returns `PP_ERROR_BADARGUMENT` if the `Var` type of either `configuration_id` or `configuration_name` is not of string type. Returns `PP_ERROR_NOACCESS` if the caller does the have the required "vpnProvider" permission. Returns `PP_ERROR_FAILED` if `connection_id` and `connection_name` could not be matched with the existing connection, or if the plugin originates from a different extension than the one that created the connection.
+An int32\_t containing an error code from `pp_errors.h`. Returns `PP_ERROR_INPROGRESS` if a previous call to `Bind()` has not completed. Returns `PP_ERROR_BADARGUMENT` if the `Var` type of either `configuration_id` or `configuration_name` is not of string type. Returns `PP_ERROR_NOACCESS` if the caller does the have the required “vpnProvider” permission. Returns `PP_ERROR_FAILED` if `connection_id` and `connection_name` could not be matched with the existing connection, or if the plugin originates from a different extension than the one that created the connection.
 
 <span id="a0a6b1fd0a843997fafe1bf5bed85b3b9" class="anchor" style="margin: 0;"></span>
 
@@ -98,9 +98,8 @@ Receives an IP packet from the tunnel for the VPN session.
 This function only returns a single packet. That is, this function must be called at least N times to receive N packets, no matter the size of each packet. The callback should be registered before calling `Bind()`.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>CompletionCallbackWithOutput</code> to be called upon completion of ReceivePacket. It will be passed an ArrayBuffer type <code>Var</code> containing an IP packet to be sent to the platform.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>CompletionCallbackWithOutput</code> to be called upon completion of ReceivePacket. It will be passed an ArrayBuffer type <code>Var</code> containing an IP packet to be sent to the platform.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing an error code from `pp_errors.h`. Returns `PP_ERROR_INPROGRESS` if a previous call to `ReceivePacket()` has not completed.
@@ -114,9 +113,8 @@ Sends an IP packet through the tunnel created for the VPN session.
 This will succeed only when the VPN session is owned by the module and connection is bound.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>packet</td><td>IP packet to be sent to the platform. The <code>Var</code> must be of ArrayBuffer type.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>CompletionCallback</code> to be called on completion.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>packet</td><td>IP packet to be sent to the platform. The <code>Var</code> must be of ArrayBuffer type.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>CompletionCallback</code> to be called on completion.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing an error code from `pp_errors.h`. Returns `PP_ERROR_FAILED` if the connection is not bound. Returns `PP_ERROR_INPROGRESS` if a previous call to `SendPacket()` has not completed. Returns `PP_ERROR_BADARGUMENT` if the `Var` type of `packet` is not of ArrayBuffer type.

@@ -1,4 +1,4 @@
----json {"title":"PP\_InputEvent\_Character Struct Reference"} ---
+—json {“title”:“PP\_InputEvent\_Character Struct Reference”} —
 
 Data Fields
 -----------
@@ -14,9 +14,9 @@ Detailed Description
 
 The `PP_InputEvent_Character` struct represents a typed character event.
 
-Normally, the program will receive a key down event, followed by a character event, followed by a key up event. The character event will have any modifier keys applied. Obvious examples are symbols, where Shift-5 gives you a ''. The key down and up events will give you the scan code for the "5" key, and the character event will give you the '' character.
+Normally, the program will receive a key down event, followed by a character event, followed by a key up event. The character event will have any modifier keys applied. Obvious examples are symbols, where Shift-5 gives you a ’‘. The key down and up events will give you the scan code for the “5” key, and the character event will give you the’’ character.
 
-You may not get a character event for all key down events if the key doesn't generate a character. Likewise, you may actually get multiple character events in a row. For example, some locales have an accent key that modifies the next character typed. You might get this stream of events: accent down, accent up (it didn't generate a character), letter key down, letter with accent character event (it was modified by the previous accent key), letter key up. If the letter can't be combined with the accent, like an umlaut and an 'R', the system might send umlaut down, umlaut up, 'R' key down, umlaut character (can't combine it with 'R', so just send the raw umlaut so it isn't lost"), 'R' character event, 'R' key up.
+You may not get a character event for all key down events if the key doesn’t generate a character. Likewise, you may actually get multiple character events in a row. For example, some locales have an accent key that modifies the next character typed. You might get this stream of events: accent down, accent up (it didn’t generate a character), letter key down, letter with accent character event (it was modified by the previous accent key), letter key up. If the letter can’t be combined with the accent, like an umlaut and an ‘R’, the system might send umlaut down, umlaut up, ‘R’ key down, umlaut character (can’t combine it with ‘R’, so just send the raw umlaut so it isn’t lost"), ‘R’ character event, ‘R’ key up.
 
 ------------------------------------------------------------------------
 

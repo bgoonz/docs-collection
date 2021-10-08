@@ -1,4 +1,4 @@
----json {"title":"pp::TextInputController Class Reference"} ---
+—json {“title”:“pp::TextInputController Class Reference”} —
 
 [List of all members.](/docs/native-client/pepper_beta/cpp/classpp_1_1_text_input_controller-members/)
 
@@ -28,6 +28,7 @@ Constructor & Destructor Documentation
 A constructor for creating a `TextInputController`.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance with which this resource will be associated.</td></tr></tbody></table>
 
 <span id="a19e3cd5588f61113d4037cbf15069a96" class="anchor" style="margin: 0;"></span>
@@ -54,6 +55,7 @@ Member Function Documentation
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_text_input_controller#acef9638552ba5254401ea3330140e67f" class="el" title="SetTextInputType() informs the browser about the current text input mode of the plugin.">SetTextInputType()</a> informs the browser about the current text input mode of the plugin.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>type</td><td>The type of text input type.</td></tr></tbody></table>
 
 <span id="a884a00a9d265d812424874542c2ee34c" class="anchor" style="margin: 0;"></span>
@@ -63,6 +65,7 @@ Member Function Documentation
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_text_input_controller#a884a00a9d265d812424874542c2ee34c" class="el" title="UpdateCaretPosition() informs the browser about the coordinates of the text input caret area...">UpdateCaretPosition()</a> informs the browser about the coordinates of the text input caret area.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>caret</td><td>A rectangle indicating the caret area.</td></tr></tbody></table>
 
 <span id="a59fc139f69ed425f632c16313e69ceca" class="anchor" style="margin: 0;"></span>
@@ -72,6 +75,7 @@ Member Function Documentation
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_text_input_controller#a59fc139f69ed425f632c16313e69ceca" class="el" title="UpdateSurroundingText() informs the browser about the current text selection and surrounding text...">UpdateSurroundingText()</a> informs the browser about the current text selection and surrounding text.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>text</td><td>A UTF-8 sting indicating string buffer of current input context.</td></tr><tr class="even"><td>[in]</td><td>caret</td><td>A integer indicating the byte index of caret location in <code>text</code>.</td></tr><tr class="odd"><td>[in]</td><td>caret</td><td>A integer indicating the byte index of anchor location in <code>text</code>. If there is no selection, this value should be equal to <code>caret</code>.</td></tr></tbody></table>
 
 ------------------------------------------------------------------------

@@ -1,4 +1,4 @@
----json {"title":"ppb\_file\_system.h File Reference"} ---
+—json {“title”:“ppb\_file\_system.h File Reference”} —
 
 Include dependency graph for ppb\_file\_system.h:
 
@@ -7,13 +7,13 @@ Include dependency graph for ppb\_file\_system.h:
 Data Structures
 ---------------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p_b___file_system__1__0/" class="el">PPB_FileSystem</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_FileSystem</code> struct identifies the file system type associated with a file. <a href="/docs/native-client/pepper_dev/c/struct_p_p_b___file_system__1__0#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p_b___file_system__1__0/" class="el">PPB_FileSystem</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_FileSystem</code> struct identifies the file system type associated with a file. <a href="/docs/native-client/pepper_dev/c/struct_p_p_b___file_system__1__0#details">More…</a><br />
 </td></tr></tbody></table>
 
 Defines
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__file__system_8h#a856262c69fb3460f83a1b1fa3630c7c9" class="el">PPB_FILESYSTEM_INTERFACE</a>   "PPB_FileSystem;1.0"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__file__system_8h#a492a8ab8ba84394c44cca88c45852f2c" class="el">PPB_FILESYSTEM_INTERFACE</a>   <a href="/docs/native-client/pepper_dev/c/ppb__file__system_8h#a856262c69fb3460f83a1b1fa3630c7c9" class="el">PPB_FILESYSTEM_INTERFACE</a></td></tr></tbody></table>
+<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__file__system_8h#a856262c69fb3460f83a1b1fa3630c7c9" class="el">PPB_FILESYSTEM_INTERFACE</a>   “PPB_FileSystem;1.0”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__file__system_8h#a492a8ab8ba84394c44cca88c45852f2c" class="el">PPB_FILESYSTEM_INTERFACE</a>   <a href="/docs/native-client/pepper_dev/c/ppb__file__system_8h#a856262c69fb3460f83a1b1fa3630c7c9" class="el">PPB_FILESYSTEM_INTERFACE</a></td></tr></tbody></table>
 
 Typedefs
 --------
@@ -40,4 +40,4 @@ Define Documentation
 
 <span id="a856262c69fb3460f83a1b1fa3630c7c9" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_dev/c/ppb__file__system_8h#a856262c69fb3460f83a1b1fa3630c7c9" class="el">PPB_FILESYSTEM_INTERFACE</a>   "PPB_FileSystem;1.0"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_dev/c/ppb__file__system_8h#a856262c69fb3460f83a1b1fa3630c7c9" class="el">PPB_FILESYSTEM_INTERFACE</a>   “PPB_FileSystem;1.0”</td></tr></tbody></table>

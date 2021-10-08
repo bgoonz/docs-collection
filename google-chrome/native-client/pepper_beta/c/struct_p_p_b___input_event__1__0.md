@@ -1,4 +1,4 @@
----json {"title":"PPB\_InputEvent Struct Reference"} ---
+—json {“title”:“PPB\_InputEvent Struct Reference”} —
 
 Data Fields
 -----------
@@ -27,9 +27,10 @@ Field Documentation
 
 By default, no input events are delivered. If you have previously requested input events via <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___input_event__1__0#a369d79730ad84d0b8dee9127c114086e" class="el" title="RequestInputEvent() requests that input events corresponding to the given input events are delivered ...">RequestInputEvents()</a> or <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___input_event__1__0#a42dcc8edf80141680e919258f3066069" class="el" title="RequestFilteringInputEvents() requests that input events corresponding to the given input events are ...">RequestFilteringInputEvents()</a>, this function will unregister handling for the given instance. This will allow greater browser performance for those events.
 
-Note that you may still get some input events after clearing the flag if they were dispatched before the request was cleared. For example, if there are 3 mouse move events waiting to be delivered, and you clear the mouse event class during the processing of the first one, you'll still receive the next two. You just won't get more events generated.
+Note that you may still get some input events after clearing the flag if they were dispatched before the request was cleared. For example, if there are 3 mouse move events waiting to be delivered, and you clear the mouse event class during the processing of the first one, you’ll still receive the next two. You just won’t get more events generated.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>instance</td><td>The <code>PP_Instance</code> of the instance requesting to no longer receive the given events.</td></tr><tr class="even"><td>event_classes</td><td>A combination of flags from <code>PP_InputEvent_Class</code> that identify the classes of events the instance is no longer interested in.</td></tr></tbody></table>
 
 <span id="a31311048765ee5af6dd3fb62ae014372" class="anchor" style="margin: 0;"></span>
@@ -41,9 +42,8 @@ Note that you may still get some input events after clearing the flag if they we
 This is a combination of the flags in the `PP_InputEvent_Modifier` enum.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to an input event.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to an input event.</td></tr></tbody></table>
 
 **Returns:**  
 The modifiers associated with the event, or 0 if the given resource is not a valid event resource.
@@ -57,12 +57,11 @@ The modifiers associated with the event, or 0 if the given resource is not a val
 This will be before the current time since processing and dispatching the event has some overhead. Use this value to compare the times the user generated two events without being sensitive to variable processing time.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to the event.</td></tr></tbody></table>
 
-<!-- -->
-
 **Returns:**  
-The return value is in time ticks, which is a monotonically increasing clock not related to the wall clock time. It will not change if the user changes their clock or daylight savings time starts, so can be reliably used to compare events. This means, however, that you can't correlate event times to a particular time of day on the system clock.
+The return value is in time ticks, which is a monotonically increasing clock not related to the wall clock time. It will not change if the user changes their clock or daylight savings time starts, so can be reliably used to compare events. This means, however, that you can’t correlate event times to a particular time of day on the system clock.
 
 <span id="a1d83a144ef7cb784a34caabc81786538" class="anchor" style="margin: 0;"></span>
 
@@ -71,9 +70,8 @@ The return value is in time ticks, which is a monotonically increasing clock not
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___input_event__1__0#a1d83a144ef7cb784a34caabc81786538" class="el" title="GetType() returns the type of input event for the given input event resource.">GetType()</a> returns the type of input event for the given input event resource.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to an input event.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to an input event.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_InputEvent_Type` if its a valid input event or `PP_INPUTEVENT_TYPE_UNDEFINED` if the resource is invalid.
@@ -85,9 +83,8 @@ A `PP_InputEvent_Type` if its a valid input event or `PP_INPUTEVENT_TYPE_UNDEFIN
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___input_event__1__0#a292409d067d969ee6357af350f6fb544" class="el" title="IsInputEvent() returns true if the given resource is a valid input event resource.">IsInputEvent()</a> returns true if the given resource is a valid input event resource.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a generic resource.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a generic resource.</td></tr></tbody></table>
 
 **Returns:**  
 `PP_TRUE` if the given resource is a valid input event resource.
@@ -100,7 +97,7 @@ A `PP_InputEvent_Type` if its a valid input event or `PP_INPUTEVENT_TYPE_UNDEFIN
 
 By default, no input events are delivered. In most cases you would register to receive events by calling <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___input_event__1__0#a369d79730ad84d0b8dee9127c114086e" class="el" title="RequestInputEvent() requests that input events corresponding to the given input events are delivered ...">RequestInputEvents()</a>. In some cases, however, you may wish to filter events such that they can be bubbled up to the default handlers. In this case, register for those classes of events using this function instead of <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___input_event__1__0#a369d79730ad84d0b8dee9127c114086e" class="el" title="RequestInputEvent() requests that input events corresponding to the given input events are delivered ...">RequestInputEvents()</a>.
 
-Filtering input events requires significantly more overhead than just delivering them to the instance. As such, you should only request filtering in those cases where it's absolutely necessary. The reason is that it requires the browser to stop and block for the instance to handle the input event, rather than sending the input event asynchronously. This can have significant overhead.
+Filtering input events requires significantly more overhead than just delivering them to the instance. As such, you should only request filtering in those cases where it’s absolutely necessary. The reason is that it requires the browser to stop and block for the instance to handle the input event, rather than sending the input event asynchronously. This can have significant overhead.
 
 **Example:**
 
@@ -117,7 +114,7 @@ Filtering input events requires significantly more overhead than just delivering
 
 RequestInputEvent() requests that input events corresponding to the given input events are delivered to the instance.
 
-It's recommended that you use <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___input_event__1__0#a42dcc8edf80141680e919258f3066069" class="el" title="RequestFilteringInputEvents() requests that input events corresponding to the given input events are ...">RequestFilteringInputEvents()</a> for keyboard events instead of this function so that you don't interfere with normal browser accelerators.
+It’s recommended that you use <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___input_event__1__0#a42dcc8edf80141680e919258f3066069" class="el" title="RequestFilteringInputEvents() requests that input events corresponding to the given input events are ...">RequestFilteringInputEvents()</a> for keyboard events instead of this function so that you don’t interfere with normal browser accelerators.
 
 By default, no input events are delivered. Call this function with the classes of events you are interested in to have them be delivered to the instance. Calling this function will override any previous setting for each specified class of input events (for example, if you previously called <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___input_event__1__0#a42dcc8edf80141680e919258f3066069" class="el" title="RequestFilteringInputEvents() requests that input events corresponding to the given input events are ...">RequestFilteringInputEvents()</a>, this function will set those events to non-filtering mode).
 
@@ -134,9 +131,8 @@ When requesting input events through this function, the events will be delivered
            PP_INPUTEVENT_CLASS_WHEEL | PP_INPUTEVENT_CLASS_KEYBOARD);
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>instance</td><td>The <code>PP_Instance</code> of the instance requesting the given events.</td></tr><tr class="even"><td>event_classes</td><td>A combination of flags from <code>PP_InputEvent_Class</code> that identifies the classes of events the instance is requesting. The flags are combined by logically ORing their values.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>instance</td><td>The <code>PP_Instance</code> of the instance requesting the given events.</td></tr><tr class="even"><td>event_classes</td><td>A combination of flags from <code>PP_InputEvent_Class</code> that identifies the classes of events the instance is requesting. The flags are combined by logically ORing their values.</td></tr></tbody></table>
 
 **Returns:**  
 `PP_OK` if the operation succeeded, `PP_ERROR_BADARGUMENT` if instance is invalid, or `PP_ERROR_NOTSUPPORTED` if one of the event class bits were illegal. In the case of an invalid bit, all valid bits will be applied and only the illegal bits will be ignored. The most common cause of a `PP_ERROR_NOTSUPPORTED` return value is requesting keyboard events, these must use <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___input_event__1__0#a42dcc8edf80141680e919258f3066069" class="el" title="RequestFilteringInputEvents() requests that input events corresponding to the given input events are ...">RequestFilteringInputEvents()</a>.

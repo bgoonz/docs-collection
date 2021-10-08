@@ -1,4 +1,4 @@
----json {"title":"PPB\_MouseCursor Struct Reference"} ---
+—json {“title”:“PPB\_MouseCursor Struct Reference”} —
 
 Data Fields
 -----------
@@ -30,9 +30,8 @@ The mouse cursor will be in effect whenever the mouse is over the given instance
 This function allows setting both system defined mouse cursors and custom cursors. To set a system-defined cursor, pass the type you want and set the custom image to 0 and the hot spot to NULL. To set a custom cursor, set the type to `PP_MOUSECURSOR_TYPE_CUSTOM` and specify your image and hot spot.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code> identifying the instance that the mouse cursor will affect.</td></tr><tr class="even"><td>[in]</td><td>type</td><td>A <code>PP_MouseCursor_Type</code> identifying the type of mouse cursor to show.</td></tr><tr class="odd"><td>[in]</td><td>image</td><td>A <code>PPB_ImageData</code> resource identifying the custom image to set when the type is <code>PP_MOUSECURSOR_TYPE_CUSTOM</code>. The image must be less than 32 pixels in each direction and must be of the system's native image format. When you are specifying a predefined cursor, this parameter must be 0.</td></tr><tr class="even"><td>[in]</td><td>hot_spot</td><td>When setting a custom cursor, this identifies the pixel position within the given image of the "hot spot" of the cursor. When specifying a stock cursor, this parameter is ignored.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code> identifying the instance that the mouse cursor will affect.</td></tr><tr class="even"><td>[in]</td><td>type</td><td>A <code>PP_MouseCursor_Type</code> identifying the type of mouse cursor to show.</td></tr><tr class="odd"><td>[in]</td><td>image</td><td>A <code>PPB_ImageData</code> resource identifying the custom image to set when the type is <code>PP_MOUSECURSOR_TYPE_CUSTOM</code>. The image must be less than 32 pixels in each direction and must be of the system’s native image format. When you are specifying a predefined cursor, this parameter must be 0.</td></tr><tr class="even"><td>[in]</td><td>hot_spot</td><td>When setting a custom cursor, this identifies the pixel position within the given image of the “hot spot” of the cursor. When specifying a stock cursor, this parameter is ignored.</td></tr></tbody></table>
 
 **Returns:**  
 PP\_TRUE on success, or PP\_FALSE if the instance or cursor type is invalid, or if the image is too large.

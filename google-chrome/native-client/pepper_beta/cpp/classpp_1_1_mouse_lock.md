@@ -1,4 +1,4 @@
----json {"title":"pp::MouseLock Class Reference"} ---
+—json {“title”:“pp::MouseLock Class Reference”} —
 
 [List of all members.](/docs/native-client/pepper_beta/cpp/classpp_1_1_mouse_lock-members/)
 
@@ -53,6 +53,7 @@ Constructor & Destructor Documentation
 A constructor for creating a `MouseLock`.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance with which this resource will be associated.</td></tr></tbody></table>
 
 <span id="a2ac121eb177f22d69c46066d979e06a8" class="anchor" style="margin: 0;"></span>
@@ -74,12 +75,11 @@ Member Function Documentation
 
 While the mouse is locked, the cursor is implicitly hidden from the user. Any movement of the mouse will generate a `PP_INPUTEVENT_TYPE_MOUSEMOVE` event. The `GetPosition()` function in `InputEvent()` reports the last known mouse position just as mouse lock was entered. The `GetMovement()` function provides relative movement information indicating what the change in position of the mouse would be had it not been locked.
 
-The browser may revoke the mouse lock for reasons including (but not limited to) the user pressing the ESC key, the user activating another program using a reserved keystroke (e.g. ALT+TAB), or some other system event.
+The browser may revoke the mouse lock for reasons including (but not limited to) the user pressing the ESC key, the user activating another program using a reserved keystroke (e.g. ALT+TAB), or some other system event.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>cc</td><td>A <code>CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>cc</td><td>A <code>CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing an error code from `pp_errors.h`.

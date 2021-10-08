@@ -1,4 +1,4 @@
----json {"title":"size.h File Reference"} ---
+—json {“title”:“size.h File Reference”} —
 
 Include dependency graph for size.h:
 
@@ -7,8 +7,8 @@ Include dependency graph for size.h:
 Classes
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_size/" class="el">pp::Size</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>A size of an object based on width and height. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_size#details">More...</a><br />
-</td></tr><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_float_size/" class="el">pp::FloatSize</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>A size of an object based on width and height. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_float_size#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_size/" class="el">pp::Size</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>A size of an object based on width and height. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_size#details">More…</a><br />
+</td></tr><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_float_size/" class="el">pp::FloatSize</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>A size of an object based on width and height. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_float_size#details">More…</a><br />
 </td></tr></tbody></table>
 
 Namespaces
@@ -42,9 +42,8 @@ Function Documentation
 This function determines whether two `Sizes` are not equal.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>lhs</td><td>The <code>Size</code> on the left-hand side of the equation.</td></tr><tr class="even"><td>[in]</td><td>rhs</td><td>The <code>Size</code> on the right-hand side of the equation.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>lhs</td><td>The <code>Size</code> on the left-hand side of the equation.</td></tr><tr class="even"><td>[in]</td><td>rhs</td><td>The <code>Size</code> on the right-hand side of the equation.</td></tr></tbody></table>
 
 **Returns:**  
 true if the `Size` of lhs are equal to the `Size` of rhs, otherwise false.
@@ -56,9 +55,8 @@ true if the `Size` of lhs are equal to the `Size` of rhs, otherwise false.
 This function determines whether two `FloatSizes` are not equal.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>lhs</td><td>The <code>FloatSize</code> on the left-hand side of the equation.</td></tr><tr class="even"><td>[in]</td><td>rhs</td><td>The <code>FloatSize</code> on the right-hand side of the equation.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>lhs</td><td>The <code>FloatSize</code> on the left-hand side of the equation.</td></tr><tr class="even"><td>[in]</td><td>rhs</td><td>The <code>FloatSize</code> on the right-hand side of the equation.</td></tr></tbody></table>
 
 **Returns:**  
 true if the `FloatSize` of lhs are equal to the `FloatSize` of rhs, otherwise false.
@@ -70,9 +68,8 @@ true if the `FloatSize` of lhs are equal to the `FloatSize` of rhs, otherwise fa
 This function determines whether the width and height values of two sizes are equal.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>lhs</td><td>The <code>Size</code> on the left-hand side of the equation.</td></tr><tr class="even"><td>[in]</td><td>rhs</td><td>The <code>Size</code> on the right-hand side of the equation.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>lhs</td><td>The <code>Size</code> on the left-hand side of the equation.</td></tr><tr class="even"><td>[in]</td><td>rhs</td><td>The <code>Size</code> on the right-hand side of the equation.</td></tr></tbody></table>
 
 **Returns:**  
 true if they are equal, false if unequal.
@@ -84,9 +81,8 @@ true if they are equal, false if unequal.
 This function determines whether the width and height values of two sizes are equal.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>lhs</td><td>The <code>FloatSize</code> on the left-hand side of the equation.</td></tr><tr class="even"><td>[in]</td><td>rhs</td><td>The <code>FloatSize</code> on the right-hand side of the equation.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>lhs</td><td>The <code>FloatSize</code> on the left-hand side of the equation.</td></tr><tr class="even"><td>[in]</td><td>rhs</td><td>The <code>FloatSize</code> on the right-hand side of the equation.</td></tr></tbody></table>
 
 **Returns:**  
 true if they are equal, false if unequal.

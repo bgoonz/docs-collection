@@ -1,4 +1,4 @@
----json {"title":"pp::Audio Class Reference"} ---
+—json {“title”:“pp::Audio Class Reference”} —
 
 Inheritance diagram for pp::Audio:
 
@@ -22,7 +22,7 @@ Detailed Description
 
 An audio resource.
 
-Refer to the [Audio](/docs/native-client/devguide/coding/audio) chapter in the Developer's Guide for information on using this interface.
+Refer to the [Audio](/docs/native-client/devguide/coding/audio) chapter in the Developer’s Guide for information on using this interface.
 
 ------------------------------------------------------------------------
 
@@ -44,6 +44,7 @@ A constructor that creates an <a href="/docs/native-client/pepper_beta/cpp/class
 No sound will be heard until <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio#aa8311c20bbeffd9e22ba21218695f6e4" class="el" title="StartPlayback() starts playback of audio.">StartPlayback()</a> is called. The callback is called with the buffer address and given user data whenever the buffer needs to be filled. From within the callback, you should not call `PPB_Audio` functions. The callback will be called on a different thread than the one which created the interface. For performance-critical applications (such as low-latency audio), the callback should avoid blocking or calling functions that can obtain locks, such as malloc. The layout and the size of the buffer passed to the audio callback will be determined by the device configuration and is specified in the `AudioConfig` documentation.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance with which this resource will be associated.</td></tr><tr class="even"><td>[in]</td><td>config</td><td>An <code>AudioConfig</code> containing the audio config resource.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>PPB_Audio_Callback</code> callback function that the browser calls when it needs more samples to play.</td></tr><tr class="even"><td>[in]</td><td>user_data</td><td>A pointer to user data used in the callback function.</td></tr></tbody></table>
 
 <span id="a856666bd5087947481ac2728bcd26c60" class="anchor" style="margin: 0;"></span>
@@ -53,6 +54,7 @@ No sound will be heard until <a href="/docs/native-client/pepper_beta/cpp/classp
 A constructor that creates an <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio/" class="el" title="An audio resource.">Audio</a> resource.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance with which this resource will be associated.</td></tr><tr class="even"><td>[in]</td><td>config</td><td>An <code>AudioConfig</code> containing the audio config resource.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>PPB_Audio_Callback</code> callback function that the browser calls when it needs more samples to play.</td></tr><tr class="even"><td>[in]</td><td>user_data</td><td>A pointer to user data used in the callback function.</td></tr></tbody></table>
 
 ------------------------------------------------------------------------

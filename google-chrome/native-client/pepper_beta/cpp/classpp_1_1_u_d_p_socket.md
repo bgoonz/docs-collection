@@ -1,4 +1,4 @@
----json {"title":"pp::UDPSocket Class Reference"} ---
+—json {“title”:“pp::UDPSocket Class Reference”} —
 
 Inheritance diagram for pp::UDPSocket:
 
@@ -47,6 +47,7 @@ Default constructor for creating an <a href="/docs/native-client/pepper_beta/cpp
 A constructor used to create a `UDPSocket` object.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance with which this resource will be associated.</td></tr></tbody></table>
 
 <span id="ac824fba529205830d0c2c54a21ed449b" class="anchor" style="margin: 0;"></span>
@@ -56,6 +57,7 @@ A constructor used to create a `UDPSocket` object.
 A constructor used when you have received a `PP_Resource` as a return value that has had 1 ref added for you.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PPB_UDPSocket</code> resource.</td></tr></tbody></table>
 
 <span id="a88fb9b2ed5c7726d0f4bf55948ef5be2" class="anchor" style="margin: 0;"></span>
@@ -65,6 +67,7 @@ A constructor used when you have received a `PP_Resource` as a return value that
 The copy constructor for `UDPSocket`.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A reference to another <code>UDPSocket</code>.</td></tr></tbody></table>
 
 <span id="a5fe143ce6bcaf1ac67748325acde1c50" class="anchor" style="margin: 0;"></span>
@@ -85,12 +88,11 @@ Member Function Documentation
 Binds the socket to the given address.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>addr</td><td>A <code>NetAddress</code> object.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
-<!-- -->
-
 **Returns:**  
-An int32\_t containing an error code from `pp_errors.h`. `PP_ERROR_NOACCESS` will be returned if the caller doesn't have required permissions. `PP_ERROR_ADDRESS_IN_USE` will be returned if the address is already in use.
+An int32\_t containing an error code from `pp_errors.h`. `PP_ERROR_NOACCESS` will be returned if the caller doesn’t have required permissions. `PP_ERROR_ADDRESS_IN_USE` will be returned if the address is already in use.
 
 <span id="aa1f03d8d0e7ef59c40724e2691f165f2" class="anchor" style="margin: 0;"></span>
 
@@ -129,9 +131,8 @@ true if the interface is available, false otherwise.
 Joins the multicast group with address specified by `group` parameter, which is expected to be a `NetAddress` object.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>group</td><td>A <code>NetAddress</code> corresponding to the network address of the multicast group.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>group</td><td>A <code>NetAddress</code> corresponding to the network address of the multicast group.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing an error code from `pp_errors.h`.
@@ -143,9 +144,8 @@ An int32\_t containing an error code from `pp_errors.h`.
 Leaves the multicast group with address specified by `group` parameter, which is expected to be a `NetAddress` object.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>group</td><td>A <code>NetAddress</code> corresponding to the network address of the multicast group.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>group</td><td>A <code>NetAddress</code> corresponding to the network address of the multicast group.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing an error code from `pp_errors.h`.
@@ -157,9 +157,8 @@ An int32\_t containing an error code from `pp_errors.h`.
 The assignment operator for `UDPSocket`.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A reference to another <code>UDPSocket</code>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A reference to another <code>UDPSocket</code>.</td></tr></tbody></table>
 
 **Returns:**  
 A reference to this `UDPSocket` object.
@@ -172,12 +171,11 @@ Receives data from the socket and stores the source address.
 
 The socket must be bound.
 
-**Caveat:** You should be careful about the lifetime of `buffer`. Typically you will use a `CompletionCallbackFactory` to scope callbacks to the lifetime of your class. When your class goes out of scope, the callback factory will not actually cancel the operation, but will rather just skip issuing the callback on your class. This means that if the underlying `PPB_UDPSocket` resource outlives your class, the browser will still try to write into your buffer when the operation completes. The buffer must be kept valid until then to avoid memory corruption. If you want to release the buffer while the `RecvFrom()` call is still pending, you should call `Close()` to ensure that the buffer won't be accessed in the future.
+**Caveat:** You should be careful about the lifetime of `buffer`. Typically you will use a `CompletionCallbackFactory` to scope callbacks to the lifetime of your class. When your class goes out of scope, the callback factory will not actually cancel the operation, but will rather just skip issuing the callback on your class. This means that if the underlying `PPB_UDPSocket` resource outlives your class, the browser will still try to write into your buffer when the operation completes. The buffer must be kept valid until then to avoid memory corruption. If you want to release the buffer while the `RecvFrom()` call is still pending, you should call `Close()` to ensure that the buffer won’t be accessed in the future.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[out]</td><td>buffer</td><td>The buffer to store the received data on success. It must be at least as large as <code>num_bytes</code>.</td></tr><tr class="even"><td>[in]</td><td>num_bytes</td><td>The number of bytes to receive.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>CompletionCallbackWithOutput</code> to be called upon completion.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[out]</td><td>buffer</td><td>The buffer to store the received data on success. It must be at least as large as <code>num_bytes</code>.</td></tr><tr class="even"><td>[in]</td><td>num_bytes</td><td>The number of bytes to receive.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>CompletionCallbackWithOutput</code> to be called upon completion.</td></tr></tbody></table>
 
 **Returns:**  
 A non-negative number on success to indicate how many bytes have been received; otherwise, an error code from `pp_errors.h`.
@@ -191,12 +189,11 @@ Sends data to a specific destination.
 The socket must be bound.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>buffer</td><td>The buffer containing the data to send.</td></tr><tr class="even"><td>[in]</td><td>num_bytes</td><td>The number of bytes to send.</td></tr><tr class="odd"><td>[in]</td><td>addr</td><td>A <code>NetAddress</code> object holding the destination address.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
-<!-- -->
-
 **Returns:**  
-A non-negative number on success to indicate how many bytes have been sent; otherwise, an error code from `pp_errors.h`. `PP_ERROR_NOACCESS` will be returned if the caller doesn't have required permissions. `PP_ERROR_INPROGRESS` will be returned if the socket is busy sending. The caller should wait until a pending send completes before retrying.
+A non-negative number on success to indicate how many bytes have been sent; otherwise, an error code from `pp_errors.h`. `PP_ERROR_NOACCESS` will be returned if the caller doesn’t have required permissions. `PP_ERROR_INPROGRESS` will be returned if the socket is busy sending. The caller should wait until a pending send completes before retrying.
 
 <span id="a5ff91fd2342e534b57980c0c2e414251" class="anchor" style="margin: 0;"></span>
 
@@ -207,9 +204,8 @@ Sets a socket option on the UDP socket.
 Please see the `PP_UDPSocket_Option` description for option names, value types and allowed values.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>name</td><td>The option to set.</td></tr><tr class="even"><td>[in]</td><td>value</td><td>The option value to set.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>name</td><td>The option to set.</td></tr><tr class="even"><td>[in]</td><td>value</td><td>The option value to set.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing an error code from `pp_errors.h`.

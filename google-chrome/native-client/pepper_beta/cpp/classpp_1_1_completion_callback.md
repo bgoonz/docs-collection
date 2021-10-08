@@ -1,4 +1,4 @@
----json {"title":"pp::CompletionCallback Class Reference"} ---
+—json {“title”:“pp::CompletionCallback Class Reference”} —
 
 Inheritance diagram for pp::CompletionCallback:
 
@@ -49,6 +49,7 @@ The default constructor will create a blocking `CompletionCallback` that can be 
 A constructor for creating a `CompletionCallback`.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>func</td><td>The function to be called on completion.</td></tr><tr class="even"><td>[in]</td><td>user_data</td><td>The user data to be passed to the callback function. This is optional and is typically used to help track state in case of multiple pending callbacks.</td></tr></tbody></table>
 
 <span id="a14fd9478ff007a91a3cdfa397c8e6e56" class="anchor" style="margin: 0;"></span>
@@ -58,6 +59,7 @@ A constructor for creating a `CompletionCallback`.
 A constructor for creating a `CompletionCallback` with specified flags.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>func</td><td>The function to be called on completion.</td></tr><tr class="even"><td>[in]</td><td>user_data</td><td>The user data to be passed to the callback function. This is optional and is typically used to help track state in case of multiple pending callbacks.</td></tr><tr class="odd"><td>[in]</td><td>flags</td><td>Bit field combination of <code>PP_CompletionCallback_Flag</code> flags used to control how non-NULL callbacks are scheduled by asynchronous methods.</td></tr></tbody></table>
 
 ------------------------------------------------------------------------
@@ -106,9 +108,8 @@ If the callback is required and `result` indicates that it has not been schedule
      }
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>result</td><td>PP_OK_COMPLETIONPENDING or the result of the completed operation to be passed to the callback function. PP_OK_COMPLETIONPENDING indicates that the callback has already been scheduled. Other non-positive values correspond to error codes from <code>pp_errors.h</code>. Positive values indicate additional information such as bytes read.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>result</td><td>PP_OK_COMPLETIONPENDING or the result of the completed operation to be passed to the callback function. PP_OK_COMPLETIONPENDING indicates that the callback has already been scheduled. Other non-positive values correspond to error codes from <code>pp_errors.h</code>. Positive values indicate additional information such as bytes read.</td></tr></tbody></table>
 
 **Returns:**  
 `PP_OK_COMPLETIONPENDING` if the callback has been forced, result parameter otherwise.
@@ -131,6 +132,7 @@ A `PP_CompletionCallback`.
 Normally, the system runs a `CompletionCallback` after an asynchronous operation completes, but programs may wish to run the `CompletionCallback` manually in order to reuse the same code paths.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>result</td><td>The result of the operation to be passed to the callback function. Non-positive values correspond to the error codes from <code>pp_errors.h</code> (excluding <code>PP_OK_COMPLETIONPENDING</code>). Positive values indicate additional information such as bytes read.</td></tr></tbody></table>
 
 <span id="a2996ca2f2b640c7da6da9016a5b0cd16" class="anchor" style="margin: 0;"></span>
@@ -140,6 +142,7 @@ Normally, the system runs a `CompletionCallback` after an asynchronous operation
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback#a2996ca2f2b640c7da6da9016a5b0cd16" class="el" title="RunAndClear() is used to run the CompletionCallback and clear out the callback so that it cannot be r...">RunAndClear()</a> is used to run the `CompletionCallback` and clear out the callback so that it cannot be run a second time.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>result</td><td>The result of the operation to be passed to the callback function. Non-positive values correspond to the error codes from <code>pp_errors.h</code> (excluding <code>PP_OK_COMPLETIONPENDING</code>). Positive values indicate additional information such as bytes read.</td></tr></tbody></table>
 
 <span id="a89fb884e8af572e9bf38fb880e132438" class="anchor" style="margin: 0;"></span>
@@ -149,6 +152,7 @@ Normally, the system runs a `CompletionCallback` after an asynchronous operation
 The <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback#a89fb884e8af572e9bf38fb880e132438" class="el" title="The set_flags() function is used to set the flags used to control how non-NULL callbacks are schedule...">set_flags()</a> function is used to set the flags used to control how non-NULL callbacks are scheduled by asynchronous methods.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>flags</td><td>Bit field combination of <code>PP_CompletionCallback_Flag</code> flags used to control how non-NULL callbacks are scheduled by asynchronous methods.</td></tr></tbody></table>
 
 ------------------------------------------------------------------------

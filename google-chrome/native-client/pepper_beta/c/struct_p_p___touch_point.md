@@ -1,4 +1,4 @@
----json {"title":"PP\_TouchPoint Struct Reference"} ---
+—json {“title”:“PP\_TouchPoint Struct Reference”} —
 
 Data Fields
 -----------
@@ -51,7 +51,7 @@ This value represents the elliptical radii, in screen pixels, in the x and y dir
 
 <table><tbody><tr class="odd"><td>float <a href="/docs/native-client/pepper_beta/c/struct_p_p___touch_point#a8861a485f64399c787093d7fbf609b89" class="el">PP_TouchPoint::rotation_angle</a></td></tr></tbody></table>
 
-This value represents the angle of rotation in degrees of the elliptical model of this TouchPoint clockwise from "up.".
+This value represents the angle of rotation in degrees of the elliptical model of this TouchPoint clockwise from “up.”.
 
 ------------------------------------------------------------------------
 

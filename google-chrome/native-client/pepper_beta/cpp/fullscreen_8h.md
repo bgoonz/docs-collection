@@ -1,4 +1,4 @@
----json {"title":"fullscreen.h File Reference"} ---
+—json {“title”:“fullscreen.h File Reference”} —
 
 Include dependency graph for fullscreen.h:
 
@@ -7,7 +7,7 @@ Include dependency graph for fullscreen.h:
 Classes
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_fullscreen/" class="el">pp::Fullscreen</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_fullscreen/" class="el" title="The Fullscreen class allowing you to check and toggle fullscreen mode.">Fullscreen</a> class allowing you to check and toggle fullscreen mode. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_fullscreen#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_fullscreen/" class="el">pp::Fullscreen</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_fullscreen/" class="el" title="The Fullscreen class allowing you to check and toggle fullscreen mode.">Fullscreen</a> class allowing you to check and toggle fullscreen mode. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_fullscreen#details">More…</a><br />
 </td></tr></tbody></table>
 
 Namespaces

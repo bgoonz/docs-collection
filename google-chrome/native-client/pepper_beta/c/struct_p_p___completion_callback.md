@@ -1,4 +1,4 @@
----json {"title":"PP\_CompletionCallback Struct Reference"} ---
+—json {“title”:“PP\_CompletionCallback Struct Reference”} —
 
 Data Fields
 -----------
@@ -16,23 +16,23 @@ Detailed Description
 
 Any method that takes a `PP_CompletionCallback` can be used in one of three different ways:
 
--   Required: The callback will always be invoked asynchronously on the thread where the associated PPB method was invoked. The method will always return PP\_OK\_COMPLETIONPENDING when a required callback, and the callback will be invoked later (barring system or thread shutdown; see PPB\_MessageLoop for details). Required callbacks are the default.  
-      
+-   Required: The callback will always be invoked asynchronously on the thread where the associated PPB method was invoked. The method will always return PP\_OK\_COMPLETIONPENDING when a required callback, and the callback will be invoked later (barring system or thread shutdown; see PPB\_MessageLoop for details). Required callbacks are the default.
+
     NOTE: If you use a required callback on a background thread, you must have created and attached a PPB\_MessageLoop. Otherwise, the system can not run your callback on that thread, and will instead emit a log message and crash your plugin to make the problem more obvious.
 
 <!-- -->
 
--   Optional: The callback may be invoked asynchronously, or the PPB method may complete synchronously if it can do so without blocking. If the method will complete asynchronously, it will return PP\_OK\_COMPLETIONPENDING. Otherwise, it will complete synchronously and return an appropriate code (see below for more information on the return code). Optional callbacks are generally more difficult to use correctly than Required callbacks, but can provide better performance for some APIs (especially APIs with buffered reads, such as PPB\_URLLoader or PPB\_FileIO).  
-      
+-   Optional: The callback may be invoked asynchronously, or the PPB method may complete synchronously if it can do so without blocking. If the method will complete asynchronously, it will return PP\_OK\_COMPLETIONPENDING. Otherwise, it will complete synchronously and return an appropriate code (see below for more information on the return code). Optional callbacks are generally more difficult to use correctly than Required callbacks, but can provide better performance for some APIs (especially APIs with buffered reads, such as PPB\_URLLoader or PPB\_FileIO).
+
     NOTE: If you use an optional callback on a background thread, and you have not created and attached a PPB\_MessageLoop, then the method you invoke will fail without running and return PP\_ERROR\_NO\_MESSAGE\_LOOP.
 
 <!-- -->
 
--   Blocking: In this case, the callback's function pointer is NULL, and the invoked method must complete synchronously. The method will run to completion and return an appropriate code when finished (see below for more information). Blocking completion callbacks are only supported on background threads.  
-      
+-   Blocking: In this case, the callback’s function pointer is NULL, and the invoked method must complete synchronously. The method will run to completion and return an appropriate code when finished (see below for more information). Blocking completion callbacks are only supported on background threads.
+
     `PP_BlockUntilComplete()` provides a convenient way to specify blocking behavior. Refer to `PP_BlockUntilComplete` for more information.
 
-When the callback is run asynchronously, the result parameter passed to `func` is an int32\_t that, if negative indicates an error code whose meaning is specific to the calling method (refer to `pp_error.h` for further information). A positive or 0 value is a return result indicating success whose meaning depends on the calling method (e.g. number of bytes read).
+When the callback is run asynchronously, the result parameter passed to `func` is an int32\_t that, if negative indicates an error code whose meaning is specific to the calling method (refer to `pp_error.h` for further information). A positive or 0 value is a return result indicating success whose meaning depends on the calling method (e.g. number of bytes read).
 
 ------------------------------------------------------------------------
 

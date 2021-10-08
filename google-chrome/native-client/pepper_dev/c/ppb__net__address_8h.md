@@ -1,4 +1,4 @@
----json {"title":"ppb\_net\_address.h File Reference"} ---
+—json {“title”:“ppb\_net\_address.h File Reference”} —
 
 Include dependency graph for ppb\_net\_address.h:
 
@@ -7,15 +7,15 @@ Include dependency graph for ppb\_net\_address.h:
 Data Structures
 ---------------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p___net_address___i_pv4/" class="el">PP_NetAddress_IPv4</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>All members are expressed in network byte order. <a href="/docs/native-client/pepper_dev/c/struct_p_p___net_address___i_pv4#details">More...</a><br />
-</td></tr><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p___net_address___i_pv6/" class="el">PP_NetAddress_IPv6</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>All members are expressed in network byte order. <a href="/docs/native-client/pepper_dev/c/struct_p_p___net_address___i_pv6#details">More...</a><br />
-</td></tr><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p_b___net_address__1__0/" class="el">PPB_NetAddress</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_NetAddress</code> interface provides operations on network addresses. <a href="/docs/native-client/pepper_dev/c/struct_p_p_b___net_address__1__0#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p___net_address___i_pv4/" class="el">PP_NetAddress_IPv4</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>All members are expressed in network byte order. <a href="/docs/native-client/pepper_dev/c/struct_p_p___net_address___i_pv4#details">More…</a><br />
+</td></tr><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p___net_address___i_pv6/" class="el">PP_NetAddress_IPv6</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>All members are expressed in network byte order. <a href="/docs/native-client/pepper_dev/c/struct_p_p___net_address___i_pv6#details">More…</a><br />
+</td></tr><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p_b___net_address__1__0/" class="el">PPB_NetAddress</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_NetAddress</code> interface provides operations on network addresses. <a href="/docs/native-client/pepper_dev/c/struct_p_p_b___net_address__1__0#details">More…</a><br />
 </td></tr></tbody></table>
 
 Defines
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__net__address_8h#aa487d14ecdf0f4ce95f95f429599b940" class="el">PPB_NETADDRESS_INTERFACE</a>   "PPB_NetAddress;1.0"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__net__address_8h#a4797048cd8b1d0ab96d600d0f2003f88" class="el">PPB_NETADDRESS_INTERFACE</a>   <a href="/docs/native-client/pepper_dev/c/ppb__net__address_8h#aa487d14ecdf0f4ce95f95f429599b940" class="el">PPB_NETADDRESS_INTERFACE</a></td></tr></tbody></table>
+<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__net__address_8h#aa487d14ecdf0f4ce95f95f429599b940" class="el">PPB_NETADDRESS_INTERFACE</a>   “PPB_NetAddress;1.0”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__net__address_8h#a4797048cd8b1d0ab96d600d0f2003f88" class="el">PPB_NETADDRESS_INTERFACE</a>   <a href="/docs/native-client/pepper_dev/c/ppb__net__address_8h#aa487d14ecdf0f4ce95f95f429599b940" class="el">PPB_NETADDRESS_INTERFACE</a></td></tr></tbody></table>
 
 Typedefs
 --------
@@ -52,4 +52,4 @@ Define Documentation
 
 <span id="aa487d14ecdf0f4ce95f95f429599b940" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_dev/c/ppb__net__address_8h#aa487d14ecdf0f4ce95f95f429599b940" class="el">PPB_NETADDRESS_INTERFACE</a>   "PPB_NetAddress;1.0"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_dev/c/ppb__net__address_8h#aa487d14ecdf0f4ce95f95f429599b940" class="el">PPB_NETADDRESS_INTERFACE</a>   “PPB_NetAddress;1.0”</td></tr></tbody></table>

@@ -1,4 +1,4 @@
----json {"title":"PPB\_Instance Struct Reference"} ---
+—json {“title”:“PPB\_Instance Struct Reference”} —
 
 Data Fields
 -----------
@@ -25,7 +25,7 @@ Field Documentation
 
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___instance__1__0#ae5b0da2fc0975c82213f687d96434625" class="el" title="BindGraphics() binds the given graphics as the current display surface.">BindGraphics()</a> binds the given graphics as the current display surface.
 
-The contents of this device is what will be displayed in the instance's area on the web page. The device must be a 2D or a 3D device.
+The contents of this device is what will be displayed in the instance’s area on the web page. The device must be a 2D or a 3D device.
 
 You can pass a `NULL` resource as the device parameter to unbind all devices from the given instance. The instance will then appear transparent. Re-binding the same device will return `PP_TRUE` and will do nothing.
 
@@ -34,9 +34,8 @@ Any previously-bound device will be released. It is an error to bind a device wh
 Binding a device will invalidate that portion of the web page to flush the contents of the new device to the screen.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A PP_Instance identifying one instance of a module.</td></tr><tr class="even"><td>[in]</td><td>device</td><td>A PP_Resource corresponding to a graphics device.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A PP_Instance identifying one instance of a module.</td></tr><tr class="even"><td>[in]</td><td>device</td><td>A PP_Resource corresponding to a graphics device.</td></tr></tbody></table>
 
 **Returns:**  
 `PP_Bool` containing `PP_TRUE` if bind was successful or `PP_FALSE` if the device was not the correct type. On success, a reference to the device will be held by the instance, so the caller can release its reference if it chooses.
@@ -50,9 +49,8 @@ Binding a device will invalidate that portion of the web page to flush the conte
 Such an instance represents the entire document in a frame rather than an embedded resource. This can happen if the user does a top-level navigation or the page specifies an iframe to a resource with a MIME type registered by the module.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code> identifying one instance of a module.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code> identifying one instance of a module.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_Bool` containing `PP_TRUE` if the instance is full-frame.

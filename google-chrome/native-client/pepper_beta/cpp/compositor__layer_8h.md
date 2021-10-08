@@ -1,4 +1,4 @@
----json {"title":"compositor\_layer.h File Reference"} ---
+—json {“title”:“compositor\_layer.h File Reference”} —
 
 Include dependency graph for compositor\_layer.h:
 

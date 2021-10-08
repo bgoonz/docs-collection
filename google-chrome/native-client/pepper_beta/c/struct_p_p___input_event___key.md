@@ -1,4 +1,4 @@
----json {"title":"PP\_InputEvent\_Key Struct Reference"} ---
+—json {“title”:“PP\_InputEvent\_Key Struct Reference”} —
 
 Data Fields
 -----------
@@ -14,11 +14,11 @@ Detailed Description
 
 The `PP_InputEvent_Key` struct represents a key up or key down event.
 
-Key up and key down events correspond to physical keys on the keyboard. The actual character that the user typed (if any) will be delivered in a "character" event.
+Key up and key down events correspond to physical keys on the keyboard. The actual character that the user typed (if any) will be delivered in a “character” event.
 
-If the user loses focus on the module while a key is down, a key up event might not occur. For example, if the module has focus and the user presses and holds the shift key, the module will see a "shift down" message. Then if the user clicks elsewhere on the web page, the module's focus will be lost and no more input events will be delivered.
+If the user loses focus on the module while a key is down, a key up event might not occur. For example, if the module has focus and the user presses and holds the shift key, the module will see a “shift down” message. Then if the user clicks elsewhere on the web page, the module’s focus will be lost and no more input events will be delivered.
 
-If your module depends on receiving key up events, it should also handle "lost focus" as the equivalent of "all keys up."
+If your module depends on receiving key up events, it should also handle “lost focus” as the equivalent of “all keys up.”
 
 ------------------------------------------------------------------------
 

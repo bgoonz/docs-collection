@@ -1,4 +1,4 @@
----json {"title":"pp::Fullscreen Class Reference"} ---
+—json {“title”:“pp::Fullscreen Class Reference”} —
 
 [List of all members.](/docs/native-client/pepper_beta/cpp/classpp_1_1_fullscreen-members/)
 
@@ -28,6 +28,7 @@ Constructor & Destructor Documentation
 A constructor for creating a `Fullscreen`.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance with which this resource will be associated.</td></tr></tbody></table>
 
 <span id="a4d73ff65edc8ef8f802f5a932e5081e8" class="anchor" style="margin: 0;"></span>
@@ -50,9 +51,8 @@ Member Function Documentation
 The module instance will be resized to this size when <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_fullscreen#a2c316cb6ebe4552df661aeea88e6f365" class="el" title="SetFullscreen() switches the module instance to and from fullscreen mode.">SetFullscreen()</a> is called to enter fullscreen mode.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[out]</td><td>size</td><td>The size of the entire screen in pixels.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[out]</td><td>size</td><td>The size of the entire screen in pixels.</td></tr></tbody></table>
 
 **Returns:**  
 `true` on success or `false` on failure.
@@ -77,9 +77,8 @@ The transition to and from fullscreen mode is asynchronous. During the transitio
 The transition to fullscreen mode can only occur while the browser is processing a user gesture, even if `true` is returned.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>fullscreen</td><td><code>true</code> to enter fullscreen mode, or <code>false</code> to exit fullscreen mode.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>fullscreen</td><td><code>true</code> to enter fullscreen mode, or <code>false</code> to exit fullscreen mode.</td></tr></tbody></table>
 
 **Returns:**  
 `true` on success or `false` on failure.

@@ -1,4 +1,4 @@
----json {"title":"ppb\_websocket.h File Reference"} ---
+—json {“title”:“ppb\_websocket.h File Reference”} —
 
 Include dependency graph for ppb\_websocket.h:
 
@@ -7,13 +7,13 @@ Include dependency graph for ppb\_websocket.h:
 Data Structures
 ---------------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p_b___web_socket__1__0/" class="el">PPB_WebSocket</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_WebSocket</code> interface provides bi-directional, full-duplex, communications over a single TCP socket. <a href="/docs/native-client/pepper_dev/c/struct_p_p_b___web_socket__1__0#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p_b___web_socket__1__0/" class="el">PPB_WebSocket</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_WebSocket</code> interface provides bi-directional, full-duplex, communications over a single TCP socket. <a href="/docs/native-client/pepper_dev/c/struct_p_p_b___web_socket__1__0#details">More…</a><br />
 </td></tr></tbody></table>
 
 Defines
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__websocket_8h#ad613dc4aff545f9e9885c415f1673107" class="el">PPB_WEBSOCKET_INTERFACE</a>   "PPB_WebSocket;1.0"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__websocket_8h#a6d56a012c9350b4cc4e55b668d3fbe75" class="el">PPB_WEBSOCKET_INTERFACE</a>   <a href="/docs/native-client/pepper_dev/c/ppb__websocket_8h#ad613dc4aff545f9e9885c415f1673107" class="el">PPB_WEBSOCKET_INTERFACE</a></td></tr></tbody></table>
+<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__websocket_8h#ad613dc4aff545f9e9885c415f1673107" class="el">PPB_WEBSOCKET_INTERFACE</a>   “PPB_WebSocket;1.0”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__websocket_8h#a6d56a012c9350b4cc4e55b668d3fbe75" class="el">PPB_WEBSOCKET_INTERFACE</a>   <a href="/docs/native-client/pepper_dev/c/ppb__websocket_8h#ad613dc4aff545f9e9885c415f1673107" class="el">PPB_WEBSOCKET_INTERFACE</a></td></tr></tbody></table>
 
 Typedefs
 --------
@@ -59,4 +59,4 @@ Define Documentation
 
 <span id="ad613dc4aff545f9e9885c415f1673107" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_dev/c/ppb__websocket_8h#ad613dc4aff545f9e9885c415f1673107" class="el">PPB_WEBSOCKET_INTERFACE</a>   "PPB_WebSocket;1.0"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_dev/c/ppb__websocket_8h#ad613dc4aff545f9e9885c415f1673107" class="el">PPB_WEBSOCKET_INTERFACE</a>   “PPB_WebSocket;1.0”</td></tr></tbody></table>

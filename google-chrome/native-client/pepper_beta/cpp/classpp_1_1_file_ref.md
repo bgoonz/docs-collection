@@ -1,4 +1,4 @@
----json {"title":"pp::FileRef Class Reference"} ---
+—json {“title”:“pp::FileRef Class Reference”} —
 
 Inheritance diagram for pp::FileRef:
 
@@ -20,7 +20,7 @@ Public Member Functions
 Detailed Description
 --------------------
 
-The `FileRef` class represents a "weak pointer" to a file in a file system.
+The `FileRef` class represents a “weak pointer” to a file in a file system.
 
 ------------------------------------------------------------------------
 
@@ -40,6 +40,7 @@ Default constructor for creating an <a href="/docs/native-client/pepper_beta/cpp
 A constructor used when you have an existing PP\_Resource for a <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_file_ref/" class="el" title="The FileRef class represents a &quot;weak pointer&quot; to a file in a file system.">FileRef</a> and which to create a C++ object that takes an additional reference to the resource.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A PP_Resource corresponding to file reference.</td></tr></tbody></table>
 
 <span id="a50652a877b8c02c736f86b1d69fc9b11" class="anchor" style="margin: 0;"></span>
@@ -49,6 +50,7 @@ A constructor used when you have an existing PP\_Resource for a <a href="/docs/n
 A constructor used when you have received a PP\_Resource as a return value that has already been reference counted.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A PP_Resource corresponding to file reference.</td></tr></tbody></table>
 
 <span id="a95aad2e3c8d9b52b1ac09279c8cf8113" class="anchor" style="margin: 0;"></span>
@@ -62,7 +64,8 @@ File paths are POSIX style.
 If the `path` is malformed, the resulting `FileRef` will have a null `PP_Resource`.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>file_system</td><td>A <code>FileSystem</code> corresponding to a file system type.</td></tr><tr class="even"><td>[in]</td><td>path</td><td>A path to the file. Must begin with a '/' character.</td></tr></tbody></table>
+
+<table><tbody><tr class="odd"><td>[in]</td><td>file_system</td><td>A <code>FileSystem</code> corresponding to a file system type.</td></tr><tr class="even"><td>[in]</td><td>path</td><td>A path to the file. Must begin with a ‘/’ character.</td></tr></tbody></table>
 
 <span id="a9a66f16e7d9a4198c206144bc3498ec5" class="anchor" style="margin: 0;"></span>
 
@@ -71,6 +74,7 @@ If the `path` is malformed, the resulting `FileRef` will have a null `PP_Resourc
 The copy constructor for `FileRef`.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A pointer to a <code>FileRef</code>.</td></tr></tbody></table>
 
 ------------------------------------------------------------------------
@@ -87,9 +91,8 @@ Member Function Documentation
 If `file_ref` refers to a directory, then the directory must be empty. It is an error to delete a file or directory that is in use. It is not valid to delete a file in the external file system.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>cc</td><td>A <code>CompletionCallback</code> to be called upon completion of <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_file_ref#abfdb9c3db04b0ef2591953f79c255873" class="el" title="Delete() deletes a file or directory.">Delete()</a>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>cc</td><td>A <code>CompletionCallback</code> to be called upon completion of <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_file_ref#abfdb9c3db04b0ef2591953f79c255873" class="el" title="Delete() deletes a file or directory.">Delete()</a>.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing an error code from `pp_errors.h`.
@@ -141,9 +144,8 @@ A `Var` containing the absolute path of the file. This function fails if the fil
 It is not valid to make a directory in the external file system.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>make_directory_flags</td><td>A bit-mask of the <code>PP_MakeDirectoryFlags</code> values. See <code>ppb_file_ref.h</code> for more details.</td></tr><tr class="even"><td>[in]</td><td>cc</td><td>A <code>CompletionCallback</code> to be called upon completion of <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_file_ref#afb1a20f9864801457db28d32ab1d7104" class="el" title="MakeDirectory() makes a new directory in the file system according to the given make_directory_flags...">MakeDirectory()</a>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>make_directory_flags</td><td>A bit-mask of the <code>PP_MakeDirectoryFlags</code> values. See <code>ppb_file_ref.h</code> for more details.</td></tr><tr class="even"><td>[in]</td><td>cc</td><td>A <code>CompletionCallback</code> to be called upon completion of <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_file_ref#afb1a20f9864801457db28d32ab1d7104" class="el" title="MakeDirectory() makes a new directory in the file system according to the given make_directory_flags...">MakeDirectory()</a>.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing an error code from `pp_errors.h`.
@@ -157,9 +159,8 @@ An int32\_t containing an error code from `pp_errors.h`.
 You must have access to read this file or directory if it exists in the external filesystem.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>CompletionCallbackWithOutput</code> to be called upon completion of <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_file_ref#a6de22adc35e4485dfba663dad64c15fb" class="el" title="Query() queries info about a file or directory.">Query()</a>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>CompletionCallbackWithOutput</code> to be called upon completion of <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_file_ref#a6de22adc35e4485dfba663dad64c15fb" class="el" title="Query() queries info about a file or directory.">Query()</a>.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing an error code from `pp_errors.h`.
@@ -171,6 +172,7 @@ An int32\_t containing an error code from `pp_errors.h`.
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_file_ref#af16f7bba00d624a16a1d9b9b09347c8c" class="el" title="ReadDirectoryEntries() Reads all entries in the directory.">ReadDirectoryEntries()</a> Reads all entries in the directory.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>cc</td><td>A <code>CompletionCallbackWithOutput</code> to be called upon completion of <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_file_ref#af16f7bba00d624a16a1d9b9b09347c8c" class="el" title="ReadDirectoryEntries() Reads all entries in the directory.">ReadDirectoryEntries()</a>. On success, the directory entries will be passed to the given function.</td></tr></tbody></table>
 
 Normally you would use a <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback_factory/" class="el" title="CompletionCallbackFactory&lt;T&gt; may be used to create CompletionCallback objects that are bound to membe...">CompletionCallbackFactory</a> to allow callbacks to be bound to your class. See <a href="/docs/native-client/pepper_beta/cpp/completion__callback__factory_8h/" class="el" title="This file defines the API to create CompletionCallback objects that are bound to member functions...">completion_callback_factory.h</a> for more discussion on how to use this. Your callback will generally look like:
@@ -194,9 +196,8 @@ An int32\_t containing an error code from `pp_errors.h`.
 Argument `new_file_ref` must refer to files in the same file system as in this object. It is an error to rename a file or directory that is in use. It is not valid to rename a file in the external file system.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>new_file_ref</td><td>A <code>FileRef</code> corresponding to a new file reference.</td></tr><tr class="even"><td>[in]</td><td>cc</td><td>A <code>CompletionCallback</code> to be called upon completion of <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_file_ref#ab1d7f8a63643561a6529952faa881505" class="el" title="Rename() renames a file or directory.">Rename()</a>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>new_file_ref</td><td>A <code>FileRef</code> corresponding to a new file reference.</td></tr><tr class="even"><td>[in]</td><td>cc</td><td>A <code>CompletionCallback</code> to be called upon completion of <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_file_ref#ab1d7f8a63643561a6529952faa881505" class="el" title="Rename() renames a file or directory.">Rename()</a>.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing an error code from `pp_errors.h`.
@@ -210,9 +211,8 @@ An int32\_t containing an error code from `pp_errors.h`.
 You must have write access to the file if it exists in the external filesystem.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>last_access_time</td><td>The last time the file was accessed.</td></tr><tr class="even"><td>[in]</td><td>last_modified_time</td><td>The last time the file was modified.</td></tr><tr class="odd"><td>[in]</td><td>cc</td><td>A <code>CompletionCallback</code> to be called upon completion of <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_file_ref#ab8e5d24d96c7408b140b74aa0ed8d7ca" class="el" title="Touch() Updates time stamps for a file.">Touch()</a>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>last_access_time</td><td>The last time the file was accessed.</td></tr><tr class="even"><td>[in]</td><td>last_modified_time</td><td>The last time the file was modified.</td></tr><tr class="odd"><td>[in]</td><td>cc</td><td>A <code>CompletionCallback</code> to be called upon completion of <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_file_ref#ab8e5d24d96c7408b140b74aa0ed8d7ca" class="el" title="Touch() Updates time stamps for a file.">Touch()</a>.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing an error code from `pp_errors.h`.

@@ -1,4 +1,4 @@
----json {"title":"pp::AudioConfig Class Reference"} ---
+—json {“title”:“pp::AudioConfig Class Reference”} —
 
 Inheritance diagram for pp::AudioConfig:
 
@@ -27,7 +27,7 @@ Detailed Description
 
 A 16 bit stereo <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_config/" class="el" title="A 16 bit stereo AudioConfig resource.">AudioConfig</a> resource.
 
-Refer to the [Audio](/docs/native-client/devguide/coding/audio) chapter in the Developer's Guide for information on using this interface.
+Refer to the [Audio](/docs/native-client/devguide/coding/audio) chapter in the Developer’s Guide for information on using this interface.
 
 A single sample frame on a stereo device means one value for the left channel and one value for the right channel.
 
@@ -66,9 +66,10 @@ An empty constructor for an `AudioConfig` resource.
 
 A constructor that creates an audio config based on the given sample rate and frame count.
 
-If the rate and frame count aren't supported, the resulting resource will be <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_resource#a859068e34cdc2dc0b78754c255323aa9" class="el" title="This functions determines if this resource is invalid or uninitialized.">is_null()</a>. You can pass the result of <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_config#a53611e94bca5d4a5f7acdd3e5285adb9" class="el" title="RecommendSampleFrameCount() returns a supported frame count closest to the requested count...">RecommendSampleFrameCount()</a> as the sample frame count.
+If the rate and frame count aren’t supported, the resulting resource will be <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_resource#a859068e34cdc2dc0b78754c255323aa9" class="el" title="This functions determines if this resource is invalid or uninitialized.">is_null()</a>. You can pass the result of <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_config#a53611e94bca5d4a5f7acdd3e5285adb9" class="el" title="RecommendSampleFrameCount() returns a supported frame count closest to the requested count...">RecommendSampleFrameCount()</a> as the sample frame count.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance associated with this resource.</td></tr><tr class="even"><td>[in]</td><td>sample_rate</td><td>A <code>PP_AudioSampleRate</code> which is either <code>PP_AUDIOSAMPLERATE_44100</code> or <code>PP_AUDIOSAMPLERATE_48000</code>.</td></tr><tr class="odd"><td>[in]</td><td>sample_frame_count</td><td>A uint32_t frame count returned from the <code>RecommendSampleFrameCount</code> function.</td></tr></tbody></table>
 
 ------------------------------------------------------------------------
@@ -82,12 +83,11 @@ Member Function Documentation
 
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_config#a53611e94bca5d4a5f7acdd3e5285adb9" class="el" title="RecommendSampleFrameCount() returns a supported frame count closest to the requested count...">RecommendSampleFrameCount()</a> returns a supported frame count closest to the requested count.
 
-The sample frame count determines the overall latency of audio. Smaller frame counts will yield lower latency, but higher CPU utilization. Supported sample frame counts will vary by hardware and system (consider that the local system might be anywhere from a cell phone or a high-end audio workstation). Sample counts less than `PP_AUDIOMINSAMPLEFRAMECOUNT` and greater than `PP_AUDIOMAXSAMPLEFRAMECOUNT` are never supported on any system, but values in between aren't necessarily valid. This function will return a supported count closest to the requested value for use in the constructor.
+The sample frame count determines the overall latency of audio. Smaller frame counts will yield lower latency, but higher CPU utilization. Supported sample frame counts will vary by hardware and system (consider that the local system might be anywhere from a cell phone or a high-end audio workstation). Sample counts less than `PP_AUDIOMINSAMPLEFRAMECOUNT` and greater than `PP_AUDIOMAXSAMPLEFRAMECOUNT` are never supported on any system, but values in between aren’t necessarily valid. This function will return a supported count closest to the requested value for use in the constructor.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance associated with this resource.</td></tr><tr class="even"><td>[in]</td><td>sample_rate</td><td>A <code>PP_AudioSampleRate</code> which is either <code>PP_AUDIOSAMPLERATE_44100</code> or <code>PP_AUDIOSAMPLERATE_48000</code>.</td></tr><tr class="odd"><td>[in]</td><td>requested_sample_frame_count</td><td>A uint32_t requested frame count.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance associated with this resource.</td></tr><tr class="even"><td>[in]</td><td>sample_rate</td><td>A <code>PP_AudioSampleRate</code> which is either <code>PP_AUDIOSAMPLERATE_44100</code> or <code>PP_AUDIOSAMPLERATE_48000</code>.</td></tr><tr class="odd"><td>[in]</td><td>requested_sample_frame_count</td><td>A uint32_t requested frame count.</td></tr></tbody></table>
 
 **Returns:**  
 A uint32\_t containing the recommended sample frame count if successful. If the sample frame count or bit rate is not supported, this function will fail and return 0.
@@ -101,6 +101,7 @@ A uint32\_t containing the recommended sample frame count if successful. If the 
 Applications that use the recommended sample rate might obtain lower latency and higher fidelity output.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance associated with this resource.</td></tr></tbody></table>
 
 <span id="ad7cb79f7f92993257643574457ee8d0c" class="anchor" style="margin: 0;"></span>

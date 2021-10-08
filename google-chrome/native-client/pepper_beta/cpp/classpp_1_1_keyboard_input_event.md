@@ -1,4 +1,4 @@
----json {"title":"pp::KeyboardInputEvent Class Reference"} ---
+—json {“title”:“pp::KeyboardInputEvent Class Reference”} —
 
 Inheritance diagram for pp::KeyboardInputEvent:
 
@@ -33,6 +33,7 @@ Constructs a keyboard input event object from the provided generic input event.
 If the given event is itself <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_resource#a859068e34cdc2dc0b78754c255323aa9" class="el" title="This functions determines if this resource is invalid or uninitialized.">is_null()</a> or is not a keyboard input event, the keybaord object will be <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_resource#a859068e34cdc2dc0b78754c255323aa9" class="el" title="This functions determines if this resource is invalid or uninitialized.">is_null()</a>.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>event</td><td>A generic input event.</td></tr></tbody></table>
 
 <span id="a3adab90fc81122554ec878ab2fb8d506" class="anchor" style="margin: 0;"></span>
@@ -42,6 +43,7 @@ If the given event is itself <a href="/docs/native-client/pepper_beta/cpp/classp
 Constructs a keyboard input even from the given parameters.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance for which this event occurred.</td></tr><tr class="even"><td>[in]</td><td>type</td><td>A <code>PP_InputEvent_Type</code> identifying the type of input event.</td></tr><tr class="odd"><td>[in]</td><td>time_stamp</td><td>A <code>PP_TimeTicks</code> indicating the time when the event occurred.</td></tr><tr class="even"><td>[in]</td><td>modifiers</td><td>A bit field combination of the <code>PP_InputEvent_Modifier</code> flags.</td></tr><tr class="odd"><td>[in]</td><td>key_code</td><td>This value reflects the DOM KeyboardEvent <code>keyCode</code> field. Chrome populates this with the Windows-style Virtual Key code of the key.</td></tr><tr class="even"><td>[in]</td><td>character_text</td><td>This value represents the typed character as a UTF-8 string.</td></tr></tbody></table>
 
 <span id="a95f16a4bee09b84cb38614f457038dca" class="anchor" style="margin: 0;"></span>
@@ -51,6 +53,7 @@ Constructs a keyboard input even from the given parameters.
 Constructs a keyboard input even from the given parameters.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance for which this event occurred.</td></tr><tr class="even"><td>[in]</td><td>type</td><td>A <code>PP_InputEvent_Type</code> identifying the type of input event.</td></tr><tr class="odd"><td>[in]</td><td>time_stamp</td><td>A <code>PP_TimeTicks</code> indicating the time when the event occurred.</td></tr><tr class="even"><td>[in]</td><td>modifiers</td><td>A bit field combination of the <code>PP_InputEvent_Modifier</code> flags.</td></tr><tr class="odd"><td>[in]</td><td>key_code</td><td>This value reflects the DOM KeyboardEvent <code>keyCode</code> field. Chrome populates this with the Windows-style Virtual Key code of the key.</td></tr><tr class="even"><td>[in]</td><td>character_text</td><td>This value represents the typed character as a UTF-8 string.</td></tr><tr class="odd"><td>[in]</td><td>code</td><td>This value reflects the DOM KeyboardEvent <code>code</code> field, which identifies the physical key associated with the event.</td></tr></tbody></table>
 
 ------------------------------------------------------------------------

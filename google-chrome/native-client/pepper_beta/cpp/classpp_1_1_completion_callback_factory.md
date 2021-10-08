@@ -1,4 +1,4 @@
----json {"title":"pp::CompletionCallbackFactory&lt; T, ThreadTraits &gt; Class Template Reference"} ---
+—json {“title”:“pp::CompletionCallbackFactory&lt; T, ThreadTraits &gt; Class Template Reference”} —
 
 [List of all members.](/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback_factory-members/)
 
@@ -127,7 +127,7 @@ CompletionCallbackFactory&lt;T&gt; may be used to create <a href="/docs/native-c
 
 If a factory is destroyed, then any pending callbacks will be cancelled preventing any bound member functions from being called. The <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback_factory#ad43328a7d8c19233e3fa0b762f357088" class="el" title="CancelAll() cancels all CompletionCallbacks allocated from this factory.">CancelAll()</a> method allows pending callbacks to be cancelled without destroying the factory.
 
-**Note:** `CompletionCallbackFactory<T>` isn't thread safe, but it is somewhat thread-friendly when used with a thread-safe traits class as the second template element. However, it only guarantees safety for creating a callback from another thread, the callback itself needs to execute on the same thread as the thread that creates/destroys the factory. With this restriction, it is safe to create the `CompletionCallbackFactory` on the main thread, create callbacks from any thread and pass them to CallOnMainThread().
+**Note:** `CompletionCallbackFactory<T>` isn’t thread safe, but it is somewhat thread-friendly when used with a thread-safe traits class as the second template element. However, it only guarantees safety for creating a callback from another thread, the callback itself needs to execute on the same thread as the thread that creates/destroys the factory. With this restriction, it is safe to create the `CompletionCallbackFactory` on the main thread, create callbacks from any thread and pass them to CallOnMainThread().
 
 **Example:**
 
@@ -161,7 +161,7 @@ If a factory is destroyed, then any pending callbacks will be cancelled preventi
 
 As a convenience, the `CompletionCallbackFactory` can optionally create a closure with up to three bound parameters that it will pass to your callback function. This can be useful for passing information about the request to your callback function, which is especially useful if your class has multiple asynchronous callbacks pending.
 
-For the above example, of opening a file, let's say you want to keep some description associated with your request, you might implement your OpenFile and DidOpen callback as follows:
+For the above example, of opening a file, let’s say you want to keep some description associated with your request, you might implement your OpenFile and DidOpen callback as follows:
 
        void OpenFile(const pp::FileRef& file) {
          std::string message = "Opening file!";
@@ -177,11 +177,11 @@ For the above example, of opening a file, let's say you want to keep some descri
 
 **Optional versus required callbacks**
 
-When you create an "optional" callback, the browser may return the results synchronously if they are available. This can allow for higher performance in some cases if data is available quickly (for example, for network loads where there may be a lot of data coming quickly). In this case, the callback will never be run.
+When you create an “optional” callback, the browser may return the results synchronously if they are available. This can allow for higher performance in some cases if data is available quickly (for example, for network loads where there may be a lot of data coming quickly). In this case, the callback will never be run.
 
 When creating a new callback with the factory, there will be data allocated on the heap that tracks the callback information and any bound arguments. This data is freed when the callback executes. In the case of optional callbacks, since the browser will never issue the callback, the internal tracking data will be leaked.
 
-Therefore, if you use optional callbacks, it's important to manually issue the callback to free up this data. The typical pattern is:
+Therefore, if you use optional callbacks, it’s important to manually issue the callback to free up this data. The typical pattern is:
 
        pp::CompletionCallback callback = callback_factory.NewOptionalCallback(
            &MyClass::OnDataReady);
@@ -189,15 +189,15 @@ Therefore, if you use optional callbacks, it's important to manually issue the c
        if (result != PP_OK_COMPLETIONPENDING)
           callback.Run(result);
 
-Because of this additional complexity, it's generally recommended that you not use optional callbacks except when performance is more important (such as loading large resources from the network). In most other cases, the performance difference will not be worth the additional complexity, and most functions may never actually have the ability to complete synchronously.
+Because of this additional complexity, it’s generally recommended that you not use optional callbacks except when performance is more important (such as loading large resources from the network). In most other cases, the performance difference will not be worth the additional complexity, and most functions may never actually have the ability to complete synchronously.
 
 **Completion callbacks with output**
 
-For some API calls, the browser returns data to the caller via an output parameter. These can be difficult to manage since the output parameter must remain valid for as long as the callback is pending. Note also that CancelAll (or destroying the callback factory) does *not* cancel the callback from the browser's perspective, only the execution of the callback in the plugin code, and the output parameter will still be written to! This means that you can't use class members as output parameters without risking crashes.
+For some API calls, the browser returns data to the caller via an output parameter. These can be difficult to manage since the output parameter must remain valid for as long as the callback is pending. Note also that CancelAll (or destroying the callback factory) does *not* cancel the callback from the browser’s perspective, only the execution of the callback in the plugin code, and the output parameter will still be written to! This means that you can’t use class members as output parameters without risking crashes.
 
 To make this case easier, the <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback_factory/" class="el" title="CompletionCallbackFactory&lt;T&gt; may be used to create CompletionCallback objects that are bound to membe...">CompletionCallbackFactory</a> can allocate and manage the output data for you and pass it to your callback function. This makes such calls more natural and less error-prone.
 
-To create such a callback, use NewCallbackWithOutput and specify a callback function that takes the output parameter as its second argument. Let's say you're calling a function GetFile which asynchronously returns a <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_file_ref/" class="el" title="The FileRef class represents a &quot;weak pointer&quot; to a file in a file system.">pp::FileRef</a>. GetFile's signature will be `int32_t GetFile(const CompletionCallbackWithOutput<pp::FileRef>& callback);` and your calling code would look like this:
+To create such a callback, use NewCallbackWithOutput and specify a callback function that takes the output parameter as its second argument. Let’s say you’re calling a function GetFile which asynchronously returns a <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_file_ref/" class="el" title="The FileRef class represents a &quot;weak pointer&quot; to a file in a file system.">pp::FileRef</a>. GetFile’s signature will be `int32_t GetFile(const CompletionCallbackWithOutput<pp::FileRef>& callback);` and your calling code would look like this:
 
        void RequestFile() {
          file_interface->GetFile(callback_factory_.NewCallbackWithOutput(
@@ -213,7 +213,7 @@ To create such a callback, use NewCallbackWithOutput and specify a callback func
 
 As with regular completion callbacks, you can optionally add up to three bound arguments. These are passed following the output argument.
 
-Your callback may take the output argument as a copy (common for small types like integers, a const reference (common for structures and resources to avoid an extra copy), or as a non-const reference. One optimization you can do if your callback function may take large arrays is to accept your output argument as a non-const reference and to swap() the argument with a vector of your own to store it. This means you don't have to copy the buffer to consume it.
+Your callback may take the output argument as a copy (common for small types like integers, a const reference (common for structures and resources to avoid an extra copy), or as a non-const reference. One optimization you can do if your callback function may take large arrays is to accept your output argument as a non-const reference and to swap() the argument with a vector of your own to store it. This means you don’t have to copy the buffer to consume it.
 
 ------------------------------------------------------------------------
 
@@ -277,6 +277,7 @@ Use this when the object is not available at `CallbackFactory` creation, and the
 This class may not be used on any thread until initialization is complete.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>object</td><td>The object whose member functions are to be bound to the <code>CompletionCallback</code> created by this <code>CompletionCallbackFactory</code>.</td></tr></tbody></table>
 
 <span id="ab25d7ebdcdcd28f06ab767fdbbd4868f" class="anchor" style="margin: 0;"></span>
@@ -292,9 +293,8 @@ NewCallback allocates a new, single-use `CompletionCallback`.
 The `CompletionCallback` must be run in order for the memory allocated by the methods to be freed.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>method</td><td>The method to be invoked upon completion of the operation.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>method</td><td>The method to be invoked upon completion of the operation.</td></tr></tbody></table>
 
 **Returns:**  
 A `CompletionCallback`.
@@ -312,9 +312,8 @@ template&lt;typename Method , typename A &gt;
 The `CompletionCallback` must be run in order for the memory allocated by the methods to be freed.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>method</td><td>The method to be invoked upon completion of the operation. Method should be of type: <code>void (T::*)(int32_t result, const A&amp; a)</code></td></tr><tr class="even"><td>[in]</td><td>a</td><td>Passed to <code>method</code> when the completion callback runs.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>method</td><td>The method to be invoked upon completion of the operation. Method should be of type: <code>void (T::*)(int32_t result, const A&amp; a)</code></td></tr><tr class="even"><td>[in]</td><td>a</td><td>Passed to <code>method</code> when the completion callback runs.</td></tr></tbody></table>
 
 **Returns:**  
 A `CompletionCallback`.
@@ -332,9 +331,8 @@ template&lt;typename Method , typename A , typename B &gt;
 The `CompletionCallback` must be run in order for the memory allocated by the methods to be freed.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td></td><td>method</td><td>The method taking the callback. Method should be of type: <code>void (T::*)(int32_t result, const A&amp; a, const B&amp; b)</code></td></tr><tr class="even"><td>[in]</td><td>a</td><td>Passed to <code>method</code> when the completion callback runs.</td></tr><tr class="odd"><td>[in]</td><td>b</td><td>Passed to <code>method</code> when the completion callback runs.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td></td><td>method</td><td>The method taking the callback. Method should be of type: <code>void (T::*)(int32_t result, const A&amp; a, const B&amp; b)</code></td></tr><tr class="even"><td>[in]</td><td>a</td><td>Passed to <code>method</code> when the completion callback runs.</td></tr><tr class="odd"><td>[in]</td><td>b</td><td>Passed to <code>method</code> when the completion callback runs.</td></tr></tbody></table>
 
 **Returns:**  
 A `CompletionCallback`.
@@ -352,9 +350,8 @@ template&lt;typename Method , typename A , typename B , typename C &gt;
 The `CompletionCallback` must be run in order for the memory allocated by the methods to be freed.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td></td><td>method</td><td>The method taking the callback. Method should be of type: <code> void (T::*)(int32_t result, const A&amp; a, const B&amp; b, const C&amp; c) </code></td></tr><tr class="even"><td>[in]</td><td>a</td><td>Passed to <code>method</code> when the completion callback runs.</td></tr><tr class="odd"><td>[in]</td><td>b</td><td>Passed to <code>method</code> when the completion callback runs.</td></tr><tr class="even"><td>[in]</td><td>c</td><td>Passed to <code>method</code> when the completion callback runs.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td></td><td>method</td><td>The method taking the callback. Method should be of type: <code> void (T::*)(int32_t result, const A&amp; a, const B&amp; b, const C&amp; c) </code></td></tr><tr class="even"><td>[in]</td><td>a</td><td>Passed to <code>method</code> when the completion callback runs.</td></tr><tr class="odd"><td>[in]</td><td>b</td><td>Passed to <code>method</code> when the completion callback runs.</td></tr><tr class="even"><td>[in]</td><td>c</td><td>Passed to <code>method</code> when the completion callback runs.</td></tr></tbody></table>
 
 **Returns:**  
 A `CompletionCallback`.
@@ -372,9 +369,8 @@ template&lt;typename Output &gt;
 The `CompletionCallback` must be run in order for the memory allocated by the methods to be freed.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>method</td><td>The method to be invoked upon completion of the operation.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>method</td><td>The method to be invoked upon completion of the operation.</td></tr></tbody></table>
 
 **Returns:**  
 A `CompletionCallback`.
@@ -392,9 +388,8 @@ template&lt;typename Output , typename A &gt;
 The `CompletionCallback` must be run in order for the memory allocated by the methods to be freed.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>method</td><td>The method to be invoked upon completion of the operation.</td></tr><tr class="even"><td>[in]</td><td>a</td><td>Passed to <code>method</code> when the completion callback runs.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>method</td><td>The method to be invoked upon completion of the operation.</td></tr><tr class="even"><td>[in]</td><td>a</td><td>Passed to <code>method</code> when the completion callback runs.</td></tr></tbody></table>
 
 **Returns:**  
 A `CompletionCallback`.
@@ -412,9 +407,8 @@ template&lt;typename Output , typename A , typename B &gt;
 The `CompletionCallback` must be run in order for the memory allocated by the methods to be freed.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>method</td><td>The method to be invoked upon completion of the operation.</td></tr><tr class="even"><td>[in]</td><td>a</td><td>Passed to <code>method</code> when the completion callback runs.</td></tr><tr class="odd"><td>[in]</td><td>b</td><td>Passed to <code>method</code> when the completion callback runs.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>method</td><td>The method to be invoked upon completion of the operation.</td></tr><tr class="even"><td>[in]</td><td>a</td><td>Passed to <code>method</code> when the completion callback runs.</td></tr><tr class="odd"><td>[in]</td><td>b</td><td>Passed to <code>method</code> when the completion callback runs.</td></tr></tbody></table>
 
 **Returns:**  
 A `CompletionCallback`.
@@ -432,9 +426,8 @@ template&lt;typename Output , typename A , typename B , typename C &gt;
 The `CompletionCallback` must be run in order for the memory allocated by the methods to be freed.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td></td><td>method</td><td>The method to be run.</td></tr><tr class="even"><td>[in]</td><td>a</td><td>Passed to <code>method</code> when the completion callback runs.</td></tr><tr class="odd"><td>[in]</td><td>b</td><td>Passed to <code>method</code> when the completion callback runs.</td></tr><tr class="even"><td>[in]</td><td>c</td><td>Passed to <code>method</code> when the completion callback runs.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td></td><td>method</td><td>The method to be run.</td></tr><tr class="even"><td>[in]</td><td>a</td><td>Passed to <code>method</code> when the completion callback runs.</td></tr><tr class="odd"><td>[in]</td><td>b</td><td>Passed to <code>method</code> when the completion callback runs.</td></tr><tr class="even"><td>[in]</td><td>c</td><td>Passed to <code>method</code> when the completion callback runs.</td></tr></tbody></table>
 
 **Returns:**  
 A `CompletionCallback`.
@@ -449,12 +442,11 @@ template&lt;typename Method &gt;
 
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback_factory#adacce232874e0d5ab52ffa4bd8af9ef7" class="el" title="NewOptionalCallback() allocates a new, single-use CompletionCallback that might not run if the method...">NewOptionalCallback()</a> allocates a new, single-use `CompletionCallback` that might not run if the method taking it can complete synchronously.
 
-Thus, if after passing the <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback/" class="el" title="This API enables you to implement and receive callbacks when Pepper operations complete asynchronousl...">CompletionCallback</a> to a Pepper method, the method does not return PP\_OK\_COMPLETIONPENDING, then you should manually call the <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback/" class="el" title="This API enables you to implement and receive callbacks when Pepper operations complete asynchronousl...">CompletionCallback</a>'s Run method, or memory will be leaked.
+Thus, if after passing the <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback/" class="el" title="This API enables you to implement and receive callbacks when Pepper operations complete asynchronousl...">CompletionCallback</a> to a Pepper method, the method does not return PP\_OK\_COMPLETIONPENDING, then you should manually call the <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback/" class="el" title="This API enables you to implement and receive callbacks when Pepper operations complete asynchronousl...">CompletionCallback</a>’s Run method, or memory will be leaked.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>method</td><td>The method to be invoked upon completion of the operation.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>method</td><td>The method to be invoked upon completion of the operation.</td></tr></tbody></table>
 
 **Returns:**  
 A `CompletionCallback`.
@@ -469,12 +461,11 @@ template&lt;typename Method , typename A &gt;
 
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback_factory#adacce232874e0d5ab52ffa4bd8af9ef7" class="el" title="NewOptionalCallback() allocates a new, single-use CompletionCallback that might not run if the method...">NewOptionalCallback()</a> allocates a new, single-use `CompletionCallback` that might not run if the method taking it can complete synchronously.
 
-Thus, if after passing the <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback/" class="el" title="This API enables you to implement and receive callbacks when Pepper operations complete asynchronousl...">CompletionCallback</a> to a Pepper method, the method does not return PP\_OK\_COMPLETIONPENDING, then you should manually call the <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback/" class="el" title="This API enables you to implement and receive callbacks when Pepper operations complete asynchronousl...">CompletionCallback</a>'s Run method, or memory will be leaked.
+Thus, if after passing the <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback/" class="el" title="This API enables you to implement and receive callbacks when Pepper operations complete asynchronousl...">CompletionCallback</a> to a Pepper method, the method does not return PP\_OK\_COMPLETIONPENDING, then you should manually call the <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback/" class="el" title="This API enables you to implement and receive callbacks when Pepper operations complete asynchronousl...">CompletionCallback</a>’s Run method, or memory will be leaked.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>method</td><td>The method to be invoked upon completion of the operation. Method should be of type: <code>void (T::*)(int32_t result, const A&amp; a)</code></td></tr><tr class="even"><td>[in]</td><td>a</td><td>Passed to <code>method</code> when the completion callback runs.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>method</td><td>The method to be invoked upon completion of the operation. Method should be of type: <code>void (T::*)(int32_t result, const A&amp; a)</code></td></tr><tr class="even"><td>[in]</td><td>a</td><td>Passed to <code>method</code> when the completion callback runs.</td></tr></tbody></table>
 
 **Returns:**  
 A `CompletionCallback`.
@@ -489,12 +480,11 @@ template&lt;typename Method , typename A , typename B &gt;
 
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback_factory#adacce232874e0d5ab52ffa4bd8af9ef7" class="el" title="NewOptionalCallback() allocates a new, single-use CompletionCallback that might not run if the method...">NewOptionalCallback()</a> allocates a new, single-use `CompletionCallback` that might not run if the method taking it can complete synchronously.
 
-Thus, if after passing the <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback/" class="el" title="This API enables you to implement and receive callbacks when Pepper operations complete asynchronousl...">CompletionCallback</a> to a Pepper method, the method does not return PP\_OK\_COMPLETIONPENDING, then you should manually call the <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback/" class="el" title="This API enables you to implement and receive callbacks when Pepper operations complete asynchronousl...">CompletionCallback</a>'s Run method, or memory will be leaked.
+Thus, if after passing the <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback/" class="el" title="This API enables you to implement and receive callbacks when Pepper operations complete asynchronousl...">CompletionCallback</a> to a Pepper method, the method does not return PP\_OK\_COMPLETIONPENDING, then you should manually call the <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback/" class="el" title="This API enables you to implement and receive callbacks when Pepper operations complete asynchronousl...">CompletionCallback</a>’s Run method, or memory will be leaked.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>method</td><td>The method taking the callback. Method should be of type: <code>void (T::*)(int32_t result, const A&amp; a, const B&amp; b)</code></td></tr><tr class="even"><td>[in]</td><td>a</td><td>Passed to <code>method</code> when the completion callback runs.</td></tr><tr class="odd"><td>[in]</td><td>b</td><td>Passed to <code>method</code> when the completion callback runs.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>method</td><td>The method taking the callback. Method should be of type: <code>void (T::*)(int32_t result, const A&amp; a, const B&amp; b)</code></td></tr><tr class="even"><td>[in]</td><td>a</td><td>Passed to <code>method</code> when the completion callback runs.</td></tr><tr class="odd"><td>[in]</td><td>b</td><td>Passed to <code>method</code> when the completion callback runs.</td></tr></tbody></table>
 
 **Returns:**  
 A `CompletionCallback`.
@@ -509,12 +499,11 @@ template&lt;typename Method , typename A , typename B , typename C &gt;
 
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback_factory#adacce232874e0d5ab52ffa4bd8af9ef7" class="el" title="NewOptionalCallback() allocates a new, single-use CompletionCallback that might not run if the method...">NewOptionalCallback()</a> allocates a new, single-use `CompletionCallback` that might not run if the method taking it can complete synchronously.
 
-Thus, if after passing the <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback/" class="el" title="This API enables you to implement and receive callbacks when Pepper operations complete asynchronousl...">CompletionCallback</a> to a Pepper method, the method does not return PP\_OK\_COMPLETIONPENDING, then you should manually call the <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback/" class="el" title="This API enables you to implement and receive callbacks when Pepper operations complete asynchronousl...">CompletionCallback</a>'s Run method, or memory will be leaked.
+Thus, if after passing the <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback/" class="el" title="This API enables you to implement and receive callbacks when Pepper operations complete asynchronousl...">CompletionCallback</a> to a Pepper method, the method does not return PP\_OK\_COMPLETIONPENDING, then you should manually call the <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback/" class="el" title="This API enables you to implement and receive callbacks when Pepper operations complete asynchronousl...">CompletionCallback</a>’s Run method, or memory will be leaked.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>method</td><td>The method taking the callback. Method should be of type: <code> void (T::*)(int32_t result, const A&amp; a, const B&amp; b, const C&amp; c) </code></td></tr><tr class="even"><td>[in]</td><td>a</td><td>Passed to <code>method</code> when the completion callback runs.</td></tr><tr class="odd"><td>[in]</td><td>b</td><td>Passed to <code>method</code> when the completion callback runs.</td></tr><tr class="even"><td>[in]</td><td>c</td><td>Passed to <code>method</code> when the completion callback runs.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>method</td><td>The method taking the callback. Method should be of type: <code> void (T::*)(int32_t result, const A&amp; a, const B&amp; b, const C&amp; c) </code></td></tr><tr class="even"><td>[in]</td><td>a</td><td>Passed to <code>method</code> when the completion callback runs.</td></tr><tr class="odd"><td>[in]</td><td>b</td><td>Passed to <code>method</code> when the completion callback runs.</td></tr><tr class="even"><td>[in]</td><td>c</td><td>Passed to <code>method</code> when the completion callback runs.</td></tr></tbody></table>
 
 **Returns:**  
 A `CompletionCallback`.

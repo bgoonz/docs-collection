@@ -1,4 +1,4 @@
----json {"title":"pp::URLResponseInfo Class Reference"} ---
+—json {“title”:“pp::URLResponseInfo Class Reference”} —
 
 Inheritance diagram for pp::URLResponseInfo:
 
@@ -42,6 +42,7 @@ This constructor creates an `is_null` resource.
 A constructor used when you have received a `PP_Resource` as a return value that has already been reference counted.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a resource.</td></tr></tbody></table>
 
 <span id="aa2fb382084c248e56dffb09e1191a6f1" class="anchor" style="margin: 0;"></span>
@@ -82,9 +83,8 @@ An `is_string Var` containing the response property value if successful, `is_und
 This function gets a response property.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>property</td><td>A <code>PP_URLResponseProperty</code> identifying the type of property in the response.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>property</td><td>A <code>PP_URLResponseProperty</code> identifying the type of property in the response.</td></tr></tbody></table>
 
 **Returns:**  
 A `Var` containing the response property value if successful, `is_undefined Var` if an input parameter is invalid.

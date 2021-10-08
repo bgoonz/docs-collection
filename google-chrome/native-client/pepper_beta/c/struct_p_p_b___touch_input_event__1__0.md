@@ -1,4 +1,4 @@
----json {"title":"PPB\_TouchInputEvent Struct Reference"} ---
+—json {“title”:“PPB\_TouchInputEvent Struct Reference”} —
 
 Data Fields
 -----------
@@ -26,6 +26,7 @@ Field Documentation
 Adds a touch point to the touch event in the specified touch-list.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>touch_event</td><td>A <code>PP_Resource</code> corresponding to a touch event.</td></tr><tr class="even"><td>[in]</td><td>list</td><td>The list to add the touch point to.</td></tr><tr class="odd"><td>[in]</td><td>point</td><td>The point to add to the list.</td></tr></tbody></table>
 
 <span id="a34366a8a64a16fee610eaeac7ecc8ae3" class="anchor" style="margin: 0;"></span>
@@ -37,9 +38,8 @@ Creates a touch input event with the given parameters.
 Normally you will get a touch event passed through the HandleInputEvent and will not need to create them, but some applications may want to create their own for internal use. The type must be one of the touch event types. This newly created touch input event does not have any touch point in any of the touch-point lists. `AddTouchPoint` should be called to add the touch-points.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance for which this event occurred.</td></tr><tr class="even"><td>[in]</td><td>type</td><td>A <code>PP_InputEvent_Type</code> identifying the type of input event.</td></tr><tr class="odd"><td>[in]</td><td>time_stamp</td><td>A <code>PP_TimeTicks</code> indicating the time when the event occurred.</td></tr><tr class="even"><td>[in]</td><td>modifiers</td><td>A bit field combination of the <code>PP_InputEvent_Modifier</code> flags.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance for which this event occurred.</td></tr><tr class="even"><td>[in]</td><td>type</td><td>A <code>PP_InputEvent_Type</code> identifying the type of input event.</td></tr><tr class="odd"><td>[in]</td><td>time_stamp</td><td>A <code>PP_TimeTicks</code> indicating the time when the event occurred.</td></tr><tr class="even"><td>[in]</td><td>modifiers</td><td>A bit field combination of the <code>PP_InputEvent_Modifier</code> flags.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_Resource` containing the new touch input event.
@@ -51,9 +51,8 @@ A `PP_Resource` containing the new touch input event.
 Returns the touch-point with the specified touch-id in the specified list.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a touch event.</td></tr><tr class="even"><td>[in]</td><td>list</td><td>The list.</td></tr><tr class="odd"><td>[in]</td><td>touch_id</td><td>The id of the touch-point.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a touch event.</td></tr><tr class="even"><td>[in]</td><td>list</td><td>The list.</td></tr><tr class="odd"><td>[in]</td><td>touch_id</td><td>The id of the touch-point.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_TouchPoint` representing the touch-point.
@@ -65,9 +64,8 @@ A `PP_TouchPoint` representing the touch-point.
 Returns the touch-point at the specified index from the specified list.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a touch event.</td></tr><tr class="even"><td>[in]</td><td>list</td><td>The list.</td></tr><tr class="odd"><td>[in]</td><td>index</td><td>The index.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a touch event.</td></tr><tr class="even"><td>[in]</td><td>list</td><td>The list.</td></tr><tr class="odd"><td>[in]</td><td>index</td><td>The index.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_TouchPoint` representing the touch-point.
@@ -79,9 +77,8 @@ A `PP_TouchPoint` representing the touch-point.
 Returns the number of touch-points in the specified list.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a touch event.</td></tr><tr class="even"><td>[in]</td><td>list</td><td>The list.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a touch event.</td></tr><tr class="even"><td>[in]</td><td>list</td><td>The list.</td></tr></tbody></table>
 
 **Returns:**  
 The number of touch-points in the specified list.
@@ -93,9 +90,8 @@ The number of touch-points in the specified list.
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___touch_input_event__1__0#a1bed0c3d25f593b85ba26cb6e0c0bbab" class="el" title="IsTouchInputEvent() determines if a resource is a touch event.">IsTouchInputEvent()</a> determines if a resource is a touch event.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to an event.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to an event.</td></tr></tbody></table>
 
 **Returns:**  
 `PP_TRUE` if the given resource is a valid touch input event, otherwise `PP_FALSE`.

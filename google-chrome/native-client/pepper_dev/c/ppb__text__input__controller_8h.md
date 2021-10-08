@@ -1,4 +1,4 @@
----json {"title":"ppb\_text\_input\_controller.h File Reference"} ---
+—json {“title”:“ppb\_text\_input\_controller.h File Reference”} —
 
 Include dependency graph for ppb\_text\_input\_controller.h:
 
@@ -7,13 +7,13 @@ Include dependency graph for ppb\_text\_input\_controller.h:
 Data Structures
 ---------------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p_b___text_input_controller__1__0/" class="el">PPB_TextInputController</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td><code>PPB_TextInputController</code> provides a set of functions for giving hints to the browser about the text input status of plugins, and functions for controlling input method editors (IMEs). <a href="/docs/native-client/pepper_dev/c/struct_p_p_b___text_input_controller__1__0#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p_b___text_input_controller__1__0/" class="el">PPB_TextInputController</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td><code>PPB_TextInputController</code> provides a set of functions for giving hints to the browser about the text input status of plugins, and functions for controlling input method editors (IMEs). <a href="/docs/native-client/pepper_dev/c/struct_p_p_b___text_input_controller__1__0#details">More…</a><br />
 </td></tr></tbody></table>
 
 Defines
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__text__input__controller_8h#a6ca7f2ae09c011c13d12c79ba155e12a" class="el">PPB_TEXTINPUTCONTROLLER_INTERFACE</a>   "PPB_TextInputController;1.0"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__text__input__controller_8h#a9a28f7fd2db84c2cd550ed272070c0ee" class="el">PPB_TEXTINPUTCONTROLLER_INTERFACE</a>   <a href="/docs/native-client/pepper_dev/c/ppb__text__input__controller_8h#a6ca7f2ae09c011c13d12c79ba155e12a" class="el">PPB_TEXTINPUTCONTROLLER_INTERFACE</a></td></tr></tbody></table>
+<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__text__input__controller_8h#a6ca7f2ae09c011c13d12c79ba155e12a" class="el">PPB_TEXTINPUTCONTROLLER_INTERFACE</a>   “PPB_TextInputController;1.0”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__text__input__controller_8h#a9a28f7fd2db84c2cd550ed272070c0ee" class="el">PPB_TEXTINPUTCONTROLLER_INTERFACE</a>   <a href="/docs/native-client/pepper_dev/c/ppb__text__input__controller_8h#a6ca7f2ae09c011c13d12c79ba155e12a" class="el">PPB_TEXTINPUTCONTROLLER_INTERFACE</a></td></tr></tbody></table>
 
 Typedefs
 --------
@@ -54,4 +54,4 @@ Define Documentation
 
 <span id="a6ca7f2ae09c011c13d12c79ba155e12a" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_dev/c/ppb__text__input__controller_8h#a6ca7f2ae09c011c13d12c79ba155e12a" class="el">PPB_TEXTINPUTCONTROLLER_INTERFACE</a>   "PPB_TextInputController;1.0"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_dev/c/ppb__text__input__controller_8h#a6ca7f2ae09c011c13d12c79ba155e12a" class="el">PPB_TEXTINPUTCONTROLLER_INTERFACE</a>   “PPB_TextInputController;1.0”</td></tr></tbody></table>

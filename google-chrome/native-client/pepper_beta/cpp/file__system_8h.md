@@ -1,4 +1,4 @@
----json {"title":"file\_system.h File Reference"} ---
+—json {“title”:“file\_system.h File Reference”} —
 
 Include dependency graph for file\_system.h:
 
@@ -7,7 +7,7 @@ Include dependency graph for file\_system.h:
 Classes
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_file_system/" class="el">pp::FileSystem</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>FileSystem</code> class identifies the file system type associated with a file. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_file_system#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_file_system/" class="el">pp::FileSystem</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>FileSystem</code> class identifies the file system type associated with a file. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_file_system#details">More…</a><br />
 </td></tr></tbody></table>
 
 Namespaces

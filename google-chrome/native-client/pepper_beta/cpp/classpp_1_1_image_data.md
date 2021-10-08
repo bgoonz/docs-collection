@@ -1,4 +1,4 @@
----json {"title":"pp::ImageData Class Reference"} ---
+—json {“title”:“pp::ImageData Class Reference”} —
 
 Inheritance diagram for pp::ImageData:
 
@@ -36,6 +36,7 @@ Default constructor for creating an <a href="/docs/native-client/pepper_beta/cpp
 A constructor used when you have received a `PP_Resource` as a return value that has already been reference counted.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A PP_Resource corresponding to image data.</td></tr></tbody></table>
 
 <span id="a9943421a80760f3de284ae9d7ce9e431" class="anchor" style="margin: 0;"></span>
@@ -47,6 +48,7 @@ The copy constructor for `ImageData`.
 This constructor produces an `ImageData` object that shares the underlying `Image` resource with `other`.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A pointer to an image data.</td></tr></tbody></table>
 
 <span id="a9c2c26e4130e33d9d7ad7c72e32cea1d" class="anchor" style="margin: 0;"></span>
@@ -58,6 +60,7 @@ A constructor that allocates a new `ImageData` in the browser with the provided 
 The resulting object will be <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_resource#a859068e34cdc2dc0b78754c255323aa9" class="el" title="This functions determines if this resource is invalid or uninitialized.">is_null()</a> if the allocation failed.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance with which this resource will be associated.</td></tr><tr class="even"><td>[in]</td><td>format</td><td>A PP_ImageDataFormat containing desired image format. PP_ImageDataFormat is an enumeration of the different types of image data formats. Refer to <a href="/docs/native-client/pepper_beta/c/ppb__image__data_8h/"><code>ppb_image_data.h</code></a> for further information.</td></tr><tr class="odd"><td>[in]</td><td>size</td><td>A pointer to a <code>Size</code> containing the image size.</td></tr><tr class="even"><td>[in]</td><td>init_to_zero</td><td>A bool used to determine transparency at creation. Set the <code>init_to_zero</code> flag if you want the bitmap initialized to transparent during the creation process. If this flag is not set, the current contents of the bitmap will be undefined, and the module should be sure to set all the pixels.</td></tr></tbody></table>
 
 ------------------------------------------------------------------------
@@ -90,9 +93,8 @@ A getter function for returning the current format for images.
 This function is used retrieve the address of the given pixel for 32-bit pixel formats.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>coord</td><td>A <code>Point</code> representing the x and y coordinates for a specific pixel.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>coord</td><td>A <code>Point</code> representing the x and y coordinates for a specific pixel.</td></tr></tbody></table>
 
 **Returns:**  
 The address for the pixel.
@@ -104,9 +106,8 @@ The address for the pixel.
 This function is used retrieve the address of the given pixel for 32-bit pixel formats.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>coord</td><td>A <code>Point</code> representing the x and y coordinates for a specific pixel.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>coord</td><td>A <code>Point</code> representing the x and y coordinates for a specific pixel.</td></tr></tbody></table>
 
 **Returns:**  
 The address for the pixel.
@@ -115,7 +116,7 @@ The address for the pixel.
 
 <table><tbody><tr class="odd"><td>static PP_ImageDataFormat <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_image_data#a4208e7eabf98df7b91c01ed6fcd92425" class="el">pp::ImageData::GetNativeImageDataFormat</a></td><td>(</td><td></td><td>)</td><td><code> [static]</code></td></tr></tbody></table>
 
-<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_image_data#a4208e7eabf98df7b91c01ed6fcd92425" class="el" title="GetNativeImageDataFormat() determines the browser&#39;s preferred format for images.">GetNativeImageDataFormat()</a> determines the browser's preferred format for images.
+<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_image_data#a4208e7eabf98df7b91c01ed6fcd92425" class="el" title="GetNativeImageDataFormat() determines the browser&#39;s preferred format for images.">GetNativeImageDataFormat()</a> determines the browser’s preferred format for images.
 
 Using this format guarantees no extra conversions will occur when painting.
 
@@ -131,9 +132,8 @@ Using this format guarantees no extra conversions will occur when painting.
 Note: `PP_IMAGEDATAFORMAT_BGRA_PREMUL` and `PP_IMAGEDATAFORMAT_RGBA_PREMUL` formats are always supported. Other image formats do not make this guarantee, and should be checked first with <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_image_data#a9be445247d64ddaad4b6623021db7232" class="el" title="IsImageDataFormatSupported() returns true if the supplied format is supported by the browser...">IsImageDataFormatSupported()</a> before using.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>format</td><td>Image data format.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>format</td><td>Image data format.</td></tr></tbody></table>
 
 **Returns:**  
 `true` if the format is supported by the browser.
@@ -147,9 +147,8 @@ This function decrements the reference count of this `ImageData` and increments 
 This `ImageData` shares the underlying image resource with `other`.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>An other image data.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>An other image data.</td></tr></tbody></table>
 
 **Returns:**  
 A new image data context.

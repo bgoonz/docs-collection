@@ -1,4 +1,4 @@
----json {"title":"ppb\_udp\_socket.h File Reference"} ---
+—json {“title”:“ppb\_udp\_socket.h File Reference”} —
 
 Include dependency graph for ppb\_udp\_socket.h:
 
@@ -7,13 +7,13 @@ Include dependency graph for ppb\_udp\_socket.h:
 Data Structures
 ---------------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p_b___u_d_p_socket__1__2/" class="el">PPB_UDPSocket</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_UDPSocket</code> interface provides UDP socket operations. <a href="/docs/native-client/pepper_dev/c/struct_p_p_b___u_d_p_socket__1__2#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p_b___u_d_p_socket__1__2/" class="el">PPB_UDPSocket</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_UDPSocket</code> interface provides UDP socket operations. <a href="/docs/native-client/pepper_dev/c/struct_p_p_b___u_d_p_socket__1__2#details">More…</a><br />
 </td></tr></tbody></table>
 
 Defines
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__udp__socket_8h#ad6bc6ae5b1d72251b6b81fdd7d8009f7" class="el">PPB_UDPSOCKET_INTERFACE</a>   "PPB_UDPSocket;1.2"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__udp__socket_8h#a673aeb3fceb5ed977b7b8683f674cbfd" class="el">PPB_UDPSOCKET_INTERFACE</a>   <a href="/docs/native-client/pepper_dev/c/ppb__udp__socket_8h#ad6bc6ae5b1d72251b6b81fdd7d8009f7" class="el">PPB_UDPSOCKET_INTERFACE</a></td></tr></tbody></table>
+<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__udp__socket_8h#ad6bc6ae5b1d72251b6b81fdd7d8009f7" class="el">PPB_UDPSOCKET_INTERFACE</a>   “PPB_UDPSocket;1.2”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__udp__socket_8h#a673aeb3fceb5ed977b7b8683f674cbfd" class="el">PPB_UDPSOCKET_INTERFACE</a>   <a href="/docs/native-client/pepper_dev/c/ppb__udp__socket_8h#ad6bc6ae5b1d72251b6b81fdd7d8009f7" class="el">PPB_UDPSOCKET_INTERFACE</a></td></tr></tbody></table>
 
 Typedefs
 --------
@@ -53,4 +53,4 @@ Define Documentation
 
 <span id="ad6bc6ae5b1d72251b6b81fdd7d8009f7" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_dev/c/ppb__udp__socket_8h#ad6bc6ae5b1d72251b6b81fdd7d8009f7" class="el">PPB_UDPSOCKET_INTERFACE</a>   "PPB_UDPSocket;1.2"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_dev/c/ppb__udp__socket_8h#ad6bc6ae5b1d72251b6b81fdd7d8009f7" class="el">PPB_UDPSOCKET_INTERFACE</a>   “PPB_UDPSocket;1.2”</td></tr></tbody></table>

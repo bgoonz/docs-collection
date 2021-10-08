@@ -1,4 +1,4 @@
----json {"title":"resource.h File Reference"} ---
+—json {“title”:“resource.h File Reference”} —
 
 Include dependency graph for resource.h:
 
@@ -7,7 +7,7 @@ Include dependency graph for resource.h:
 Classes
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_resource/" class="el">pp::Resource</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>A reference counted module resource. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_resource#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_resource/" class="el">pp::Resource</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>A reference counted module resource. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_resource#details">More…</a><br />
 </td></tr></tbody></table>
 
 Namespaces

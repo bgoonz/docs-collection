@@ -1,4 +1,4 @@
----json {"title":"pp::FloatPoint Class Reference"} ---
+—json {“title”:“pp::FloatPoint Class Reference”} —
 
 [List of all members.](/docs/native-client/pepper_beta/cpp/classpp_1_1_float_point-members/)
 
@@ -34,6 +34,7 @@ A constructor for a point at 0,0.
 A constructor accepting two values for x and y and converting them to a <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_float_point/" class="el" title="A 2 dimensional floating-point point with 0,0 being the upper-left starting coordinate.">FloatPoint</a>.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>in_x</td><td>An value representing a horizontal coordinate of a point, starting with 0 as the left-most coordinate.</td></tr><tr class="even"><td>[in]</td><td>in_y</td><td>An value representing a vertical coordinate of a point, starting with 0 as the top-most coordinate.</td></tr></tbody></table>
 
 <span id="a401fc74a911cd0d4996b00f8b10a1951" class="anchor" style="margin: 0;"></span>
@@ -45,6 +46,7 @@ A constructor accepting a pointer to a PP\_FloatPoint and converting the PP\_Poi
 This is an implicit conversion constructor.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>point</td><td>A PP_FloatPoint.</td></tr></tbody></table>
 
 <span id="ab41958133c5b48f6002ad9bffdad46c0" class="anchor" style="margin: 0;"></span>
@@ -71,9 +73,8 @@ A function allowing implicit conversion of a <a href="/docs/native-client/pepper
 Adds two Points (this and other) together by adding their x values and y values.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" class="el" title="A 2 dimensional point with 0,0 being the upper-left starting coordinate.">Point</a>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" class="el" title="A 2 dimensional point with 0,0 being the upper-left starting coordinate.">Point</a>.</td></tr></tbody></table>
 
 **Returns:**  
 A new <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" class="el" title="A 2 dimensional point with 0,0 being the upper-left starting coordinate.">Point</a> containing the result.
@@ -87,9 +88,8 @@ Adds two Points (this and other) together by adding their x and y values.
 Returns this point as the result.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" class="el" title="A 2 dimensional point with 0,0 being the upper-left starting coordinate.">Point</a>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" class="el" title="A 2 dimensional point with 0,0 being the upper-left starting coordinate.">Point</a>.</td></tr></tbody></table>
 
 **Returns:**  
 This <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" class="el" title="A 2 dimensional point with 0,0 being the upper-left starting coordinate.">Point</a> containing the result.
@@ -103,9 +103,8 @@ Subtracts one <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" c
 Returns a new point with the result.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_float_point/" class="el" title="A 2 dimensional floating-point point with 0,0 being the upper-left starting coordinate.">FloatPoint</a>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_float_point/" class="el" title="A 2 dimensional floating-point point with 0,0 being the upper-left starting coordinate.">FloatPoint</a>.</td></tr></tbody></table>
 
 **Returns:**  
 A new <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" class="el" title="A 2 dimensional point with 0,0 being the upper-left starting coordinate.">Point</a> containing the result.
@@ -119,9 +118,8 @@ Subtracts one <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" c
 Returns this point as the result.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" class="el" title="A 2 dimensional point with 0,0 being the upper-left starting coordinate.">Point</a>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" class="el" title="A 2 dimensional point with 0,0 being the upper-left starting coordinate.">Point</a>.</td></tr></tbody></table>
 
 **Returns:**  
 This <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" class="el" title="A 2 dimensional point with 0,0 being the upper-left starting coordinate.">Point</a> containing the result.
@@ -151,6 +149,7 @@ A mutable reference to the PP\_Point struct.
 Setter function for setting the value of x.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>in_x</td><td>A new x value.</td></tr></tbody></table>
 
 <span id="abdb8eeb5c2aa051e6776ae2967fc6d40" class="anchor" style="margin: 0;"></span>
@@ -160,6 +159,7 @@ Setter function for setting the value of x.
 Setter function for setting the value of y.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>in_y</td><td>A new y value.</td></tr></tbody></table>
 
 <span id="a138f26f94ed5a97e1ee083e65eb101bf" class="anchor" style="margin: 0;"></span>
@@ -169,6 +169,7 @@ Setter function for setting the value of y.
 Swaps the coordinates of two Points.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" class="el" title="A 2 dimensional point with 0,0 being the upper-left starting coordinate.">Point</a>.</td></tr></tbody></table>
 
 <span id="a9109ddb0920cf0eeb7ace3b40a95dc17" class="anchor" style="margin: 0;"></span>

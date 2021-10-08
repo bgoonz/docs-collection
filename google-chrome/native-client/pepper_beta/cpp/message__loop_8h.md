@@ -1,4 +1,4 @@
----json {"title":"message\_loop.h File Reference"} ---
+—json {“title”:“message\_loop.h File Reference”} —
 
 Include dependency graph for message\_loop.h:
 
@@ -7,7 +7,7 @@ Include dependency graph for message\_loop.h:
 Classes
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_message_loop/" class="el">pp::MessageLoop</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>A message loop allows PPAPI calls to be issued on a thread. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_message_loop#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_message_loop/" class="el">pp::MessageLoop</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>A message loop allows PPAPI calls to be issued on a thread. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_message_loop#details">More…</a><br />
 </td></tr></tbody></table>
 
 Namespaces

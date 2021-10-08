@@ -1,4 +1,4 @@
----json {"title":"PPB\_URLResponseInfo Struct Reference"} ---
+—json {“title”:“PPB\_URLResponseInfo Struct Reference”} —
 
 Data Fields
 -----------
@@ -30,9 +30,8 @@ Field Documentation
 This is only valid if `PP_URLREQUESTPROPERTY_STREAMTOFILE` was set on the `URLRequestInfo` used to produce this response. This file remains valid until the `URLLoader` associated with this `URLResponseInfo` is closed or destroyed.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>request</td><td>A <code>PP_Resource</code> corresponding to a <code>URLResponseInfo</code>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>request</td><td>A <code>PP_Resource</code> corresponding to a <code>URLResponseInfo</code>.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_Resource` corresponding to a `FileRef` if successful, 0 if `PP_URLREQUESTPROPERTY_STREAMTOFILE` was not requested or if the `URLLoader` has not been opened yet.
@@ -44,9 +43,8 @@ A `PP_Resource` corresponding to a `FileRef` if successful, 0 if `PP_URLREQUESTP
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___u_r_l_response_info__1__0#a3fff27f7102320e9efbd59dc83e62ddf" class="el" title="GetProperty() gets a response property.">GetProperty()</a> gets a response property.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>request</td><td>A <code>PP_Resource</code> corresponding to a <code>URLResponseInfo</code>.</td></tr><tr class="even"><td>[in]</td><td>property</td><td>A <code>PP_URLResponseProperty</code> identifying the type of property in the response.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>request</td><td>A <code>PP_Resource</code> corresponding to a <code>URLResponseInfo</code>.</td></tr><tr class="even"><td>[in]</td><td>property</td><td>A <code>PP_URLResponseProperty</code> identifying the type of property in the response.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_Var` containing the response property value if successful, `PP_VARTYPE_VOID` if an input parameter is invalid.
@@ -58,9 +56,8 @@ A `PP_Var` containing the response property value if successful, `PP_VARTYPE_VOI
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___u_r_l_response_info__1__0#a0bb553375716a3966176ae01f6146d5a" class="el" title="IsURLResponseInfo() determines if a response is a URLResponseInfo.">IsURLResponseInfo()</a> determines if a response is a `URLResponseInfo`.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a <code>URLResponseInfo</code>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a <code>URLResponseInfo</code>.</td></tr></tbody></table>
 
 **Returns:**  
 `PP_TRUE` if the resource is a `URLResponseInfo`, `PP_FALSE` if the resource is invalid or some type other than `URLResponseInfo`.

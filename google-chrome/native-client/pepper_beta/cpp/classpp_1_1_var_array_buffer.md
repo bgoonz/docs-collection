@@ -1,4 +1,4 @@
----json {"title":"pp::VarArrayBuffer Class Reference"} ---
+—json {“title”:“pp::VarArrayBuffer Class Reference”} —
 
 Inheritance diagram for pp::VarArrayBuffer:
 
@@ -22,7 +22,7 @@ Detailed Description
 
 `VarArrayBuffer` provides a way to interact with JavaScript ArrayBuffers, which represent a contiguous sequence of bytes.
 
-Note that these vars are not part of the embedding page's DOM, and can only be shared with JavaScript using the `PostMessage` and `HandleMessage` functions of `Instance`.
+Note that these vars are not part of the embedding page’s DOM, and can only be shared with JavaScript using the `PostMessage` and `HandleMessage` functions of `Instance`.
 
 ------------------------------------------------------------------------
 
@@ -44,6 +44,7 @@ Construct a `VarArrayBuffer` given a var for which <a href="/docs/native-client/
 This will refer to the same `ArrayBuffer` as var, but allows you to access methods specific to `VarArrayBuffer`.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>var</td><td>An <code>ArrayBuffer</code> var.</td></tr></tbody></table>
 
 <span id="a7fd29347661fc1539dd474cc3f0e2a72" class="anchor" style="margin: 0;"></span>
@@ -53,6 +54,7 @@ This will refer to the same `ArrayBuffer` as var, but allows you to access metho
 Construct a new `VarArrayBuffer` which is `size_in_bytes` bytes long and initialized to zero.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>size_in_bytes</td><td>The size of the constructed <code>ArrayBuffer</code> in bytes.</td></tr></tbody></table>
 
 <span id="a9b76b96c7b11a10aa4424c02b4a5511b" class="anchor" style="margin: 0;"></span>
@@ -83,7 +85,7 @@ The length of the `VarArrayBuffer` in bytes.
 
 <table><tbody><tr class="odd"><td>void* <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var_array_buffer#ab81d9579bcacf5eb927a9638092d2f3b" class="el">pp::VarArrayBuffer::Map</a></td><td>(</td><td></td><td>)</td><td></td></tr></tbody></table>
 
-<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var_array_buffer#ab81d9579bcacf5eb927a9638092d2f3b" class="el" title="Map() maps the ArrayBuffer in to the module&#39;s address space and returns a pointer to the beginning of...">Map()</a> maps the `ArrayBuffer` in to the module's address space and returns a pointer to the beginning of the internal buffer for this `ArrayBuffer`.
+<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var_array_buffer#ab81d9579bcacf5eb927a9638092d2f3b" class="el" title="Map() maps the ArrayBuffer in to the module&#39;s address space and returns a pointer to the beginning of...">Map()</a> maps the `ArrayBuffer` in to the module’s address space and returns a pointer to the beginning of the internal buffer for this `ArrayBuffer`.
 
 ArrayBuffers are copied when transmitted, so changes to the underlying memory are not automatically available to the embedding page.
 
@@ -106,9 +108,8 @@ A pointer to the internal buffer for this `ArrayBuffer`.
 This function assigns one `VarArrayBuffer` to another `VarArrayBuffer`.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>The <code>VarArrayBuffer</code> to be assigned.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>The <code>VarArrayBuffer</code> to be assigned.</td></tr></tbody></table>
 
 **Returns:**  
 The resulting `VarArrayBuffer`.
@@ -119,12 +120,11 @@ The resulting `VarArrayBuffer`.
 
 This function assigns one `VarArrayBuffer` to another `VarArrayBuffer`.
 
-A <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var/" class="el" title="A generic type used for passing data types between the module and the page.">Var</a>'s assignment operator is overloaded here so that we can check for assigning a non-ArrayBuffer var to a `VarArrayBuffer`.
+A <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var/" class="el" title="A generic type used for passing data types between the module and the page.">Var</a>’s assignment operator is overloaded here so that we can check for assigning a non-ArrayBuffer var to a `VarArrayBuffer`.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>The <code>VarArrayBuffer</code> to be assigned.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>The <code>VarArrayBuffer</code> to be assigned.</td></tr></tbody></table>
 
 **Returns:**  
 The resulting `VarArrayBuffer` (as a <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var/" class="el" title="A generic type used for passing data types between the module and the page.">Var</a>&).

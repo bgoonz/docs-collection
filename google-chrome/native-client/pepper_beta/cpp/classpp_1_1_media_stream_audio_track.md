@@ -1,4 +1,4 @@
----json {"title":"pp::MediaStreamAudioTrack Class Reference"} ---
+—json {“title”:“pp::MediaStreamAudioTrack Class Reference”} —
 
 Inheritance diagram for pp::MediaStreamAudioTrack:
 
@@ -45,6 +45,7 @@ Default constructor for creating an <a href="/docs/native-client/pepper_beta/cpp
 The copy constructor for `MediaStreamAudioTrack`.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A reference to a <code>MediaStreamAudioTrack</code>.</td></tr></tbody></table>
 
 <span id="a5b0e9a5ede7bb5e265007b9e2b7c06f9" class="anchor" style="margin: 0;"></span>
@@ -54,6 +55,7 @@ The copy constructor for `MediaStreamAudioTrack`.
 Constructs a `MediaStreamAudioTrack` from a `Resource`.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PPB_MediaStreamAudioTrack</code> resource.</td></tr></tbody></table>
 
 <span id="ad0f8599de42327cda5850db05b1b5be6" class="anchor" style="margin: 0;"></span>
@@ -63,6 +65,7 @@ Constructs a `MediaStreamAudioTrack` from a `Resource`.
 A constructor used when you have received a `PP_Resource` as a return value that has had 1 ref added for you.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PPB_MediaStreamAudioTrack</code> resource.</td></tr></tbody></table>
 
 <span id="a4efdf0aeb1ec01ff29c16c94174bc1f8" class="anchor" style="margin: 0;"></span>
@@ -88,7 +91,7 @@ After calling `Close()`, no new buffers will be received.
 
 Configures underlying buffer buffers for incoming audio samples.
 
-If the application doesn't want to drop samples, then the `PP_MEDIASTREAMAUDIOTRACK_ATTRIB_BUFFERS` should be chosen such that inter-buffer processing time variability won't overrun all input buffers. If all buffers are filled, then samples will be dropped. The application can detect this by examining the timestamp on returned buffers. If `Configure()` is not called, default settings will be used. Calls to Configure while the plugin holds buffers will fail. Example usage from plugin code:
+If the application doesn’t want to drop samples, then the `PP_MEDIASTREAMAUDIOTRACK_ATTRIB_BUFFERS` should be chosen such that inter-buffer processing time variability won’t overrun all input buffers. If all buffers are filled, then samples will be dropped. The application can detect this by examining the timestamp on returned buffers. If `Configure()` is not called, default settings will be used. Calls to Configure while the plugin holds buffers will fail. Example usage from plugin code:
 
      int32_t attribs[] = {
          PP_MEDIASTREAMAUDIOTRACK_ATTRIB_BUFFERS, 4,
@@ -97,9 +100,8 @@ If the application doesn't want to drop samples, then the `PP_MEDIASTREAMAUDIOTR
      track.Configure(attribs, callback);
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>attrib_list</td><td>A list of attribute name-value pairs in which each attribute is immediately followed by the corresponding desired value. The list is terminated by <code>PP_MEDIASTREAMAUDIOTRACK_AUDIO_NONE</code>.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>CompletionCallback</code> to be called upon completion of <code>Configure()</code>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>attrib_list</td><td>A list of attribute name-value pairs in which each attribute is immediately followed by the corresponding desired value. The list is terminated by <code>PP_MEDIASTREAMAUDIOTRACK_AUDIO_NONE</code>.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>CompletionCallback</code> to be called upon completion of <code>Configure()</code>.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing a result code from `pp_errors.h`.
@@ -111,9 +113,8 @@ An int32\_t containing a result code from `pp_errors.h`.
 Gets attribute value for a given attribute name.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>attrib</td><td>A <code>PP_MediaStreamAudioTrack_Attrib</code> for querying.</td></tr><tr class="even"><td>[out]</td><td>value</td><td>A int32_t for storing the attribute value.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>attrib</td><td>A <code>PP_MediaStreamAudioTrack_Attrib</code> for querying.</td></tr><tr class="even"><td>[out]</td><td>value</td><td>A int32_t for storing the attribute value.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing a result code from `pp_errors.h`.
@@ -127,9 +128,8 @@ Gets the next audio buffer from the MediaStream track.
 If internal processing is slower than the incoming buffer rate, new buffers will be dropped from the incoming stream. Once all buffers are full, audio samples will be dropped until `RecycleBuffer()` is called to free a spot for another buffer. If there are no audio data in the input buffer, `PP_OK_COMPLETIONPENDING` will be returned immediately and the `callback` will be called when a new buffer of audio samples is received or some error happens.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>CompletionCallbackWithOutput</code> to be called upon completion of <code>GetBuffer()</code>. If success, an <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_buffer/" class="el">AudioBuffer</a> will be passed into the completion callback function.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>CompletionCallbackWithOutput</code> to be called upon completion of <code>GetBuffer()</code>. If success, an <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_buffer/" class="el">AudioBuffer</a> will be passed into the completion callback function.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing a result code from `pp_errors.h`.
@@ -155,9 +155,8 @@ Calls to GetBuffer while the track has ended are safe to make and will complete,
 Checks whether a `Resource` is a MediaStream audio track, to test whether it is appropriate for use with the `MediaStreamAudioTrack` constructor.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>Resource</code> to test.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>Resource</code> to test.</td></tr></tbody></table>
 
 **Returns:**  
 True if `resource` is a MediaStream audio track.
@@ -171,9 +170,8 @@ Recycles a buffer returned by `GetBuffer()`, so the track can reuse the buffer.
 And the buffer will become invalid. The caller should release all references it holds to `buffer` and not use it anymore.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>buffer</td><td>A <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_buffer/" class="el">AudioBuffer</a> returned by <code>GetBuffer()</code>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>buffer</td><td>A <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_buffer/" class="el">AudioBuffer</a> returned by <code>GetBuffer()</code>.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing a result code from `pp_errors.h`.

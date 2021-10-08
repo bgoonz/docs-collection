@@ -1,4 +1,4 @@
----json {"title":"var\_array\_buffer.h File Reference"} ---
+—json {“title”:“var\_array\_buffer.h File Reference”} —
 
 Include dependency graph for var\_array\_buffer.h:
 
@@ -7,7 +7,7 @@ Include dependency graph for var\_array\_buffer.h:
 Classes
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var_array_buffer/" class="el">pp::VarArrayBuffer</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td><code>VarArrayBuffer</code> provides a way to interact with JavaScript ArrayBuffers, which represent a contiguous sequence of bytes. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var_array_buffer#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var_array_buffer/" class="el">pp::VarArrayBuffer</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td><code>VarArrayBuffer</code> provides a way to interact with JavaScript ArrayBuffers, which represent a contiguous sequence of bytes. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var_array_buffer#details">More…</a><br />
 </td></tr></tbody></table>
 
 Namespaces

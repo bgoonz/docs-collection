@@ -1,4 +1,4 @@
----json {"title":"pp::MouseCursor Class Reference"} ---
+—json {“title”:“pp::MouseCursor Class Reference”} —
 
 [List of all members.](/docs/native-client/pepper_beta/cpp/classpp_1_1_mouse_cursor-members/)
 
@@ -23,9 +23,8 @@ The mouse cursor will be in effect whenever the mouse is over the given instance
 This function allows setting both system defined mouse cursors and custom cursors. To set a system-defined cursor, pass the type you want and set the custom image to a default-constructor <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_image_data/" class="el">ImageData</a> object. To set a custom cursor, set the type to `PP_MOUSECURSOR_TYPE_CUSTOM` and specify your image and hot spot.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A handle identifying the instance that the mouse cursor will affect.</td></tr><tr class="even"><td>[in]</td><td>type</td><td>A <code>PP_MouseCursor_Type</code> identifying the type of mouse cursor to show. See <code>ppapi/c/ppb_mouse_cursor.h</code>.</td></tr><tr class="odd"><td>[in]</td><td>image</td><td>A <code>ImageData</code> object identifying the custom image to set when the type is <code>PP_MOUSECURSOR_TYPE_CUSTOM</code>. The image must be less than 32 pixels in each direction and must be of the system's native image format. When you are specifying a predefined cursor, this parameter should be a default-constructed <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_image_data/" class="el">ImageData</a>.</td></tr><tr class="even"><td>[in]</td><td>hot_spot</td><td>When setting a custom cursor, this identifies the pixel position within the given image of the "hot spot" of the cursor. When specifying a stock cursor, this parameter is ignored.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A handle identifying the instance that the mouse cursor will affect.</td></tr><tr class="even"><td>[in]</td><td>type</td><td>A <code>PP_MouseCursor_Type</code> identifying the type of mouse cursor to show. See <code>ppapi/c/ppb_mouse_cursor.h</code>.</td></tr><tr class="odd"><td>[in]</td><td>image</td><td>A <code>ImageData</code> object identifying the custom image to set when the type is <code>PP_MOUSECURSOR_TYPE_CUSTOM</code>. The image must be less than 32 pixels in each direction and must be of the system’s native image format. When you are specifying a predefined cursor, this parameter should be a default-constructed <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_image_data/" class="el">ImageData</a>.</td></tr><tr class="even"><td>[in]</td><td>hot_spot</td><td>When setting a custom cursor, this identifies the pixel position within the given image of the “hot spot” of the cursor. When specifying a stock cursor, this parameter is ignored.</td></tr></tbody></table>
 
 **Returns:**  
 true on success, or false if the instance or cursor type was invalid or if the image was too large.

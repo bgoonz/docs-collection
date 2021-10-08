@@ -1,4 +1,4 @@
----json {"title":"pp::internal::CallbackOutputTraits&lt; std::vector&lt; DirectoryEntry &gt; &gt; Struct Template Reference"} ---
+—json {“title”:“pp::internal::CallbackOutputTraits&lt; std::vector&lt; DirectoryEntry &gt; &gt; Struct Template Reference”} —
 
 [List of all members.](/docs/native-client/pepper_beta/cpp/structpp_1_1internal_1_1_callback_output_traits_3_01std_1_1vector_3_01_directory_entry_01_4_01_4-members/)
 

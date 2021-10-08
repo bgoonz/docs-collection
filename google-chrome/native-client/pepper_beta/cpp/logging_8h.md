@@ -1,4 +1,4 @@
----json {"title":"logging.h File Reference"} ---
+—json {“title”:“logging.h File Reference”} —
 
 Include dependency graph for logging.h:
 
@@ -27,7 +27,7 @@ Define Documentation
 
 <table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_beta/cpp/logging_8h#a5cb259e0fd1a8c0c64fbc891bc273417" class="el">PP_DCHECK</a></td><td>(</td><td> </td><td>a</td><td>)</td><td>   assert(a)</td></tr></tbody></table>
 
-This macro asserts that 'a' evaluates to true.
+This macro asserts that ‘a’ evaluates to true.
 
 In debug mode, this macro will crash the program if the assertion evaluates to false. It (typically) has no effect in release mode.
 
@@ -37,7 +37,7 @@ In debug mode, this macro will crash the program if the assertion evaluates to f
 
 This macro asserts false in debug builds.
 
-It's used in code paths that you don't expect to execute.
+It’s used in code paths that you don’t expect to execute.
 
 **Example:**
 

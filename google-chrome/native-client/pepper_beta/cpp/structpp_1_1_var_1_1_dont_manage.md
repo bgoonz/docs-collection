@@ -1,4 +1,4 @@
----json {"title":"pp::Var::DontManage Struct Reference"} ---
+—json {“title”:“pp::Var::DontManage Struct Reference”} —
 
 ------------------------------------------------------------------------
 

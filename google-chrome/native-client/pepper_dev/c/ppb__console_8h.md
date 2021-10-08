@@ -1,4 +1,4 @@
----json {"title":"ppb\_console.h File Reference"} ---
+—json {“title”:“ppb\_console.h File Reference”} —
 
 Include dependency graph for ppb\_console.h:
 
@@ -12,7 +12,7 @@ Data Structures
 Defines
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__console_8h#af944896c561ac6200f2170a9060b4d3e" class="el">PPB_CONSOLE_INTERFACE</a>   "PPB_Console;1.0"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__console_8h#aeb04d0356a4ddc1488162c9512d318dd" class="el">PPB_CONSOLE_INTERFACE</a>   <a href="/docs/native-client/pepper_dev/c/ppb__console_8h#af944896c561ac6200f2170a9060b4d3e" class="el">PPB_CONSOLE_INTERFACE</a></td></tr></tbody></table>
+<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__console_8h#af944896c561ac6200f2170a9060b4d3e" class="el">PPB_CONSOLE_INTERFACE</a>   “PPB_Console;1.0”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__console_8h#aeb04d0356a4ddc1488162c9512d318dd" class="el">PPB_CONSOLE_INTERFACE</a>   <a href="/docs/native-client/pepper_dev/c/ppb__console_8h#af944896c561ac6200f2170a9060b4d3e" class="el">PPB_CONSOLE_INTERFACE</a></td></tr></tbody></table>
 
 Typedefs
 --------
@@ -49,4 +49,4 @@ Define Documentation
 
 <span id="af944896c561ac6200f2170a9060b4d3e" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_dev/c/ppb__console_8h#af944896c561ac6200f2170a9060b4d3e" class="el">PPB_CONSOLE_INTERFACE</a>   "PPB_Console;1.0"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_dev/c/ppb__console_8h#af944896c561ac6200f2170a9060b4d3e" class="el">PPB_CONSOLE_INTERFACE</a>   “PPB_Console;1.0”</td></tr></tbody></table>

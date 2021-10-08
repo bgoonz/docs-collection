@@ -1,4 +1,4 @@
----json {"title":"PP\_HostResolver\_Hint Struct Reference"} ---
+—json {“title”:“PP\_HostResolver\_Hint Struct Reference”} —
 
 Data Fields
 -----------

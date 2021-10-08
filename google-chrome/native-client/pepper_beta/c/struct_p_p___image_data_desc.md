@@ -1,4 +1,4 @@
----json {"title":"PP\_ImageDataDesc Struct Reference"} ---
+—json {“title”:“PP\_ImageDataDesc Struct Reference”} —
 
 Data Fields
 -----------

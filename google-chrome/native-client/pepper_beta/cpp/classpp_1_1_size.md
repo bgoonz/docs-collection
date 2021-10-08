@@ -1,4 +1,4 @@
----json {"title":"pp::Size Class Reference"} ---
+—json {“title”:“pp::Size Class Reference”} —
 
 [List of all members.](/docs/native-client/pepper_beta/cpp/classpp_1_1_size-members/)
 
@@ -36,6 +36,7 @@ A constructor accepting a pointer to a `PP_Size` and converting the `PP_Size` to
 This is an implicit conversion constructor.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>s</td><td>A pointer to a <code>PP_Size</code>.</td></tr></tbody></table>
 
 <span id="a14a1c612454596e43a94c01da338bc1e" class="anchor" style="margin: 0;"></span>
@@ -45,6 +46,7 @@ This is an implicit conversion constructor.
 A constructor accepting two int values for width and height and converting them to a `Size`.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>w</td><td>An int value representing a width.</td></tr><tr class="even"><td>[in]</td><td>h</td><td>An int value representing a height.</td></tr></tbody></table>
 
 <span id="aff4a88df9882be410ca78d338d2d87dc" class="anchor" style="margin: 0;"></span>
@@ -65,6 +67,7 @@ Member Function Documentation
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_size#a51a74964f27e139003b82aad55dd63f5" class="el" title="Enlarge() enlarges the size of an object.">Enlarge()</a> enlarges the size of an object.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>w</td><td>A width to add the current width.</td></tr><tr class="even"><td>[in]</td><td>h</td><td>A height to add to the current height.</td></tr></tbody></table>
 
 <span id="ac056add4f1e8b1f90a6e3c65afa4ba3b" class="anchor" style="margin: 0;"></span>
@@ -128,6 +131,7 @@ A mutable reference to the `PP_Size` struct.
 Setter function for setting the value of height.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>h</td><td>A new height value.</td></tr></tbody></table>
 
 <span id="a104cf1f6a95c1430f7cd15a26815e82a" class="anchor" style="margin: 0;"></span>
@@ -137,6 +141,7 @@ Setter function for setting the value of height.
 Setter function for setting the value of width.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>w</td><td>A new width value.</td></tr></tbody></table>
 
 <span id="a25d85979d55798a9b672ca73c1d48222" class="anchor" style="margin: 0;"></span>
@@ -146,6 +151,7 @@ Setter function for setting the value of width.
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_size#a25d85979d55798a9b672ca73c1d48222" class="el" title="SetSize() sets the value of width and height.">SetSize()</a> sets the value of width and height.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>w</td><td>A new width value.</td></tr><tr class="even"><td>[in]</td><td>h</td><td>A new height value.</td></tr></tbody></table>
 
 <span id="af043a504c701e32c504c63b9e91ac500" class="anchor" style="margin: 0;"></span>

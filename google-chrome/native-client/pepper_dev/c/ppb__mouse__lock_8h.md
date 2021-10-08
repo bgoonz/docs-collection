@@ -1,4 +1,4 @@
----json {"title":"ppb\_mouse\_lock.h File Reference"} ---
+—json {“title”:“ppb\_mouse\_lock.h File Reference”} —
 
 Include dependency graph for ppb\_mouse\_lock.h:
 
@@ -7,13 +7,13 @@ Include dependency graph for ppb\_mouse\_lock.h:
 Data Structures
 ---------------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p_b___mouse_lock__1__0/" class="el">PPB_MouseLock</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_MouseLock</code> interface is implemented by the browser. <a href="/docs/native-client/pepper_dev/c/struct_p_p_b___mouse_lock__1__0#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p_b___mouse_lock__1__0/" class="el">PPB_MouseLock</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_MouseLock</code> interface is implemented by the browser. <a href="/docs/native-client/pepper_dev/c/struct_p_p_b___mouse_lock__1__0#details">More…</a><br />
 </td></tr></tbody></table>
 
 Defines
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__mouse__lock_8h#a87c8b1ae0950bb6de205bbec68545edd" class="el">PPB_MOUSELOCK_INTERFACE</a>   "PPB_MouseLock;1.0"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__mouse__lock_8h#a61bbe5bd4a3ec739ecd5daf65192db7d" class="el">PPB_MOUSELOCK_INTERFACE</a>   <a href="/docs/native-client/pepper_dev/c/ppb__mouse__lock_8h#a87c8b1ae0950bb6de205bbec68545edd" class="el">PPB_MOUSELOCK_INTERFACE</a></td></tr></tbody></table>
+<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__mouse__lock_8h#a87c8b1ae0950bb6de205bbec68545edd" class="el">PPB_MOUSELOCK_INTERFACE</a>   “PPB_MouseLock;1.0”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__mouse__lock_8h#a61bbe5bd4a3ec739ecd5daf65192db7d" class="el">PPB_MOUSELOCK_INTERFACE</a>   <a href="/docs/native-client/pepper_dev/c/ppb__mouse__lock_8h#a87c8b1ae0950bb6de205bbec68545edd" class="el">PPB_MOUSELOCK_INTERFACE</a></td></tr></tbody></table>
 
 Typedefs
 --------
@@ -40,4 +40,4 @@ Define Documentation
 
 <span id="a87c8b1ae0950bb6de205bbec68545edd" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_dev/c/ppb__mouse__lock_8h#a87c8b1ae0950bb6de205bbec68545edd" class="el">PPB_MOUSELOCK_INTERFACE</a>   "PPB_MouseLock;1.0"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_dev/c/ppb__mouse__lock_8h#a87c8b1ae0950bb6de205bbec68545edd" class="el">PPB_MOUSELOCK_INTERFACE</a>   “PPB_MouseLock;1.0”</td></tr></tbody></table>

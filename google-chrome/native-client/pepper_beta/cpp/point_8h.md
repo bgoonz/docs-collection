@@ -1,4 +1,4 @@
----json {"title":"point.h File Reference"} ---
+—json {“title”:“point.h File Reference”} —
 
 Include dependency graph for point.h:
 
@@ -7,8 +7,8 @@ Include dependency graph for point.h:
 Classes
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" class="el">pp::Point</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>A 2 dimensional point with 0,0 being the upper-left starting coordinate. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point#details">More...</a><br />
-</td></tr><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_float_point/" class="el">pp::FloatPoint</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>A 2 dimensional floating-point point with 0,0 being the upper-left starting coordinate. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_float_point#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" class="el">pp::Point</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>A 2 dimensional point with 0,0 being the upper-left starting coordinate. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point#details">More…</a><br />
+</td></tr><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_float_point/" class="el">pp::FloatPoint</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>A 2 dimensional floating-point point with 0,0 being the upper-left starting coordinate. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_float_point#details">More…</a><br />
 </td></tr></tbody></table>
 
 Namespaces
@@ -42,9 +42,8 @@ Function Documentation
 Determines whether two Points have different coordinates.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>lhs</td><td>The Point on the left-hand side of the equation.</td></tr><tr class="even"><td>[in]</td><td>rhs</td><td>The Point on the right-hand side of the equation.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>lhs</td><td>The Point on the left-hand side of the equation.</td></tr><tr class="even"><td>[in]</td><td>rhs</td><td>The Point on the right-hand side of the equation.</td></tr></tbody></table>
 
 **Returns:**  
 true if the coordinates of lhs are equal to the coordinates of rhs, otherwise false.
@@ -56,9 +55,8 @@ true if the coordinates of lhs are equal to the coordinates of rhs, otherwise fa
 Determines whether two Points have different coordinates.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>lhs</td><td>The Point on the left-hand side of the equation.</td></tr><tr class="even"><td>[in]</td><td>rhs</td><td>The Point on the right-hand side of the equation.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>lhs</td><td>The Point on the left-hand side of the equation.</td></tr><tr class="even"><td>[in]</td><td>rhs</td><td>The Point on the right-hand side of the equation.</td></tr></tbody></table>
 
 **Returns:**  
 true if the coordinates of lhs are equal to the coordinates of rhs, otherwise false.
@@ -70,9 +68,8 @@ true if the coordinates of lhs are equal to the coordinates of rhs, otherwise fa
 Determines whether the x and y values of two Points are equal.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>lhs</td><td>The Point on the left-hand side of the equation.</td></tr><tr class="even"><td>[in]</td><td>rhs</td><td>The Point on the right-hand side of the equation.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>lhs</td><td>The Point on the left-hand side of the equation.</td></tr><tr class="even"><td>[in]</td><td>rhs</td><td>The Point on the right-hand side of the equation.</td></tr></tbody></table>
 
 **Returns:**  
 true if they are equal, false if unequal.
@@ -84,9 +81,8 @@ true if they are equal, false if unequal.
 Determines whether the x and y values of two FloatPoints are equal.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>lhs</td><td>The Point on the left-hand side of the equation.</td></tr><tr class="even"><td>[in]</td><td>rhs</td><td>The Point on the right-hand side of the equation.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>lhs</td><td>The Point on the left-hand side of the equation.</td></tr><tr class="even"><td>[in]</td><td>rhs</td><td>The Point on the right-hand side of the equation.</td></tr></tbody></table>
 
 **Returns:**  
 true if they are equal, false if unequal.

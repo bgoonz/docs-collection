@@ -1,4 +1,4 @@
----json {"title":"PPB\_VarDictionary Struct Reference"} ---
+—json {“title”:“PPB\_VarDictionary Struct Reference”} —
 
 Data Fields
 -----------
@@ -39,6 +39,7 @@ Deletes the specified key and its associated value, if the key exists.
 The reference to the element will be released.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>dict</td><td>A dictionary var.</td></tr><tr class="even"><td>[in]</td><td>key</td><td>A string var.</td></tr></tbody></table>
 
 <span id="ac078e850f04e097ee67cefc3a475ec77" class="anchor" style="margin: 0;"></span>
@@ -48,12 +49,11 @@ The reference to the element will be released.
 Gets the value associated with the specified key.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>dict</td><td>A dictionary var.</td></tr><tr class="even"><td>[in]</td><td>key</td><td>A string var.</td></tr></tbody></table>
 
-<!-- -->
-
 **Returns:**  
-The value that is associated with `key`. The reference count of the element returned is incremented on behalf of the caller. If `key` is not a string var, or it doesn't exist in `dict`, an undefined var is returned.
+The value that is associated with `key`. The reference count of the element returned is incremented on behalf of the caller. If `key` is not a string var, or it doesn’t exist in `dict`, an undefined var is returned.
 
 <span id="ab481ddec5b69bf964b63e859decc1e97" class="anchor" style="margin: 0;"></span>
 
@@ -64,9 +64,8 @@ Gets all the keys in a dictionary.
 Please note that for each key that you set into the dictionary, a string var with the same contents is returned; but it may not be the same string var (i.e., `value.as_id` may be different).
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>dict</td><td>A dictionary var.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>dict</td><td>A dictionary var.</td></tr></tbody></table>
 
 **Returns:**  
 An array var which contains all the keys of `dict`. Its reference count is incremented on behalf of the caller. The elements are string vars. Returns a null var if failed.
@@ -78,9 +77,8 @@ An array var which contains all the keys of `dict`. Its reference count is incre
 Checks whether a key exists.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>dict</td><td>A dictionary var.</td></tr><tr class="even"><td>[in]</td><td>key</td><td>A string var.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>dict</td><td>A dictionary var.</td></tr><tr class="even"><td>[in]</td><td>key</td><td>A string var.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_Bool` indicating whether the key exists.
@@ -92,9 +90,8 @@ A `PP_Bool` indicating whether the key exists.
 Sets the value associated with the specified key.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>dict</td><td>A dictionary var.</td></tr><tr class="even"><td>[in]</td><td>key</td><td>A string var. If this key hasn't existed in <code>dict</code>, it is added and associated with <code>value</code>; otherwise, the previous value is replaced with <code>value</code>.</td></tr><tr class="odd"><td>[in]</td><td>value</td><td>The value to set. The dictionary holds a reference to it on success.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>dict</td><td>A dictionary var.</td></tr><tr class="even"><td>[in]</td><td>key</td><td>A string var. If this key hasn’t existed in <code>dict</code>, it is added and associated with <code>value</code>; otherwise, the previous value is replaced with <code>value</code>.</td></tr><tr class="odd"><td>[in]</td><td>value</td><td>The value to set. The dictionary holds a reference to it on success.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_Bool` indicating whether the operation succeeds.

@@ -1,4 +1,4 @@
----json {"title":"ppb\_network\_list.h File Reference"} ---
+—json {“title”:“ppb\_network\_list.h File Reference”} —
 
 Include dependency graph for ppb\_network\_list.h:
 
@@ -7,13 +7,13 @@ Include dependency graph for ppb\_network\_list.h:
 Data Structures
 ---------------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p_b___network_list__1__0/" class="el">PPB_NetworkList</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_NetworkList</code> is used to represent a list of network interfaces and their configuration. <a href="/docs/native-client/pepper_dev/c/struct_p_p_b___network_list__1__0#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p_b___network_list__1__0/" class="el">PPB_NetworkList</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_NetworkList</code> is used to represent a list of network interfaces and their configuration. <a href="/docs/native-client/pepper_dev/c/struct_p_p_b___network_list__1__0#details">More…</a><br />
 </td></tr></tbody></table>
 
 Defines
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__network__list_8h#ac0b7e69aedfaf3e0dd033d17634b0747" class="el">PPB_NETWORKLIST_INTERFACE</a>   "PPB_NetworkList;1.0"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__network__list_8h#a9d022e173e890387820ddb636a8eedfe" class="el">PPB_NETWORKLIST_INTERFACE</a>   <a href="/docs/native-client/pepper_dev/c/ppb__network__list_8h#ac0b7e69aedfaf3e0dd033d17634b0747" class="el">PPB_NETWORKLIST_INTERFACE</a></td></tr></tbody></table>
+<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__network__list_8h#ac0b7e69aedfaf3e0dd033d17634b0747" class="el">PPB_NETWORKLIST_INTERFACE</a>   “PPB_NetworkList;1.0”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__network__list_8h#a9d022e173e890387820ddb636a8eedfe" class="el">PPB_NETWORKLIST_INTERFACE</a>   <a href="/docs/native-client/pepper_dev/c/ppb__network__list_8h#ac0b7e69aedfaf3e0dd033d17634b0747" class="el">PPB_NETWORKLIST_INTERFACE</a></td></tr></tbody></table>
 
 Typedefs
 --------
@@ -50,4 +50,4 @@ Define Documentation
 
 <span id="ac0b7e69aedfaf3e0dd033d17634b0747" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_dev/c/ppb__network__list_8h#ac0b7e69aedfaf3e0dd033d17634b0747" class="el">PPB_NETWORKLIST_INTERFACE</a>   "PPB_NetworkList;1.0"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_dev/c/ppb__network__list_8h#ac0b7e69aedfaf3e0dd033d17634b0747" class="el">PPB_NETWORKLIST_INTERFACE</a>   “PPB_NetworkList;1.0”</td></tr></tbody></table>

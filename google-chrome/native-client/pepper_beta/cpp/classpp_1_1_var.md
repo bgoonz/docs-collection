@@ -1,4 +1,4 @@
----json {"title":"pp::Var Class Reference"} ---
+—json {“title”:“pp::Var Class Reference”} —
 
 Inheritance diagram for pp::Var:
 
@@ -11,8 +11,8 @@ Inheritance diagram for pp::Var:
 Classes
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/cpp/structpp_1_1_var_1_1_dont_manage/" class="el">DontManage</a></td></tr><tr class="even"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/cpp/structpp_1_1_var_1_1_null/" class="el">Null</a></td></tr><tr class="odd"><td style="text-align: right;"> </td><td>Special value passed to constructor to make <code>NULL</code>. <a href="/docs/native-client/pepper_beta/cpp/structpp_1_1_var_1_1_null#details">More...</a><br />
-</td></tr><tr class="even"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var_1_1_out_exception/" class="el">OutException</a></td></tr><tr class="odd"><td style="text-align: right;"> </td><td>This class is used when calling the raw C PPAPI when using the C++ <code>Var</code> as a possible NULL exception. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var_1_1_out_exception#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/cpp/structpp_1_1_var_1_1_dont_manage/" class="el">DontManage</a></td></tr><tr class="even"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/cpp/structpp_1_1_var_1_1_null/" class="el">Null</a></td></tr><tr class="odd"><td style="text-align: right;"> </td><td>Special value passed to constructor to make <code>NULL</code>. <a href="/docs/native-client/pepper_beta/cpp/structpp_1_1_var_1_1_null#details">More…</a><br />
+</td></tr><tr class="even"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var_1_1_out_exception/" class="el">OutException</a></td></tr><tr class="odd"><td style="text-align: right;"> </td><td>This class is used when calling the raw C PPAPI when using the C++ <code>Var</code> as a possible NULL exception. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var_1_1_out_exception#details">More…</a><br />
 </td></tr></tbody></table>
 
 Public Member Functions
@@ -60,6 +60,7 @@ A constructor used to create a `Var` of type `Null`.
 A constructor used to create a `Var` of type `Bool`.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>b</td><td>A boolean value.</td></tr></tbody></table>
 
 <span id="a6de6c1f791f105b70d0cf815f63c2304" class="anchor" style="margin: 0;"></span>
@@ -69,6 +70,7 @@ A constructor used to create a `Var` of type `Bool`.
 A constructor used to create a 32 bit integer `Var`.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>i</td><td>A 32 bit integer value.</td></tr></tbody></table>
 
 <span id="a9bbdfd7d1aa2bd6c8d526ff5f6a2c035" class="anchor" style="margin: 0;"></span>
@@ -78,6 +80,7 @@ A constructor used to create a 32 bit integer `Var`.
 A constructor used to create a double value `Var`.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>d</td><td>A double value.</td></tr></tbody></table>
 
 <span id="a24ae309e6e0335d2b16aab6039c231fa" class="anchor" style="margin: 0;"></span>
@@ -116,11 +119,12 @@ A constructor that increments the reference count.
 
 <table><tbody><tr class="odd"><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var#af571fae55754a20ae95ffd140726d04c" class="el">pp::Var::Var</a></td><td>(</td><td><a href="/docs/native-client/pepper_beta/cpp/structpp_1_1_var_1_1_dont_manage/" class="el">DontManage</a> </td><td>,</td></tr><tr class="even"><td></td><td></td><td>const PP_Var &amp; </td><td><em>var</em> </td></tr><tr class="odd"><td></td><td>)</td><td></td><td><code> [inline]</code></td></tr></tbody></table>
 
-This constructor is used when we've given a `PP_Var` as an input argument from somewhere and that reference is managing the reference count for us.
+This constructor is used when we’ve given a `PP_Var` as an input argument from somewhere and that reference is managing the reference count for us.
 
 The object will not have its reference count increased or decreased by this class instance.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>var</td><td>A <code>Var</code>.</td></tr></tbody></table>
 
 <span id="aa87cbd4cc4bc47b6f1f8a749f60aa062" class="anchor" style="margin: 0;"></span>
@@ -146,7 +150,7 @@ Member Function Documentation
 
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var#a07e7a4ea38b990e6c230109823347e70" class="el" title="AsBool() converts this Var to a bool.">AsBool()</a> converts this `Var` to a bool.
 
-Assumes the internal representation <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var#a83773e6f9e2ac3723e33b6a1586d5c1e" class="el" title="This function determines if this Var is a bool value.">is_bool()</a>. If it's not, it will assert in debug mode, and return false.
+Assumes the internal representation <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var#a83773e6f9e2ac3723e33b6a1586d5c1e" class="el" title="This function determines if this Var is a bool value.">is_bool()</a>. If it’s not, it will assert in debug mode, and return false.
 
 **Returns:**  
 A bool version of this `Var`.
@@ -157,7 +161,7 @@ A bool version of this `Var`.
 
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var#a8a798b08e197948c161737fc7b745af6" class="el" title="AsDouble() converts this Var to a double.">AsDouble()</a> converts this `Var` to a double.
 
-This function is necessary because JavaScript doesn't have a concept of ints and doubles, only numbers. The distinction between the two is an optimization inside the compiler. Since converting from a double to an int may be lossy, if you care about the distinction, either always work in doubles, or check !is\_double() before calling <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var#ad31cdb379b6ceaae967125e358c81d16" class="el" title="AsInt() converts this Var to an int32_t.">AsInt()</a>.
+This function is necessary because JavaScript doesn’t have a concept of ints and doubles, only numbers. The distinction between the two is an optimization inside the compiler. Since converting from a double to an int may be lossy, if you care about the distinction, either always work in doubles, or check !is\_double() before calling <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var#ad31cdb379b6ceaae967125e358c81d16" class="el" title="AsInt() converts this Var to an int32_t.">AsInt()</a>.
 
 These functions will assert in debug mode and return 0 if the internal representation is not <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var#ae803a32764804c873dd16c48bd4fdc83" class="el" title="This function determines if this Var is a number.">is_number()</a>.
 
@@ -170,7 +174,7 @@ An double version of this `Var`.
 
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var#ad31cdb379b6ceaae967125e358c81d16" class="el" title="AsInt() converts this Var to an int32_t.">AsInt()</a> converts this `Var` to an int32\_t.
 
-This function is required because JavaScript doesn't have a concept of ints and doubles, only numbers. The distinction between the two is an optimization inside the compiler. Since converting from a double to an int may be lossy, if you care about the distinction, either always work in doubles, or check !is\_double() before calling <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var#ad31cdb379b6ceaae967125e358c81d16" class="el" title="AsInt() converts this Var to an int32_t.">AsInt()</a>.
+This function is required because JavaScript doesn’t have a concept of ints and doubles, only numbers. The distinction between the two is an optimization inside the compiler. Since converting from a double to an int may be lossy, if you care about the distinction, either always work in doubles, or check !is\_double() before calling <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var#ad31cdb379b6ceaae967125e358c81d16" class="el" title="AsInt() converts this Var to an int32_t.">AsInt()</a>.
 
 These functions will assert in debug mode and return 0 if the internal representation is not <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var#ae803a32764804c873dd16c48bd4fdc83" class="el" title="This function determines if this Var is a number.">is_number()</a>.
 
@@ -203,7 +207,7 @@ A string version of this `Var`.
 
 <table><tbody><tr class="odd"><td>std::string <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var#a835b1e5a601d6e5ceb9a7d1b5fb7a66f" class="el">pp::Var::DebugString</a></td><td>(</td><td></td><td>)</td><td>const</td></tr></tbody></table>
 
-<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var#a835b1e5a601d6e5ceb9a7d1b5fb7a66f" class="el" title="DebugString() returns a short description &quot;Var&lt;X&gt;&quot; that can be used for logging, where &quot;X&quot; is the und...">DebugString()</a> returns a short description "Var&lt;X&gt;" that can be used for logging, where "X" is the underlying scalar or "UNDEFINED" or "OBJ" as it does not call into the browser to get the object description.
+<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var#a835b1e5a601d6e5ceb9a7d1b5fb7a66f" class="el" title="DebugString() returns a short description &quot;Var&lt;X&gt;&quot; that can be used for logging, where &quot;X&quot; is the und...">DebugString()</a> returns a short description “Var&lt;X&gt;” that can be used for logging, where “X” is the underlying scalar or “UNDEFINED” or “OBJ” as it does not call into the browser to get the object description.
 
 **Returns:**  
 A string displaying the value of this `Var`. This function is used for debugging.
@@ -335,9 +339,8 @@ true if this `Var` is undefined, otherwise false.
 This function assigns one `Var` to another `Var`.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>The <code>Var</code> to be assigned.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>The <code>Var</code> to be assigned.</td></tr></tbody></table>
 
 **Returns:**  
 A resulting `Var`.
@@ -351,9 +354,8 @@ Reimplemented in <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var_ar
 This function compares object identity (rather than value identity) for objects, dictionaries, and arrays.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>The <code>Var</code> to be compared to this <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var/" class="el" title="A generic type used for passing data types between the module and the page.">Var</a>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>The <code>Var</code> to be compared to this <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var/" class="el" title="A generic type used for passing data types between the module and the page.">Var</a>.</td></tr></tbody></table>
 
 **Returns:**  
 true if the `other` `Var` is the same as this `Var`, otherwise false.

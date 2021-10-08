@@ -1,4 +1,4 @@
----json {"title":"PPB\_VpnProvider Struct Reference"} ---
+—json {“title”:“PPB\_VpnProvider Struct Reference”} —
 
 Data Fields
 -----------
@@ -24,9 +24,9 @@ Typical usage:
 
 -   Create a `PPB_VpnProvider` instance.
 -   Register the callback for `PPB_VpnProvider.ReceivePacket()`.
--   In the extension follow the usual workflow for configuring a VPN connection via the `chrome.vpnProvider` API until the step for notifying the connection state as "connected".
+-   In the extension follow the usual workflow for configuring a VPN connection via the `chrome.vpnProvider` API until the step for notifying the connection state as “connected”.
 -   Bind to the previously created connection using `PPB_VpnProvider.Bind()`.
--   Notify the connection state as "connected" from JavaScript using `chrome.vpnProvider.notifyConnectionStateChanged`.
+-   Notify the connection state as “connected” from JavaScript using `chrome.vpnProvider.notifyConnectionStateChanged`.
 -   When the steps above are completed without errors, a virtual tunnel is created to the network stack of Chrome OS. IP packets can be sent through the tunnel using `PPB_VpnProvider.SendPacket()` and any packets originating on the Chrome OS device will be received using the callback registered for `PPB_VpnProvider.ReceivePacket()`.
 -   When the user disconnects from the VPN configuration or there is an error the extension will be notfied via `chrome.vpnProvider.onPlatformMessage`.
 
@@ -44,12 +44,11 @@ Field Documentation
 All packets will be routed via `SendPacket` and `ReceivePacket`. The user should register the callback for `ReceivePacket` before calling `Bind()`.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>vpn_provider</td><td>A <code>PP_Resource</code> corresponding to a VpnProvider.</td></tr><tr class="even"><td>[in]</td><td>configuration_id</td><td>A <code>PP_VARTYPE_STRING</code> representing the configuration id from the callback of <code>chrome.vpnProvider.createConfig</code>.</td></tr><tr class="odd"><td>[in]</td><td>configuration_name</td><td>A <code>PP_VARTYPE_STRING</code> representing the configuration name as defined by the user when calling <code>chrome.vpnProvider.createConfig</code>.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> called on completion.</td></tr></tbody></table>
 
-<!-- -->
-
 **Returns:**  
-An int32\_t containing an error code from `pp_errors.h`. Returns `PP_ERROR_INPROGRESS` if a previous call to `Bind()` has not completed. Returns `PP_ERROR_BADARGUMENT` if either `configuration_id` or `configuration_name` are not of type `PP_VARTYPE_STRING`. Returns `PP_ERROR_NOACCESS` if the caller does the have the required "vpnProvider" permission. Returns `PP_ERROR_FAILED` if `connection_id` and `connection_name` could not be matched with the existing connection, or if the plugin originates from a different extension than the one that created the connection.
+An int32\_t containing an error code from `pp_errors.h`. Returns `PP_ERROR_INPROGRESS` if a previous call to `Bind()` has not completed. Returns `PP_ERROR_BADARGUMENT` if either `configuration_id` or `configuration_name` are not of type `PP_VARTYPE_STRING`. Returns `PP_ERROR_NOACCESS` if the caller does the have the required “vpnProvider” permission. Returns `PP_ERROR_FAILED` if `connection_id` and `connection_name` could not be matched with the existing connection, or if the plugin originates from a different extension than the one that created the connection.
 
 <span id="a2ec07eb1aaf01c4e7050c198e96a8f76" class="anchor" style="margin: 0;"></span>
 
@@ -58,9 +57,8 @@ An int32\_t containing an error code from `pp_errors.h`. Returns `PP_ERROR_INPRO
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___vpn_provider__0__1#a2ec07eb1aaf01c4e7050c198e96a8f76" class="el" title="Create() creates a VpnProvider instance.">Create()</a> creates a VpnProvider instance.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code> identifying the instance with the VpnProvider.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code> identifying the instance with the VpnProvider.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_Resource` corresponding to a VpnProvider if successful.
@@ -72,9 +70,8 @@ A `PP_Resource` corresponding to a VpnProvider if successful.
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___vpn_provider__0__1#a55919d9d06bd5ecd2c8365b872e1db9f" class="el" title="IsVpnProvider() determines if the provided resource is a VpnProvider instance.">IsVpnProvider()</a> determines if the provided `resource` is a VpnProvider instance.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a VpnProvider.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a VpnProvider.</td></tr></tbody></table>
 
 **Returns:**  
 Returns `PP_TRUE` if `resource` is a `PPB_VpnProvider`, `PP_FALSE` if the `resource` is invalid or some type other than `PPB_VpnProvider`.
@@ -88,9 +85,8 @@ Returns `PP_TRUE` if `resource` is a `PPB_VpnProvider`, `PP_FALSE` if the `resou
 This function only returns a single packet. This function must be called at least N times to receive N packets, no matter the size of each packet. The callback should be registered before calling `Bind()`.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>vpn_provider</td><td>A <code>PP_Resource</code> corresponding to a VpnProvider.</td></tr><tr class="even"><td>[out]</td><td>packet</td><td>The received packet is copied to provided <code>packet</code>. The <code>packet</code> must remain valid until <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___vpn_provider__0__1#a767149d43eb103ad379dddcb04d1ca22" class="el" title="ReceivePacket() receives an IP packet from the tunnel for the VPN session.">ReceivePacket()</a> completes. Its received <code>PP_VarType</code> will be <code>PP_VARTYPE_ARRAY_BUFFER</code>.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> called on completion.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>vpn_provider</td><td>A <code>PP_Resource</code> corresponding to a VpnProvider.</td></tr><tr class="even"><td>[out]</td><td>packet</td><td>The received packet is copied to provided <code>packet</code>. The <code>packet</code> must remain valid until <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___vpn_provider__0__1#a767149d43eb103ad379dddcb04d1ca22" class="el" title="ReceivePacket() receives an IP packet from the tunnel for the VPN session.">ReceivePacket()</a> completes. Its received <code>PP_VarType</code> will be <code>PP_VARTYPE_ARRAY_BUFFER</code>.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> called on completion.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing an error code from `pp_errors.h`. Returns `PP_ERROR_INPROGRESS` if a previous call to `ReceivePacket()` has not completed.
@@ -104,9 +100,8 @@ An int32\_t containing an error code from `pp_errors.h`. Returns `PP_ERROR_INPRO
 This will succeed only when the VPN session is owned by the module and the connection is bound.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>vpn_provider</td><td>A <code>PP_Resource</code> corresponding to a VpnProvider.</td></tr><tr class="even"><td>[in]</td><td>packet</td><td>A <code>PP_VARTYPE_ARRAY_BUFFER</code> corresponding to an IP packet to be sent to the platform.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> called on completion.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>vpn_provider</td><td>A <code>PP_Resource</code> corresponding to a VpnProvider.</td></tr><tr class="even"><td>[in]</td><td>packet</td><td>A <code>PP_VARTYPE_ARRAY_BUFFER</code> corresponding to an IP packet to be sent to the platform.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> called on completion.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing an error code from `pp_errors.h`. Returns `PP_ERROR_FAILED` if the connection is not bound. Returns `PP_ERROR_INPROGRESS` if a previous call to `SendPacket()` has not completed. Returns `PP_ERROR_BADARGUMENT` if `packet` is not of type `PP_VARTYPE_ARRAY_BUFFER`.

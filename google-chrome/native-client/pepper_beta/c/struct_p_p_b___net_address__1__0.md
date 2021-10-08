@@ -1,4 +1,4 @@
----json {"title":"PPB\_NetAddress Struct Reference"} ---
+—json {“title”:“PPB\_NetAddress Struct Reference”} —
 
 Data Fields
 -----------
@@ -26,9 +26,8 @@ Field Documentation
 Creates a `PPB_NetAddress` resource with the specified IPv4 address.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code> identifying one instance of a module.</td></tr><tr class="even"><td>[in]</td><td>ipv4_addr</td><td>An IPv4 address.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code> identifying one instance of a module.</td></tr><tr class="even"><td>[in]</td><td>ipv4_addr</td><td>An IPv4 address.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_Resource` representing the same address as `ipv4_addr` or 0 on failure.
@@ -40,9 +39,8 @@ A `PP_Resource` representing the same address as `ipv4_addr` or 0 on failure.
 Creates a `PPB_NetAddress` resource with the specified IPv6 address.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code> identifying one instance of a module.</td></tr><tr class="even"><td>[in]</td><td>ipv6_addr</td><td>An IPv6 address.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code> identifying one instance of a module.</td></tr><tr class="even"><td>[in]</td><td>ipv6_addr</td><td>An IPv6 address.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_Resource` representing the same address as `ipv6_addr` or 0 on failure.
@@ -56,9 +54,8 @@ Fills a `PP_NetAddress_IPv4` structure if the network address is of `PP_NETADDRE
 Note that passing a network address of `PP_NETADDRESS_FAMILY_IPV6` address family will fail even if the address is an IPv4-mapped IPv6 address.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>addr</td><td>A <code>PP_Resource</code> corresponding to a network address.</td></tr><tr class="even"><td>[out]</td><td>ipv4_addr</td><td>A <code>PP_NetAddress_IPv4</code> structure to store the result.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>addr</td><td>A <code>PP_Resource</code> corresponding to a network address.</td></tr><tr class="even"><td>[out]</td><td>ipv4_addr</td><td>A <code>PP_NetAddress_IPv4</code> structure to store the result.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_Bool` value indicating whether the operation succeeded.
@@ -69,12 +66,11 @@ A `PP_Bool` value indicating whether the operation succeeded.
 
 Fills a `PP_NetAddress_IPv6` structure if the network address is of `PP_NETADDRESS_FAMILY_IPV6` address family.
 
-Note that passing a network address of `PP_NETADDRESS_FAMILY_IPV4` address family will fail - this method doesn't map it to an IPv6 address.
+Note that passing a network address of `PP_NETADDRESS_FAMILY_IPV4` address family will fail - this method doesn’t map it to an IPv6 address.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>addr</td><td>A <code>PP_Resource</code> corresponding to a network address.</td></tr><tr class="even"><td>[out]</td><td>ipv6_addr</td><td>A <code>PP_NetAddress_IPv6</code> structure to store the result.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>addr</td><td>A <code>PP_Resource</code> corresponding to a network address.</td></tr><tr class="even"><td>[out]</td><td>ipv6_addr</td><td>A <code>PP_NetAddress_IPv6</code> structure to store the result.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_Bool` value indicating whether the operation succeeded.
@@ -85,12 +81,11 @@ A `PP_Bool` value indicating whether the operation succeeded.
 
 Returns a human-readable description of the network address.
 
-The description is in the form of host \[ ":" port \] and conforms to <http://tools.ietf.org/html/rfc3986#section-3.2> for IPv4 and IPv6 addresses (e.g., "192.168.0.1", "192.168.0.1:99", or "\[::1\]:80").
+The description is in the form of host \[ “:” port \] and conforms to <a href="http://tools.ietf.org/html/rfc3986#section-3.2" class="uri">http://tools.ietf.org/html/rfc3986#section-3.2</a> for IPv4 and IPv6 addresses (e.g., “192.168.0.1”, “192.168.0.1:99”, or “\[::1\]:80”).
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>addr</td><td>A <code>PP_Resource</code> corresponding to a network address.</td></tr><tr class="even"><td>[in]</td><td>include_port</td><td>Whether to include the port number in the description.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>addr</td><td>A <code>PP_Resource</code> corresponding to a network address.</td></tr><tr class="even"><td>[in]</td><td>include_port</td><td>Whether to include the port number in the description.</td></tr></tbody></table>
 
 **Returns:**  
 A string `PP_Var` on success; an undefined `PP_Var` on failure.
@@ -102,9 +97,8 @@ A string `PP_Var` on success; an undefined `PP_Var` on failure.
 Gets the address family.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>addr</td><td>A <code>PP_Resource</code> corresponding to a network address.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>addr</td><td>A <code>PP_Resource</code> corresponding to a network address.</td></tr></tbody></table>
 
 **Returns:**  
 The address family on success; `PP_NETADDRESS_FAMILY_UNSPECIFIED` on failure.
@@ -116,9 +110,8 @@ The address family on success; `PP_NETADDRESS_FAMILY_UNSPECIFIED` on failure.
 Determines if a given resource is a network address.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> to check.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> to check.</td></tr></tbody></table>
 
 **Returns:**  
 `PP_TRUE` if the input is a `PPB_NetAddress` resource; `PP_FALSE` otherwise.

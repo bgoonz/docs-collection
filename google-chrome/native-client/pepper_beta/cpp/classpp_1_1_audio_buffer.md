@@ -1,4 +1,4 @@
----json {"title":"pp::AudioBuffer Class Reference"} ---
+—json {“title”:“pp::AudioBuffer Class Reference”} —
 
 Inheritance diagram for pp::AudioBuffer:
 
@@ -31,6 +31,7 @@ Default constructor for creating an <a href="/docs/native-client/pepper_beta/cpp
 The copy constructor for `AudioBuffer`.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A reference to an <code>AudioBuffer</code>.</td></tr></tbody></table>
 
 <span id="a96db6e6a05eb834ed8b04ef8c3f6647a" class="anchor" style="margin: 0;"></span>
@@ -40,6 +41,7 @@ The copy constructor for `AudioBuffer`.
 Constructs an `AudioBuffer` from a `Resource`.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PPB_AudioBuffer</code> resource.</td></tr></tbody></table>
 
 <span id="ad80595164aba1e9fbe1ccc71793c48f9" class="anchor" style="margin: 0;"></span>
@@ -49,6 +51,7 @@ Constructs an `AudioBuffer` from a `Resource`.
 A constructor used when you have received a `PP_Resource` as a return value that has had 1 ref added for you.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PPB_AudioBuffer</code> resource.</td></tr></tbody></table>
 
 <span id="aa47da494df014dd6dba16053f914ce34" class="anchor" style="margin: 0;"></span>
@@ -130,6 +133,7 @@ A `PP_TimeDelta` containing the timestamp of the audio buffer. Given in seconds 
 Sets the timestamp of the audio buffer.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>timestamp</td><td>A <code>PP_TimeDelta</code> containing the timestamp of the audio buffer. Given in seconds since the start of the containing audio stream.</td></tr></tbody></table>
 
 ------------------------------------------------------------------------

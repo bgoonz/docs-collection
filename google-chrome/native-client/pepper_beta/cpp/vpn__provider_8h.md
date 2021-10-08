@@ -1,4 +1,4 @@
----json {"title":"vpn\_provider.h File Reference"} ---
+—json {“title”:“vpn\_provider.h File Reference”} —
 
 Include dependency graph for vpn\_provider.h:
 
@@ -7,7 +7,7 @@ Include dependency graph for vpn\_provider.h:
 Classes
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_vpn_provider/" class="el">pp::VpnProvider</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>VpnProvider</code> class enhances the <code>chrome.vpnProvider</code> JavaScript API by providing a high performance path for packet handling. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_vpn_provider#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_vpn_provider/" class="el">pp::VpnProvider</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>VpnProvider</code> class enhances the <code>chrome.vpnProvider</code> JavaScript API by providing a high performance path for packet handling. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_vpn_provider#details">More…</a><br />
 </td></tr></tbody></table>
 
 Namespaces

@@ -1,4 +1,4 @@
----json {"title":"pp::Resource Class Reference"} ---
+—json {“title”:“pp::Resource Class Reference”} —
 
 Inheritance diagram for pp::Resource:
 
@@ -50,6 +50,7 @@ The default constructor.
 A constructor for copying a resource.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A <code>Resource</code>.</td></tr></tbody></table>
 
 <span id="a081165265e2bd8217eaa2be2aeeb3aa3" class="anchor" style="margin: 0;"></span>
@@ -65,6 +66,7 @@ Destructor.
 A constructor used when a `PP_Resource` is provided as a return value whose reference count we need to increment.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a resource.</td></tr></tbody></table>
 
 <span id="a907d3d6b7e292587c8cb9ff30d0a418d" class="anchor" style="margin: 0;"></span>
@@ -113,9 +115,8 @@ true if this resource is invalid or uninitialized.
 This function assigns one `Resource` to another `Resource`.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_resource/" class="el" title="A reference counted module resource.">Resource</a>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_resource/" class="el" title="A reference counted module resource.">Resource</a>.</td></tr></tbody></table>
 
 **Returns:**  
 A <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_resource/" class="el" title="A reference counted module resource.">Resource</a> containing the assigned <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_resource/" class="el" title="A reference counted module resource.">Resource</a>.
@@ -124,13 +125,14 @@ A <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_resource/" class="el"
 
 <table><tbody><tr class="odd"><td>void <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_resource#a3eda014529127a818df8d5bb5ec2fdf0" class="el">pp::Resource::PassRefFromConstructor</a></td><td>(</td><td>PP_Resource </td><td><em>resource</em></td><td>)</td><td><code> [protected]</code></td></tr></tbody></table>
 
-PassRefFromConstructor is called by derived class' constructors to initialize this `Resource` with a `PP_Resource` that has already had its reference count incremented by `Core::AddRefResource`.
+PassRefFromConstructor is called by derived class’ constructors to initialize this `Resource` with a `PP_Resource` that has already had its reference count incremented by `Core::AddRefResource`.
 
 It also assumes this object has no current resource.
 
 The intended usage of this function that the derived class constructor will call the default `Resource` constructor, then make a call to create a resource. It then wants to assign the new resource (which, since it was returned by the browser, already had its reference count increased).
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a resource.</td></tr></tbody></table>
 
 <span id="a46a6123de0b007ad3fcb6f666534ccb4" class="anchor" style="margin: 0;"></span>

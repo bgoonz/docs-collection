@@ -1,4 +1,4 @@
----json {"title":"Class Hierarchy"} ---
+—json {“title”:“Class Hierarchy”} —
 
 [Go to the textual class hierarchy](/docs/native-client/pepper_beta/cpp/hierarchy/)
 

@@ -1,4 +1,4 @@
----json {"title":"PPB\_KeyboardInputEvent Struct Reference"} ---
+—json {“title”:“PPB\_KeyboardInputEvent Struct Reference”} —
 
 Data Fields
 -----------
@@ -28,9 +28,8 @@ Creates a keyboard input event with the given parameters.
 Normally you will get a keyboard event passed through the HandleInputEvent and will not need to create them, but some applications may want to create their own for internal use. The type must be one of the keyboard event types.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance for which this event occurred.</td></tr><tr class="even"><td>[in]</td><td>type</td><td>A <code>PP_InputEvent_Type</code> identifying the type of input event.</td></tr><tr class="odd"><td>[in]</td><td>time_stamp</td><td>A <code>PP_TimeTicks</code> indicating the time when the event occurred.</td></tr><tr class="even"><td>[in]</td><td>modifiers</td><td>A bit field combination of the <code>PP_InputEvent_Modifier</code> flags.</td></tr><tr class="odd"><td>[in]</td><td>key_code</td><td>This value reflects the DOM KeyboardEvent <code>keyCode</code> field, which is the Windows-style Virtual Key code of the key.</td></tr><tr class="even"><td>[in]</td><td>character_text</td><td>This value represents the typed character as a UTF-8 string.</td></tr><tr class="odd"><td>[in]</td><td>code</td><td>This value represents the DOM3 |code| string that corresponds to the physical key being pressed.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance for which this event occurred.</td></tr><tr class="even"><td>[in]</td><td>type</td><td>A <code>PP_InputEvent_Type</code> identifying the type of input event.</td></tr><tr class="odd"><td>[in]</td><td>time_stamp</td><td>A <code>PP_TimeTicks</code> indicating the time when the event occurred.</td></tr><tr class="even"><td>[in]</td><td>modifiers</td><td>A bit field combination of the <code>PP_InputEvent_Modifier</code> flags.</td></tr><tr class="odd"><td>[in]</td><td>key_code</td><td>This value reflects the DOM KeyboardEvent <code>keyCode</code> field, which is the Windows-style Virtual Key code of the key.</td></tr><tr class="even"><td>[in]</td><td>character_text</td><td>This value represents the typed character as a UTF-8 string.</td></tr><tr class="odd"><td>[in]</td><td>code</td><td>This value represents the DOM3 |code| string that corresponds to the physical key being pressed.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_Resource` containing the new keyboard input event.
@@ -42,9 +41,8 @@ A `PP_Resource` containing the new keyboard input event.
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___keyboard_input_event__1__2#aaf9bb52daef6052c4f4bf4f84efee9d2" class="el" title="GetCharacterText() returns the typed character as a UTF-8 string for the given character event...">GetCharacterText()</a> returns the typed character as a UTF-8 string for the given character event.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>character_event</td><td>A <code>PP_Resource</code> corresponding to a keyboard event.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>character_event</td><td>A <code>PP_Resource</code> corresponding to a keyboard event.</td></tr></tbody></table>
 
 **Returns:**  
 A string var representing a single typed character for character input events. For non-character input events the return value will be an undefined var.
@@ -53,12 +51,11 @@ A string var representing a single typed character for character input events. F
 
 <table><tbody><tr class="odd"><td>struct <a href="/docs/native-client/pepper_beta/c/struct_p_p___var/" class="el">PP_Var</a>(* <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___keyboard_input_event__1__2#a84c476e78ea7c066f9e89b5ae828ffa8" class="el">PPB_KeyboardInputEvent::GetCode</a>)(<a href="/docs/native-client/pepper_beta/c/group___typedefs#gafdc3895ee80f4750d0d95ae1b677e9b7" class="el">PP_Resource</a> key_event)<code> [read]</code></td></tr></tbody></table>
 
-<a href="/docs/native-client/pepper_beta/c/struct_p_p_b___keyboard_input_event__1__2#a84c476e78ea7c066f9e89b5ae828ffa8" class="el" title="GetCode() returns the DOM |code| field for this keyboard event, as defined in the DOM3 Events spec: h...">GetCode()</a> returns the DOM |code| field for this keyboard event, as defined in the DOM3 Events spec: <http://www.w3.org/TR/DOM-Level-3-Events/>.
+<a href="/docs/native-client/pepper_beta/c/struct_p_p_b___keyboard_input_event__1__2#a84c476e78ea7c066f9e89b5ae828ffa8" class="el" title="GetCode() returns the DOM |code| field for this keyboard event, as defined in the DOM3 Events spec: h...">GetCode()</a> returns the DOM |code| field for this keyboard event, as defined in the DOM3 Events spec: <a href="http://www.w3.org/TR/DOM-Level-3-Events/" class="uri">http://www.w3.org/TR/DOM-Level-3-Events/</a>.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>key_event</td><td>The key event for which to return the key code.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>key_event</td><td>The key event for which to return the key code.</td></tr></tbody></table>
 
 **Returns:**  
 The string that contains the DOM |code| for the keyboard event.
@@ -72,9 +69,8 @@ The string that contains the DOM |code| for the keyboard event.
 Chrome populates this with the Windows-style Virtual Key code of the key.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>key_event</td><td>A <code>PP_Resource</code> corresponding to a keyboard event.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>key_event</td><td>A <code>PP_Resource</code> corresponding to a keyboard event.</td></tr></tbody></table>
 
 **Returns:**  
 The DOM keyCode field for the keyboard event.
@@ -86,9 +82,8 @@ The DOM keyCode field for the keyboard event.
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___keyboard_input_event__1__2#ae3fed704fb8f527fb7fd94e8c34ac13a" class="el" title="IsKeyboardInputEvent() determines if a resource is a keyboard event.">IsKeyboardInputEvent()</a> determines if a resource is a keyboard event.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to an event.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to an event.</td></tr></tbody></table>
 
 **Returns:**  
 `PP_TRUE` if the given resource is a valid input event.

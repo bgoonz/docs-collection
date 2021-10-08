@@ -1,4 +1,4 @@
----json {"title":"pp::TouchPoint Class Reference"} ---
+—json {“title”:“pp::TouchPoint Class Reference”} —
 
 [List of all members.](/docs/native-client/pepper_beta/cpp/classpp_1_1_touch_point-members/)
 

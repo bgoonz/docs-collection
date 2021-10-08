@@ -1,4 +1,4 @@
----json {"title":"pp::View Class Reference"} ---
+—json {“title”:“pp::View Class Reference”} —
 
 Inheritance diagram for pp::View:
 
@@ -56,7 +56,7 @@ If the module instance is scrolled off the view, the return value will be (0, 0,
 
 Most applications will not need to worry about the clip rectangle. The recommended behavior is to do full updates if the module instance is visible, as determined by <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_view#aff1f9900e594167a276a624e52e5ac4c" class="el" title="IsVisible() determines whether the module instance might be visible to the user.">IsVisible()</a>, and do no updates if it is not visible.
 
-However, if the cost for computing pixels is very high for your application, or the pages you're targeting frequently have very large module instances with small visible portions, you may wish to optimize further. In this case, the clip rectangle will tell you which parts of the module to update.
+However, if the cost for computing pixels is very high for your application, or the pages you’re targeting frequently have very large module instances with small visible portions, you may wish to optimize further. In this case, the clip rectangle will tell you which parts of the module to update.
 
 Note that painting of the page and sending of view changed updates happens asynchronously. This means when the user scrolls, for example, it is likely that the previous backing store of the module instance will be used for the first paint, and will be updated later when your application generates new content with the new clip. This may cause flickering at the boundaries when scrolling. If you do choose to do partial updates, you may want to think about what color the invisible portions of your backing store contain (be it transparent or some background color) or to paint a certain region outside the clip to reduce the visual distraction when this happens.
 
@@ -118,7 +118,7 @@ A `Point` which is set to the value of the scroll offset in CSS pixels.
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_view#a2ae3a19ade644199982a2d09c6dd5c11" class="el" title="IsFullscreen() returns whether the instance is currently displaying in fullscreen mode...">IsFullscreen()</a> returns whether the instance is currently displaying in fullscreen mode.
 
 **Returns:**  
-`true` if the instance is in full screen mode, or `false` if it's not or the resource is invalid.
+`true` if the instance is in full screen mode, or `false` if it’s not or the resource is invalid.
 
 <span id="a30a0919ba5e4209ef52207375c5fc5f6" class="anchor" style="margin: 0;"></span>
 

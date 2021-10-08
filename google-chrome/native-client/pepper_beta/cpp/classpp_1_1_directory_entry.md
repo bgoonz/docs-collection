@@ -1,4 +1,4 @@
----json {"title":"pp::DirectoryEntry Class Reference"} ---
+—json {“title”:“pp::DirectoryEntry Class Reference”} —
 
 [List of all members.](/docs/native-client/pepper_beta/cpp/classpp_1_1_directory_entry-members/)
 
@@ -34,6 +34,7 @@ Default constructor for creating an <a href="/docs/native-client/pepper_beta/cpp
 A constructor used when you have a `PP_DirectoryEntry` which contains a `FileRef` that has already been reference counted as a return value.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>data</td><td>A <code>PP_DirectoryEntry</code> to be copied.</td></tr></tbody></table>
 
 <span id="af60a142d874f0bc2fed98bd8ae5b7cdc" class="anchor" style="margin: 0;"></span>
@@ -45,6 +46,7 @@ A copy constructor for `DirectoryEntry`.
 This constructor increments a reference count of the `FileRef` held by this <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_directory_entry/" class="el" title="The DirectoryEntry class represents information about a directory entry.">DirectoryEntry</a>.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A pointer to a <code>DirectoryEntry</code>.</td></tr></tbody></table>
 
 <span id="a3dd150a66dcb8e3b063f411d904dc356" class="anchor" style="margin: 0;"></span>
@@ -94,9 +96,8 @@ This function assigns one `DirectoryEntry` object to this `DirectoryEntry` objec
 This function increases the reference count of the `FileRef` of the other <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_directory_entry/" class="el" title="The DirectoryEntry class represents information about a directory entry.">DirectoryEntry</a> while decrementing the reference count of the <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_file_ref/" class="el" title="The FileRef class represents a &quot;weak pointer&quot; to a file in a file system.">FileRef</a> of this <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_directory_entry/" class="el" title="The DirectoryEntry class represents information about a directory entry.">DirectoryEntry</a>.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A pointer to a <code>DirectoryEntry</code>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A pointer to a <code>DirectoryEntry</code>.</td></tr></tbody></table>
 
 **Returns:**  
 A new `DirectoryEntry` object.

@@ -1,4 +1,4 @@
----json {"title":"pp::Point Class Reference"} ---
+—json {“title”:“pp::Point Class Reference”} —
 
 [List of all members.](/docs/native-client/pepper_beta/cpp/classpp_1_1_point-members/)
 
@@ -34,6 +34,7 @@ The default constructor for a point at 0,0.
 A constructor accepting two int32\_t values for x and y and converting them to a <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" class="el" title="A 2 dimensional point with 0,0 being the upper-left starting coordinate.">Point</a>.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>in_x</td><td>An int32_t value representing a horizontal coordinate of a point, starting with 0 as the left-most coordinate.</td></tr><tr class="even"><td>[in]</td><td>in_y</td><td>An int32_t value representing a vertical coordinate of a point, starting with 0 as the top-most coordinate.</td></tr></tbody></table>
 
 <span id="a3d572a358d2f3ce860bc7d0406e1c1da" class="anchor" style="margin: 0;"></span>
@@ -45,6 +46,7 @@ A constructor accepting a pointer to a PP\_Point and converting the PP\_Point to
 This is an implicit conversion constructor.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>point</td><td>A pointer to a PP_Point.</td></tr></tbody></table>
 
 <span id="abd093db1c01b63642cf8a8b73620626e" class="anchor" style="margin: 0;"></span>
@@ -74,9 +76,8 @@ A <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" class="el" ti
 Adds two Points (this and other) together by adding their x values and y values.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" class="el" title="A 2 dimensional point with 0,0 being the upper-left starting coordinate.">Point</a>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" class="el" title="A 2 dimensional point with 0,0 being the upper-left starting coordinate.">Point</a>.</td></tr></tbody></table>
 
 **Returns:**  
 A new <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" class="el" title="A 2 dimensional point with 0,0 being the upper-left starting coordinate.">Point</a> containing the result.
@@ -90,9 +91,8 @@ Adds two Points (this and other) together by adding their x and y values.
 Returns this point as the result.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" class="el" title="A 2 dimensional point with 0,0 being the upper-left starting coordinate.">Point</a>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" class="el" title="A 2 dimensional point with 0,0 being the upper-left starting coordinate.">Point</a>.</td></tr></tbody></table>
 
 **Returns:**  
 This <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" class="el" title="A 2 dimensional point with 0,0 being the upper-left starting coordinate.">Point</a> containing the result.
@@ -106,9 +106,8 @@ Subtracts one <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" c
 Returns a new point with the result.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" class="el" title="A 2 dimensional point with 0,0 being the upper-left starting coordinate.">Point</a>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" class="el" title="A 2 dimensional point with 0,0 being the upper-left starting coordinate.">Point</a>.</td></tr></tbody></table>
 
 **Returns:**  
 A new <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" class="el" title="A 2 dimensional point with 0,0 being the upper-left starting coordinate.">Point</a> containing the result.
@@ -122,9 +121,8 @@ Subtracts one <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" c
 Returns this point as the result.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" class="el" title="A 2 dimensional point with 0,0 being the upper-left starting coordinate.">Point</a>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" class="el" title="A 2 dimensional point with 0,0 being the upper-left starting coordinate.">Point</a>.</td></tr></tbody></table>
 
 **Returns:**  
 This <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" class="el" title="A 2 dimensional point with 0,0 being the upper-left starting coordinate.">Point</a> containing the result.
@@ -154,6 +152,7 @@ A mutable reference to the PP\_Point struct.
 Setter function for setting the value of x.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>in_x</td><td>A new x value.</td></tr></tbody></table>
 
 <span id="af3e1a26a8dd635d8c77c5f86d81deb3c" class="anchor" style="margin: 0;"></span>
@@ -163,6 +162,7 @@ Setter function for setting the value of x.
 Setter function for setting the value of y.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>in_y</td><td>A new y value.</td></tr></tbody></table>
 
 <span id="a197414e35cbd23b762fb04cb39bb2296" class="anchor" style="margin: 0;"></span>
@@ -172,6 +172,7 @@ Setter function for setting the value of y.
 Swaps the coordinates of two Points.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" class="el" title="A 2 dimensional point with 0,0 being the upper-left starting coordinate.">Point</a>.</td></tr></tbody></table>
 
 <span id="a802963acd6223e5520c4e93a0ae7c1ab" class="anchor" style="margin: 0;"></span>

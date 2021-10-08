@@ -1,4 +1,4 @@
----json {"title":"PPB\_MediaStreamVideoTrack Struct Reference"} ---
+—json {“title”:“PPB\_MediaStreamVideoTrack Struct Reference”} —
 
 Data Fields
 -----------
@@ -19,6 +19,7 @@ Closes the MediaStream video track and disconnects it from video source.
 After calling `Close()`, no new frames will be received.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>video_track</td><td>A <code>PP_Resource</code> corresponding to a MediaStream video track resource.</td></tr></tbody></table>
 
 <span id="a511bd529cecdee0573bd27d49bc97229" class="anchor" style="margin: 0;"></span>
@@ -27,7 +28,7 @@ After calling `Close()`, no new frames will be received.
 
 Configures underlying frame buffers for incoming frames.
 
-If the application doesn't want to drop frames, then the `PP_MEDIASTREAMVIDEOTRACK_ATTRIB_BUFFERED_FRAMES` should be chosen such that inter-frame processing time variability won't overrun the input buffer. If the buffer is overfilled, then frames will be dropped. The application can detect this by examining the timestamp on returned frames. If some attributes are not specified, default values will be used for those unspecified attributes. If `Configure()` is not called, default settings will be used. Example usage from plugin code:
+If the application doesn’t want to drop frames, then the `PP_MEDIASTREAMVIDEOTRACK_ATTRIB_BUFFERED_FRAMES` should be chosen such that inter-frame processing time variability won’t overrun the input buffer. If the buffer is overfilled, then frames will be dropped. The application can detect this by examining the timestamp on returned frames. If some attributes are not specified, default values will be used for those unspecified attributes. If `Configure()` is not called, default settings will be used. Example usage from plugin code:
 
      int32_t attribs[] = {
          PP_MEDIASTREAMVIDEOTRACK_ATTRIB_BUFFERED_FRAMES, 4,
@@ -35,9 +36,8 @@ If the application doesn't want to drop frames, then the `PP_MEDIASTREAMVIDEOTRA
      track_if->Configure(track, attribs, callback);
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>video_track</td><td>A <code>PP_Resource</code> corresponding to a video resource.</td></tr><tr class="even"><td>[in]</td><td>attrib_list</td><td>A list of attribute name-value pairs in which each attribute is immediately followed by the corresponding desired value. The list is terminated by <code>PP_MEDIASTREAMVIDEOTRACK_ATTRIB_NONE</code>.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td><code>PP_CompletionCallback</code> to be called upon completion of <code>Configure()</code>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>video_track</td><td>A <code>PP_Resource</code> corresponding to a video resource.</td></tr><tr class="even"><td>[in]</td><td>attrib_list</td><td>A list of attribute name-value pairs in which each attribute is immediately followed by the corresponding desired value. The list is terminated by <code>PP_MEDIASTREAMVIDEOTRACK_ATTRIB_NONE</code>.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td><code>PP_CompletionCallback</code> to be called upon completion of <code>Configure()</code>.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing a result code from `pp_errors.h`. Returns `PP_ERROR_INPROGRESS` if there is a pending call of `Configure()` or `GetFrame()`, or the plugin holds some frames which are not recycled with `RecycleFrame()`. If an error is returned, all attributes and the underlying buffer will not be changed.
@@ -51,9 +51,8 @@ Creates a PPB\_MediaStreamVideoTrack resource for video output.
 Call this when you will be creating frames and putting them to the track.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code> identifying one instance of a module.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code> identifying one instance of a module.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_Resource` corresponding to a PPB\_MediaStreamVideoTrack resource if successful, 0 if failed.
@@ -65,9 +64,8 @@ A `PP_Resource` corresponding to a PPB\_MediaStreamVideoTrack resource if succes
 Gets attribute value for a given attribute name.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>video_track</td><td>A <code>PP_Resource</code> corresponding to a video resource.</td></tr><tr class="even"><td>[in]</td><td>attrib</td><td>A <code>PP_MediaStreamVideoTrack_Attrib</code> for querying.</td></tr><tr class="odd"><td>[out]</td><td>value</td><td>A int32_t for storing the attribute value on success. Otherwise, the value will not be changed.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>video_track</td><td>A <code>PP_Resource</code> corresponding to a video resource.</td></tr><tr class="even"><td>[in]</td><td>attrib</td><td>A <code>PP_MediaStreamVideoTrack_Attrib</code> for querying.</td></tr><tr class="odd"><td>[out]</td><td>value</td><td>A int32_t for storing the attribute value on success. Otherwise, the value will not be changed.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing a result code from `pp_errors.h`.
@@ -89,9 +87,8 @@ Gets the next video frame from the MediaStream track.
 If internal processing is slower than the incoming frame rate, new frames will be dropped from the incoming stream. Once the input buffer is full, frames will be dropped until `RecycleFrame()` is called to free a spot for another frame to be buffered. If there are no frames in the input buffer, `PP_OK_COMPLETIONPENDING` will be returned immediately and the `callback` will be called when a new frame is received or an error happens.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>video_track</td><td>A <code>PP_Resource</code> corresponding to a video resource.</td></tr><tr class="even"><td>[out]</td><td>frame</td><td>A <code>PP_Resource</code> corresponding to a VideoFrame resource.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion of <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___media_stream_video_track__1__0#a81a2f469f7311aaf784bfa8cb57e5a1a" class="el" title="Gets the next video frame from the MediaStream track.">GetFrame()</a>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>video_track</td><td>A <code>PP_Resource</code> corresponding to a video resource.</td></tr><tr class="even"><td>[out]</td><td>frame</td><td>A <code>PP_Resource</code> corresponding to a VideoFrame resource.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion of <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___media_stream_video_track__1__0#a81a2f469f7311aaf784bfa8cb57e5a1a" class="el" title="Gets the next video frame from the MediaStream track.">GetFrame()</a>.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing a result code from `pp_errors.h`. Returns PP\_ERROR\_NOMEMORY if `max_buffered_frames` frames buffer was not allocated successfully.
@@ -103,9 +100,8 @@ An int32\_t containing a result code from `pp_errors.h`. Returns PP\_ERROR\_NOME
 Returns the track ID of the underlying MediaStream video track.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>video_track</td><td>The <code>PP_Resource</code> to check.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>video_track</td><td>The <code>PP_Resource</code> to check.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_Var` containing the MediaStream track ID as a string.
@@ -119,9 +115,8 @@ Checks whether the underlying MediaStream track has ended.
 Calls to GetFrame while the track has ended are safe to make and will complete, but will fail.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>video_track</td><td>The <code>PP_Resource</code> to check.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>video_track</td><td>The <code>PP_Resource</code> to check.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_Bool` with `PP_TRUE` if the given MediaStream track has ended or `PP_FALSE` otherwise.
@@ -133,9 +128,8 @@ A `PP_Bool` with `PP_TRUE` if the given MediaStream track has ended or `PP_FALSE
 Determines if a resource is a MediaStream video track resource.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>The <code>PP_Resource</code> to test.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>The <code>PP_Resource</code> to test.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_Bool` with `PP_TRUE` if the given resource is a Mediastream video track resource or `PP_FALSE` otherwise.
@@ -157,9 +151,8 @@ Recycles a frame returned by `GetFrame()`, so the track can reuse the underlying
 And the frame will become invalid. The caller should release all references it holds to `frame` and not use it anymore.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>video_track</td><td>A <code>PP_Resource</code> corresponding to a video resource.</td></tr><tr class="even"><td>[in]</td><td>frame</td><td>A <code>PP_Resource</code> corresponding to a VideoFrame resource returned by <code>GetFrame()</code>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>video_track</td><td>A <code>PP_Resource</code> corresponding to a video resource.</td></tr><tr class="even"><td>[in]</td><td>frame</td><td>A <code>PP_Resource</code> corresponding to a VideoFrame resource returned by <code>GetFrame()</code>.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing a result code from `pp_errors.h`.

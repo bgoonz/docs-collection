@@ -1,4 +1,4 @@
----json {"title":"pp::Rect Class Reference"} ---
+—json {“title”:“pp::Rect Class Reference”} —
 
 [List of all members.](/docs/native-client/pepper_beta/cpp/classpp_1_1_rect-members/)
 
@@ -40,6 +40,7 @@ A constructor accepting a reference to a `PP_Rect and` converting the `PP_Rect` 
 This is an implicit conversion constructor.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>rect</td><td>A <code>PP_Rect</code>.</td></tr></tbody></table>
 
 <span id="a46617cae1905a1793ecc9ea0d2dd64e6" class="anchor" style="margin: 0;"></span>
@@ -49,6 +50,7 @@ This is an implicit conversion constructor.
 A constructor accepting two int32\_t values for width and height and converting them to a `Rect` in the upper-left starting coordinate of 0,0.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>w</td><td>An int32_t value representing a width.</td></tr><tr class="even"><td>[in]</td><td>h</td><td>An int32_t value representing a height.</td></tr></tbody></table>
 
 <span id="a0d444f7609de3ba609a80c232aa7c857" class="anchor" style="margin: 0;"></span>
@@ -58,6 +60,7 @@ A constructor accepting two int32\_t values for width and height and converting 
 A constructor accepting four int32\_t values for width, height, x, and y.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>x</td><td>An int32_t value representing a horizontal coordinate of a point, starting with 0 as the left-most coordinate.</td></tr><tr class="even"><td>[in]</td><td>y</td><td>An int32_t value representing a vertical coordinate of a point, starting with 0 as the top-most coordinate.</td></tr><tr class="odd"><td>[in]</td><td>w</td><td>An int32_t value representing a width.</td></tr><tr class="even"><td>[in]</td><td>h</td><td>An int32_t value representing a height.</td></tr></tbody></table>
 
 <span id="ac2a745a2ef59463bf9f17814035f27dd" class="anchor" style="margin: 0;"></span>
@@ -67,6 +70,7 @@ A constructor accepting four int32\_t values for width, height, x, and y.
 A constructor accepting a pointer to a <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_size/" class="el" title="A size of an object based on width and height.">Size</a> and converting the `Size` to a `Rect` in the upper-left starting coordinate of 0,0.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>s</td><td>A pointer to a <code>Size</code>.</td></tr></tbody></table>
 
 <span id="a8c4b37a52ccf96670b6ca1f732af07fe" class="anchor" style="margin: 0;"></span>
@@ -76,6 +80,7 @@ A constructor accepting a pointer to a <a href="/docs/native-client/pepper_beta/
 A constructor accepting a pointer to a `Point` representing the origin of the rectangle and a pointer to a `Size` representing the height and width.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>origin</td><td>A pointer to a <code>Point</code> representing the upper-left starting coordinate.</td></tr><tr class="even"><td>[in]</td><td>size</td><td>A pointer to a <code>Size</code> representing the height and width.</td></tr></tbody></table>
 
 <span id="af8bb88a4f39237b78ff8ebf5f3a429e2" class="anchor" style="margin: 0;"></span>
@@ -98,9 +103,8 @@ Member Function Documentation
 For example, if the receiver had a x-location of 2 and a width of 4, and the supplied rectangle had an x-location of 0 with a width of 5, the returned rectangle would have an x-location of 1 with a width of 4.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>rect</td><td>A pointer to a <code>Rect</code>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>rect</td><td>A pointer to a <code>Rect</code>.</td></tr></tbody></table>
 
 **Returns:**  
 A `Rect` representing the difference between this rectangle and the receiving rectangle.
@@ -134,9 +138,8 @@ A `Point` representing the center of this rectangle.
 The point (x, y) is inside the rectangle, but the point (x + width, y + height) is not.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>point_x</td><td>An int32_t value representing a x value.</td></tr><tr class="even"><td>[in]</td><td>point_y</td><td>An int32_t value representing a y value.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>point_x</td><td>An int32_t value representing a x value.</td></tr><tr class="even"><td>[in]</td><td>point_y</td><td>An int32_t value representing a y value.</td></tr></tbody></table>
 
 **Returns:**  
 true if the point\_x and point\_y fall inside the rectangle.
@@ -148,9 +151,8 @@ true if the point\_x and point\_y fall inside the rectangle.
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_rect#aae5394eb09b76d2ef7c9251b1e738a3f" class="el" title="Contains() determines if the point identified by point_x and point_y falls inside this rectangle...">Contains()</a> determines if the specified point is contained by this rectangle.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>point</td><td>A pointer to a <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" class="el" title="A 2 dimensional point with 0,0 being the upper-left starting coordinate.">Point</a> representing a 2D coordinate.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>point</td><td>A pointer to a <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_point/" class="el" title="A 2 dimensional point with 0,0 being the upper-left starting coordinate.">Point</a> representing a 2D coordinate.</td></tr></tbody></table>
 
 **Returns:**  
 true if the point\_x and point\_y fall inside the rectangle.
@@ -162,9 +164,8 @@ true if the point\_x and point\_y fall inside the rectangle.
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_rect#aae5394eb09b76d2ef7c9251b1e738a3f" class="el" title="Contains() determines if the point identified by point_x and point_y falls inside this rectangle...">Contains()</a> determines if this rectangle contains the specified rectangle.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>rect</td><td>A pointer to a <code>Rect</code>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>rect</td><td>A pointer to a <code>Rect</code>.</td></tr></tbody></table>
 
 **Returns:**  
 true if the rectangle fall inside this rectangle.
@@ -185,6 +186,7 @@ The value of height for this `Rect`.
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_rect#a83e4d334a41b6d612f1f18ea958767f7" class="el" title="Inset() shrinks the rectangle by a horizontal and vertical distance on all sides.">Inset()</a> shrinks the rectangle by a horizontal and vertical distance on all sides.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>horizontal</td><td>An int32_t value representing a horizontal shrinking distance.</td></tr><tr class="even"><td>[in]</td><td>vertical</td><td>An int32_t value representing a vertical shrinking distance.</td></tr></tbody></table>
 
 <span id="a17d964545980ac3ae785ef4484c5315a" class="anchor" style="margin: 0;"></span>
@@ -194,6 +196,7 @@ The value of height for this `Rect`.
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_rect#a83e4d334a41b6d612f1f18ea958767f7" class="el" title="Inset() shrinks the rectangle by a horizontal and vertical distance on all sides.">Inset()</a> shrinks the rectangle by the specified amount on each side.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>left</td><td>An int32_t value representing a left shrinking distance.</td></tr><tr class="even"><td>[in]</td><td>top</td><td>An int32_t value representing a top shrinking distance.</td></tr><tr class="odd"><td>[in]</td><td>right</td><td>An int32_t value representing a right shrinking distance.</td></tr><tr class="even"><td>[in]</td><td>bottom</td><td>An int32_t value representing a bottom shrinking distance.</td></tr></tbody></table>
 
 <span id="af903bf60faa68544372f5a58b00144aa" class="anchor" style="margin: 0;"></span>
@@ -203,9 +206,8 @@ The value of height for this `Rect`.
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_rect#af903bf60faa68544372f5a58b00144aa" class="el" title="Intersect() computes the intersection of this rectangle with the given rectangle.">Intersect()</a> computes the intersection of this rectangle with the given rectangle.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>rect</td><td>A pointer to a <code>Rect</code>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>rect</td><td>A pointer to a <code>Rect</code>.</td></tr></tbody></table>
 
 **Returns:**  
 A `Rect` representing the intersection.
@@ -217,9 +219,8 @@ A `Rect` representing the intersection.
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_rect#a32a682a28a1de0b7fa5793a3660514b0" class="el" title="Intersects() determines if this rectangle intersects the specified rectangle.">Intersects()</a> determines if this rectangle intersects the specified rectangle.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>rect</td><td>A pointer to a <code>Rect</code>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>rect</td><td>A pointer to a <code>Rect</code>.</td></tr></tbody></table>
 
 **Returns:**  
 true if the rectangle intersects this rectangle.
@@ -242,6 +243,7 @@ true if the area of the rectangle is zero.
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_rect#a3c39cdfe70b05c4cb172848daf4cd093" class="el" title="Offset() moves the rectangle by a horizontal and vertical distance.">Offset()</a> moves the rectangle by a horizontal and vertical distance.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>horizontal</td><td>An int32_t value representing a horizontal move distance.</td></tr><tr class="even"><td>[in]</td><td>vertical</td><td>An int32_t value representing a vertical move distance.</td></tr></tbody></table>
 
 <span id="a8fdc680fc8d23ca24f5a10ec93db3414" class="anchor" style="margin: 0;"></span>
@@ -251,6 +253,7 @@ true if the area of the rectangle is zero.
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_rect#a3c39cdfe70b05c4cb172848daf4cd093" class="el" title="Offset() moves the rectangle by a horizontal and vertical distance.">Offset()</a> moves the rectangle by a horizontal and vertical distance.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>point</td><td>A pointer to a <code>Point</code> representing the horizontal and vertical move distances.</td></tr></tbody></table>
 
 <span id="a02e46c92ffedee393caff7ae0f7aca2f" class="anchor" style="margin: 0;"></span>
@@ -307,6 +310,7 @@ The value of x + width for this point.
 Setter function for setting the value of height.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>h</td><td>A new width height.</td></tr></tbody></table>
 
 <span id="aa099aad16ade23466364968d1cfbb68e" class="anchor" style="margin: 0;"></span>
@@ -316,6 +320,7 @@ Setter function for setting the value of height.
 Setter function for setting the value of the `Point`.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>origin</td><td>A <code>Point</code> representing the upper-left starting coordinate.</td></tr></tbody></table>
 
 <span id="a484a54bc72ce43eae283dd04d5258a42" class="anchor" style="margin: 0;"></span>
@@ -325,6 +330,7 @@ Setter function for setting the value of the `Point`.
 Setter function for setting the `Size`.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>s</td><td>A pointer to a <code>Size</code> representing the height and width.</td></tr></tbody></table>
 
 <span id="ad8b7a557c0a3b7b09a71cc7da3b8cac3" class="anchor" style="margin: 0;"></span>
@@ -334,6 +340,7 @@ Setter function for setting the `Size`.
 Setter function for setting the value of width.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>w</td><td>A new width value.</td></tr></tbody></table>
 
 <span id="ac5e698050a5de8bcb57847ac876279cc" class="anchor" style="margin: 0;"></span>
@@ -343,6 +350,7 @@ Setter function for setting the value of width.
 Setter function for setting the value of x.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>in_x</td><td>A new x value.</td></tr></tbody></table>
 
 <span id="a99d75f24b47d11e05aadde0bcf11b128" class="anchor" style="margin: 0;"></span>
@@ -352,6 +360,7 @@ Setter function for setting the value of x.
 Setter function for setting the value of y.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>in_y</td><td>A new y value.</td></tr></tbody></table>
 
 <span id="aff9442d9ee78ad390129625379b2103f" class="anchor" style="margin: 0;"></span>
@@ -361,6 +370,7 @@ Setter function for setting the value of y.
 Setter function for setting the value of the `Rect`.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>x</td><td>A new x value.</td></tr><tr class="even"><td>[in]</td><td>y</td><td>A new y value.</td></tr><tr class="odd"><td>[in]</td><td>w</td><td>A new width value.</td></tr><tr class="even"><td>[in]</td><td>h</td><td>A new height value.</td></tr></tbody></table>
 
 <span id="ad19e517179cc55db2a16d317d2e8904a" class="anchor" style="margin: 0;"></span>
@@ -370,6 +380,7 @@ Setter function for setting the value of the `Rect`.
 Setter function for setting the value of the `Rect`.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>rect</td><td>A pointer to a <code>PP_Rect</code>.</td></tr></tbody></table>
 
 <span id="a2471b9960ecbbb006330cd1bb6d51701" class="anchor" style="margin: 0;"></span>
@@ -379,9 +390,8 @@ Setter function for setting the value of the `Rect`.
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_rect#a2471b9960ecbbb006330cd1bb6d51701" class="el" title="SharesEdgeWith() determines if this rectangle shares an entire edge (same width or same height) with ...">SharesEdgeWith()</a> determines if this rectangle shares an entire edge (same width or same height) with the given rectangle, and the rectangles do not overlap.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>rect</td><td>A pointer to a <code>Rect</code>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>rect</td><td>A pointer to a <code>Rect</code>.</td></tr></tbody></table>
 
 **Returns:**  
 true if this rectangle and supplied rectangle share an edge.
@@ -404,9 +414,8 @@ The size of the rectangle.
 If `rect`does not intersect completely in either the x or y direction, then `*this` is returned. If `rect` contains `this`, then an empty `Rect` is returned.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>rect</td><td>A pointer to a <code>Rect</code>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>rect</td><td>A pointer to a <code>Rect</code>.</td></tr></tbody></table>
 
 **Returns:**  
 A `Rect` representing the subtraction.
@@ -420,9 +429,8 @@ A `Rect` representing the subtraction.
 The union is the smallest rectangle containing both rectangles.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>rect</td><td>A pointer to a <code>Rect</code>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>rect</td><td>A pointer to a <code>Rect</code>.</td></tr></tbody></table>
 
 **Returns:**  
 A `Rect` representing the union.

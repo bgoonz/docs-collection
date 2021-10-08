@@ -1,4 +1,4 @@
----json {"title":"PP\_AudioProfileDescription Struct Reference"} ---
+—json {“title”:“PP\_AudioProfileDescription Struct Reference”} —
 
 Data Fields
 -----------

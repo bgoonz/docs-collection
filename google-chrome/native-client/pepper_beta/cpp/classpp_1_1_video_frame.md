@@ -1,4 +1,4 @@
----json {"title":"pp::VideoFrame Class Reference"} ---
+—json {“title”:“pp::VideoFrame Class Reference”} —
 
 Inheritance diagram for pp::VideoFrame:
 
@@ -31,6 +31,7 @@ Default constructor for creating an <a href="/docs/native-client/pepper_beta/cpp
 The copy constructor for `VideoFrame`.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A reference to a <code>VideoFrame</code>.</td></tr></tbody></table>
 
 <span id="aa3f0c75b3e71a5aa450bb59db405d7f2" class="anchor" style="margin: 0;"></span>
@@ -40,6 +41,7 @@ The copy constructor for `VideoFrame`.
 Constructs a `VideoFrame` from a `Resource`.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PPB_VideoFrame</code> resource.</td></tr></tbody></table>
 
 <span id="a9174464e29af68a4b701469ad3ad8cba" class="anchor" style="margin: 0;"></span>
@@ -49,6 +51,7 @@ Constructs a `VideoFrame` from a `Resource`.
 A constructor used when you have received a `PP_Resource` as a return value that has had 1 ref added for you.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PPB_VideoFrame</code> resource.</td></tr></tbody></table>
 
 <span id="af4f974572030ac92546b75a93a9e2b09" class="anchor" style="margin: 0;"></span>
@@ -94,9 +97,8 @@ A `PP_VideoFrame_Format` containing the format of the video frame.
 Gets the size of the video frame.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[out]</td><td>size</td><td>A <code>Size</code>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[out]</td><td>size</td><td>A <code>Size</code>.</td></tr></tbody></table>
 
 **Returns:**  
 True on success or false on failure.
@@ -117,6 +119,7 @@ A `PP_TimeDelta` containing the timestamp of the video frame. Given in seconds s
 Sets the timestamp of the video frame.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>timestamp</td><td>A <code>PP_TimeDelta</code> containing the timestamp of the video frame. Given in seconds since the start of the containing video stream.</td></tr></tbody></table>
 
 ------------------------------------------------------------------------

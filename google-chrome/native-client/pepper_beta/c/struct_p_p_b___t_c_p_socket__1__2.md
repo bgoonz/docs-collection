@@ -1,4 +1,4 @@
----json {"title":"PPB\_TCPSocket Struct Reference"} ---
+—json {“title”:“PPB\_TCPSocket Struct Reference”} —
 
 Data Fields
 -----------
@@ -30,9 +30,8 @@ Accepts a connection.
 The socket must be listening.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>tcp_socket</td><td>A <code>PP_Resource</code> corresponding to a TCP socket.</td></tr><tr class="even"><td>[out]</td><td>accepted_tcp_socket</td><td>Stores the accepted TCP socket on success.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>tcp_socket</td><td>A <code>PP_Resource</code> corresponding to a TCP socket.</td></tr><tr class="even"><td>[out]</td><td>accepted_tcp_socket</td><td>Stores the accepted TCP socket on success.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing an error code from `pp_errors.h`, including (but not limited to):
@@ -48,9 +47,8 @@ Binds the socket to the given address.
 The socket must not be bound.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>tcp_socket</td><td>A <code>PP_Resource</code> corresponding to a TCP socket.</td></tr><tr class="even"><td>[in]</td><td>addr</td><td>A <code>PPB_NetAddress</code> resource.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>tcp_socket</td><td>A <code>PP_Resource</code> corresponding to a TCP socket.</td></tr><tr class="even"><td>[in]</td><td>addr</td><td>A <code>PPB_NetAddress</code> resource.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing an error code from `pp_errors.h`, including (but not limited to):
@@ -69,6 +67,7 @@ Any pending callbacks will still run, reporting `PP_ERROR_ABORTED` if pending IO
 The socket is implicitly closed if it is destroyed, so you are not required to call this method.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>tcp_socket</td><td>A <code>PP_Resource</code> corresponding to a TCP socket.</td></tr></tbody></table>
 
 <span id="ad107b3d5541072b14e2b8acc836b3939" class="anchor" style="margin: 0;"></span>
@@ -80,14 +79,13 @@ Connects the socket to the given address.
 The socket must not be listening. Binding the socket beforehand is optional.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>tcp_socket</td><td>A <code>PP_Resource</code> corresponding to a TCP socket.</td></tr><tr class="even"><td>[in]</td><td>addr</td><td>A <code>PPB_NetAddress</code> resource.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>tcp_socket</td><td>A <code>PP_Resource</code> corresponding to a TCP socket.</td></tr><tr class="even"><td>[in]</td><td>addr</td><td>A <code>PPB_NetAddress</code> resource.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing an error code from `pp_errors.h`, including (but not limited to):
 
--   `PP_ERROR_NOACCESS`: the caller doesn't have required permissions.
+-   `PP_ERROR_NOACCESS`: the caller doesn’t have required permissions.
 -   `PP_ERROR_ADDRESS_UNREACHABLE`: `addr` is unreachable.
 -   `PP_ERROR_CONNECTION_REFUSED`: the connection attempt was refused.
 -   `PP_ERROR_CONNECTION_FAILED`: the connection attempt failed.
@@ -102,9 +100,8 @@ Since version 1.1, if the socket is listening/connected or has a pending listen/
 Creates a TCP socket resource.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code> identifying one instance of a module.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code> identifying one instance of a module.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_Resource` corresponding to a TCP socket or 0 on failure.
@@ -116,9 +113,8 @@ A `PP_Resource` corresponding to a TCP socket or 0 on failure.
 Gets the local address of the socket, if it is bound.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>tcp_socket</td><td>A <code>PP_Resource</code> corresponding to a TCP socket.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>tcp_socket</td><td>A <code>PP_Resource</code> corresponding to a TCP socket.</td></tr></tbody></table>
 
 **Returns:**  
 A `PPB_NetAddress` resource on success or 0 on failure.
@@ -130,9 +126,8 @@ A `PPB_NetAddress` resource on success or 0 on failure.
 Gets the remote address of the socket, if it is connected.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>tcp_socket</td><td>A <code>PP_Resource</code> corresponding to a TCP socket.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>tcp_socket</td><td>A <code>PP_Resource</code> corresponding to a TCP socket.</td></tr></tbody></table>
 
 **Returns:**  
 A `PPB_NetAddress` resource on success or 0 on failure.
@@ -144,9 +139,8 @@ A `PPB_NetAddress` resource on success or 0 on failure.
 Determines if a given resource is a TCP socket.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> to check.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> to check.</td></tr></tbody></table>
 
 **Returns:**  
 `PP_TRUE` if the input is a `PPB_TCPSocket` resource; `PP_FALSE` otherwise.
@@ -160,14 +154,13 @@ Starts listening.
 The socket must be bound and not connected.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>tcp_socket</td><td>A <code>PP_Resource</code> corresponding to a TCP socket.</td></tr><tr class="even"><td>[in]</td><td>backlog</td><td>A hint to determine the maximum length to which the queue of pending connections may grow.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>tcp_socket</td><td>A <code>PP_Resource</code> corresponding to a TCP socket.</td></tr><tr class="even"><td>[in]</td><td>backlog</td><td>A hint to determine the maximum length to which the queue of pending connections may grow.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing an error code from `pp_errors.h`, including (but not limited to):
 
--   `PP_ERROR_NOACCESS`: the caller doesn't have required permissions.
+-   `PP_ERROR_NOACCESS`: the caller doesn’t have required permissions.
 -   `PP_ERROR_ADDRESS_IN_USE`: Another socket is already listening on the same port.
 
 <span id="aac72febd03fe6e6e5adafcfd2b24a8b1" class="anchor" style="margin: 0;"></span>
@@ -179,9 +172,8 @@ Reads data from the socket.
 The socket must be connected. It may perform a partial read.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>tcp_socket</td><td>A <code>PP_Resource</code> corresponding to a TCP socket.</td></tr><tr class="even"><td>[out]</td><td>buffer</td><td>The buffer to store the received data on success. It must be at least as large as <code>bytes_to_read</code>.</td></tr><tr class="odd"><td>[in]</td><td>bytes_to_read</td><td>The number of bytes to read.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>tcp_socket</td><td>A <code>PP_Resource</code> corresponding to a TCP socket.</td></tr><tr class="even"><td>[out]</td><td>buffer</td><td>The buffer to store the received data on success. It must be at least as large as <code>bytes_to_read</code>.</td></tr><tr class="odd"><td>[in]</td><td>bytes_to_read</td><td>The number of bytes to read.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
 **Returns:**  
 A non-negative number on success to indicate how many bytes have been read, 0 means that end-of-file was reached; otherwise, an error code from `pp_errors.h`.
@@ -195,9 +187,8 @@ Sets a socket option on the TCP socket.
 Please see the `PP_TCPSocket_Option` description for option names, value types and allowed values.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>tcp_socket</td><td>A <code>PP_Resource</code> corresponding to a TCP socket.</td></tr><tr class="even"><td>[in]</td><td>name</td><td>The option to set.</td></tr><tr class="odd"><td>[in]</td><td>value</td><td>The option value to set.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>tcp_socket</td><td>A <code>PP_Resource</code> corresponding to a TCP socket.</td></tr><tr class="even"><td>[in]</td><td>name</td><td>The option to set.</td></tr><tr class="odd"><td>[in]</td><td>value</td><td>The option value to set.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing an error code from `pp_errors.h`.
@@ -211,9 +202,8 @@ Writes data to the socket.
 The socket must be connected. It may perform a partial write.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>tcp_socket</td><td>A <code>PP_Resource</code> corresponding to a TCP socket.</td></tr><tr class="even"><td>[in]</td><td>buffer</td><td>The buffer containing the data to write.</td></tr><tr class="odd"><td>[in]</td><td>bytes_to_write</td><td>The number of bytes to write.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>tcp_socket</td><td>A <code>PP_Resource</code> corresponding to a TCP socket.</td></tr><tr class="even"><td>[in]</td><td>buffer</td><td>The buffer containing the data to write.</td></tr><tr class="odd"><td>[in]</td><td>bytes_to_write</td><td>The number of bytes to write.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
 **Returns:**  
 A non-negative number on success to indicate how many bytes have been written; otherwise, an error code from `pp_errors.h`.

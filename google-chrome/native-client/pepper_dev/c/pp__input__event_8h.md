@@ -1,4 +1,4 @@
----json {"title":"pp\_input\_event.h File Reference"} ---
+—json {“title”:“pp\_input\_event.h File Reference”} —
 
 Include dependency graph for pp\_input\_event.h:
 
@@ -7,10 +7,10 @@ Include dependency graph for pp\_input\_event.h:
 Data Structures
 ---------------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p___input_event___key/" class="el">PP_InputEvent_Key</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PP_InputEvent_Key</code> struct represents a key up or key down event. <a href="/docs/native-client/pepper_dev/c/struct_p_p___input_event___key#details">More...</a><br />
-</td></tr><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p___input_event___character/" class="el">PP_InputEvent_Character</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PP_InputEvent_Character</code> struct represents a typed character event. <a href="/docs/native-client/pepper_dev/c/struct_p_p___input_event___character#details">More...</a><br />
-</td></tr><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p___input_event___mouse/" class="el">PP_InputEvent_Mouse</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PP_InputEvent_Mouse</code> struct represents all mouse events except mouse wheel events. <a href="/docs/native-client/pepper_dev/c/struct_p_p___input_event___mouse#details">More...</a><br />
-</td></tr><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p___input_event___wheel/" class="el">PP_InputEvent_Wheel</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PP_InputEvent_Wheel</code> struct represents all mouse wheel events. <a href="/docs/native-client/pepper_dev/c/struct_p_p___input_event___wheel#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p___input_event___key/" class="el">PP_InputEvent_Key</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PP_InputEvent_Key</code> struct represents a key up or key down event. <a href="/docs/native-client/pepper_dev/c/struct_p_p___input_event___key#details">More…</a><br />
+</td></tr><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p___input_event___character/" class="el">PP_InputEvent_Character</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PP_InputEvent_Character</code> struct represents a typed character event. <a href="/docs/native-client/pepper_dev/c/struct_p_p___input_event___character#details">More…</a><br />
+</td></tr><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p___input_event___mouse/" class="el">PP_InputEvent_Mouse</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PP_InputEvent_Mouse</code> struct represents all mouse events except mouse wheel events. <a href="/docs/native-client/pepper_dev/c/struct_p_p___input_event___mouse#details">More…</a><br />
+</td></tr><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p___input_event___wheel/" class="el">PP_InputEvent_Wheel</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PP_InputEvent_Wheel</code> struct represents all mouse wheel events. <a href="/docs/native-client/pepper_dev/c/struct_p_p___input_event___wheel#details">More…</a><br />
 </td></tr></tbody></table>
 
 Variables

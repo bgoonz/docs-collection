@@ -1,4 +1,4 @@
----json {"title":"var\_dictionary.h File Reference"} ---
+—json {“title”:“var\_dictionary.h File Reference”} —
 
 Include dependency graph for var\_dictionary.h:
 

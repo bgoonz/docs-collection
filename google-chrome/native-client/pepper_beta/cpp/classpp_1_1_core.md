@@ -1,4 +1,4 @@
----json {"title":"pp::Core Class Reference"} ---
+—json {“title”:“pp::Core Class Reference”} —
 
 [List of all members.](/docs/native-client/pepper_beta/cpp/classpp_1_1_core-members/)
 
@@ -33,6 +33,7 @@ Member Function Documentation
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_core#a09c663df7fcb527b3e5e71ea07531899" class="el" title="AddRefResource() increments the reference count for the provided resource.">AddRefResource()</a> increments the reference count for the provided `resource`.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a resource.</td></tr></tbody></table>
 
 <span id="af20d1f92600f588bc74115fcbd17a1c7" class="anchor" style="margin: 0;"></span>
@@ -43,34 +44,35 @@ Member Function Documentation
 
 The delay may be 0 to specify a call back as soon as possible.
 
-The |result| parameter will just be passed as the second argument to the callback. Many applications won't need this, but it allows a module to emulate calls of some callbacks which do use this value.
+The |result| parameter will just be passed as the second argument to the callback. Many applications won’t need this, but it allows a module to emulate calls of some callbacks which do use this value.
 
 **Note:** <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_core#af20d1f92600f588bc74115fcbd17a1c7" class="el" title="CallOnMainThread() schedules work to be executed on the main pepper thread after the specified delay...">CallOnMainThread()</a>, even when used from the main thread with a delay of 0 milliseconds, will never directly invoke the callback. Even in this case, the callback will be scheduled asynchronously.
 
 **Note:** If the browser is shutting down or if the module has no instances, then the callback function may not be called.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>delay_in_milliseconds</td><td>An int32_t delay in milliseconds.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>CompletionCallback</code> callback function that the browser will call after the specified delay.</td></tr><tr class="odd"><td>[in]</td><td>result</td><td>An int32_t that the browser will pass to the given <code>CompletionCallback</code>.</td></tr></tbody></table>
 
 <span id="a8c7991d43fc5b4fce51095ad7dccaec1" class="anchor" style="margin: 0;"></span>
 
 <table><tbody><tr class="odd"><td>PP_Time <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_core#a8c7991d43fc5b4fce51095ad7dccaec1" class="el">pp::Core::GetTime</a></td><td>(</td><td></td><td>)</td><td><code> [inline]</code></td></tr></tbody></table>
 
-<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_core#a8c7991d43fc5b4fce51095ad7dccaec1" class="el" title="GetTime() returns the &quot;wall clock time&quot; according to the browser.">GetTime()</a> returns the "wall clock time" according to the browser.
+<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_core#a8c7991d43fc5b4fce51095ad7dccaec1" class="el" title="GetTime() returns the &quot;wall clock time&quot; according to the browser.">GetTime()</a> returns the “wall clock time” according to the browser.
 
 **Returns:**  
-A `PP_Time` containing the "wall clock time" according to the browser.
+A `PP_Time` containing the “wall clock time” according to the browser.
 
 <span id="ae80748da9fe60f2b83fbf3e18978f86f" class="anchor" style="margin: 0;"></span>
 
 <table><tbody><tr class="odd"><td>PP_TimeTicks <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_core#ae80748da9fe60f2b83fbf3e18978f86f" class="el">pp::Core::GetTimeTicks</a></td><td>(</td><td></td><td>)</td><td><code> [inline]</code></td></tr></tbody></table>
 
-<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_core#ae80748da9fe60f2b83fbf3e18978f86f" class="el" title="GetTimeTicks() returns the &quot;tick time&quot; according to the browser.">GetTimeTicks()</a> returns the "tick time" according to the browser.
+<a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_core#ae80748da9fe60f2b83fbf3e18978f86f" class="el" title="GetTimeTicks() returns the &quot;tick time&quot; according to the browser.">GetTimeTicks()</a> returns the “tick time” according to the browser.
 
 This clock is used by the browser when passing some event times to the module (for example, using the `PP_InputEvent::time_stamp_seconds` field). It is not correlated to any actual wall clock time (like <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_core#a8c7991d43fc5b4fce51095ad7dccaec1" class="el" title="GetTime() returns the &quot;wall clock time&quot; according to the browser.">GetTime()</a>). Because of this, it will not change if the user changes their computer clock.
 
 **Returns:**  
-A `PP_TimeTicks` containing the "tick time" according to the browser.
+A `PP_TimeTicks` containing the “tick time” according to the browser.
 
 <span id="a052082be868f24d1f1807afa4eb7e7e4" class="anchor" style="margin: 0;"></span>
 
@@ -92,6 +94,7 @@ true if the current thread is the main pepper thread, otherwise false.
 The resource will be deallocated if the reference count reaches zero.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a resource.</td></tr></tbody></table>
 
 ------------------------------------------------------------------------

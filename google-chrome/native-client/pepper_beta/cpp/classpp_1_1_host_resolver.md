@@ -1,4 +1,4 @@
----json {"title":"pp::HostResolver Class Reference"} ---
+—json {“title”:“pp::HostResolver Class Reference”} —
 
 Inheritance diagram for pp::HostResolver:
 
@@ -47,6 +47,7 @@ Default constructor for creating an <a href="/docs/native-client/pepper_beta/cpp
 A constructor used to create a `HostResolver` object.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance with which this resource will be associated.</td></tr></tbody></table>
 
 <span id="adc4f2b44c8281920fbce2c4b93eddce2" class="anchor" style="margin: 0;"></span>
@@ -56,6 +57,7 @@ A constructor used to create a `HostResolver` object.
 A constructor used when you have received a `PP_Resource` as a return value that has had 1 ref added for you.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PPB_HostResolver</code> resource.</td></tr></tbody></table>
 
 <span id="a74ea3a85ad41ded8128b188c821cdb28" class="anchor" style="margin: 0;"></span>
@@ -65,6 +67,7 @@ A constructor used when you have received a `PP_Resource` as a return value that
 The copy constructor for `HostResolver`.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A reference to another <code>HostResolver</code>.</td></tr></tbody></table>
 
 <span id="ad4d39f4e863917bc881fc98c236c9f84" class="anchor" style="margin: 0;"></span>
@@ -94,9 +97,8 @@ A string `Var` on success, which is an empty string if `PP_HOSTRESOLVER_FLAG_CAN
 Gets a network address.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>index</td><td>An index indicating which address to return.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>index</td><td>An index indicating which address to return.</td></tr></tbody></table>
 
 **Returns:**  
 A `NetAddress` object. The object will be null (i.e., <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_resource#a859068e34cdc2dc0b78754c255323aa9" class="el" title="This functions determines if this resource is invalid or uninitialized.">is_null()</a> returns true) if there is a pending `Resolve()` call or the previous `Resolve()` call failed, or the specified index is out of range.
@@ -126,9 +128,8 @@ true if the interface is available, false otherwise.
 The assignment operator for `HostResolver`.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A reference to another <code>HostResolver</code>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A reference to another <code>HostResolver</code>.</td></tr></tbody></table>
 
 **Returns:**  
 A reference to this `HostResolver` object.
@@ -142,12 +143,11 @@ Requests resolution of a host name.
 If the call completes successully, the results can be retrieved by `GetCanonicalName()`, `GetNetAddressCount()` and `GetNetAddress()`.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>host</td><td>The host name (or IP address literal) to resolve.</td></tr><tr class="even"><td>[in]</td><td>port</td><td>The port number to be set in the resulting network addresses.</td></tr><tr class="odd"><td>[in]</td><td>hint</td><td>A <code>PP_HostResolver_Hint</code> structure providing hints for host resolution.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
-<!-- -->
-
 **Returns:**  
-An int32\_t containing an error code from `pp_errors.h`. `PP_ERROR_NOACCESS` will be returned if the caller doesn't have required permissions. `PP_ERROR_NAME_NOT_RESOLVED` will be returned if the host name couldn't be resolved.
+An int32\_t containing an error code from `pp_errors.h`. `PP_ERROR_NOACCESS` will be returned if the caller doesn’t have required permissions. `PP_ERROR_NAME_NOT_RESOLVED` will be returned if the host name couldn’t be resolved.
 
 ------------------------------------------------------------------------
 

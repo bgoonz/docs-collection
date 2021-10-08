@@ -1,4 +1,4 @@
----json {"title":"PP\_Var Struct Reference"} ---
+—json {“title”:“PP\_Var Struct Reference”} —
 
 Data Fields
 -----------
@@ -14,9 +14,9 @@ Detailed Description
 
 The `PP_VAR` struct is a variant data type and can contain any value of one of the types named in the `PP_VarType` enum.
 
-This structure is for passing data between native code which can be strongly typed and the browser (JavaScript) which isn't strongly typed.
+This structure is for passing data between native code which can be strongly typed and the browser (JavaScript) which isn’t strongly typed.
 
-JavaScript has a "number" type for holding a number, and does not differentiate between floating point and integer numbers. The JavaScript operations will try to optimize operations by using integers when possible, but could end up with doubles. Therefore, you can't assume a numeric `PP_Var` will be the type you expect. Your code should be capable of handling either int32\_t or double for numeric PP\_Vars sent from JavaScript.
+JavaScript has a “number” type for holding a number, and does not differentiate between floating point and integer numbers. The JavaScript operations will try to optimize operations by using integers when possible, but could end up with doubles. Therefore, you can’t assume a numeric `PP_Var` will be the type you expect. Your code should be capable of handling either int32\_t or double for numeric PP\_Vars sent from JavaScript.
 
 ------------------------------------------------------------------------
 

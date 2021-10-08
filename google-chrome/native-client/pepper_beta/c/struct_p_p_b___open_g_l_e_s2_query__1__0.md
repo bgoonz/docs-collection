@@ -1,4 +1,4 @@
----json {"title":"PPB\_OpenGLES2Query Struct Reference"} ---
+—json {“title”:“PPB\_OpenGLES2Query Struct Reference”} —
 
 Data Fields
 -----------

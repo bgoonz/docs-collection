@@ -1,4 +1,4 @@
----json {"title":"PP\_VideoPicture Struct Reference"} ---
+—json {“title”:“PP\_VideoPicture Struct Reference”} —
 
 Data Fields
 -----------
@@ -33,7 +33,7 @@ See the PPB\_VideoDecoder function Decode() for more details.
 
 <table><tbody><tr class="odd"><td>uint32_t <a href="/docs/native-client/pepper_beta/c/struct_p_p___video_picture__0__1#a8ee7a6fdddbf71d429a16f7779af6f0f" class="el">PP_VideoPicture::texture_id</a></td></tr></tbody></table>
 
-Texture ID in the plugin's GL context.
+Texture ID in the plugin’s GL context.
 
 The plugin can use this to render the decoded picture.
 

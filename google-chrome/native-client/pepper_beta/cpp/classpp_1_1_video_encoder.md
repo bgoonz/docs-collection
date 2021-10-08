@@ -1,4 +1,4 @@
----json {"title":"pp::VideoEncoder Class Reference"} ---
+—json {“title”:“pp::VideoEncoder Class Reference”} —
 
 Inheritance diagram for pp::VideoEncoder:
 
@@ -27,7 +27,7 @@ Typical usage:
 -   Call Create() to create a new video encoder resource.
 -   Call GetSupportedFormats() to determine which codecs and profiles are available.
 -   Call <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_video_encoder#ad2c47c10cfe92a3bf41e204d326560c7" class="el" title="Initializes a video encoder resource.">Initialize()</a> to initialize the encoder for a supported profile.
--   Call <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_video_encoder#a5c5fabe6a00afe6b8849bbc612183bb2" class="el" title="Gets a blank video frame which can be filled with video data and passed to the encoder.">GetVideoFrame()</a> to get a blank frame and fill it in, or get a video frame from another resource, e.g. `PPB_MediaStreamVideoTrack`.
+-   Call <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_video_encoder#a5c5fabe6a00afe6b8849bbc612183bb2" class="el" title="Gets a blank video frame which can be filled with video data and passed to the encoder.">GetVideoFrame()</a> to get a blank frame and fill it in, or get a video frame from another resource, e.g. `PPB_MediaStreamVideoTrack`.
 -   Call <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_video_encoder#a39755b4e3aee295d8ba509da9904e5cd" class="el" title="Encodes a video frame.">Encode()</a> to push the video frame to the encoder. If an external frame is pushed, wait for completion to recycle the frame.
 -   Call <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_video_encoder#a9c0861d91f7c93cb15cf917ca6d6cf95" class="el" title="Gets the next encoded bitstream buffer from the encoder.">GetBitstreamBuffer()</a> continuously (waiting for each previous call to complete) to pull encoded pictures from the encoder.
 -   Call <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_video_encoder#a81aec23c26a3f9c16ff90efdc38b2895" class="el" title="Recycles a bitstream buffer back to the encoder.">RecycleBitstreamBuffer()</a> after consuming the data in the bitstream buffer.
@@ -53,6 +53,7 @@ Default constructor for creating an <a href="/docs/native-client/pepper_beta/cpp
 A constructor used to create a `VideoEncoder` and associate it with the provided `Instance`.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance with which this resource will be associated.</td></tr></tbody></table>
 
 <span id="ad9d09d444a0480153aa5086fda13f064" class="anchor" style="margin: 0;"></span>
@@ -62,6 +63,7 @@ A constructor used to create a `VideoEncoder` and associate it with the provided
 The copy constructor for `VideoEncoder`.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A reference to a <code>VideoEncoder</code>.</td></tr></tbody></table>
 
 ------------------------------------------------------------------------
@@ -84,12 +86,11 @@ Any pending callbacks will still run, reporting `PP_ERROR_ABORTED` . It is not v
 Encodes a video frame.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>video_frame</td><td>The <code>VideoFrame</code> to be encoded.</td></tr><tr class="even"><td>[in]</td><td>force_keyframe</td><td>A <code>PP_Bool&gt; specifying whether the encoder should emit a key frame for this video frame. </code></td></tr><tr class="odd"><td>[in]</td><td>callback</td><td><code>A </code><code>CompletionCallback</code> to be called upon completion. Plugins that pass <code>VideoFrame</code> resources owned by other resources should wait for completion before reusing them.</td></tr></tbody></table>
 
-<!-- -->
-
 **Returns:**  
-` An int32_t containing an error code from ``pp_errors.h`. Returns PP\_ERROR\_FAILED if <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_video_encoder#ad2c47c10cfe92a3bf41e204d326560c7" class="el" title="Initializes a video encoder resource.">Initialize()</a> has not successfully completed.
+``` An int32_t containing an error code from ``pp_errors.h ```. Returns PP\_ERROR\_FAILED if <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_video_encoder#ad2c47c10cfe92a3bf41e204d326560c7" class="el" title="Initializes a video encoder resource.">Initialize()</a> has not successfully completed.
 
 <span id="a9c0861d91f7c93cb15cf917ca6d6cf95" class="anchor" style="margin: 0;"></span>
 
@@ -98,9 +99,8 @@ Encodes a video frame.
 Gets the next encoded bitstream buffer from the encoder.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[out]</td><td>bitstream_buffer</td><td>A <code>PP_BitstreamBuffer</code> containing encoded video data.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>CompletionCallbackWithOutput</code> to be called upon completion with the next bitstream buffer. The plugin can call GetBitstreamBuffer from the callback in order to continuously "pull" bitstream buffers from the encoder.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[out]</td><td>bitstream_buffer</td><td>A <code>PP_BitstreamBuffer</code> containing encoded video data.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>CompletionCallbackWithOutput</code> to be called upon completion with the next bitstream buffer. The plugin can call GetBitstreamBuffer from the callback in order to continuously “pull” bitstream buffers from the encoder.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing an error code from `pp_errors.h`. Returns PP\_ERROR\_FAILED if <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_video_encoder#ad2c47c10cfe92a3bf41e204d326560c7" class="el" title="Initializes a video encoder resource.">Initialize()</a> has not successfully completed. Returns PP\_ERROR\_INPROGRESS if a prior call to <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_video_encoder#a9c0861d91f7c93cb15cf917ca6d6cf95" class="el" title="Gets the next encoded bitstream buffer from the encoder.">GetBitstreamBuffer()</a> has not completed.
@@ -114,9 +114,8 @@ Gets the coded size of the video frames required by the encoder.
 Coded size is the logical size of the input frames, in pixels. The encoder may have hardware alignment requirements that make this different from |input\_visible\_size|, as requested in the call to <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_video_encoder#ad2c47c10cfe92a3bf41e204d326560c7" class="el" title="Initializes a video encoder resource.">Initialize()</a>.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>coded_size</td><td>A <code>Size</code> to hold the coded size.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>coded_size</td><td>A <code>Size</code> to hold the coded size.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing a result code from `pp_errors.h`. Returns PP\_ERROR\_FAILED if <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_video_encoder#ad2c47c10cfe92a3bf41e204d326560c7" class="el" title="Initializes a video encoder resource.">Initialize()</a> has not successfully completed.
@@ -141,9 +140,8 @@ Gets an array of supported video encoder profiles.
 These can be used to choose a profile before calling <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_video_encoder#ad2c47c10cfe92a3bf41e204d326560c7" class="el" title="Initializes a video encoder resource.">Initialize()</a>.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>CompletionCallbackWithOutput</code> to be called upon completion with the PP_VideoProfileDescription structs.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>CompletionCallbackWithOutput</code> to be called upon completion with the PP_VideoProfileDescription structs.</td></tr></tbody></table>
 
 **Returns:**  
 If &gt;= 0, the number of supported profiles returned, otherwise an error code from `pp_errors.h`.
@@ -155,9 +153,8 @@ If &gt;= 0, the number of supported profiles returned, otherwise an error code f
 Gets a blank video frame which can be filled with video data and passed to the encoder.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>CompletionCallbackWithOutput</code> to be called upon completion with the blank <code>VideoFrame</code> resource.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>CompletionCallbackWithOutput</code> to be called upon completion with the blank <code>VideoFrame</code> resource.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing an error code from `pp_errors.h`.
@@ -171,12 +168,11 @@ Initializes a video encoder resource.
 This should be called after <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_video_encoder#a5c264d3b6ec0a5970cc1dee74dbfaf55" class="el" title="Gets an array of supported video encoder profiles.">GetSupportedProfiles()</a> and before any functions below.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>input_format</td><td>The <code>PP_VideoFrame_Format</code> of the frames which will be encoded.</td></tr><tr class="even"><td>[in]</td><td>input_visible_size</td><td>A <code>Size</code> specifying the dimensions of the visible part of the input frames.</td></tr><tr class="odd"><td>[in]</td><td>output_profile</td><td>A <code>PP_VideoProfile</code> specifying the codec profile of the encoded output stream.</td></tr><tr class="even"><td>[in]</td><td>acceleration</td><td>A <code>PP_HardwareAcceleration</code> specifying whether to use a hardware accelerated or a software implementation.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
-<!-- -->
-
 **Returns:**  
-An int32\_t containing an error code from `pp_errors.h`. Returns PP\_ERROR\_NOTSUPPORTED if video encoding is not available, or the requested codec profile is not supported. Returns PP\_ERROR\_NOMEMORY if frame and bitstream buffers can't be created.
+An int32\_t containing an error code from `pp_errors.h`. Returns PP\_ERROR\_NOTSUPPORTED if video encoding is not available, or the requested codec profile is not supported. Returns PP\_ERROR\_NOMEMORY if frame and bitstream buffers can’t be created.
 
 <span id="a81aec23c26a3f9c16ff90efdc38b2895" class="anchor" style="margin: 0;"></span>
 
@@ -185,6 +181,7 @@ An int32\_t containing an error code from `pp_errors.h`. Returns PP\_ERROR\_NOTS
 Recycles a bitstream buffer back to the encoder.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>bitstream_buffer</td><td>A <code>PP_BitstreamBuffer</code> that is no longer needed by the plugin.</td></tr></tbody></table>
 
 <span id="a727159fe366c6ce146dce4c42a608fd7" class="anchor" style="margin: 0;"></span>
@@ -196,6 +193,7 @@ Requests a change to encoding parameters.
 This is only a request, fulfilled on a best-effort basis.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>bitrate</td><td>The requested new bitrate, in bits per second.</td></tr><tr class="even"><td>[in]</td><td>framerate</td><td>The requested new framerate, in frames per second.</td></tr></tbody></table>
 
 ------------------------------------------------------------------------

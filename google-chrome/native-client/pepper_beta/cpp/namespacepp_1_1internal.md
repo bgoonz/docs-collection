@@ -1,4 +1,4 @@
----json {"title":"pp::internal Namespace Reference"} ---
+—json {“title”:“pp::internal Namespace Reference”} —
 
 Classes
 -------

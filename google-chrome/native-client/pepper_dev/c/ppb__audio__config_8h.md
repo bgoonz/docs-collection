@@ -1,4 +1,4 @@
----json {"title":"ppb\_audio\_config.h File Reference"} ---
+—json {“title”:“ppb\_audio\_config.h File Reference”} —
 
 Include dependency graph for ppb\_audio\_config.h:
 
@@ -7,13 +7,13 @@ Include dependency graph for ppb\_audio\_config.h:
 Data Structures
 ---------------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p_b___audio_config__1__1/" class="el">PPB_AudioConfig</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_AudioConfig</code> interface contains pointers to several functions for establishing your audio configuration within the browser. <a href="/docs/native-client/pepper_dev/c/struct_p_p_b___audio_config__1__1#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p_b___audio_config__1__1/" class="el">PPB_AudioConfig</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_AudioConfig</code> interface contains pointers to several functions for establishing your audio configuration within the browser. <a href="/docs/native-client/pepper_dev/c/struct_p_p_b___audio_config__1__1#details">More…</a><br />
 </td></tr></tbody></table>
 
 Defines
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__audio__config_8h#ae25decba5eb6b3f71b9e36bd8dcdcda7" class="el">PPB_AUDIO_CONFIG_INTERFACE</a>   "PPB_AudioConfig;1.1"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__audio__config_8h#a96fc67cc118c99f3c685f9fcc79d88ac" class="el">PPB_AUDIO_CONFIG_INTERFACE</a>   <a href="/docs/native-client/pepper_dev/c/ppb__audio__config_8h#ae25decba5eb6b3f71b9e36bd8dcdcda7" class="el">PPB_AUDIO_CONFIG_INTERFACE</a></td></tr></tbody></table>
+<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__audio__config_8h#ae25decba5eb6b3f71b9e36bd8dcdcda7" class="el">PPB_AUDIO_CONFIG_INTERFACE</a>   “PPB_AudioConfig;1.1”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__audio__config_8h#a96fc67cc118c99f3c685f9fcc79d88ac" class="el">PPB_AUDIO_CONFIG_INTERFACE</a>   <a href="/docs/native-client/pepper_dev/c/ppb__audio__config_8h#ae25decba5eb6b3f71b9e36bd8dcdcda7" class="el">PPB_AUDIO_CONFIG_INTERFACE</a></td></tr></tbody></table>
 
 Typedefs
 --------
@@ -50,4 +50,4 @@ Define Documentation
 
 <span id="ae25decba5eb6b3f71b9e36bd8dcdcda7" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_dev/c/ppb__audio__config_8h#ae25decba5eb6b3f71b9e36bd8dcdcda7" class="el">PPB_AUDIO_CONFIG_INTERFACE</a>   "PPB_AudioConfig;1.1"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_dev/c/ppb__audio__config_8h#ae25decba5eb6b3f71b9e36bd8dcdcda7" class="el">PPB_AUDIO_CONFIG_INTERFACE</a>   “PPB_AudioConfig;1.1”</td></tr></tbody></table>

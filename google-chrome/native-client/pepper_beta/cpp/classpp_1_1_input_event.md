@@ -1,4 +1,4 @@
----json {"title":"pp::InputEvent Class Reference"} ---
+—json {“title”:“pp::InputEvent Class Reference”} —
 
 Inheritance diagram for pp::InputEvent:
 
@@ -58,6 +58,7 @@ This constructor constructs an input event from the provided input event resourc
 The <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_input_event/" class="el" title="This class represents an input event resource.">InputEvent</a> object will be <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_resource#a859068e34cdc2dc0b78754c255323aa9" class="el" title="This functions determines if this resource is invalid or uninitialized.">is_null()</a> if the given resource is not a valid input event.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>input_event_resource</td><td>A input event resource ID.</td></tr></tbody></table>
 
 <span id="a2492183af4fecec44a423a5b7eae6faf" class="anchor" style="margin: 0;"></span>
@@ -88,7 +89,7 @@ The modifiers associated with the event, or 0 if the given resource is not a val
 
 The time will be before the current time since processing and dispatching the event has some overhead. Use this value to compare the times the user generated two events without being sensitive to variable processing time.
 
-The return value is in time ticks, which is a monotonically increasing clock not related to the wall clock time. It will not change if the user changes their clock or daylight savings time starts, so can be reliably used to compare events. This means, however, that you can't correlate event times to a particular time of day on the system clock.
+The return value is in time ticks, which is a monotonically increasing clock not related to the wall clock time. It will not change if the user changes their clock or daylight savings time starts, so can be reliably used to compare events. This means, however, that you can’t correlate event times to a particular time of day on the system clock.
 
 **Returns:**  
 A `PP_TimeTicks` containing the time the event was generated.

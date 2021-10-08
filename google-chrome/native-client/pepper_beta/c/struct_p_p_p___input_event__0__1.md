@@ -1,4 +1,4 @@
----json {"title":"PPP\_InputEvent Struct Reference"} ---
+—json {“title”:“PPP\_InputEvent Struct Reference”} —
 
 Data Fields
 -----------
@@ -24,14 +24,12 @@ Event propagation also controls focus. If you handle an event like a mouse event
 
 In general, you should try to keep input event handling short. Especially for filtered input events, the browser or page may be blocked waiting for you to respond.
 
-The caller of this function will maintain a reference to the input event resource during this call. Unless you take a reference to the resource to hold it for later, you don't need to release it.
+The caller of this function will maintain a reference to the input event resource during this call. Unless you take a reference to the resource to hold it for later, you don’t need to release it.
 
-**Note:** If you're not receiving input events, make sure you register for the event classes you want by calling RequestInputEvents or RequestFilteringInputEvents. If you're still not receiving keyboard input events, make sure you're returning true (or using a non-filtered event handler) for mouse events. Otherwise, the instance will not receive focus and keyboard events will not be sent.
+**Note:** If you’re not receiving input events, make sure you register for the event classes you want by calling RequestInputEvents or RequestFilteringInputEvents. If you’re still not receiving keyboard input events, make sure you’re returning true (or using a non-filtered event handler) for mouse events. Otherwise, the instance will not receive focus and keyboard events will not be sent.
 
 **See also:**  
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___input_event__1__0#a369d79730ad84d0b8dee9127c114086e" class="el" title="RequestInputEvent() requests that input events corresponding to the given input events are delivered ...">PPB_InputEvent.RequestInputEvents</a> and <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___input_event__1__0#a42dcc8edf80141680e919258f3066069" class="el" title="RequestFilteringInputEvents() requests that input events corresponding to the given input events are ...">PPB_InputEvent.RequestFilteringInputEvents</a>
-
-<!-- -->
 
 **Returns:**  
 PP\_TRUE if the event was handled, PP\_FALSE if not. If you have registered to filter this class of events by calling RequestFilteringInputEvents, and you return PP\_FALSE, the event will be forwarded to the page (and eventually the browser) for the default handling. For non-filtered events, the return value will be ignored.

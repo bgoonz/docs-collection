@@ -1,4 +1,4 @@
----json {"title":"file\_ref.h File Reference"} ---
+—json {“title”:“file\_ref.h File Reference”} —
 
 Include dependency graph for file\_ref.h:
 
@@ -7,7 +7,7 @@ Include dependency graph for file\_ref.h:
 Classes
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_file_ref/" class="el">pp::FileRef</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>FileRef</code> class represents a "weak pointer" to a file in a file system. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_file_ref#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_file_ref/" class="el">pp::FileRef</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>FileRef</code> class represents a “weak pointer” to a file in a file system. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_file_ref#details">More…</a><br />
 </td></tr></tbody></table>
 
 Namespaces
@@ -22,4 +22,4 @@ Namespaces
 Detailed Description
 --------------------
 
-This file defines the API to create a file reference or "weak pointer" to a file in a file system.
+This file defines the API to create a file reference or “weak pointer” to a file in a file system.

@@ -1,4 +1,4 @@
----json {"title":"ppp.h File Reference"} ---
+—json {“title”:“ppp.h File Reference”} —
 
 Include dependency graph for ppp.h:
 
@@ -7,7 +7,7 @@ Include dependency graph for ppp.h:
 Typedefs
 --------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">typedef int32_t(* </td><td><a href="/docs/native-client/pepper_dev/c/group___typedefs#gae33224cdac15cf8596127fe7b5f08325" class="el">PP_InitializeModule_Func</a> )(<a href="/docs/native-client/pepper_dev/c/group___typedefs#gab780dd451cd7f51284cb752edd88f9a0" class="el">PP_Module</a> module, <a href="/docs/native-client/pepper_dev/c/group___typedefs#ga68ad7c927b86e0c29d890603edd33154" class="el">PPB_GetInterface</a> get_browser_interface)</td></tr><tr class="even"><td style="text-align: right;">typedef void(* </td><td><a href="/docs/native-client/pepper_dev/c/group___typedefs#gad2b49167bcbf6c2c895ffb1a61bc720c" class="el">PP_ShutdownModule_Func</a> )(void)</td></tr><tr class="odd"><td style="text-align: right;">typedef const void *(* </td><td><a href="/docs/native-client/pepper_dev/c/group___typedefs#ga893cfdc559fdf7ae3004816357c3d7e9" class="el">PP_GetInterface_Func</a> )(const char *interface_name)</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td style="text-align: right;">typedef int32_t(* </td><td><a href="/docs/native-client/pepper_dev/c/group___typedefs#gae33224cdac15cf8596127fe7b5f08325" class="el">PP_InitializeModule_Func</a> )(<a href="/docs/native-client/pepper_dev/c/group___typedefs#gab780dd451cd7f51284cb752edd88f9a0" class="el">PP_Module</a> module, <a href="/docs/native-client/pepper_dev/c/group___typedefs#ga68ad7c927b86e0c29d890603edd33154" class="el">PPB_GetInterface</a> get_browser_interface)</td></tr><tr class="even"><td style="text-align: right;">typedef void(* </td><td><a href="/docs/native-client/pepper_dev/c/group___typedefs#gad2b49167bcbf6c2c895ffb1a61bc720c" class="el">PP_ShutdownModule_Func</a> )(void)</td></tr><tr class="odd"><td style="text-align: right;">typedef const void <em>(</em> </td><td><a href="/docs/native-client/pepper_dev/c/group___typedefs#ga893cfdc559fdf7ae3004816357c3d7e9" class="el">PP_GetInterface_Func</a> )(const char *interface_name)</td></tr></tbody></table>
 
 Functions
 ---------

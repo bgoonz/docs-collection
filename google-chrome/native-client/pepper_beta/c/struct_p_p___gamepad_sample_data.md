@@ -1,4 +1,4 @@
----json {"title":"PP\_GamepadSampleData Struct Reference"} ---
+—json {“title”:“PP\_GamepadSampleData Struct Reference”} —
 
 Data Fields
 -----------
@@ -25,7 +25,7 @@ Field Documentation
 
 Normalized values for the axes, indices valid up to |axes\_length|-1.
 
-Axis values range from -1..1, and are in order of "importance".
+Axis values range from -1..1, and are in order of “importance”.
 
 <span id="a27e25af2c4d7278951c71d5a71821db5" class="anchor" style="margin: 0;"></span>
 
@@ -39,7 +39,7 @@ Number of valid elements in the |axes| array.
 
 Normalized values for the buttons, indices valid up to |buttons\_length|.
 
--   1. Button values range from 0..1, and are in order of importance.
+-   1.  Button values range from 0..1, and are in order of importance.
 
 <span id="ae58bc687fc618e4a957dda7cd087bd58" class="anchor" style="margin: 0;"></span>
 

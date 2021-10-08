@@ -1,4 +1,4 @@
----json {"title":"ppb.h File Reference"} ---
+—json {“title”:“ppb.h File Reference”} —
 
 Include dependency graph for ppb.h:
 
@@ -7,7 +7,7 @@ Include dependency graph for ppb.h:
 Typedefs
 --------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">typedef const void *(* </td><td><a href="/docs/native-client/pepper_dev/c/group___typedefs#ga68ad7c927b86e0c29d890603edd33154" class="el">PPB_GetInterface</a> )(const char *interface_name)</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td style="text-align: right;">typedef const void <em>(</em> </td><td><a href="/docs/native-client/pepper_dev/c/group___typedefs#ga68ad7c927b86e0c29d890603edd33154" class="el">PPB_GetInterface</a> )(const char *interface_name)</td></tr></tbody></table>
 
 ------------------------------------------------------------------------
 

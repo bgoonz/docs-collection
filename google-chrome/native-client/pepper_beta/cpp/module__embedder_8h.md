@@ -1,4 +1,4 @@
----json {"title":"module\_embedder.h File Reference"} ---
+—json {“title”:“module\_embedder.h File Reference”} —
 
 Include dependency graph for module\_embedder.h:
 

@@ -1,4 +1,4 @@
----json {"title":"pp::Compositor Class Reference"} ---
+—json {“title”:“pp::Compositor Class Reference”} —
 
 Inheritance diagram for pp::Compositor:
 
@@ -55,6 +55,7 @@ On failure, the object will be <a href="/docs/native-client/pepper_beta/cpp/clas
 The copy constructor for `Compositor`.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A reference to a <code>Compositor</code>.</td></tr></tbody></table>
 
 <span id="ad1130a511519ff5a5bc7bfae44cb0b6d" class="anchor" style="margin: 0;"></span>
@@ -64,6 +65,7 @@ The copy constructor for `Compositor`.
 Constructs a `Compositor` from a `Resource`.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PPB_Compositor</code> resource.</td></tr></tbody></table>
 
 <span id="a43e403e54998200768d198ae95571461" class="anchor" style="margin: 0;"></span>
@@ -73,6 +75,7 @@ Constructs a `Compositor` from a `Resource`.
 A constructor used when you have received a `PP_Resource` as a return value that has had 1 ref added on behalf of the caller.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PPB_Compositor</code> resource.</td></tr></tbody></table>
 
 <span id="abf2a4c7ef3a0a727d1b80a5cd2f39729" class="anchor" style="margin: 0;"></span>
@@ -104,9 +107,8 @@ A `CompositorLayer` containing the compositor layer resource.
 Commits layers added by `AddLayer()` to the chromium compositor.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>cc</td><td>A <code>CompletionCallback</code> to be called when layers have been represented on screen.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>cc</td><td>A <code>CompletionCallback</code> to be called when layers have been represented on screen.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing a result code from `pp_errors.h`.
@@ -118,9 +120,8 @@ An int32\_t containing a result code from `pp_errors.h`.
 Checks whether a `Resource` is a compositor, to test whether it is appropriate for use with the `Compositor` constructor.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>Resource</code> to test.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>Resource</code> to test.</td></tr></tbody></table>
 
 **Returns:**  
 True if `resource` is a compositor.

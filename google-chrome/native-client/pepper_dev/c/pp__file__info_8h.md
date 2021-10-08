@@ -1,4 +1,4 @@
----json {"title":"pp\_file\_info.h File Reference"} ---
+—json {“title”:“pp\_file\_info.h File Reference”} —
 
 Include dependency graph for pp\_file\_info.h:
 
@@ -7,7 +7,7 @@ Include dependency graph for pp\_file\_info.h:
 Data Structures
 ---------------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p___file_info/" class="el">PP_FileInfo</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PP_FileInfo</code> struct represents all information about a file, such as size, type, and creation time. <a href="/docs/native-client/pepper_dev/c/struct_p_p___file_info#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p___file_info/" class="el">PP_FileInfo</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PP_FileInfo</code> struct represents all information about a file, such as size, type, and creation time. <a href="/docs/native-client/pepper_dev/c/struct_p_p___file_info#details">More…</a><br />
 </td></tr></tbody></table>
 
 Enumerations

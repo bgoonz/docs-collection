@@ -1,4 +1,4 @@
----json {"title":"PPB\_MouseLock Struct Reference"} ---
+—json {“title”:“PPB\_MouseLock Struct Reference”} —
 
 Data Fields
 -----------
@@ -29,12 +29,11 @@ Field Documentation
 
 While the mouse is locked, the cursor is implicitly hidden from the user. Any movement of the mouse will generate a `PP_INPUTEVENT_TYPE_MOUSEMOVE` event. The `GetPosition()` function in the `PPB_MouseInputEvent` interface reports the last known mouse position just as mouse lock was entered. The `GetMovement()` function provides relative movement information indicating what the change in position of the mouse would be had it not been locked.
 
-The browser may revoke the mouse lock for reasons including (but not limited to) the user pressing the ESC key, the user activating another program using a reserved keystroke (e.g. ALT+TAB), or some other system event.
+The browser may revoke the mouse lock for reasons including (but not limited to) the user pressing the ESC key, the user activating another program using a reserved keystroke (e.g. ALT+TAB), or some other system event.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code> identifying one instance of a module.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code> identifying one instance of a module.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>PP_CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing an error code from `pp_errors.h`.
@@ -48,6 +47,7 @@ An int32\_t containing an error code from `pp_errors.h`.
 This is an asynchronous operation. The module instance will be notified using the `PPP_MouseLock` interface when it has lost the mouse lock.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code> identifying one instance of a module.</td></tr></tbody></table>
 
 ------------------------------------------------------------------------

@@ -1,4 +1,4 @@
----json {"title":"mouse\_lock.h File Reference"} ---
+—json {“title”:“mouse\_lock.h File Reference”} —
 
 Include dependency graph for mouse\_lock.h:
 
@@ -7,7 +7,7 @@ Include dependency graph for mouse\_lock.h:
 Classes
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_mouse_lock/" class="el">pp::MouseLock</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>This class allows you to associate the <code>PPP_MouseLock</code> and <code>PPB_MouseLock</code> C-based interfaces with an object. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_mouse_lock#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_mouse_lock/" class="el">pp::MouseLock</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>This class allows you to associate the <code>PPP_MouseLock</code> and <code>PPB_MouseLock</code> C-based interfaces with an object. <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_mouse_lock#details">More…</a><br />
 </td></tr></tbody></table>
 
 Namespaces

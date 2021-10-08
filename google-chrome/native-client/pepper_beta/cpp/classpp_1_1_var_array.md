@@ -1,4 +1,4 @@
----json {"title":"pp::VarArray Class Reference"} ---
+—json {“title”:“pp::VarArray Class Reference”} —
 
 Inheritance diagram for pp::VarArray:
 
@@ -33,6 +33,7 @@ Constructs a `VarArray` given a var for which <a href="/docs/native-client/peppe
 This will refer to the same array var, but allow you to access methods specific to arrays.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>var</td><td>An array var.</td></tr></tbody></table>
 
 <span id="abb66ecc726d9aca28bd4a430a391a5d3" class="anchor" style="margin: 0;"></span>
@@ -42,6 +43,7 @@ This will refer to the same array var, but allow you to access methods specific 
 Constructs a `VarArray` given a `PP_Var` of type PP\_VARTYPE\_ARRAY.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>var</td><td>A <code>PP_Var</code> of type PP_VARTYPE_ARRAY.</td></tr></tbody></table>
 
 <span id="a839cc2aa7b5a4698f3a11214f76e56c0" class="anchor" style="margin: 0;"></span>
@@ -66,9 +68,8 @@ Member Function Documentation
 Gets an element from the array.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>index</td><td>An index indicating which element to return.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>index</td><td>An index indicating which element to return.</td></tr></tbody></table>
 
 **Returns:**  
 The element at the specified position. If `index` is larger than or equal to the array length, an undefined var is returned.
@@ -95,9 +96,8 @@ Assignment operator.
 The `Var` assignment operator is overridden here so that we can check for assigning a non-array var to a `VarArray`.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>The array var to be assigned.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>The array var to be assigned.</td></tr></tbody></table>
 
 **Returns:**  
 The resulting `VarArray` (as a `Var`&).
@@ -111,9 +111,8 @@ Reimplemented from <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_var#
 Sets the value of an element in the array.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>index</td><td>An index indicating which element to modify. If <code>index</code> is larger than or equal to the array length, the length is updated to be <code>index</code> + 1. Any position in the array that hasn't been set before is set to undefined, i.e., <code>PP_Var</code> of type <code>PP_VARTYPE_UNDEFINED</code>.</td></tr><tr class="even"><td>[in]</td><td>value</td><td>The value to set.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>index</td><td>An index indicating which element to modify. If <code>index</code> is larger than or equal to the array length, the length is updated to be <code>index</code> + 1. Any position in the array that hasn’t been set before is set to undefined, i.e., <code>PP_Var</code> of type <code>PP_VARTYPE_UNDEFINED</code>.</td></tr><tr class="even"><td>[in]</td><td>value</td><td>The value to set.</td></tr></tbody></table>
 
 **Returns:**  
 A `bool` indicating whether the operation succeeds.
@@ -125,9 +124,8 @@ A `bool` indicating whether the operation succeeds.
 Sets the array length.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>length</td><td>The new array length. If <code>length</code> is smaller than its current value, the array is truncated to the new length; any elements that no longer fit are removed. If <code>length</code> is larger than its current value, undefined vars are appended to increase the array to the specified length.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>length</td><td>The new array length. If <code>length</code> is smaller than its current value, the array is truncated to the new length; any elements that no longer fit are removed. If <code>length</code> is larger than its current value, undefined vars are appended to increase the array to the specified length.</td></tr></tbody></table>
 
 **Returns:**  
 A `bool` indicating whether the operation succeeds.

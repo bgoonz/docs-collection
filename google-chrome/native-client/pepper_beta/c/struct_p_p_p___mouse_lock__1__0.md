@@ -1,4 +1,4 @@
----json {"title":"PPP\_MouseLock Struct Reference"} ---
+—json {“title”:“PPP\_MouseLock Struct Reference”} —
 
 Data Fields
 -----------
@@ -26,6 +26,7 @@ Field Documentation
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_p___mouse_lock__1__0#abbc863bf2e6b2e608bdbde3d9229debf" class="el" title="MouseLockLost() is called when the instance loses the mouse lock, such as when the user presses the E...">MouseLockLost()</a> is called when the instance loses the mouse lock, such as when the user presses the ESC key.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code> identifying one instance of a module.</td></tr></tbody></table>
 
 ------------------------------------------------------------------------

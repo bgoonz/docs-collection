@@ -1,4 +1,4 @@
----json {"title":"PPB\_NetworkMonitor Struct Reference"} ---
+—json {“title”:“PPB\_NetworkMonitor Struct Reference”} —
 
 Data Fields
 -----------
@@ -28,9 +28,8 @@ Field Documentation
 Creates a Network Monitor resource.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code> identifying one instance of a module.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>A <code>PP_Instance</code> identifying one instance of a module.</td></tr></tbody></table>
 
 **Returns:**  
 A `PP_Resource` corresponding to a network monitor or 0 on failure.
@@ -42,9 +41,8 @@ A `PP_Resource` corresponding to a network monitor or 0 on failure.
 Determines if the specified `resource` is a `NetworkMonitor` object.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> resource.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> resource.</td></tr></tbody></table>
 
 **Returns:**  
 Returns `PP_TRUE` if `resource` is a `PPB_NetworkMonitor`, `PP_FALSE` otherwise.
@@ -58,12 +56,11 @@ Gets current network configuration.
 When called for the first time, completes as soon as the current network configuration is received from the browser. Each consequent call will wait for network list changes, returning a new `PPB_NetworkList` resource every time.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>network_monitor</td><td>A <code>PP_Resource</code> corresponding to a network monitor.</td></tr><tr class="even"><td>[out]</td><td>network_list</td><td>The <code>PPB_NetworkList</code><code> resource with the current state of network interfaces. </code></td></tr><tr class="odd"><td>[in]</td><td>callback</td><td><code></code><code>A </code><code>PP_CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
-<!-- -->
-
 **Returns:**  
-``` An int32_t containing an error code from ``pp_errors.h`. `PP_ERROR_NOACCESS` will be returned if the caller doesn't have required permissions.
+\``An int32_t containing an error code from`pp\_errors.h`.`PP\_ERROR\_NOACCESS\` will be returned if the caller doesn’t have required permissions.
 
 ------------------------------------------------------------------------
 

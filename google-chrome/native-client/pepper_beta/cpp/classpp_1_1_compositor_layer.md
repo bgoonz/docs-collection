@@ -1,4 +1,4 @@
----json {"title":"pp::CompositorLayer Class Reference"} ---
+—json {“title”:“pp::CompositorLayer Class Reference”} —
 
 Inheritance diagram for pp::CompositorLayer:
 
@@ -36,6 +36,7 @@ Default constructor for creating an <a href="/docs/native-client/pepper_beta/cpp
 The copy constructor for `CompositorLayer`.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A reference to a <code>CompositorLayer</code>.</td></tr></tbody></table>
 
 <span id="a93dea71aef9af347d0198f80ba59df77" class="anchor" style="margin: 0;"></span>
@@ -45,6 +46,7 @@ The copy constructor for `CompositorLayer`.
 Constructs a `CompositorLayer` from a `Resource`.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PPB_CompositorLayer</code> resource.</td></tr></tbody></table>
 
 <span id="aa8c5c916890ad4df1bb5a9f602d1be72" class="anchor" style="margin: 0;"></span>
@@ -54,6 +56,7 @@ Constructs a `CompositorLayer` from a `Resource`.
 A constructor used when you have received a `PP_Resource` as a return value that has had 1 ref added for you.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PPB_CompositorLayer</code> resource.</td></tr></tbody></table>
 
 <span id="a612e4be9de4ad166199629c3bee2fca6" class="anchor" style="margin: 0;"></span>
@@ -74,9 +77,8 @@ Member Function Documentation
 Checks whether a `Resource` is a compositor layer, to test whether it is appropriate for use with the `CompositorLayer` constructor.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>Resource</code> to test.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>Resource</code> to test.</td></tr></tbody></table>
 
 **Returns:**  
 True if `resource` is a compositor layer.
@@ -137,7 +139,7 @@ An int32\_t containing a result code from `pp_errors.h`.
 
 Sets the image of an image layer.
 
-If the layer is uninitialized, it will initialize the layer first, and then set its image. The layer size will be set to the image's size. The source rect will be set to the full image. If the layer has been initialized to another kind of layer, the layer will not be changed, and `PP_ERROR_BADARGUMENT` will be returned.
+If the layer is uninitialized, it will initialize the layer first, and then set its image. The layer size will be set to the image’s size. The source rect will be set to the full image. If the layer has been initialized to another kind of layer, the layer will not be changed, and `PP_ERROR_BADARGUMENT` will be returned.
 
 param\[in\] image\_data A `ImageData` corresponding to an image data resource. param\[in\] size A `Size` for the size of the layer before transform. param\[in\] cc A `CompletionCallback` to be called when the image data is released by Chromium compositor.
 

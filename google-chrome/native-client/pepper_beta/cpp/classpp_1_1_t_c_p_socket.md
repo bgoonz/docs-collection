@@ -1,4 +1,4 @@
----json {"title":"pp::TCPSocket Class Reference"} ---
+—json {“title”:“pp::TCPSocket Class Reference”} —
 
 Inheritance diagram for pp::TCPSocket:
 
@@ -47,6 +47,7 @@ Default constructor for creating an <a href="/docs/native-client/pepper_beta/cpp
 A constructor used to create a `TCPSocket` object.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance with which this resource will be associated.</td></tr></tbody></table>
 
 <span id="aa7af4b57237e461a79ba33e044d688fe" class="anchor" style="margin: 0;"></span>
@@ -56,6 +57,7 @@ A constructor used to create a `TCPSocket` object.
 A constructor used when you have received a `PP_Resource` as a return value that has had 1 ref added for you.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PPB_TCPSocket</code> resource.</td></tr></tbody></table>
 
 <span id="a528305852766af8c12284e6ef7e94058" class="anchor" style="margin: 0;"></span>
@@ -65,6 +67,7 @@ A constructor used when you have received a `PP_Resource` as a return value that
 The copy constructor for `TCPSocket`.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A reference to another <code>TCPSocket</code>.</td></tr></tbody></table>
 
 <span id="a32547904059796aa6def4c9ab6107c80" class="anchor" style="margin: 0;"></span>
@@ -87,9 +90,8 @@ Accepts a connection.
 The socket must be listening.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>CompletionCallbackWithOutput</code> to be called upon completion.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>CompletionCallbackWithOutput</code> to be called upon completion.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing an error code from `pp_errors.h`, including (but not limited to):
@@ -105,9 +107,8 @@ Binds the socket to the given address.
 The socket must not be bound.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>addr</td><td>A <code>NetAddress</code> object.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>addr</td><td>A <code>NetAddress</code> object.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing an error code from `pp_errors.h`, including (but not limited to):
@@ -134,14 +135,13 @@ Connects the socket to the given address.
 The socket must not be listening. Binding the socket beforehand is optional.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>addr</td><td>A <code>NetAddress</code> object.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>addr</td><td>A <code>NetAddress</code> object.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing an error code from `pp_errors.h`, including (but not limited to):
 
--   `PP_ERROR_NOACCESS`: the caller doesn't have required permissions.
+-   `PP_ERROR_NOACCESS`: the caller doesn’t have required permissions.
 -   `PP_ERROR_ADDRESS_UNREACHABLE`: `addr` is unreachable.
 -   `PP_ERROR_CONNECTION_REFUSED`: the connection attempt was refused.
 -   `PP_ERROR_CONNECTION_FAILED`: the connection attempt failed.
@@ -185,14 +185,13 @@ Starts listening.
 The socket must be bound and not connected.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>backlog</td><td>A hint to determine the maximum length to which the queue of pending connections may grow.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>backlog</td><td>A hint to determine the maximum length to which the queue of pending connections may grow.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing an error code from `pp_errors.h`, including (but not limited to):
 
--   `PP_ERROR_NOACCESS`: the caller doesn't have required permissions.
+-   `PP_ERROR_NOACCESS`: the caller doesn’t have required permissions.
 -   `PP_ERROR_ADDRESS_IN_USE`: Another socket is already listening on the same port.
 
 <span id="ae7c8888a8f6ef5187547de8b8db3bb98" class="anchor" style="margin: 0;"></span>
@@ -202,9 +201,8 @@ An int32\_t containing an error code from `pp_errors.h`, including (but not limi
 The assignment operator for `TCPSocket`.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A reference to another <code>TCPSocket</code>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A reference to another <code>TCPSocket</code>.</td></tr></tbody></table>
 
 **Returns:**  
 A reference to this `TCPSocket` object.
@@ -217,12 +215,11 @@ Reads data from the socket.
 
 The socket must be connected. It may perform a partial read.
 
-**Caveat:** You should be careful about the lifetime of `buffer`. Typically you will use a `CompletionCallbackFactory` to scope callbacks to the lifetime of your class. When your class goes out of scope, the callback factory will not actually cancel the operation, but will rather just skip issuing the callback on your class. This means that if the underlying `PPB_TCPSocket` resource outlives your class, the browser will still try to write into your buffer when the operation completes. The buffer must be kept valid until then to avoid memory corruption. If you want to release the buffer while the `Read()` call is still pending, you should call `Close()` to ensure that the buffer won't be accessed in the future.
+**Caveat:** You should be careful about the lifetime of `buffer`. Typically you will use a `CompletionCallbackFactory` to scope callbacks to the lifetime of your class. When your class goes out of scope, the callback factory will not actually cancel the operation, but will rather just skip issuing the callback on your class. This means that if the underlying `PPB_TCPSocket` resource outlives your class, the browser will still try to write into your buffer when the operation completes. The buffer must be kept valid until then to avoid memory corruption. If you want to release the buffer while the `Read()` call is still pending, you should call `Close()` to ensure that the buffer won’t be accessed in the future.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[out]</td><td>buffer</td><td>The buffer to store the received data on success. It must be at least as large as <code>bytes_to_read</code>.</td></tr><tr class="even"><td>[in]</td><td>bytes_to_read</td><td>The number of bytes to read.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[out]</td><td>buffer</td><td>The buffer to store the received data on success. It must be at least as large as <code>bytes_to_read</code>.</td></tr><tr class="even"><td>[in]</td><td>bytes_to_read</td><td>The number of bytes to read.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
 **Returns:**  
 A non-negative number on success to indicate how many bytes have been read, 0 means that end-of-file was reached; otherwise, an error code from `pp_errors.h`.
@@ -236,9 +233,8 @@ Sets a socket option on the TCP socket.
 Please see the `PP_TCPSocket_Option` description for option names, value types and allowed values.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>name</td><td>The option to set.</td></tr><tr class="even"><td>[in]</td><td>value</td><td>The option value to set.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>name</td><td>The option to set.</td></tr><tr class="even"><td>[in]</td><td>value</td><td>The option value to set.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
 **Returns:**  
 An int32\_t containing an error code from `pp_errors.h`.
@@ -252,9 +248,8 @@ Writes data to the socket.
 The socket must be connected. It may perform a partial write.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>buffer</td><td>The buffer containing the data to write.</td></tr><tr class="even"><td>[in]</td><td>bytes_to_write</td><td>The number of bytes to write.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>buffer</td><td>The buffer containing the data to write.</td></tr><tr class="even"><td>[in]</td><td>bytes_to_write</td><td>The number of bytes to write.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
 **Returns:**  
 A non-negative number on success to indicate how many bytes have been written; otherwise, an error code from `pp_errors.h`.

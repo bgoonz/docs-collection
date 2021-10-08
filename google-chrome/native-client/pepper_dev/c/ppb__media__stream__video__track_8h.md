@@ -1,4 +1,4 @@
----json {"title":"ppb\_media\_stream\_video\_track.h File Reference"} ---
+—json {“title”:“ppb\_media\_stream\_video\_track.h File Reference”} —
 
 Include dependency graph for ppb\_media\_stream\_video\_track.h:
 
@@ -12,7 +12,7 @@ Data Structures
 Defines
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__media__stream__video__track_8h#a02d9ef4668c13afd6b26c83736feca64" class="el">PPB_MEDIASTREAMVIDEOTRACK_INTERFACE</a>   "PPB_MediaStreamVideoTrack;1.0" /* dev */</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__media__stream__video__track_8h#a02d9ef4668c13afd6b26c83736feca64" class="el">PPB_MEDIASTREAMVIDEOTRACK_INTERFACE</a>   “PPB_MediaStreamVideoTrack;1.0” /* dev */</td></tr></tbody></table>
 
 Enumerations
 ------------
@@ -40,4 +40,4 @@ Define Documentation
 
 <span id="a02d9ef4668c13afd6b26c83736feca64" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_dev/c/ppb__media__stream__video__track_8h#a02d9ef4668c13afd6b26c83736feca64" class="el">PPB_MEDIASTREAMVIDEOTRACK_INTERFACE</a>   "PPB_MediaStreamVideoTrack;1.0" /* dev */</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_dev/c/ppb__media__stream__video__track_8h#a02d9ef4668c13afd6b26c83736feca64" class="el">PPB_MEDIASTREAMVIDEOTRACK_INTERFACE</a>   “PPB_MediaStreamVideoTrack;1.0” /* dev */</td></tr></tbody></table>

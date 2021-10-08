@@ -1,4 +1,4 @@
----json {"title":"pp::NetAddress Class Reference"} ---
+—json {“title”:“pp::NetAddress Class Reference”} —
 
 Inheritance diagram for pp::NetAddress:
 
@@ -45,6 +45,7 @@ Default constructor for creating an <a href="/docs/native-client/pepper_beta/cpp
 A constructor used when you have received a `PP_Resource` as a return value that has had 1 ref added for you.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PPB_NetAddress</code> resource.</td></tr></tbody></table>
 
 <span id="ae54044b80f97d259cb23b924a877ce53" class="anchor" style="margin: 0;"></span>
@@ -54,6 +55,7 @@ A constructor used when you have received a `PP_Resource` as a return value that
 A constructor used to create a `NetAddress` object with the specified IPv4 address.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance with which this resource will be associated.</td></tr><tr class="even"><td>[in]</td><td>ipv4_addr</td><td>An IPv4 address.</td></tr></tbody></table>
 
 <span id="a76442610ed533079115a5150b7a9c98c" class="anchor" style="margin: 0;"></span>
@@ -63,6 +65,7 @@ A constructor used to create a `NetAddress` object with the specified IPv4 addre
 A constructor used to create a `NetAddress` object with the specified IPv6 address.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance with which this resource will be associated.</td></tr><tr class="even"><td>[in]</td><td>ipv6_addr</td><td>An IPv6 address.</td></tr></tbody></table>
 
 <span id="a8c0b559bd205387c199aba688c356298" class="anchor" style="margin: 0;"></span>
@@ -72,6 +75,7 @@ A constructor used to create a `NetAddress` object with the specified IPv6 addre
 The copy constructor for `NetAddress`.
 
 **Parameters:**  
+
 <table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A reference to another <code>NetAddress</code>.</td></tr></tbody></table>
 
 <span id="a06b05fdecaf0b32ee74e7ebbb85a0674" class="anchor" style="margin: 0;"></span>
@@ -94,9 +98,8 @@ Fills a `PP_NetAddress_IPv4` structure if the network address is of `PP_NETADDRE
 Note that passing a network address of `PP_NETADDRESS_FAMILY_IPV6` address family will fail even if the address is an IPv4-mapped IPv6 address.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[out]</td><td>ipv4_addr</td><td>A <code>PP_NetAddress_IPv4</code> structure to store the result.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[out]</td><td>ipv4_addr</td><td>A <code>PP_NetAddress_IPv4</code> structure to store the result.</td></tr></tbody></table>
 
 **Returns:**  
 A boolean value indicating whether the operation succeeded.
@@ -107,12 +110,11 @@ A boolean value indicating whether the operation succeeded.
 
 Fills a `PP_NetAddress_IPv6` structure if the network address is of `PP_NETADDRESS_FAMILY_IPV6` address family.
 
-Note that passing a network address of `PP_NETADDRESS_FAMILY_IPV4` address family will fail - this method doesn't map it to an IPv6 address.
+Note that passing a network address of `PP_NETADDRESS_FAMILY_IPV4` address family will fail - this method doesn’t map it to an IPv6 address.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[out]</td><td>ipv6_addr</td><td>A <code>PP_NetAddress_IPv6</code> structure to store the result.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[out]</td><td>ipv6_addr</td><td>A <code>PP_NetAddress_IPv6</code> structure to store the result.</td></tr></tbody></table>
 
 **Returns:**  
 A boolean value indicating whether the operation succeeded.
@@ -123,12 +125,11 @@ A boolean value indicating whether the operation succeeded.
 
 Returns a human-readable description of the network address.
 
-The description is in the form of host \[ ":" port \] and conforms to <http://tools.ietf.org/html/rfc3986#section-3.2> for IPv4 and IPv6 addresses (e.g., "192.168.0.1", "192.168.0.1:99", or "\[::1\]:80").
+The description is in the form of host \[ “:” port \] and conforms to <a href="http://tools.ietf.org/html/rfc3986#section-3.2" class="uri">http://tools.ietf.org/html/rfc3986#section-3.2</a> for IPv4 and IPv6 addresses (e.g., “192.168.0.1”, “192.168.0.1:99”, or “\[::1\]:80”).
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>include_port</td><td>Whether to include the port number in the description.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>include_port</td><td>Whether to include the port number in the description.</td></tr></tbody></table>
 
 **Returns:**  
 A string `Var` on success; an undefined `Var` on failure.
@@ -158,9 +159,8 @@ true if the interface is available, false otherwise.
 The assignment operator for `NetAddress`.
 
 **Parameters:**  
-<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A reference to another <code>NetAddress</code>.</td></tr></tbody></table>
 
-<!-- -->
+<table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A reference to another <code>NetAddress</code>.</td></tr></tbody></table>
 
 **Returns:**  
 A reference to this `NetAddress` object.

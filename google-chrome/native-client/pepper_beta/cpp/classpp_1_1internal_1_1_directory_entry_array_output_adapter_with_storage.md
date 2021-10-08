@@ -1,4 +1,4 @@
----json {"title":"pp::internal::DirectoryEntryArrayOutputAdapterWithStorage Class Reference"} ---
+—json {“title”:“pp::internal::DirectoryEntryArrayOutputAdapterWithStorage Class Reference”} —
 
 [List of all members.](/docs/native-client/pepper_beta/cpp/classpp_1_1internal_1_1_directory_entry_array_output_adapter_with_storage-members/)
 

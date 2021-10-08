@@ -1,4 +1,4 @@
----json {"title":"ppb\_image\_data.h File Reference"} ---
+—json {“title”:“ppb\_image\_data.h File Reference”} —
 
 Include dependency graph for ppb\_image\_data.h:
 
@@ -7,14 +7,14 @@ Include dependency graph for ppb\_image\_data.h:
 Data Structures
 ---------------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p___image_data_desc/" class="el">PP_ImageDataDesc</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PP_ImageDataDesc</code> structure represents a description of image data. <a href="/docs/native-client/pepper_dev/c/struct_p_p___image_data_desc#details">More...</a><br />
-</td></tr><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p_b___image_data__1__0/" class="el">PPB_ImageData</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_ImageData</code> interface contains pointers to several functions for determining the browser's treatment of image data. <a href="/docs/native-client/pepper_dev/c/struct_p_p_b___image_data__1__0#details">More...</a><br />
+<table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p___image_data_desc/" class="el">PP_ImageDataDesc</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PP_ImageDataDesc</code> structure represents a description of image data. <a href="/docs/native-client/pepper_dev/c/struct_p_p___image_data_desc#details">More…</a><br />
+</td></tr><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_dev/c/struct_p_p_b___image_data__1__0/" class="el">PPB_ImageData</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_ImageData</code> interface contains pointers to several functions for determining the browser’s treatment of image data. <a href="/docs/native-client/pepper_dev/c/struct_p_p_b___image_data__1__0#details">More…</a><br />
 </td></tr></tbody></table>
 
 Defines
 -------
 
-<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__image__data_8h#ab08ef8c9002eec0102a71d9c766f0893" class="el">PPB_IMAGEDATA_INTERFACE</a>   "PPB_ImageData;1.0"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__image__data_8h#a706a4eb837834aefe135ccbfb3ebe21d" class="el">PPB_IMAGEDATA_INTERFACE</a>   <a href="/docs/native-client/pepper_dev/c/ppb__image__data_8h#ab08ef8c9002eec0102a71d9c766f0893" class="el">PPB_IMAGEDATA_INTERFACE</a></td></tr></tbody></table>
+<table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__image__data_8h#ab08ef8c9002eec0102a71d9c766f0893" class="el">PPB_IMAGEDATA_INTERFACE</a>   “PPB_ImageData;1.0”</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_dev/c/ppb__image__data_8h#a706a4eb837834aefe135ccbfb3ebe21d" class="el">PPB_IMAGEDATA_INTERFACE</a>   <a href="/docs/native-client/pepper_dev/c/ppb__image__data_8h#ab08ef8c9002eec0102a71d9c766f0893" class="el">PPB_IMAGEDATA_INTERFACE</a></td></tr></tbody></table>
 
 Typedefs
 --------
@@ -51,4 +51,4 @@ Define Documentation
 
 <span id="ab08ef8c9002eec0102a71d9c766f0893" class="anchor" style="margin: 0;"></span>
 
-<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_dev/c/ppb__image__data_8h#ab08ef8c9002eec0102a71d9c766f0893" class="el">PPB_IMAGEDATA_INTERFACE</a>   "PPB_ImageData;1.0"</td></tr></tbody></table>
+<table><tbody><tr class="odd"><td>#define <a href="/docs/native-client/pepper_dev/c/ppb__image__data_8h#ab08ef8c9002eec0102a71d9c766f0893" class="el">PPB_IMAGEDATA_INTERFACE</a>   “PPB_ImageData;1.0”</td></tr></tbody></table>
