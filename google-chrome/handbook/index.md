@@ -1,4 +1,5 @@
-handbook
-========
-
-<table><thead><tr class="header"><th></th><th>Name</th><th>Size</th><th>Modified</th><th></th></tr></thead><tbody><tr class="odd"><td></td><td><span class="goup">..</span></td><td>—</td><td>—</td><td></td></tr><tr class="even"><td></td><td><span class="name">components</span></td><td>—</td><td>Fri Oct 8 12:04:18 2021</td><td></td></tr><tr class="odd"><td></td><td><span class="name">how-to</span></td><td>—</td><td>Fri Oct 8 12:04:56 2021</td><td></td></tr><tr class="even"><td></td><td><span class="name">style-guide</span></td><td>—</td><td>Fri Oct 8 12:04:56 2021</td><td></td></tr><tr class="odd"><td></td><td><span class="name">handbook.11tydata.js</span></td><td>694 bytes</td><td>Fri Oct 8 11:33:16 2021</td><td></td></tr><tr class="even"><td></td><td><span class="name">index.md</span></td><td>138 bytes</td><td>Fri Oct 8 11:33:16 2021</td><td></td></tr></tbody></table>
+---
+title: Handbook
+description: 'Your guide to creating great content for developer.chrome.com'
+layout: 'layouts/project-landing.njk'
+---

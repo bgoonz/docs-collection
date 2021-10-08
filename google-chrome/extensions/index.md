@@ -1,4 +1,7 @@
-extensions
-==========
-
-<table><thead><tr class="header"><th></th><th>Name</th><th>Size</th><th>Modified</th><th></th></tr></thead><tbody><tr class="odd"><td></td><td><span class="goup">..</span></td><td>—</td><td>—</td><td></td></tr><tr class="even"><td></td><td><span class="name">api_other</span></td><td>—</td><td>Fri Oct 8 12:03:47 2021</td><td></td></tr><tr class="odd"><td></td><td><span class="name">apps</span></td><td>—</td><td>Fri Oct 8 12:03:47 2021</td><td></td></tr><tr class="even"><td></td><td><span class="name">mv2</span></td><td>—</td><td>Fri Oct 8 12:03:47 2021</td><td></td></tr><tr class="odd"><td></td><td><span class="name">mv3</span></td><td>—</td><td>Fri Oct 8 12:03:57 2021</td><td></td></tr><tr class="even"><td></td><td><span class="name">reference</span></td><td>—</td><td>Fri Oct 8 12:04:07 2021</td><td></td></tr><tr class="odd"><td></td><td><span class="name">whatsnew</span></td><td>—</td><td>Fri Oct 8 12:04:17 2021</td><td></td></tr><tr class="even"><td></td><td><span class="name">index.md</span></td><td>241 bytes</td><td>Fri Oct 8 11:33:16 2021</td><td></td></tr></tbody></table>
+---
+title: Extensions
+description: >
+  Extensions are software programs, built on web technologies (such as HTML, CSS,
+  and JavaScript) that enable users to customize the Chrome browsing experience.
+layout: 'layouts/project-landing.njk'
+---

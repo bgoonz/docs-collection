@@ -1,4 +1,0 @@
-device-mode
-===========
-
-<table><thead><tr class="header"><th></th><th>Name</th><th>Size</th><th>Modified</th><th></th></tr></thead><tbody><tr class="odd"><td></td><td><span class="goup">..</span></td><td>—</td><td>—</td><td></td></tr><tr class="even"><td></td><td><span class="name">geolocation</span></td><td>—</td><td>Fri Oct 8 12:03:41 2021</td><td></td></tr><tr class="odd"><td></td><td><span class="name">orientation</span></td><td>—</td><td>Fri Oct 8 12:03:41 2021</td><td></td></tr><tr class="even"><td></td><td><span class="name">override-user-agent</span></td><td>—</td><td>Fri Oct 8 12:03:41 2021</td><td></td></tr><tr class="odd"><td></td><td><span class="name">testing-other-browsers</span></td><td>—</td><td>Fri Oct 8 12:03:41 2021</td><td></td></tr><tr class="even"><td></td><td><span class="name">index.md</span></td><td>11 KB</td><td>Fri Oct 8 11:33:39 2021</td><td></td></tr></tbody></table>

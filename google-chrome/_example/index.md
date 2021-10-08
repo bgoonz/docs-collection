@@ -1,4 +1,10 @@
-\_example
-=========
+---
+layout: 'layouts/project-landing.njk'
+title: 'Example project'
+description: 'This description of the sample project will appear on the project
+landing page at /docs/[project-name]/'
+---
 
-<table><thead><tr class="header"><th></th><th>Name</th><th>Size</th><th>Modified</th><th></th></tr></thead><tbody><tr class="odd"><td></td><td><span class="goup">..</span></td><td>—</td><td>—</td><td></td></tr><tr class="even"><td></td><td><span class="name">my-first-doc</span></td><td>—</td><td>Fri Oct 8 12:03:26 2021</td><td></td></tr><tr class="odd"><td></td><td><span class="name">index.md</span></td><td>384 bytes</td><td>Fri Oct 8 11:33:16 2021</td><td></td></tr></tbody></table>
+<!-- No content should go here. -->
+<!-- The only content from this file that will be used is the title and description in the YAML frontmatter. -->
+<!-- Feel free to delete these comments. -->

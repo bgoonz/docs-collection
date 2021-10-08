@@ -1,1 +1,16 @@
-<table><thead><tr class="header"><th></th><th>Name</th><th>Size</th><th>Modified</th><th></th></tr></thead><tbody><tr class="odd"><td></td><td><span class="goup">..</span></td><td>—</td><td>—</td><td></td></tr><tr class="even"><td></td><td><span class="name">_example</span></td><td>—</td><td>Fri Oct 8 12:03:25 2021</td><td></td></tr><tr class="odd"><td></td><td><span class="name">android</span></td><td>—</td><td>Fri Oct 8 12:03:26 2021</td><td></td></tr><tr class="even"><td></td><td><span class="name">apps</span></td><td>—</td><td>Fri Oct 8 12:03:29 2021</td><td></td></tr><tr class="odd"><td></td><td><span class="name">devtools</span></td><td>—</td><td>Fri Oct 8 12:03:38 2021</td><td></td></tr><tr class="even"><td></td><td><span class="name">extensions</span></td><td>—</td><td>Fri Oct 8 12:03:47 2021</td><td></td></tr><tr class="odd"><td></td><td><span class="name">handbook</span></td><td>—</td><td>Fri Oct 8 12:04:18 2021</td><td></td></tr><tr class="even"><td></td><td><span class="name">multidevice</span></td><td>—</td><td>Fri Oct 8 12:02:16 2021</td><td></td></tr><tr class="odd"><td></td><td><span class="name">native-client</span></td><td>—</td><td>Fri Oct 8 12:02:18 2021</td><td></td></tr><tr class="even"><td></td><td><span class="name">privacy-sandbox</span></td><td>—</td><td>Fri Oct 8 12:03:18 2021</td><td></td></tr><tr class="odd"><td></td><td><span class="name">versionhistory</span></td><td>—</td><td>Fri Oct 8 12:03:19 2021</td><td></td></tr><tr class="even"><td></td><td><span class="name">webstore</span></td><td>—</td><td>Fri Oct 8 12:03:20 2021</td><td></td></tr><tr class="odd"><td></td><td><span class="name">workbox</span></td><td>—</td><td>Fri Oct 8 12:03:25 2021</td><td></td></tr><tr class="even"><td></td><td><span class="name">dirhtml.py</span></td><td>17 KB</td><td>Fri Oct 8 12:04:31 2021</td><td></td></tr><tr class="odd"><td></td><td><span class="name">docs.11tydata.js</span></td><td>37 bytes</td><td>Fri Oct 8 11:33:15 2021</td><td></td></tr><tr class="even"><td></td><td><span class="name">index.md</span></td><td>308 bytes</td><td>Fri Oct 8 11:33:15 2021</td><td></td></tr></tbody></table>
+---
+title: 'Documentation'
+description: ''
+layout: 'layouts/docs-landing.njk'
+type: landing
+i18n:
+  projects:
+    tools:
+      heading: 'Tools & Libraries'
+    crx:
+      heading: 'Extensions & Web Store'
+    architecture:
+      heading: 'Architecture'
+    infrastructure:
+      heading: 'Infrastructure'
+---
