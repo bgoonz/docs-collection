@@ -13,7 +13,7 @@ install extensions that register themselves as alternative speech engines.
 Call `speak()` from your extension or Chrome App to speak. For example:
 
 ```js
-chrome.tts.speak("Hello, world.");
+chrome.tts.speak('Hello, world.');
 ```
 
 To stop speaking immediately, just call `stop()`:
@@ -26,14 +26,14 @@ You can provide options that control various properties of the speech, such as i
 more. For example:
 
 ```js
-chrome.tts.speak("Hello, world.", { rate: 2.0 });
+chrome.tts.speak('Hello, world.', {'rate': 2.0});
 ```
 
 It's also a good idea to specify the language so that a synthesizer supporting that language (and
 regional dialect, if applicable) is chosen.
 
 ```js
-chrome.tts.speak("Hello, world.", { lang: "en-US", rate: 2.0 });
+chrome.tts.speak('Hello, world.', {'lang': 'en-US', 'rate': 2.0});
 ```
 
 By default, each call to `speak()` interrupts any ongoing speech and speaks immediately. To
@@ -42,10 +42,9 @@ can use the `enqueue` option to cause this utterance to be added to a queue of u
 be spoken when the current utterance has finished.
 
 ```js
-chrome.tts.speak("Speak this first.");
-chrome.tts.speak("Speak this next, when the first sentence is done.", {
-  enqueue: true,
-});
+chrome.tts.speak('Speak this first.');
+chrome.tts.speak(
+    'Speak this next, when the first sentence is done.', {'enqueue': true});
 ```
 
 A complete description of all options can be found in the [`tts.speak`][1] below. Not all speech
@@ -56,11 +55,15 @@ takes no arguments. Inside the callback, check [`runtime.lastError`][2] to see i
 errors.
 
 ```js
-chrome.tts.speak(utterance, options, function () {
-  if (chrome.runtime.lastError) {
-    console.log("Error: " + chrome.runtime.lastError.message);
+chrome.tts.speak(
+  utterance,
+  options,
+  function() {
+    if (chrome.runtime.lastError) {
+      console.log('Error: ' + chrome.runtime.lastError.message);
+    }
   }
-});
+);
 ```
 
 The callback returns right away, before the engine has started generating speech. The purpose of the
@@ -77,12 +80,12 @@ the options to `speak()`, like this:
 chrome.tts.speak(
   utterance,
   {
-    onEvent: function (event) {
-      console.log("Event " + event.type + " at position " + event.charIndex);
-      if (event.type == "error") {
-        console.log("Error: " + event.errorMessage);
+    onEvent: function(event) {
+      console.log('Event ' + event.type + ' at position ' + event.charIndex);
+      if (event.type == 'error') {
+        console.log('Error: ' + event.errorMessage);
       }
-    },
+    }
   },
   callback
 );
@@ -126,10 +129,10 @@ For example:
 ```js
 chrome.tts.speak(
   '<?xml version="1.0"?>' +
-    "<speak>" +
-    "  The <emphasis>second</emphasis> " +
-    "  word of this sentence was emphasized." +
-    "</speak>"
+  '<speak>' +
+  '  The <emphasis>second</emphasis> ' +
+  '  word of this sentence was emphasized.' +
+  '</speak>'
 );
 ```
 
@@ -149,15 +152,17 @@ To get a list of all voices, call `getVoices()` and pass it a function that rece
 `TtsVoice` objects as its argument:
 
 ```js
-chrome.tts.getVoices(function (voices) {
-  for (var i = 0; i < voices.length; i++) {
-    console.log("Voice " + i + ":");
-    console.log("  name: " + voices[i].voiceName);
-    console.log("  lang: " + voices[i].lang);
-    console.log("  extension id: " + voices[i].extensionId);
-    console.log("  event types: " + voices[i].eventTypes);
+chrome.tts.getVoices(
+  function(voices) {
+    for (var i = 0; i < voices.length; i++) {
+      console.log('Voice ' + i + ':');
+      console.log('  name: ' + voices[i].voiceName);
+      console.log('  lang: ' + voices[i].lang);
+      console.log('  extension id: ' + voices[i].extensionId);
+      console.log('  event types: ' + voices[i].eventTypes);
+    }
   }
-});
+);
 ```
 
 [1]: #method-speak

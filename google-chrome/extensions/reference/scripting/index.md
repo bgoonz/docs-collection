@@ -121,7 +121,7 @@ chrome.scripting.executeScript(
 This function will be executed in the context of injection target. However,
 this will not carry over any of the current execution context of the function.
 As such, bound parameters (including the `this` object) and
-externally-referenced variables will result in errors. For instance, the
+externally-referenced variables will result in errors.  For instance, the
 following code will not work, and will throw a ReferenceError because `color`
 is undefined when the function executes:
 
@@ -186,15 +186,14 @@ function getTitle() {
 }
 const tabId = getTabId();
 chrome.scripting.executeScript(
-  {
-    target: { tabId: tabId, allFrames: true },
-    func: getTitle,
-  },
-  (injectionResults) => {
-    for (const frameResult of injectionResults)
-      console.log("Frame Title: " + frameResult.result);
-  }
-);
+    {
+      target: {tabId: tabId, allFrames: true},
+      func: getTitle,
+    },
+    (injectionResults) => {
+      for (const frameResult of injectionResults)
+        console.log('Frame Title: ' + frameResult.result);
+    });
 ```
 
 `scripting.insertCSS()` does not return any results.

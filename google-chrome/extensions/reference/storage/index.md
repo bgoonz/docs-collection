@@ -39,24 +39,24 @@ API. For example:
 To store user data for your extension, you can use either `storage.sync`:
 
 ```js
-chrome.storage.sync.set({ key: value }, function () {
-  console.log("Value is set to " + value);
+chrome.storage.sync.set({key: value}, function() {
+  console.log('Value is set to ' + value);
 });
 
-chrome.storage.sync.get(["key"], function (result) {
-  console.log("Value currently is " + result.key);
+chrome.storage.sync.get(['key'], function(result) {
+  console.log('Value currently is ' + result.key);
 });
 ```
 
 or `storage.local`:
 
 ```js
-chrome.storage.local.set({ key: value }, function () {
-  console.log("Value is set to " + value);
+chrome.storage.local.set({key: value}, function() {
+  console.log('Value is set to ' + value);
 });
 
-chrome.storage.local.get(["key"], function (result) {
-  console.log("Value currently is " + result.key);
+chrome.storage.local.get(['key'], function(result) {
+  console.log('Value currently is ' + result.key);
 });
 ```
 
@@ -117,7 +117,7 @@ to this setting are immediately saved to sync storage by the options page and th
 <script defer src="options.js"></script>
 <form id="optionsForm">
   <label for="debug">
-    <input type="checkbox" name="debug" id="debug" />
+    <input type="checkbox" name="debug" id="debug">
     Enable debug mode
   </label>
 </form>
@@ -130,15 +130,15 @@ to this setting are immediately saved to sync storage by the options page and th
 const options = {};
 
 // Initialize the form with the user's option settings
-chrome.storage.sync.get("options", (data) => {
+chrome.storage.sync.get('options', (data) => {
   Object.assign(options, data.options);
-  optionsForm.debug.checked = Boolean(options.debug);
+  optionsForm.debug.checked = Boolean(options.debug);;
 });
 
 // Immediately persist options changes
-optionsForm.debug.addEventListener("change", (event) => {
+optionsForm.debug.addEventListener('change', (event) => {
   options.debug = event.target.checked;
-  chrome.storage.sync.set({ options });
+  chrome.storage.sync.set({options});
 });
 ```
 
@@ -147,9 +147,9 @@ optionsForm.debug.addEventListener("change", (event) => {
 
 // Watch for changes to the user's options & apply them
 chrome.storage.onChanged.addListener((changes, area) => {
-  if (area === "sync" && changes.options?.newValue) {
+  if (area === 'sync' && changes.options?.newValue) {
     const debugMode = Boolean(changes.options.newValue.debug);
-    console.log("enable debug mode?", debugMode);
+    console.log('enable debug mode?', debugMode);
     setDebugMode(debugMode);
   }
 });
@@ -168,7 +168,7 @@ global to be populated before executing its logic.
 // Where we will expose all the data we retrieve from storage.sync.
 const storageCache = {};
 // Asynchronously retrieve data from storage.sync, then cache it.
-const initStorageCache = getAllStorageSyncData().then((items) => {
+const initStorageCache = getAllStorageSyncData().then(items => {
   // Copy the data retrieved from storage into storageCache.
   Object.assign(storageCache, items);
 });

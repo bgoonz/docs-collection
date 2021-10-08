@@ -15,21 +15,21 @@ Chrome distinguishes between three different scopes of browser settings:
 `regular`
 
 : Settings set in the `regular` scope apply to regular browser windows and are inherited by incognito
-windows if they are not overwritten. These settings are stored to disk and remain in place until
-they are cleared by the governing extension, or the governing extension is disabled or uninstalled.
+  windows if they are not overwritten. These settings are stored to disk and remain in place until
+  they are cleared by the governing extension, or the governing extension is disabled or uninstalled.
 
 `incognito_persistent`
 
 : Settings set in the `incognito_persistent` scope apply only to incognito windows. For these, they
-override `regular` settings. These settings are stored to disk and remain in place until they are
-cleared by the governing extension, or the governing extension is disabled or uninstalled.
+  override `regular` settings. These settings are stored to disk and remain in place until they are
+  cleared by the governing extension, or the governing extension is disabled or uninstalled.
 
 `incognito_session_only`
 
 : Settings set in the `incognito_session_only` scope apply only to incognito windows. For these, they
-override `regular` and `incognito_persistent` settings. These settings are not stored to disk and
-are cleared when the last incognito window is closed. They can only be set when at least one
-incognito window is open.
+  override `regular` and `incognito_persistent` settings. These settings are not stored to disk and
+  are cleared when the last incognito window is closed. They can only be set when at least one
+  incognito window is open.
 
 ### Precedence
 

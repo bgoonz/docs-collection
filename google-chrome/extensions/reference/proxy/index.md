@@ -31,32 +31,32 @@ proxy usage. It can take the following values:
 `direct`
 
 : In `direct` mode all connections are created directly, without any proxy involved. This mode allows
-no further parameters in the `ProxyConfig` object.
+  no further parameters in the `ProxyConfig` object.
 
 `auto_detect`
 
 : In `auto_detect` mode the proxy configuration is determined by a PAC script that can be downloaded
-at [http://wpad/wpad.dat][5]. This mode allows no further parameters in the `ProxyConfig` object.
+  at [http://wpad/wpad.dat][5]. This mode allows no further parameters in the `ProxyConfig` object.
 
 `pac_script`
 
 : In `pac_script` mode the proxy configuration is determined by a PAC script that is either retrieved
-from the URL specified in the [`proxy.PacScript`][6] object or taken literally from the `data` element
-specified in the [`proxy.PacScript`][7] object. Besides this, this mode allows no further parameters
-in the `ProxyConfig` object.
+  from the URL specified in the [`proxy.PacScript`][6] object or taken literally from the `data` element
+  specified in the [`proxy.PacScript`][7] object. Besides this, this mode allows no further parameters
+  in the `ProxyConfig` object.
 
 `fixed_servers`
 
 : In `fixed_servers` mode the proxy configuration is codified in a [`proxy.ProxyRules`][8] object. Its
-structure is described in [Proxy rules][9]. Besides this, the `fixed_servers` mode allows no further
-parameters in the `ProxyConfig` object.
+  structure is described in [Proxy rules][9]. Besides this, the `fixed_servers` mode allows no further
+  parameters in the `ProxyConfig` object.
 
 `system`
 
 : In `system` mode the proxy configuration is taken from the operating system. This mode allows no
-further parameters in the `ProxyConfig` object. Note that the `system` mode is different from
-setting no proxy configuration. In the latter case, Chrome falls back to the system settings only if
-no command-line options influence the proxy configuration.
+  further parameters in the `ProxyConfig` object. Note that the `system` mode is different from
+  setting no proxy configuration. In the latter case, Chrome falls back to the system settings only if
+  no command-line options influence the proxy configuration.
 
 ### Proxy rules
 
@@ -89,31 +89,31 @@ the following entries:
 `[_<scheme>_://]_<host-pattern>_[:_<port>_]`
 
 : Match all hostnames that match the pattern `_<host-pattern>_`. A leading `"."` is interpreted as a
-`"*."`.
-Examples: `"foobar.com", "*foobar.com", "*.foobar.com", "*foobar.com:99", "https://x.*.y.com:99"`.
+  `"*."`.
+  Examples: `"foobar.com", "*foobar.com", "*.foobar.com", "*foobar.com:99", "https://x.*.y.com:99"`.
 
   <table><tbody><tr><th>Pattern</th><th>Matches</th><th>Does not match</th></tr><tr><td><code>".foobar.com"</code></td><td><code>"www.foobar.com"</code></td><td><code>"foobar.com"</code></td></tr><tr><td><code>"*.foobar.com"</code></td><td><code>"www.foobar.com"</code></td><td><code>"foobar.com"</code></td></tr><tr><td><code>"foobar.com"</code></td><td><code>"foobar.com"</code></td><td><code>"www.foobar.com"</code></td></tr><tr><td><code>"*foobar.com"</code></td><td><code>"foobar.com"</code>, <code>"www.foobar.com"</code>, <code>"foofoobar.com"</code></td><td></td></tr></tbody></table>
 
 `[_<scheme>_://]_<ip-literal>_[:_<port>_]`
 
 : Match URLs that are IP address literals.
-Conceptually this is the similar to the first case, but with special cases to handle IP literal
-canonicalization. For example, matching on "\[0:0:0::1\]" is the same as matching on "\[::1\]"
-because the IPv6 canonicalization is done internally.
-Examples: `"127.0.1", "[0:0::1]", "[::1]", "http://[::1]:99"`
+  Conceptually this is the similar to the first case, but with special cases to handle IP literal
+  canonicalization. For example, matching on "\[0:0:0::1\]" is the same as matching on "\[::1\]"
+  because the IPv6 canonicalization is done internally.
+  Examples: `"127.0.1", "[0:0::1]", "[::1]", "http://[::1]:99"`
 
 `_<ip-literal>_/_<prefix-length-in-bits>_`
 
 : Match any URL containing an IP literal within the given range. The IP range is specified using CIDR
-notation.
-Examples: `"192.168.1.1/16", "fefe:13::abc/33"`
+  notation.
+  Examples: `"192.168.1.1/16", "fefe:13::abc/33"`
 
 `<local>`
 
 : Matches simple hostnames. A simple hostname is one that contains no dots and is not an IP literal.
-For instance `example` and `localhost` are simple hostnames, whereas `example.com`, `example.`, and
-`[::1]` are not.
-Example: `"<local>"`
+  For instance `example` and `localhost` are simple hostnames, whereas `example.com`, `example.`, and
+  `[::1]` are not.
+  Example: `"<local>"`
 
 ## Examples
 
@@ -128,12 +128,15 @@ var config = {
   rules: {
     proxyForHttp: {
       scheme: "socks5",
-      host: "1.2.3.4",
+      host: "1.2.3.4"
     },
-    bypassList: ["foobar.com"],
-  },
+    bypassList: ["foobar.com"]
+  }
 };
-chrome.proxy.settings.set({ value: config, scope: "regular" }, function () {});
+chrome.proxy.settings.set(
+  {value: config, scope: 'regular'},
+  function() {}
+);
 ```
 
 The following code sets a custom PAC script.
@@ -142,24 +145,29 @@ The following code sets a custom PAC script.
 var config = {
   mode: "pac_script",
   pacScript: {
-    data:
-      "function FindProxyForURL(url, host) {\n" +
-      "  if (host == 'foobar.com')\n" +
-      "    return 'PROXY blackhole:80';\n" +
-      "  return 'DIRECT';\n" +
-      "}",
-  },
+    data: "function FindProxyForURL(url, host) {\n" +
+          "  if (host == 'foobar.com')\n" +
+          "    return 'PROXY blackhole:80';\n" +
+          "  return 'DIRECT';\n" +
+          "}"
+  }
 };
-chrome.proxy.settings.set({ value: config, scope: "regular" }, function () {});
+chrome.proxy.settings.set(
+  {value: config, scope: 'regular'},
+  function() {}
+);
 ```
 
 The next snippet queries the currently effective proxy settings. The effective proxy settings can be
 determined by another extension or by a policy. See the [Types API][14] documentation for details.
 
 ```js
-chrome.proxy.settings.get({ incognito: false }, function (config) {
-  console.log(JSON.stringify(config));
-});
+chrome.proxy.settings.get(
+  {'incognito': false},
+  function(config) {
+    console.log(JSON.stringify(config));
+  }
+);
 ```
 
 Note that the `value` object passed to `set()` is not identical to the `value` object passed to
