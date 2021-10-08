@@ -21,13 +21,13 @@ key-value pairs.
     **Figure 2**. The **Local Storage** menu shows two domains: **https://developers.google.com**
     and **https://www.youtube.com**
 
-3.  Click a domain to view its key-value pairs.
+2.  Click a domain to view its key-value pairs.
 
     {% Img src="image/admin/sZ8JCGib96F45euuc4pi.png", alt="The localStorage key-value pairs for the https://www.youtube.com domain", width="800", height="525" %}
 
     **Figure 3**. The `localStorage` key-value pairs for the **https://www.youtube.com** domain
 
-4.  Click a row of the table to view the value in the viewer below the table.
+3.  Click a row of the table to view the value in the viewer below the table.
 
     {% Img src="image/admin/fC3vyAbvWYXqcTRhnpun.png", alt="Viewing the value of the yt-remote-connected-devices key", width="800", height="525" %}
 

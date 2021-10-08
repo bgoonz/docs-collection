@@ -32,17 +32,17 @@ Each row of the table represents a cached resource.
 
 The **Type** column represents the resource's category:
 
-* **Master**. The `manifest` attribute on the resource indicated that this cache is the resource's master.
-* **Explicit**. This resource was explicitly listed in the manifest.
-* **Network**. The manifest specified that this resource must come from the network.
-* **Fallback**. The URL is a fallback for another resource. The URL of the other resource is not listed in DevTools.
+- **Master**. The `manifest` attribute on the resource indicated that this cache is the resource's master.
+- **Explicit**. This resource was explicitly listed in the manifest.
+- **Network**. The manifest specified that this resource must come from the network.
+- **Fallback**. The URL is a fallback for another resource. The URL of the other resource is not listed in DevTools.
 
 At the bottom of the table there are status icons indicating your network
 connection and the status of the Application Cache. The Application Cache
 can have the following statuses:
 
-* **IDLE**. The cache has no new changes.
-* **CHECKING**. The manifest is being fetched and checked for updates.
-* **DOWNLOADING**. Resources are being added to the cache.
-* **UPDATEREADY**. A new version of the cache is available.
-* **OBSOLETE**. The cache is being deleted.
+- **IDLE**. The cache has no new changes.
+- **CHECKING**. The manifest is being fetched and checked for updates.
+- **DOWNLOADING**. Resources are being added to the cache.
+- **UPDATEREADY**. A new version of the cache is available.
+- **OBSOLETE**. The cache is being deleted.

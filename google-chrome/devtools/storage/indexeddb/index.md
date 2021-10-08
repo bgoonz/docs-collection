@@ -152,8 +152,7 @@ edits an IndexedDB database.
 [5]: https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB#Using_an_index
 [6]: https://crbug.com/943770
 [7]: #refresh
-[8]:
-  https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Basic_Concepts_Behind_IndexedDB#gloss_keygenerator
+[8]: https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Basic_Concepts_Behind_IndexedDB#gloss_keygenerator
 [9]: /docs/devtools/snippets
 [10]: #view
 [11]: #view
