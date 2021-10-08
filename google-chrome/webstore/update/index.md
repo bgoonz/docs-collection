@@ -46,7 +46,7 @@ Use the [Distribution tab][visibility] to publish to a different channel.
 
 {% Aside 'gotchas' %}
 
-The Chrome Web Store allows the publication of testing and production versions. Make sure you [follow these guidelines][test-production-extension] 
+The Chrome Web Store allows the publication of testing and production versions. Make sure you [follow these guidelines][test-production-extension]
 to avoid
 being flagged as Repetitive Content.
 
@@ -61,7 +61,7 @@ new version must have a larger version number than the previous version.
 In the developer dashboard entry for your item, on
 the Package tab, use the Upload New Package button to upload the zip file:
 
-{% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/MXJosZfPAB5V2AcGfYSy.png", 
+{% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/MXJosZfPAB5V2AcGfYSy.png",
        alt="Screenshot of the Chrome Web Store developer dashboard package tab for an item",
        height="368", width="800" %}
 
@@ -97,7 +97,7 @@ active users**
 
 {% endAside %}
 
-Once an item with partial rollout has been published, you can later [increase the percent rollout][update-rollout] 
+Once an item with partial rollout has been published, you can later [increase the percent rollout][update-rollout]
 without resubmitting the item for review, until you eventually reach 100% of
 users.
 
@@ -150,7 +150,7 @@ click **Update**.
 
 {% Aside %}
 
-Changing the %rollout does *not* trigger a new review.
+Changing the %rollout does _not_ trigger a new review.
 
 {% endAside %}
 
@@ -166,4 +166,3 @@ Changing the %rollout does *not* trigger a new review.
 [visibility]: /docs/webstore/cws-dashboard-distribution#setting-the-visibility
 [visibility-private]: /docs/webstore/cws-dashboard-distribution/#private-visibility-trusted-testers
 [test-production-extension]: /docs/webstore/spam-faq/#test-version
-

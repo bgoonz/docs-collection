@@ -20,13 +20,13 @@ extensions that provide the same experience.
 More specifically, developers cannot submit content that provides the same user experience, even if
 the metadata or code are not identical. Some examples of repetitive content include:
 
-* Multiple extensions with highly similar functionality, content, and user experience. If these
+- Multiple extensions with highly similar functionality, content, and user experience. If these
   extensions are each small in content volume, and provide the same single purpose, developers
   should create a single extension that aggregates all the content. For example, multiple extensions
   which merely provide different wallpapers when installed should be aggregated into a single
   extension.
-* Template extensions which create a spammy experience in the Chrome Web Store.
-* Data or format converters that are listed as multiple extensions (for example, Fahrenheit to
+- Template extensions which create a spammy experience in the Chrome Web Store.
+- Data or format converters that are listed as multiple extensions (for example, Fahrenheit to
   Celsius, Celsius to Fahrenheit), but which all direct the user to the same multi-format converter
   web page.
 
@@ -37,23 +37,23 @@ Multiple extensions that provide different user experiences are not considered r
 While all extensions are checked by the CWS review team for violations of this policy, we will allow
 certain valid use cases that require repetitive content. These allowed exceptions include:
 
-* Extensions that work only on specific hosts. Specifically, you may create bespoke versions of your
+- Extensions that work only on specific hosts. Specifically, you may create bespoke versions of your
   extension targeted to your customers' hosts. To qualify for the Specific Host exception, each
   version must request, in the manifest, access to permissions that are limited to that host.
-* Extensions that are published privately within your domain. Extensions published as unlisted or
+- Extensions that are published privately within your domain. Extensions published as unlisted or
   public, even if distributed through a single domain, do not qualify for this Publish to Domain
   (PTD) exemption.
-* Enterprise extensions which provide B2B or B2B2C solutions, such as white label resellers, or
+- Enterprise extensions which provide B2B or B2B2C solutions, such as white label resellers, or
   which utilize multiple instances for versioning purposes. These extensions must be unlisted and
   distributed directly to your clients.
 
 In order to qualify for these exceptions, developers must include details regarding the use case
 exception in the extension's description and the single purpose field. For example:
 
-* "THIS EXTENSION IS LIMITED TO [HOST NAME] ONLY"
-* "THIS EXTENSION IS PUBLISHED TO [DOMAIN NAME] ONLY"
-* "THIS IS A WHITE LABEL ENTERPRISE EXTENSION FOR [CUSTOMER NAME]"
-* "THIS EXTENSIONS WORKS WITH THE SPECIFIC VERSION [VERSION NAME] OF THE DESKTOP APPLICATION
+- "THIS EXTENSION IS LIMITED TO [HOST NAME] ONLY"
+- "THIS EXTENSION IS PUBLISHED TO [DOMAIN NAME] ONLY"
+- "THIS IS A WHITE LABEL ENTERPRISE EXTENSION FOR [CUSTOMER NAME]"
+- "THIS EXTENSIONS WORKS WITH THE SPECIFIC VERSION [VERSION NAME] OF THE DESKTOP APPLICATION
   [APPLICATION NAME]"
 
 If your enterprise extension works with specific versions of a desktop application, provide the name
@@ -76,18 +76,17 @@ not considered repetitive content.
 We do allow publication of separate test and production variants of an extension. In this case the
 test variant of the extension must be clearly labeled:
 
-* The description must clearly identify the purpose of the variant. For example, "THIS EXTENSION IS
+- The description must clearly identify the purpose of the variant. For example, "THIS EXTENSION IS
   FOR BETA TESTING" or "THIS EXTENSION IS A PRE-DEVELOPMENTAL BUILD FOR TESTING PURPOSES".
 
-* The extension's title should also identify the extension variant. For example, applying the word
+- The extension's title should also identify the extension variant. For example, applying the word
   "BETA" or "DEVELOPMENT BUILD" to the title.
 
-* The description of any non-production variants should include the URL of the production variant,
+- The description of any non-production variants should include the URL of the production variant,
   so that users can find it. You may also wish to link from the production variant to any others so
   that users can find those too. (If you have a version that you want to test without allowing
   general access, you should not list it as public, but instead [publish to test
   accounts][test-accounts].)
-
 
 ### Can developers appeal a repetitive content violation? {: #appeal }
 
@@ -102,13 +101,13 @@ policy is enforced against them, you will lose your user base.
 
 If you have repetitively submitted extensions and want to retain your user base:
 
-* Choose one instance to retain
-* Update the other instances to tell your users how to migrate to the retained instance
-* Publish these updates
-* Remove all other instances from the Chrome Web Store in order to avoid enforcement action
+- Choose one instance to retain
+- Update the other instances to tell your users how to migrate to the retained instance
+- Publish these updates
+- Remove all other instances from the Chrome Web Store in order to avoid enforcement action
   against your extensions.
 
-### Will any of the repetitive extensions be retained?  {: #retention }
+### Will any of the repetitive extensions be retained? {: #retention }
 
 No. On August 27, 2020, the Chrome Web Store will begin removing repetitively submitted extensions.
 None of them will be retained. This is why you should make sure to bring your listings into
@@ -118,8 +117,8 @@ compliance and remove duplicates before August 27, 2020.
 
 For example:
 
- - Product ABC - UK
- - Product ABC - Germany
+- Product ABC - UK
+- Product ABC - Germany
 
 Yes. Extensions that provide duplicate experiences—and which differ only in localization—violate the
 policy. Developers should implement any language-specific code within a single extension.
@@ -128,11 +127,11 @@ policy. Developers should implement any language-specific code within a single e
 
 ### How many sites/keywords/brands can be listed in the metadata? {: #keyword-repetition }
 
-This depends on how relevant the keywords are in context, however, it's best to keep  instances of a
+This depends on how relevant the keywords are in context, however, it's best to keep instances of a
 specific keyword to under 5. Keywords must be relevant to the extension's purpose and not
 unnecessarily repeat in an unnatural way. Including more than 5 instances of a single keyword may
 result in increased scrutiny of your extensions, but will be allowed if its use is considered
-appropriate and relevant. 
+appropriate and relevant.
 
 When listing supported websites or brands in the description, do not list more than five. To provide
 a longer list of brands or websites, provide a link that users can refer to or embed the list in one

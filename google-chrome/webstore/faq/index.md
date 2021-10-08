@@ -108,7 +108,7 @@ collection are not accepted.
 
 ### How can I provide support for users of my extension? {: #faq-gen-27 }
 
-First you must "Enable User Feedback" in your developer dashboard Account settings. 
+First you must "Enable User Feedback" in your developer dashboard Account settings.
 
 {% Img src="image/BhuKGJaIeLNPW9ehns59NfwqKxF2/ArMfJztL1OlP6UektUwb.png", alt="Enable User Feedback Support tab", width="700", height="85" %}
 
@@ -131,7 +131,6 @@ developer account history, and if approved, you will be granted an increase. Ple
 your developer account has been suspended in the past, or you have had items taken down previously
 for policy violations, or your items consistently receive low quality ratings, your request may be
 denied.
-
 
 ## Development
 
@@ -286,7 +285,7 @@ or egregious policy violations may result in [termination of your developer acco
   this information in the [Status Tab][comply-policies] of your item.
 - Please make the appropriate
   changes so your extension complies with all [Developer Program Policies][program-policies], [Branding
-  Guidelines][branding] and [Terms of Services][terms-of-services]. For additional help, see the 
+  Guidelines][branding] and [Terms of Services][terms-of-services]. For additional help, see the
   [Troubleshooting violations FAQ][troubleshoot-violations].
 - Once you have remedied the violation you can
   resubmit via your developer dashboard.
@@ -296,8 +295,8 @@ or egregious policy violations may result in [termination of your developer acco
 ### My Chrome Web Store account has been suspended. What should I do? {: #faq-listing-12 }
 
 If you believe your developer account was wrongly terminated, you can appeal [here][cws-support]. We will
-  only reinstate accounts if an error was made, and a re-review finds that your account does not
-  violate the developer terms. For more information, check the [CWS Complaint Handling FAQ][complaint-handling].
+only reinstate accounts if an error was made, and a re-review finds that your account does not
+violate the developer terms. For more information, check the [CWS Complaint Handling FAQ][complaint-handling].
 
 ### How do I link my Play and Chrome Web Store item so that the "Available for Android" link appears on my item detail page? {: #faq-listing-11 }
 

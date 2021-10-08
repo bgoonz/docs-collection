@@ -12,16 +12,16 @@ as part of the [Chrome enterprise documentation][ent-chrome-management].
 
 Some of these enterprise features involve how the Chrome Web Store works within a Google Workspace:
 
-* **Domain publishing** &mdash; Lets you publish only to your organization's private Chrome Web
+- **Domain publishing** &mdash; Lets you publish only to your organization's private Chrome Web
   Store.
 
-* **Collections** &mdash; These provide curated collections of extensions specific to your
+- **Collections** &mdash; These provide curated collections of extensions specific to your
   organization.
 
-* **Blocklist and allowlist** &mdash; These options that let your admins manage which extensions can
+- **Blocklist and allowlist** &mdash; These options that let your admins manage which extensions can
   be used in your org.
 
-* **Force install** &mdash; Administrators can set policies that automatically and silently install
+- **Force install** &mdash; Administrators can set policies that automatically and silently install
   extensions for users in the organization. Once installed, users cannot disable or remove these
   extensions.
 
@@ -36,9 +36,9 @@ access it, users must be signed into Chrome with their organization credentials.
 You also need to use a slightly different URL than that of the public store, which specifies your
 Google Workspace domain:
 
-* **Public Chrome Web Store:** &emsp;
+- **Public Chrome Web Store:** &emsp;
   `chrome.google.com/webstore`
-* **Private Chrome Web Store:** &emsp;
+- **Private Chrome Web Store:** &emsp;
   `chrome.google.com/webstore/a/example.com`
 
 The option that enables this is available to administrators at **Devices > Chrome > Apps &
@@ -75,7 +75,7 @@ Publishing custom extensions for the enterprise][ent-ext-blog-how].
 There are also features that you don't use directly as an extension developer, but which you should
 be aware of.
 
-**Collections:** Administrators in your organization can curate *collections* of extensions that are
+**Collections:** Administrators in your organization can curate _collections_ of extensions that are
 appropriate to your org. These collections can include both public and privately published
 extensions. These collections are like the ones in the public Chrome Web Store, such as Editor's
 Picks, but appear in your private Chrome Web Store.
@@ -115,9 +115,9 @@ to a domain.
 This option is only available to domain users when it has been enabled for the domain. Make sure
 that:
 
-* You are logged in using your domain identity, and not a public (gmail) or other non-domain
+- You are logged in using your domain identity, and not a public (gmail) or other non-domain
   identity.
-* Your administrator has configured domain publishing.
+- Your administrator has configured domain publishing.
 
 **Why are my users not getting extension updates after I publish them?**
 
@@ -128,14 +128,14 @@ staying logged into Chrome with their domain identity for at least a few hours a
 
 Here are a few things to check:
 
-* Remember that there is a review that takes place between the time you submit your item to the
+- Remember that there is a review that takes place between the time you submit your item to the
   Chrome Web Store and when it is available for installation. This review can be quicker for
   domain-published extensions, but still takes some time.
 
-* Also note that extensions roll out over a period of time, so&mdash;especially if your organization
+- Also note that extensions roll out over a period of time, so&mdash;especially if your organization
   has a large user base&mdash;some users may see the update before others.
 
-* Make sure you're checking the [private Chrome Web Store][#private-cws] and not the public one.
+- Make sure you're checking the [private Chrome Web Store][#private-cws] and not the public one.
 
 [ent-chrome-management]: https://support.google.com/chrome/a/answer/9296680
 [ent-ext-admin-collections]: https://support.google.com/chrome/a/answer/2649489

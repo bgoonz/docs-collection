@@ -72,13 +72,13 @@ All extension icons should have the same visual weight, occupying roughly the sa
 figure shows, when you size an icon to fill the available area, square and circular icons are
 significantly larger than they should be, compared to icons with other shapes.
 
-{% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/9FMwqxYPCJPUtgOopXPk.png", 
+{% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/9FMwqxYPCJPUtgOopXPk.png",
        alt="icons filling all available space", height="98", width="562" %}
 
 Normalizing the icon sizes, as the next figure shows, gives the icons roughly even area and visual
 weight.
 
-{% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/Jx7j7kIofWvXzqdvNj58.png", 
+{% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/Jx7j7kIofWvXzqdvNj58.png",
        alt="most of the icons are smaller, and they have equal visual weight", height="99", width="563" %}
 
 You can use the following template images to help you judge how large your image's artwork should
@@ -208,7 +208,6 @@ Unlike [screenshots][screenshots], promotional images are not currently locale-s
 
 {% endAside %}
 
-
 **Note**: If your images refer to Google brands, follow the [Branding Guidelines][branding].
 
 Although only a small promotional image is required, you can also supply larger promotional images
@@ -262,7 +261,7 @@ The following graphics are examples of the promotional images for an extension:
 
 Marquee image (1400x560):
 
-{% Img src="image/nPi5hOhvGtatFrSN6ugwlPVHcs43/tn6IOh8ZCrflIOcu8isV.png", 
+{% Img src="image/nPi5hOhvGtatFrSN6ugwlPVHcs43/tn6IOh8ZCrflIOcu8isV.png",
         alt="Marquee", height="280", width="700" %}
 
 {% Aside 'note' %}
@@ -307,7 +306,6 @@ Each screenshot should be as follows:
 
 {% endAside %}
 
-
 As an example, here are two screenshot images for an extension:
 
 {% Img src="image/nPi5hOhvGtatFrSN6ugwlPVHcs43/ZR47lUf4fWymaVWR9kDT.jpg", alt="Screenshot 1", height="500", width="800" %}
@@ -328,4 +326,3 @@ Next, read [Submit your extension for publishing][submit-item].
 [screenshots]: #screenshots
 [submit-item]: /docs/webstore/publish/#submit-your-item-for-publishing
 [zip-file]: /docs/webstore/publish#create-your-items-zip-file
-

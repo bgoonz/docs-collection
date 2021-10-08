@@ -31,7 +31,7 @@ An Item resource represents a Chrome App, Chrome Extension, Theme or hosted app.
 [get][1]
 
 : Gets your own Chrome Web Store item. Provide `projection="DRAFT"` as a URL parameter (case
-  sensitive).
+sensitive).
 
 [insert][2]
 
@@ -40,7 +40,7 @@ An Item resource represents a Chrome App, Chrome Extension, Theme or hosted app.
 [publish][3]
 
 : Publishes an item. Add the `publishTarget` URL parameter to the end of the URL with either
-  `publishTarget ="trustedTesters"` or `publishTarget="default"` (case sensitive) as the value.
+`publishTarget ="trustedTesters"` or `publishTarget="default"` (case sensitive) as the value.
 
 [update][4]
 

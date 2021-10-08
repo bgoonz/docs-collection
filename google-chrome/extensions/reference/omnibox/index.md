@@ -22,7 +22,7 @@ For example:
 {
   "name": "Aaron's omnibox extension",
   "version": "1.0",
-  "omnibox": { "keyword": "aaron" },
+  "omnibox": { "keyword" : "aaron" },
   "icons": {
     "16": "16-full-color.png"
   },

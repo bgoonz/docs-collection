@@ -46,5 +46,4 @@ Extension and is available for purchase by the user.
 : Lists the in-app product information of an item.
 
 [1]: /docs/webstore/webstore_api/inAppProducts/get
-
 [2]: /docs/webstore/webstore_api/inAppProducts/list

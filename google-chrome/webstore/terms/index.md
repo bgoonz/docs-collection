@@ -17,7 +17,7 @@ This developer agreement was updated on May 4, 2021.
 
 ## Definitions {: #definitions }
 
-Google:  Google LLC, a Delaware limited liability company with principal place of business at 1600 Amphitheatre Parkway, Mountain View, CA 94043, United States; Google Ireland Limited, a company incorporated in Ireland with principal place of business at Gordon House, Barrow Street, Dublin 4, Ireland; or Google Asia Pacific Pte. Limited, a company incorporated in Singapore with principal place of business at 70 Pasir Panjang Road, #03-71, Mapletree Business City, Singapore 117371. Google may update the Google entities and their addresses from time to time.
+Google: Google LLC, a Delaware limited liability company with principal place of business at 1600 Amphitheatre Parkway, Mountain View, CA 94043, United States; Google Ireland Limited, a company incorporated in Ireland with principal place of business at Gordon House, Barrow Street, Dublin 4, Ireland; or Google Asia Pacific Pte. Limited, a company incorporated in Singapore with principal place of business at 70 Pasir Panjang Road, #03-71, Mapletree Business City, Singapore 117371. Google may update the Google entities and their addresses from time to time.
 
 Developer or You: Any person or company who is registered to develop Products for publication and distribution on the Web Store in accordance with the terms of this Agreement.
 
@@ -26,7 +26,6 @@ Web Store: The Google Chrome Web Store site operated by Google, where Developers
 Products: Software, content and digital materials created for use in connection with Google Chrome and distributed via the Web Store.
 
 Taxes: All government-imposed taxes, except for taxes based on Google's net income, net worth, asset value, property value, or employment.
-
 
 ## 1\. Introduction {: #introduction }
 
@@ -60,7 +59,7 @@ Agreement or use the Web Store on behalf of your employer or other entity.
 
 ## 3\. Pricing and Payments {: #pricing }
 
-3.1 You are responsible for any Taxes and must pay the Registration Fee without any reduction for Taxes. 
+3.1 You are responsible for any Taxes and must pay the Registration Fee without any reduction for Taxes.
 
 3.2 This Agreement covers both Products you choose to distribute for free and Products for which you charge a fee.
 If you charge a fee for your Product, you assume sole responsibility and liability for all related transactions and authentications, records, and taxes. Google will have no obligations with respect to such Products, including without limitation obligations to track and process payments, authenticate paid or previously paid downloads, maintain payment records, or pay, report, or charge taxes.

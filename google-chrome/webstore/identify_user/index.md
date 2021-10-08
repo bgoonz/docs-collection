@@ -59,19 +59,17 @@ in, the user will be prompted to sign in with a Google-provided login page or po
 
 Here's what the login page looks like. Note that it has a Google URL, not a URL from the app's site:
 
-{% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/yDxgjzMfnbRFJi9XlGyj.png", 
+{% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/yDxgjzMfnbRFJi9XlGyj.png",
        alt="The Google login page.", height="368", width="644" %}
 
 You can get the Google OpenID endpoint by sending a request
 to `https://www.google.com/accounts/o8/id`. See [Federated Login for Google Account Users][5] for
 details.
 
-
 [1]: https://developers.google.com/appengine/docs/java/users/overview
 [2]: https://developers.google.com/appengine/docs/python/users/overview
 [3]: /docs/webstore/get_started
-[4]:
-  http://src.chromium.org/viewvc/chrome/trunk/src/chrome/common/extensions/docs/examples/apps/hello-java/HelloLicenseServlet.java
+[4]: http://src.chromium.org/viewvc/chrome/trunk/src/chrome/common/extensions/docs/examples/apps/hello-java/HelloLicenseServlet.java
 [5]: https://developers.google.com/accounts/docs/OpenID
 [6]: https://developers.google.com/accounts/docs/OpenID#Parameters
 [7]: http://code.google.com/p/openid4java/

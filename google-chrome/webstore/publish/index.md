@@ -33,7 +33,7 @@ We'll go into detail about each step below.
 
 ## Create your item's zip file {: #create-your-items-zip-file }
 
-To upload your item, you need to create a ZIP file that contains the 
+To upload your item, you need to create a ZIP file that contains the
 manifest file located in the **root directory** and the files for your extension. The manifest file must specify at least the following fields:
 
 - `"name":`—This [name][name] appears in the Chrome Web Store and in the Chrome browser
@@ -175,6 +175,3 @@ There are important emails like take down or rejection notifications that are en
 [update]: /docs/webstore/update
 [verified-publisher]: /docs/webstore/cws-dashboard-listing/#displaying-your-verified-publisher-status
 [version]: /docs/extensions/mv3/manifest/version
-
-
-

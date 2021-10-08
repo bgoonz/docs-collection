@@ -1,5 +1,5 @@
 ---
-layout: 'layouts/doc-post.njk'
+layout: "layouts/doc-post.njk"
 title: "Items:Update"
 #date: TODO
 #updated: TODO

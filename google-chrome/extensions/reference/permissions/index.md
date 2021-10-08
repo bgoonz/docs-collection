@@ -123,23 +123,20 @@ their warnings.
 Request the permissions from within a user gesture using `permissions.request()`:
 
 ```js
-document.querySelector("#my-button").addEventListener("click", (event) => {
+document.querySelector('#my-button').addEventListener('click', (event) => {
   // Permissions must be requested from inside a user gesture, like a button's
   // click handler.
-  chrome.permissions.request(
-    {
-      permissions: ["tabs"],
-      origins: ["https://www.google.com/"],
-    },
-    (granted) => {
-      // The callback argument will be true if the user granted the permissions.
-      if (granted) {
-        doSomething();
-      } else {
-        doSomethingElse();
-      }
+  chrome.permissions.request({
+    permissions: ['tabs'],
+    origins: ['https://www.google.com/']
+  }, (granted) => {
+    // The callback argument will be true if the user granted the permissions.
+    if (granted) {
+      doSomething();
+    } else {
+      doSomethingElse();
     }
-  );
+  });
 });
 ```
 
@@ -155,19 +152,16 @@ To check whether your extension has a specific permission or set of permissions,
 `permission.contains()`:
 
 ```js
-chrome.permissions.contains(
-  {
-    permissions: ["tabs"],
-    origins: ["https://www.google.com/"],
-  },
-  (result) => {
-    if (result) {
-      // The extension has the permissions.
-    } else {
-      // The extension doesn't have the permissions.
-    }
+chrome.permissions.contains({
+  permissions: ['tabs'],
+  origins: ['https://www.google.com/']
+}, (result) => {
+  if (result) {
+    // The extension has the permissions.
+  } else {
+    // The extension doesn't have the permissions.
   }
-);
+});
 ```
 
 ### Step 5: Remove the permissions
@@ -176,20 +170,17 @@ You should remove permissions when you no longer need them. After a permission h
 calling `permissions.request()` usually adds the permission back without prompting the user.
 
 ```js
-chrome.permissions.remove(
-  {
-    permissions: ["tabs"],
-    origins: ["https://www.google.com/"],
-  },
-  (removed) => {
-    if (removed) {
-      // The permissions have been removed.
-    } else {
-      // The permissions have not been removed (e.g., you tried to remove
-      // required permissions).
-    }
+chrome.permissions.remove({
+  permissions: ['tabs'],
+  origins: ['https://www.google.com/']
+}, (removed) => {
+  if (removed) {
+    // The permissions have been removed.
+  } else {
+    // The permissions have not been removed (e.g., you tried to remove
+    // required permissions).
   }
-);
+});
 ```
 
 [1]: /docs/extensions/mv2/tabs

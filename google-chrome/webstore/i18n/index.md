@@ -52,62 +52,62 @@ localizing the name, description, and detailed description.
 
 You can localize your app to any of the following locales.
 
-| Locale code | Language (region) |
-| ----------- | ----------------- |
-| ar | Arabic |
-| am | Amharic |
-| bg | Bulgarian |
-| bn | Bengali |
-| ca | Catalan |
-| cs | Czech |
-| da | Danish |
-| de | German |
-| el | Greek |
-| en | English |
-| en_GB | English (Great Britain) |
-| en_US | English (USA) |
-| es | Spanish |
-| es_419 | Spanish (Latin America and Caribbean) |
-| et | Estonian |
-| fa | Persian |
-| fi | Finnish |
-| fil | Filipino |
-| fr | French |
-| gu | Gujarati |
-| he | Hebrew |
-| hi | Hindi |
-| hr | Croatian |
-| hu | Hungarian |
-| id | Indonesian |
-| it | Italian |
-| ja | Japanese |
-| kn | Kannada |
-| ko | Korean |
-| lt | Lithuanian |
-| lv | Latvian |
-| ml | Malayalam |
-| mr | Marathi |
-| ms | Malay |
-| nl | Dutch |
-| no | Norwegian |
-| pl | Polish |
-| pt_BR | Portuguese (Brazil) |
-| pt_PT | Portuguese (Portugal) |
-| ro | Romanian |
-| ru | Russian |
-| sk | Slovak |
-| sl | Slovenian |
-| sr | Serbian |
-| sv | Swedish |
-| sw | Swahili |
-| ta | Tamil |
-| te | Telugu |
-| th | Thai |
-| tr | Turkish |
-| uk | Ukrainian |
-| vi | Vietnamese |
-| zh_CN | Chinese (China) |
-| zh_TW | Chinese (Taiwan) |
+| Locale code | Language (region)                     |
+| ----------- | ------------------------------------- |
+| ar          | Arabic                                |
+| am          | Amharic                               |
+| bg          | Bulgarian                             |
+| bn          | Bengali                               |
+| ca          | Catalan                               |
+| cs          | Czech                                 |
+| da          | Danish                                |
+| de          | German                                |
+| el          | Greek                                 |
+| en          | English                               |
+| en_GB       | English (Great Britain)               |
+| en_US       | English (USA)                         |
+| es          | Spanish                               |
+| es_419      | Spanish (Latin America and Caribbean) |
+| et          | Estonian                              |
+| fa          | Persian                               |
+| fi          | Finnish                               |
+| fil         | Filipino                              |
+| fr          | French                                |
+| gu          | Gujarati                              |
+| he          | Hebrew                                |
+| hi          | Hindi                                 |
+| hr          | Croatian                              |
+| hu          | Hungarian                             |
+| id          | Indonesian                            |
+| it          | Italian                               |
+| ja          | Japanese                              |
+| kn          | Kannada                               |
+| ko          | Korean                                |
+| lt          | Lithuanian                            |
+| lv          | Latvian                               |
+| ml          | Malayalam                             |
+| mr          | Marathi                               |
+| ms          | Malay                                 |
+| nl          | Dutch                                 |
+| no          | Norwegian                             |
+| pl          | Polish                                |
+| pt_BR       | Portuguese (Brazil)                   |
+| pt_PT       | Portuguese (Portugal)                 |
+| ro          | Romanian                              |
+| ru          | Russian                               |
+| sk          | Slovak                                |
+| sl          | Slovenian                             |
+| sr          | Serbian                               |
+| sv          | Swedish                               |
+| sw          | Swahili                               |
+| ta          | Tamil                                 |
+| te          | Telugu                                |
+| th          | Thai                                  |
+| tr          | Turkish                               |
+| uk          | Ukrainian                             |
+| vi          | Vietnamese                            |
+| zh_CN       | Chinese (China)                       |
+| zh_TW       | Chinese (Taiwan)                      |
 
 ## Localizing your app listing
 
@@ -195,7 +195,7 @@ Next, choose the locale that you want to edit. (Skip this if your app supports o
 Now edit the detailed description, providing text for the currently selected locale (or for the
 default locale, if you support just one).
 
-{% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/vJ5OLO5OdFBcmV963q8e.jpg", 
+{% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/vJ5OLO5OdFBcmV963q8e.jpg",
        alt="screenshot of the Detailed Description section for an app", height="258", width="527" %}
 
 If you support multiple locales, repeat the previous two steps until you've provided a detailed
@@ -212,7 +212,7 @@ page.
 If your app supports multiple locales, then after you upload each screenshot, you can specify
 whether it's for all locales or just for the one you're currently editing.
 
-{% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/TTqmjZAmXBuov9HRBISe.png", 
+{% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/TTqmjZAmXBuov9HRBISe.png",
        alt="screenshot of screenshots with localization options", height="375", width="430" %}
 
 To change the locale information for a screenshot, first use the pull-down list at the top of the
@@ -274,14 +274,10 @@ Unselecting a region prevents your app from being listed in that region.
 [8]: http://code.google.com/chrome/extensions/i18n.html
 [9]: https://developers.google.com/chrome/apps/docs/developers_guide
 [12]: #localeTable
-[13]:
-  http://src.chromium.org/viewvc/chrome/trunk/src/chrome/common/extensions/docs/examples/api/i18n/localizedHostedApp/
-[14]:
-  http://src.chromium.org/viewvc/chrome/trunk/src/chrome/common/extensions/docs/examples/api/i18n/localizedHostedApp/manifest.json
-[15]:
-  http://src.chromium.org/viewvc/chrome/trunk/src/chrome/common/extensions/docs/examples/api/i18n/localizedHostedApp/_locales/en/messages.json
-[16]:
-  http://src.chromium.org/viewvc/chrome/trunk/src/chrome/common/extensions/docs/examples/api/i18n/localizedHostedApp/_locales/de/messages.json
+[13]: http://src.chromium.org/viewvc/chrome/trunk/src/chrome/common/extensions/docs/examples/api/i18n/localizedHostedApp/
+[14]: http://src.chromium.org/viewvc/chrome/trunk/src/chrome/common/extensions/docs/examples/api/i18n/localizedHostedApp/manifest.json
+[15]: http://src.chromium.org/viewvc/chrome/trunk/src/chrome/common/extensions/docs/examples/api/i18n/localizedHostedApp/_locales/en/messages.json
+[16]: http://src.chromium.org/viewvc/chrome/trunk/src/chrome/common/extensions/docs/examples/api/i18n/localizedHostedApp/_locales/de/messages.json
 [17]: http://code.google.com/chrome/extensions/samples.html#i18n
 [18]: http://code.google.com/chrome/extensions/i18n.html
 [19]: http://code.google.com/chrome/extensions/i18n.html#locales-usage

@@ -25,21 +25,21 @@ The following code creates an IME that converts typed letters to upper case.
 ```js
 var context_id = -1;
 
-chrome.input.ime.onFocus.addListener(function (context) {
+chrome.input.ime.onFocus.addListener(function(context) {
   context_id = context.contextID;
 });
 
-chrome.input.ime.onKeyEvent.addListener(function (engineID, keyData) {
-  if (keyData.type == "keydown" && keyData.key.match(/^[a-z]$/)) {
-    chrome.input.ime.commitText({
-      contextID: context_id,
-      text: keyData.key.toUpperCase(),
-    });
-    return true;
-  } else {
-    return false;
+chrome.input.ime.onKeyEvent.addListener(
+  function(engineID, keyData) {
+    if (keyData.type == "keydown" && keyData.key.match(/^[a-z]$/)) {
+      chrome.input.ime.commitText({"contextID": context_id,
+                                    "text": keyData.key.toUpperCase()});
+      return true;
+    } else {
+      return false;
+    }
   }
-});
+);
 ```
 
 For an example of using this API, see the [basic input.ime sample][2]. For other examples and for

@@ -22,19 +22,19 @@ A compliant disclosure explains to the user what they can expect from your Chrom
 A disclosure must include two components, along with any additional information the developer
 considers necessary for the user.
 
-*   The fact that a user will be installing a Chrome browser extension.
+- The fact that a user will be installing a Chrome browser extension.
 
-*   What the extension does. Content in both the marketing and installation flow of an extension
-    must clearly outline both the principal and significant features of your extension. Burying this
-    information in unrelated text is considered a violation of this policy.
+- What the extension does. Content in both the marketing and installation flow of an extension
+  must clearly outline both the principal and significant features of your extension. Burying this
+  information in unrelated text is considered a violation of this policy.
 
 In addition to including these components, the disclosure must comply with the following:
 
-*   Disclosures must be in readable text and utilize contrast to ensure the disclosure is legible.
-    Disclosures in an image or audio form must be accompanied by a text disclosure.
+- Disclosures must be in readable text and utilize contrast to ensure the disclosure is legible.
+  Disclosures in an image or audio form must be accompanied by a text disclosure.
 
-*   The disclosure must be above and clearly associated with the first link or button that leads to
-    the Chrome Web Store.
+- The disclosure must be above and clearly associated with the first link or button that leads to
+  the Chrome Web Store.
 
 Additionally, other elements on the referrer page must not mislead the user about the extension's
 functionality. Images, audio, text or video that imply a functionality that the extension does not
@@ -61,16 +61,16 @@ to the primary functionality of the extension, is considered to be an "unrelated
 
 Unrelated user action includes, but is not limited to, requiring users to:
 
-*   Install another app, extension, or other software that is not necessary for the core function of
-    the extension
+- Install another app, extension, or other software that is not necessary for the core function of
+  the extension
 
-*   Interact with ads
+- Interact with ads
 
-*   Submit reviews
+- Submit reviews
 
 The following are considered to be related user actions and would be considered compliant:
 
-*   Creating or logging into an account associated with the extension
+- Creating or logging into an account associated with the extension
 
 ## Can I bundle multiple extensions or offers in the same installation flow?
 
@@ -97,7 +97,6 @@ Misrepresentation][ads-misrepresentation] Policy or [Abusing the ad
 network][abuse-ad] does violate Chrome Web Store
 [Developer Program Policies][program-policies]
 
-
 ## What if I use affiliates that independently create and advertise my extensions?
 
 Extensions must be marketed responsibly. It is up to the publishing entity to ensure that all parts
@@ -113,12 +112,12 @@ A notification email will be sent to the associated developer account of the ext
 action taken against your extension. Depending on the egregiousness of the deceptive behavior there
 are different outcomes for your extension:
 
-*   A warning email that deceptive installation tactics for your extension have been identified
+- A warning email that deceptive installation tactics for your extension have been identified
 
-*   Immediate removal of the violating extension and disabling of its active user base
+- Immediate removal of the violating extension and disabling of its active user base
 
-*   Repeated abuse may result in the permanent termination of your publisher account and possibly
-    the termination of any associated publisher account(s)
+- Repeated abuse may result in the permanent termination of your publisher account and possibly
+  the termination of any associated publisher account(s)
 
 ## What should I do if I receive a warning email?
 
@@ -139,4 +138,3 @@ process FAQ][complaint-faq].
 [complaint-faq]: /docs/webstore/complaint-faq
 [cws-support-form]: https://support.google.com/chrome_webstore/contact/one_stop_support
 [program-policies]: /docs/webstore/program_policies
-

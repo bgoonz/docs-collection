@@ -56,7 +56,7 @@ Click the Accept button and you will see a code that looks something like this:
 {% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/oCXSDgT7JuB3yvD8V1CJ.png", alt="A screenshot of the UI for copying code.", height="173", width="414" %}
 
 Use this value to request an access token. For example, using `curl`, you can get an access token by
-executing the following command (replacing the values of $CLIENT\_ID, $CLIENT_SECRET, and \$CODE
+executing the following command (replacing the values of $CLIENT_ID, $CLIENT_SECRET, and \$CODE
 with the values from above):
 
 ```bash
@@ -68,10 +68,10 @@ This will return a result such as:
 
 ```json
 {
-  "access_token" : "ya29...",
-  "token_type" : "Bearer",
-  "expires_in" : 3600,
-  "refresh_token" : "1/rwn..."
+  "access_token": "ya29...",
+  "token_type": "Bearer",
+  "expires_in": 3600,
+  "refresh_token": "1/rwn..."
 }
 ```
 
@@ -199,7 +199,6 @@ https://www.googleapis.com/chromewebstore/v1.1/items/$APP_ID/publish?publishTarg
 **Note**: For a full description of the publish method, see [Items:Publish][9].
 
 {% endAside %}
-
 
 ### Checking the upload status of an item {: #checkstatus }
 

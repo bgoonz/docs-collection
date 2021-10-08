@@ -13,7 +13,7 @@ You are free to monetize your extensions using other payment platforms.
 {% Aside 'caution' %}
 Chrome no longer supports Chrome Apps on Windows, Mac, and Linux. Chrome OS
 will continue to support Chrome Apps. Additionally, Chrome and the Web Store will continue to
-support extensions on all platforms. [Read the announcement][1] and learn more about [migrating your	
+support extensions on all platforms. [Read the announcement][1] and learn more about [migrating your
 app][2].
 {% endAside %}
 
