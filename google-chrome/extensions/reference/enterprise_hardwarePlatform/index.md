@@ -1,11 +1,4 @@
----
-api: enterprise.hardwarePlatform
----
+enterprise\_hardwarePlatform
+============================
 
-{% Aside %}
-
-**Note:** This API is only for **[extensions pre-installed by policy][1]**.
-
-{% endAside %}
-
-[1]: https://support.google.com/chrome/a/answer/1375694?hl=en
+<table><thead><tr class="header"><th></th><th>Name</th><th>Size</th><th>Modified</th><th></th></tr></thead><tbody><tr class="odd"><td></td><td><span class="goup">..</span></td><td>—</td><td>—</td><td></td></tr><tr class="even"><td></td><td><span class="name">index.md</span></td><td>209 bytes</td><td>Fri Oct 8 11:35:50 2021</td><td></td></tr></tbody></table>

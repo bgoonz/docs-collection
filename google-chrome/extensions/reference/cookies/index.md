@@ -1,33 +1,4 @@
----
-api: cookies
----
+cookies
+=======
 
-## Manifest
-
-To use the cookies API, you must declare the "cookies" permission in your
-manifest, along with [host permissions][1] for any hosts whose cookies you want
-to access. For example:
-
-```json
-{
-  "name": "My extension",
-  ...
-  "host_permissions": [
-    "*://*.google.com"
-  ],
-  "permissions": [
-    "cookies"
-  ],
-  ...
-}
-```
-
-## Examples
-
-You can find a simple example of using the cookies API in the
-[examples/api/cookies][2] directory. For other examples and for help in viewing
-the source code, see [Samples][3].
-
-[1]: /docs/extensions/mv3/declare_permissions
-[2]: https://github.com/GoogleChrome/chrome-extensions-samples/tree/main/api/cookies
-[3]: /docs/extensions/mv3/samples
+<table><thead><tr class="header"><th></th><th>Name</th><th>Size</th><th>Modified</th><th></th></tr></thead><tbody><tr class="odd"><td></td><td><span class="goup">..</span></td><td>—</td><td>—</td><td></td></tr><tr class="even"><td></td><td><span class="name">index.md</span></td><td>715 bytes</td><td>Fri Oct 8 11:35:37 2021</td><td></td></tr></tbody></table>

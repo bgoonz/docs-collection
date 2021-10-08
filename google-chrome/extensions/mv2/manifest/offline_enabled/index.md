@@ -1,21 +1,4 @@
----
-layout: "layouts/doc-post.njk"
-title: "Manifest - Offline Enabled"
-date: 2013-05-12
-updated: 2015-01-07
-description: Reference documentation for the offline_enabled property of manifest.json.
----
+offline\_enabled
+================
 
-Whether the app or extension is expected to work offline. When Chrome detects that it is offline,
-apps with this field set to true will be highlighted on the New Tab page.
-
-As of Chrome 35, apps are assumed to be offline enabled and the default value of `"offline_enabled"`
-is `true` unless `"webview"` permission is requested. In this case, network connectivity is assumed
-to be required and `"offline_enabled"` defaults to `false`.
-
-The `"offline_enabled"` value is also used to determine whether a network connectivity check will be
-performed when launching an app in [Chrome OS kiosk mode][1]. A network connectivity check will be
-performed when apps are not offline enabled, and app launching put on hold until the device obtains
-connectivity to the Internet.
-
-[1]: /apps/manifest/kiosk_enabled
+<table><thead><tr class="header"><th></th><th>Name</th><th>Size</th><th>Modified</th><th></th></tr></thead><tbody><tr class="odd"><td></td><td><span class="goup">..</span></td><td>—</td><td>—</td><td></td></tr><tr class="even"><td></td><td><span class="name">index.md</span></td><td>1001 bytes</td><td>Fri Oct 8 11:33:53 2021</td><td></td></tr></tbody></table>

@@ -1,22 +1,4 @@
----
-layout: "layouts/doc-post.njk"
-title: "Manifest - Minimum Chrome Version"
-#date: TODO
-#updated: TODO
-#description: TODO
----
+minimum\_chrome\_version
+========================
 
-{% Aside 'caution' %}
-
-**Important:** Chrome will be removing support for Chrome Apps on all platforms. Chrome browser and
-the Chrome Web Store will continue to support extensions. [**Read the announcement**][1] and learn
-more about [**migrating your app**][2].
-
-{% endAside %}
-
-The version of Chrome that your extension, app, or theme requires, if any. The format for this
-string is the same as for the [version][3] field.
-
-[1]: https://blog.chromium.org/2020/08/changes-to-chrome-app-support-timeline.html
-[2]: /apps/migration
-[3]: /extensions/manifest#version
+<table><thead><tr class="header"><th></th><th>Name</th><th>Size</th><th>Modified</th><th></th></tr></thead><tbody><tr class="odd"><td></td><td><span class="goup">..</span></td><td>—</td><td>—</td><td></td></tr><tr class="even"><td></td><td><span class="name">index.md</span></td><td>692 bytes</td><td>Fri Oct 8 11:33:58 2021</td><td></td></tr></tbody></table>

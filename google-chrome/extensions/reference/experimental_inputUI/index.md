@@ -1,12 +1,4 @@
----
-layout: "layouts/doc-post.njk"
-title: "InputUI API"
-date: 2012-09-17
-updated: 2014-05-21
-description: Reference documentation for the chrome.experimental.input.ui API.
----
+experimental\_inputUI
+=====================
 
-Use the `chrome.experimental.input.ui` module to implement input method user interface. This module
-is for Chrome OS only. [chrome.experimental.\* APIs][1] page.
-
-[1]: /docs/extensions/experimental
+<table><thead><tr class="header"><th></th><th>Name</th><th>Size</th><th>Modified</th><th></th></tr></thead><tbody><tr class="odd"><td></td><td><span class="goup">..</span></td><td>—</td><td>—</td><td></td></tr><tr class="even"><td></td><td><span class="name">index.md</span></td><td>375 bytes</td><td>Fri Oct 8 11:35:56 2021</td><td></td></tr></tbody></table>

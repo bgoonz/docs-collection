@@ -1,16 +1,4 @@
----
-layout: "layouts/doc-post.njk"
-title: "chrome.experimental.devtools.* APIs"
-date: 2012-09-17
-updated: 2014-05-21
-description: Reference documentation for the chrome.experimental.devtools APIs.
----
+experimental\_devtools
+======================
 
-chrome.experimental.devtools.\* APIs
-
-Some of the Developer Tools APIs are no longer experimental. Please see [chrome.devtools.\* APIs][1]
-for the guidelines on how to use these. For the list of Developer Tools APIs that are still
-experimental, please refer to [chrome.experimental.\* APIs][2].
-
-[1]: /docs/extensions/mv2/devtools
-[2]: /docs/extensions/experimental
+<table><thead><tr class="header"><th></th><th>Name</th><th>Size</th><th>Modified</th><th></th></tr></thead><tbody><tr class="odd"><td></td><td><span class="goup">..</span></td><td>—</td><td>—</td><td></td></tr><tr class="even"><td></td><td><span class="name">index.md</span></td><td>568 bytes</td><td>Fri Oct 8 11:35:55 2021</td><td></td></tr></tbody></table>

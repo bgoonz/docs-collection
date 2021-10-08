@@ -1,16 +1,4 @@
----
-api: documentScan
----
+documentScan
+============
 
-## Document Scan API
-
-The Document Scan API is designed to allow apps and extensions to view the
-content of paper documents on an attached document scanner.
-
-{% Aside %}
-
-**Note:** This API depends on OS features that may not be available depending
-on the underlying operating system. As of this writing only Chrome OS for
-certain USB-attached devices is known to successfully work.
-
-{% endAside %}
+<table><thead><tr class="header"><th></th><th>Name</th><th>Size</th><th>Modified</th><th></th></tr></thead><tbody><tr class="odd"><td></td><td><span class="goup">..</span></td><td>—</td><td>—</td><td></td></tr><tr class="even"><td></td><td><span class="name">index.md</span></td><td>425 bytes</td><td>Fri Oct 8 11:35:46 2021</td><td></td></tr></tbody></table>

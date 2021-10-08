@@ -1,28 +1,4 @@
----
-layout: "layouts/doc-post.njk"
-title: "Publish Your App"
-date: 2012-09-17
-updated: 2013-10-21
-description: How to publish your Chrome App.
----
+publish\_app
+============
 
-{% Aside 'caution' %}
-
-**Important:** Chrome will be removing support for Chrome Apps on all platforms. Chrome browser and
-the Chrome Web Store will continue to support extensions. [**Read the announcement**][1] and learn
-more about [**migrating your app**][2].
-
-{% endAside %}
-
-Packaged apps are published in the same way as other types of apps in the Chrome Web Store. For
-detailed instructions, see [Publishing Your App][3].
-
-**Tip:** If your app uses [Native Client][4], you can structure your application directory hierarchy
-and zip file in a way that reduces the size of the user download package. For details, see [Reducing
-the size of the user download package][5].
-
-[1]: https://blog.chromium.org/2020/08/changes-to-chrome-app-support-timeline.html
-[2]: /docs/apps/migration/
-[3]: /docs/webstore/publish/
-[4]: /docs/native-client/
-[5]: /docs/native-client/devguide/distributing/#chrome-apps
+<table><thead><tr class="header"><th></th><th>Name</th><th>Size</th><th>Modified</th><th></th></tr></thead><tbody><tr class="odd"><td></td><td><span class="goup">..</span></td><td>—</td><td>—</td><td></td></tr><tr class="even"><td></td><td><span class="name">index.md</span></td><td>1 KB</td><td>Fri Oct 8 11:34:14 2021</td><td></td></tr></tbody></table>

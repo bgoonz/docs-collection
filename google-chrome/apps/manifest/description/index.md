@@ -1,25 +1,4 @@
----
-layout: "layouts/doc-post.njk"
-title: "Manifest - Description"
-#date: TODO
-#updated: TODO
-#description: TODO
----
+description
+===========
 
-{% Aside 'caution' %}
-
-**Important:** Chrome will be removing support for Chrome Apps on all platforms. Chrome browser and
-the Chrome Web Store will continue to support extensions. [**Read the announcement**][1] and learn
-more about [**migrating your app**][2].
-
-{% endAside %}
-
-A plain text string (no HTML or other formatting; no more than 132 characters) that describes the
-extension. The description should be suitable for both the browser's extension management UI and the
-[Chrome Web Store][3]. You can specify locale-specific strings for this field; see
-[Internationalization][4] for details.
-
-[1]: https://blog.chromium.org/2020/08/changes-to-chrome-app-support-timeline.html
-[2]: /apps/migration
-[3]: https://chrome.google.com/webstore
-[4]: /extensions/i18n
+<table><thead><tr class="header"><th></th><th>Name</th><th>Size</th><th>Modified</th><th></th></tr></thead><tbody><tr class="odd"><td></td><td><span class="goup">..</span></td><td>—</td><td>—</td><td></td></tr><tr class="even"><td></td><td><span class="name">index.md</span></td><td>885 bytes</td><td>Fri Oct 8 11:33:51 2021</td><td></td></tr></tbody></table>

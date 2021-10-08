@@ -1,12 +1,4 @@
----
-layout: "layouts/doc-post.njk"
-title: "Manifest - Minimum Chrome Version"
-date: 2013-05-12
-updated: 2018-04-26
-description: Reference documentation for the minimum_chrome_version property of manifest.json.
----
+minimum\_chrome\_version
+========================
 
-The version of Chrome that your extension, app, or theme requires, if any. The format for this
-string is the same as for the [version][1] field.
-
-[1] /docs/extensions/mv2/tabs#version
+<table><thead><tr class="header"><th></th><th>Name</th><th>Size</th><th>Modified</th><th></th></tr></thead><tbody><tr class="odd"><td></td><td><span class="goup">..</span></td><td>—</td><td>—</td><td></td></tr><tr class="even"><td></td><td><span class="name">index.md</span></td><td>399 bytes</td><td>Fri Oct 8 11:33:50 2021</td><td></td></tr></tbody></table>

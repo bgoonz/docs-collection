@@ -1,30 +1,4 @@
----
-api: debugger
----
+debugger
+========
 
-## Notes
-
-As of today, attaching to the tab by means of the debugger API and using embedded Chrome DevTools
-with that tab are mutually exclusive. If user invokes Chrome DevTools while extension is attached to
-the tab, debugging session is terminated. Extension can re-establish it later.
-
-## Manifest
-
-You must declare the "debugger" permission in your extension's manifest to use this API.
-
-```json
-{
-  "name": "My extension",
-  ...
-  "permissions": [
-    "debugger",
-  ],
-  ...
-}
-```
-
-## Examples
-
-You can find samples of this API in [Samples][1].
-
-[1]: /docs/extensions/mv2/samples#search:debugger
+<table><thead><tr class="header"><th></th><th>Name</th><th>Size</th><th>Modified</th><th></th></tr></thead><tbody><tr class="odd"><td></td><td><span class="goup">..</span></td><td>—</td><td>—</td><td></td></tr><tr class="even"><td></td><td><span class="name">index.md</span></td><td>624 bytes</td><td>Fri Oct 8 11:35:37 2021</td><td></td></tr></tbody></table>

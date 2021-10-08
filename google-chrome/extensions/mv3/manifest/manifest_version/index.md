@@ -1,25 +1,4 @@
----
-layout: "layouts/doc-post.njk"
-title: "Manifest Version"
-date: 2013-05-12
-updated: 2021-07-29
-description: Reference documentation for the manifest_version property of manifest.json.
----
+manifest\_version
+=================
 
-An integer specifying the version of the manifest file format your package requires. For example:
-
-```json
-"manifest_version": 3
-```
-
-Supported values for this key are:
-
-* `3`: Use the [Manifest V3][mv3] format and associated feature set.
-* `2`: Use the [Manifest V2][mv2] format and associated feature set.
-
-The current version is Manifest V3. Manifest V2 is also currently permitted, but will be phased out
-in the future. There will be other manifest versions in the future (V4 and beyond) but these aren't
-scheduled yet.
-
-[mv3]: /docs/extensions/mv3/intro/mv3-overview/
-[mv2]: /docs/extensions/mv2/manifest/
+<table><thead><tr class="header"><th></th><th>Name</th><th>Size</th><th>Modified</th><th></th></tr></thead><tbody><tr class="odd"><td></td><td><span class="goup">..</span></td><td>—</td><td>—</td><td></td></tr><tr class="even"><td></td><td><span class="name">index.md</span></td><td>803 bytes</td><td>Fri Oct 8 11:34:48 2021</td><td></td></tr></tbody></table>

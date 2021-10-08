@@ -1,13 +1,4 @@
----
-layout: "layouts/doc-post.njk"
-title: "Manifest - Default Locale"
-date: 2013-05-12
-updated: 2018-04-26
-description: Reference documentation for the default_locale property of manifest.json.
----
+default\_locale
+===============
 
-Specifies the subdirectory of `_locales` that contains the default strings for this extension. This
-field is **required** in extensions that have a `_locales` directory; it **must be absent** in
-extensions that have no `_locales` directory. For details, see [Internationalization][1].
-
-[1]: /docs/extensions/i18n
+<table><thead><tr class="header"><th></th><th>Name</th><th>Size</th><th>Modified</th><th></th></tr></thead><tbody><tr class="odd"><td></td><td><span class="goup">..</span></td><td>—</td><td>—</td><td></td></tr><tr class="even"><td></td><td><span class="name">index.md</span></td><td>512 bytes</td><td>Fri Oct 8 11:33:42 2021</td><td></td></tr></tbody></table>

@@ -1,15 +1,4 @@
----
-layout: "layouts/doc-post.njk"
-title: "Manifest - Homepage Url"
-date: 2013-05-12
-updated: 2018-04-26
-description: Reference documentation for the homepage_url property of manifest.json.
----
+homepage\_url
+=============
 
-The URL of the homepage for this extension. The extensions management page (chrome://extensions)
-will contain a link to this URL. This field is particularly useful if you [host the extension on
-your own site][1]. If you distribute your extension using the [Chrome Web Store][2], the homepage
-URL defaults to the extension's own page.
-
-[1]: /docs/extensions/mv3/hosting
-[2]: https://chrome.google.com/webstore
+<table><thead><tr class="header"><th></th><th>Name</th><th>Size</th><th>Modified</th><th></th></tr></thead><tbody><tr class="odd"><td></td><td><span class="goup">..</span></td><td>—</td><td>—</td><td></td></tr><tr class="even"><td></td><td><span class="name">index.md</span></td><td>604 bytes</td><td>Fri Oct 8 11:34:44 2021</td><td></td></tr></tbody></table>
