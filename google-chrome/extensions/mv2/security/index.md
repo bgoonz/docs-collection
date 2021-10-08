@@ -49,10 +49,7 @@ specified in the permissions.
   "name": "Very Secure Extension",
   "version": "1.0",
   "description": "Example of a Secure Extension",
-  "permissions": [
-    "/*",
-    "https://*.google.com/"
-  ],
+  "permissions": ["/*", "https://*.google.com/"],
   "manifest_version": 2
 }
 ```
@@ -151,7 +148,7 @@ malicious scripts. Instead, manually create DOM nodes and use `innerText` to ins
 
 ```js
 function constructDOM() {
-  let newTitle = document.createElement('h1');
+  let newTitle = document.createElement("h1");
   newTitle.innerText = host;
   document.appendChild(newTitle);
 }
@@ -180,12 +177,12 @@ Instead, prefer safer, and faster, methods such as `JSON.parse()`
 ```js
 var xhr = new XMLHttpRequest();
 xhr.open("GET", "https://api.example.com/data.json", true);
-xhr.onreadystatechange = function() {
+xhr.onreadystatechange = function () {
   if (xhr.readyState == 4) {
     // JSON.parse does not evaluate the attacker's scripts.
     var resp = JSON.parse(xhr.responseText);
   }
-}
+};
 xhr.send();
 ```
 
@@ -227,10 +224,12 @@ trusted source.
 // The ID of an external extension
 const kFriendlyExtensionId = "iamafriendlyextensionhereisdatas";
 
-chrome.runtime.onMessageExternal.addListener(
-  function(request, sender, sendResponse) {
-    if (sender.id === kFriendlyExtensionId)
-      doSomething();
+chrome.runtime.onMessageExternal.addListener(function (
+  request,
+  sender,
+  sendResponse
+) {
+  if (sender.id === kFriendlyExtensionId) doSomething();
 });
 ```
 
@@ -238,9 +237,8 @@ Even messages via [runtime.onMessage][23] event from the extension itself should
 ensure the [MessageSender][24] is not from a compromised [content script][25].
 
 ```js
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-  if (request.allowedAction)
-    console.log("This is an allowed action.");
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  if (request.allowedAction) console.log("This is an allowed action.");
 });
 ```
 
@@ -249,7 +247,10 @@ data, even from the extension itself and approved sources. [Avoid executable API
 
 ```js
 function sanitizeInput(input) {
-    return input.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+  return input
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/"/g, "&quot;");
 }
 ```
 

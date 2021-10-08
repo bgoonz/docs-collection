@@ -1,7 +1,6 @@
 2020-10-22
 
-Clone the example project
--------------------------
+## Clone the example project
 
 Duplicate the example project located in `site/en/docs/_example`. Rename the folder to match whatever slug you want to use for your project url. This slug is referred to as the `project-key`.
 
@@ -12,8 +11,7 @@ Duplicate the example project located in `site/en/docs/_example`. Rename the fol
     ├── cheese # your new project! This will appear at /docs/cheese/
     └── index.md
 
-Configure the landing page
---------------------------
+## Configure the landing page
 
 Open the `index.md` file at the root of the project directory.
 
@@ -24,13 +22,11 @@ Open the `index.md` file at the root of the project directory.
 
 Update the `title` and the `description`. These will be displayed on the `/docs/` and `/docs/[project-key]` pages. You’ll need to create a matching page in other languages if it is ever translated.
 
-Add your first doc
-------------------
+## Add your first doc
 
 The example project comes with a sample doc that you can build off of. See the guide on [adding a doc](/docs/handbook/how-to/add-a-doc/) for a detailed explainer.
 
-Configure the table of contents for your project
-------------------------------------------------
+## Configure the table of contents for your project
 
 Create a new folder in the `site/_data/docs/` directory, and name it after your project. This is language-agnostic.
 
@@ -45,20 +41,20 @@ Add a `toc.yml` file to this directory. The `toc.yml` defines the navigation str
 
 The `toc.yml` supports these fields:
 
--   `url`—an absolute url path to your doc
--   `title`—the title for a subsection in `i18n` path notation (explained below.)
--   `sections`—a collection of more urls, nested under a `title`.
+- `url`—an absolute url path to your doc
+- `title`—the title for a subsection in `i18n` path notation (explained below.)
+- `sections`—a collection of more urls, nested under a `title`.
 
-    - url: /docs/cheese/what-is-cheese  # a single doc
-    - title: i18n.docs.cheese.overview # a title for a section of docs
-      sections: # a grouping of docs under a title
-        - url: /docs/cheese/overview/hard-cheese
-        - url: /docs/cheese/overview/soft-cheese
-        - url: /docs/cheese/overview/string-cheese
-        - title: i18n.docs.cheese.guides
-          sections:
-            - url: /docs/cheese/overview/guides/melting-cheese
-    - url: /docs/cheese/the-moon-is-made-of-cheese
+  - url: /docs/cheese/what-is-cheese # a single doc
+  - title: i18n.docs.cheese.overview # a title for a section of docs
+    sections: # a grouping of docs under a title
+    - url: /docs/cheese/overview/hard-cheese
+    - url: /docs/cheese/overview/soft-cheese
+    - url: /docs/cheese/overview/string-cheese
+    - title: i18n.docs.cheese.guides
+      sections:
+      - url: /docs/cheese/overview/guides/melting-cheese
+  - url: /docs/cheese/the-moon-is-made-of-cheese
 
 ### Add styles and icon for your project
 
@@ -98,8 +94,7 @@ Finally, in your `toc.yml`, add the path to this object:
       sections:
       …
 
-Add your project to the `/docs/` page
--------------------------------------
+## Add your project to the `/docs/` page
 
 Open the `site/_data/docs/projects.yml` file. This file is divided into sections and will look something like this:
 

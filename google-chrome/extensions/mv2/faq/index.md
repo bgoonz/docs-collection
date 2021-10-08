@@ -4,8 +4,7 @@
 
 If you don’t find an answer to your question here, try the [Chrome Web Store FAQ](/docs/webstore/faq), the [\[google-chrome-extension\] tag on Stack Overflow](http://stackoverflow.com/questions/tagged/google-chrome-extension), the [chromium-extensions group](http://groups.google.com/a/chromium.org/group/chromium-extensions), or the [store help](https://support.google.com/chrome_webstore/).
 
-General {: \#general }
-----------------------
+## General {: \#general }
 
 ### What are Google Chrome extensions? {: \#faq-gen-01 }
 
@@ -47,8 +46,7 @@ To determine which version of Chrome is currently available on each of the diffe
 
 Each line represents information about a different platform and channel combination. The listed platforms are `cf` (Google Chrome Frame), `linux`, `mac`, `win`, and `cros` (Google Chrome OS). The listed channels are `canary`, `dev`, `beta`, and `stable`. The two four-part numbers after the channel represent the current and previous versions of Chrome deployed to that platform-channel combination. The rest of the information is metadata about when the releases were first pushed, as well as revision numbers associated with each build.
 
-Capabilities {: \#capabilities2 }
----------------------------------
+## Capabilities {: \#capabilities2 }
 
 ### Can extensions make cross-domain Ajax requests? {: \#faq-dev-02 }
 
@@ -106,8 +104,7 @@ No, popups automatically close when the user focuses on some portion of the brow
 
 You can listen to the [runtime.onInstalled](/docs/extensions/reference/runtime#event-onInstalled) event to be notified when your extension is installed or updated, or when Chrome itself is updated. There is no corresponding event for when your extension is uninstalled.
 
-Development {: \#development2 }
--------------------------------
+## Development {: \#development2 }
 
 ### How do I build a UI for my extension? {: \#faq-building-ui }
 
@@ -141,8 +138,7 @@ The [management API](/docs/extensions/reference/management) was intended to help
 
 You can listen to the [runtime.onInstalled](/docs/extensions/reference/runtime#event-onInstalled) event. See [this FAQ entry](#faq-lifecycle-events).
 
-Features and bugs {: \#features2 }
-----------------------------------
+## Features and bugs {: \#features2 }
 
 ### I think I’ve found a bug! How do I make sure it gets fixed? {: \#faq-fea-01 }
 
@@ -150,11 +146,11 @@ While developing an extension, you may find behavior that does not match the ext
 
 The steps you should follow to ensure this are:
 
-1.  Come up with a *minimal* test extension that demonstrates the issue you wish to report. This extension should have as little code as possible to demonstrate the bug—generally this should be 100 lines of code or less. Many times, developers find that they cannot reproduce their issues this way, which is a good indicator that the bug is in their own code.
+1.  Come up with a _minimal_ test extension that demonstrates the issue you wish to report. This extension should have as little code as possible to demonstrate the bug—generally this should be 100 lines of code or less. Many times, developers find that they cannot reproduce their issues this way, which is a good indicator that the bug is in their own code.
 2.  Search the issue tracker at <http://crbug.com> to see whether someone has reported a similar issue. Most issues related to extensions are filed under **component=Platform&gt;Extensions**, so to look for an extension bug related to the chrome.tabs.executeScript function (for example), search for “`component=Platform>Extensions Type=Bug chrome.tabs.executeScript`”, which will give you [this list of results](https://bugs.chromium.org/p/chromium/issues/list?can=2&q=component%3DPlatform%3EExtensions+Type%3DBug+chrome.tabs.executeScript).
-3.  If you find a bug that describes your issue, click the star icon to be notified when the bug receives an update. *Do not respond to the bug to say “me too” or ask “when will this be fixed?”*; such updates can cause hundreds of emails to be sent. Add a comment only if you have information (such as a better test case or a suggested fix) that is likely to be helpful.
+3.  If you find a bug that describes your issue, click the star icon to be notified when the bug receives an update. _Do not respond to the bug to say “me too” or ask “when will this be fixed?”_; such updates can cause hundreds of emails to be sent. Add a comment only if you have information (such as a better test case or a suggested fix) that is likely to be helpful.
 4.  If you found no appropriate bug to star, file a new issue report at <http://crbug.com/new>. Be as explicit as possible when filling out this form: choose a descriptive title, explain the steps to reproduce the bug, and describe the expected and actual behavior. Attach your test example to the report and add screenshots if appropriate. The easier your report makes it for others to reproduce your issue, the greater chance that your bug will be fixed promptly.
-5.  Wait for the bug to be updated. Most new bugs are triaged within a week, although it can sometimes take longer for an update. *Do not reply to the bug to ask when the issue will be fixed.* If your bug has not been modified after two weeks, please post a message to the [discussion group](http://groups.google.com/a/chromium.org/group/chromium-extensions/topics) with a link back to your bug.
+5.  Wait for the bug to be updated. Most new bugs are triaged within a week, although it can sometimes take longer for an update. _Do not reply to the bug to ask when the issue will be fixed._ If your bug has not been modified after two weeks, please post a message to the [discussion group](http://groups.google.com/a/chromium.org/group/chromium-extensions/topics) with a link back to your bug.
 6.  If you originally reported your bug on the discussion group and were directed to this FAQ entry, reply to your original thread with a link to the bug you starred or reported. This will make it easier for others experiencing the same issue to find the correct bug.
 
 ### I have a feature request! How can I report it? {: \#faq-fea-02 }
@@ -164,7 +160,7 @@ If you identify a feature (especially if it’s related to an experimental API) 
 The steps you should follow to ensure this are:
 
 1.  Search the issue tracker at <http://crbug.com> to see whether someone has requested a similar feature. Most requests related to extensions are filed under **component=Platform&gt;Extensions**, so to look for an extension feature request related to keyboard shortcuts (for example), search for “`component=Platform>Extensions Type=Feature shortcuts`”, which will give you [this list of results](https://bugs.chromium.org/p/chromium/issues/list?can=2&q=component%3DPlatform%3EExtensions+Type%3DFeature+shortcuts).
-2.  If you find a ticket that matches your request, click the star icon to be notified when the bug receives an update. *Do not respond to the bug to say “me too” or ask “when will this be implemented?”*; such updates can cause hundreds of emails to be sent.
+2.  If you find a ticket that matches your request, click the star icon to be notified when the bug receives an update. _Do not respond to the bug to say “me too” or ask “when will this be implemented?”_; such updates can cause hundreds of emails to be sent.
 3.  If you found no appropriate ticket to star, file a new request at <http://crbug.com/new>. Be as detailed as possible when filling out this form: choose a descriptive title and explain exactly what feature you would like and how you plan to use it.
-4.  Wait for the ticket to be updated. Most new requests are triaged within a week, although it can sometimes take longer for an update. *Do not reply to the ticket to ask when the feature will be added.* If your ticket has not been modified after two weeks, please post a message to the [discussion group](http://groups.google.com/a/chromium.org/group/chromium-extensions/topics) with a link back to your request.
+4.  Wait for the ticket to be updated. Most new requests are triaged within a week, although it can sometimes take longer for an update. _Do not reply to the ticket to ask when the feature will be added._ If your ticket has not been modified after two weeks, please post a message to the [discussion group](http://groups.google.com/a/chromium.org/group/chromium-extensions/topics) with a link back to your request.
 5.  If you originally reported your request on the discussion group and were directed to this FAQ entry, reply to your original thread with a link to the ticket you starred or opened. This will make it easier for others with the same request to find the correct ticket.

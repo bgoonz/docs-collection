@@ -68,10 +68,10 @@ with non-persistent background pages.
 
 ```js
 chrome.webRequest.onBeforeRequest.addListener(
-  function(details) {
-    return {redirectUrl: "/"};
+  function (details) {
+    return { redirectUrl: "/" };
   },
-  {urls: ["https://social.media.distraction.com/*"]},
+  { urls: ["https://social.media.distraction.com/*"] },
   ["blocking"]
 );
 ```
@@ -110,9 +110,9 @@ If an extension will only need to access a webpage with the user's action, have 
 programmatically][5]. A programmatic injection will only run when a user invokes it.
 
 ```js
-chrome.browserAction.onClicked.addListener(function(tab) {
+chrome.browserAction.onClicked.addListener(function (tab) {
   chrome.tabs.executeScript({
-    code: 'document.body.style.fontSize="100px"'
+    code: 'document.body.style.fontSize="100px"',
   });
 });
 ```
@@ -127,17 +127,17 @@ If an extension needed to display a page action to the user when they visited a 
 `<video>` element, it could specify a declarative rule.
 
 ```js
-chrome.runtime.onInstalled.addListener(function() {
-  chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
+chrome.runtime.onInstalled.addListener(function () {
+  chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
     chrome.declarativeContent.onPageChanged.addRules([
       {
         conditions: [
           new chrome.declarativeContent.PageStateMatcher({
             css: ["video"],
-          })
+          }),
         ],
-        actions: [ new chrome.declarativeContent.ShowPageAction() ]
-      }
+        actions: [new chrome.declarativeContent.ShowPageAction()],
+      },
     ]);
   });
 });

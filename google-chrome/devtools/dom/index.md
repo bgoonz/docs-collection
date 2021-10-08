@@ -25,15 +25,15 @@ and investigate that node.
 
 1. Right-click **Michelangelo** below and select **Inspect**.
 
-     * Michelangelo
-     * Raphael
+   - Michelangelo
+   - Raphael
 
-     {% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/psbHIPohm8wsZkGA7WXl.png", alt="Inspecting a node", width="800", height="780" %}
+   {% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/psbHIPohm8wsZkGA7WXl.png", alt="Inspecting a node", width="800", height="780" %}
 
-     The **Elements** panel of DevTools opens.
-     `<li>Michelangelo</li>` is highlighted in the **DOM Tree**.
+   The **Elements** panel of DevTools opens.
+   `<li>Michelangelo</li>` is highlighted in the **DOM Tree**.
 
-     {% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/Cz2LKMmJ3sVjkDdfW4i8.png", alt="Highlighting the Michelangelo< node", width="800", height="483" %}
+   {% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/Cz2LKMmJ3sVjkDdfW4i8.png", alt="Highlighting the Michelangelo< node", width="800", height="483" %}
 
 [inspect]: /web/tools/chrome-devtools/images/shared/inspect.png
 
@@ -44,10 +44,10 @@ and investigate that node.
 
 1. Click the **Tokyo** text below.
 
-     * Tokyo
-     * Beirut
+   - Tokyo
+   - Beirut
 
-     Now, `<li>Tokyo</li>` is highlighted in the DOM Tree.
+   Now, `<li>Tokyo</li>` is highlighted in the DOM Tree.
 
 Inspecting a node is also the first step towards viewing and changing a node's styles.
 See [Get Started With Viewing And Changing CSS](/docs/devtools/css/).
@@ -60,12 +60,12 @@ keyboard.
 1. Right-click **Ringo** below and select **Inspect**. `<li>Ringo</li>` is selected in
    the DOM Tree.
 
-     * George
-     * Ringo
-     * Paul
-     * John
+   - George
+   - Ringo
+   - Paul
+   - John
 
-     {% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/6hDrHKpnSMFwCdugWuXR.png", alt="Inspecting the Ringo node", width="800", height="545" %}
+   {% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/6hDrHKpnSMFwCdugWuXR.png", alt="Inspecting the Ringo node", width="800", height="545" %}
 
 1. Press the <kbd>Up</kbd> arrow key 2 times. `<ul>` is selected.
 
@@ -87,8 +87,8 @@ lets you quickly reposition the viewport so that you can see the node.
 
 1. Right-click **Magritte** below and select **Inspect**.
 
-     * Magritte
-     * Soutine
+   - Magritte
+   - Soutine
 
 1. Go to the [Appendix: Scroll into view](#scroll2) section at the bottom of this page.
    The instructions continue there.
@@ -118,8 +118,8 @@ To edit a node's content, double-click the content in the DOM Tree.
 
 1. Right-click **Michelle** below and select **Inspect**.
 
-     * Fry
-     * Michelle
+   - Fry
+   - Michelle
 
 1. In the DOM Tree, double-click `Michelle`. In other words, double-click the text between
    `<li>` and `</li>`. The text is highlighted blue to indicate that it's selected.
@@ -136,8 +136,8 @@ below to learn how to add attributes to a node.
 
 1. Right-click **Howard** below and select **Inspect**.
 
-     * Howard
-     * Vince
+   - Howard
+   - Vince
 
 1. Double-click `<li>`. The text is highlighted to indicate that the
    node is selected.
@@ -156,10 +156,10 @@ To edit a node's type, double-click the type and then type in the new type.
 
 1. Right-click **Hank** below and select **Inspect**.
 
-     * Dean
-     * Hank
-     * Thaddeus
-     * Brock
+   - Dean
+   - Hank
+   - Thaddeus
+   - Brock
 
 1. Double-click `<li>`. The text `li` is highlighted.
 1. Delete `li`, type `button`, then press <kbd>Enter</kbd>. The `<li>` node changes to a `<button>`
@@ -198,11 +198,11 @@ You can force nodes to remain in states like `:active`, `:hover`, `:focus`,
 
 1. Hover over **The Lord of the Flies** below. The background color becomes orange.
 
-     <ul> 
-       <li class="demo--hover">The Lord of the Flies</li>
-       <li>Crime and Punishment</li>
-       <li>Moby Dick</li>
-     </ul>
+ <ul> 
+   <li class="demo--hover">The Lord of the Flies</li>
+   <li>Crime and Punishment</li>
+   <li>Moby Dick</li>
+ </ul>
 
 1. Right-click **The Lord of the Flies** above and select **Inspect**.
 
@@ -218,8 +218,8 @@ Press <kbd>H</kbd> to hide a node.
 
 1. Right-click **The Stars My Destination** below and select **Inspect**.
 
-     * The Count of Monte Cristo
-     * The Stars My Destination
+   - The Count of Monte Cristo
+   - The Stars My Destination
 
 1. Press the <kbd>H</kbd> key. The node is hidden.
 
@@ -233,9 +233,9 @@ Press <kbd>Delete</kbd> to delete a node.
 
 1. Right-click **Foundation** below and select **Inspect**.
 
-     * The Illustrated Man
-     * Through the Looking-Glass
-     * Foundation
+   - The Illustrated Man
+   - Through the Looking-Glass
+   - Foundation
 
 1. Press the <kbd>Delete</kbd> key. The node is deleted.
 1. Press <kbd>Control</kbd>+<kbd>Z</kbd> or <kbd>Command</kbd>+<kbd>Z</kbd> (Mac).
@@ -249,12 +249,12 @@ JavaScript references to them.
 ### Reference the currently-selected node with $0 {: #current }
 
 When you inspect a node, the `== $0` text next to the node means that you can reference this
-node in the Console with the variable `$0`. 
+node in the Console with the variable `$0`.
 
 1. Right-click **The Left Hand of Darkness** below and select **Inspect**.
 
-     * The Left Hand of Darkness
-     * Dune
+   - The Left Hand of Darkness
+   - Dune
 
 1. Press the <kbd>Escape</kbd> key to open the Console Drawer.
 1. Type `$0` and press the <kbd>Enter</kbd> key. The result of the expression shows that
@@ -274,8 +274,8 @@ If you need to refer back to a node many times, store it as a global variable.
 
 1. Right-click **The Big Sleep** below and select **Inspect**.
 
-     * The Big Sleep
-     * The Long Goodbye
+   - The Big Sleep
+   - The Long Goodbye
 
 1. Right-click `<li>The Big Sleep</li>` in the DOM Tree and select **Store as global
    variable**. See [Appendix: Missing options](#options) if you don't see this option.
@@ -290,8 +290,8 @@ Copy the JavaScript path to a node when you need to reference it in an automated
 
 1. Right-click **The Brothers Karamazov** below and select **Inspect**.
 
-     * The Brothers Karamazov
-     * Crime and Punishment
+   - The Brothers Karamazov
+   - Crime and Punishment
 
 1. Right-click `<li>The Brothers Karamazov</li>` in the DOM Tree and select
    **Copy** > **Copy JS Path**. A `document.querySelector()` expression that resolves to the
@@ -338,7 +338,7 @@ When you use a web browser to request a page like `https://example.com` the serv
 returns HTML like this:
 
 ```html
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Hello, world!</title>
@@ -368,10 +368,10 @@ Right now it looks the same as the HTML, but suppose that the script referenced 
 bottom of the HTML runs this code:
 
 ```js
-const h1 = document.querySelector('h1');
+const h1 = document.querySelector("h1");
 h1.parentElement.removeChild(h1);
-const p = document.createElement('p');
-p.textContent = 'Wildcard!';
+const p = document.createElement("p");
+p.textContent = "Wildcard!";
 document.body.appendChild(p);
 ```
 

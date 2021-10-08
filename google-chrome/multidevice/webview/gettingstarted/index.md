@@ -6,15 +6,13 @@ This tutorial walks you through creating a new Android Project, adding a WebView
 
 **Note:** This tutorial assumes you’re a developer with limited or no experience with the Android development environment, but have some experience with Java. If you’re already familiar with programming for Android, you may want to refer to to [Building Web Apps in WebView](http://developer.android.com/guide/webapps/webview.html) on the Android developer site instead.
 
-Install Android Studio
-----------------------
+## Install Android Studio
 
 This tutorial uses [Android Studio](http://developer.android.com/sdk/installing/studio.html), the new design-and-build IDE for Android. So you’ll need start off by installing Android Studio, as described here:
 
 <http://developer.android.com/sdk/installing/studio.html>
 
-Create a New Android Project
-----------------------------
+## Create a New Android Project
 
 When the installation completes, Android Studio launches and displays the welcome screen.
 
@@ -49,8 +47,7 @@ To create a new project:
 
 **Note:** After you have your project created, make sure you have the KitKat SDK installed. Go to **Tools** &gt; **Android** &gt; **SDK Manager** and make sure you have **Android 4.4 (API 19)** installed.
 
-Add the WebView
----------------
+## Add the WebView
 
 Android Studio will give you some boilerplate code to set up your application. Your project’s structure should look something like this:
 
@@ -128,8 +125,7 @@ You need to add a [WebView](http://developer.android.com/reference/android/webki
 
     WebView in hand you can move on to setting it up and and loading some juicy web content.
 
-Enable JavaScript
------------------
+## Enable JavaScript
 
 WebViews don’t allow JavaScript by default. To run a web application in the web view, you need to explicitly enable JavaScript by adding the following lines to the `onCreate` method:
 
@@ -137,8 +133,7 @@ WebViews don’t allow JavaScript by default. To run a web application in the we
     WebSettings webSettings = mWebView.getSettings();
     webSettings.setJavaScriptEnabled(true);
 
-Load a Remote URL
------------------
+## Load a Remote URL
 
 If you’re going to load data from a remote URL, your application needs [permission](http://developer.android.com/guide/topics/security/permissions.html) to access the internet. This permission needs to be added in the [application’s manifest file](http://developer.android.com/guide/topics/manifest/manifest-intro.html).
 
@@ -162,7 +157,7 @@ If you’re going to load data from a remote URL, your application needs [permis
 
     {% Img src=“image/BrQidfK9jaQyIHwdw91aVpkPiib2/1604547603429.jpg”, alt=“Loading a URL in the WebView.”, width=“1378”, height=“2626” %}
 
-**Note:** To detect when a URL has started and finished loading, use [`WebViewClient.onPageStarted`](http://developer.android.com/reference/android/webkit/WebViewClient.html#onPageStarted(android.webkit.WebView,%20java.lang.String,%20android.graphics.Bitmap)) and [`WebViewClient.onPageFinished`.](http://developer.android.com/reference/android/webkit/WebViewClient.html#onPageFinished(android.webkit.WebView,%20java.lang.String))
+**Note:** To detect when a URL has started and finished loading, use [`WebViewClient.onPageStarted`](<http://developer.android.com/reference/android/webkit/WebViewClient.html#onPageStarted(android.webkit.WebView,%20java.lang.String,%20android.graphics.Bitmap)>) and [`WebViewClient.onPageFinished`.](<http://developer.android.com/reference/android/webkit/WebViewClient.html#onPageFinished(android.webkit.WebView,%20java.lang.String)>)
 
 ### Handling Navigation
 
@@ -189,7 +184,7 @@ The default implementation of `WebViewClient` makes **any** URL open in the WebV
 
 This is a good step forward, but what if you want to handle links for your site only, while opening other URLs in a browser?
 
-To achieve this you need to extend the `WebViewClient` class and implement the `shouldOverrideUrlLoading` method. This method is called whenever the WebView tries to navigate to a different URL. If it returns false, the WebView opens the URL itself. (The default implementation *always* returns false, which is why it works in the previous example.)
+To achieve this you need to extend the `WebViewClient` class and implement the `shouldOverrideUrlLoading` method. This method is called whenever the WebView tries to navigate to a different URL. If it returns false, the WebView opens the URL itself. (The default implementation _always_ returns false, which is why it works in the previous example.)
 
 Create a new class:
 
@@ -258,8 +253,7 @@ WebView has a method `canGoBack` which tells you if there is anything on the pag
 
     }
 
-Loading HTML files from the file system
----------------------------------------
+## Loading HTML files from the file system
 
 A big advantage of using a WebView inside an installable application is that you can store assets inside the app. This lets your app work offline and improves load times, since the WebView can retrieve assets directly from the local file system.
 

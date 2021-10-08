@@ -4,8 +4,7 @@ This guide shows you how to discover CSS grids on a page, examining them and deb
 
 The examples shown in the screenshots appearing in this article are from these two web pages: [Fruit box](https://jec.fyi/demo/css-grid-fruit) and [Snack box](https://jec.fyi/demo/css-grid-snack).
 
-Discover CSS grids {: \#discover }
-----------------------------------
+## Discover CSS grids {: \#discover }
 
 When an HTML element on your page has `display: grid` or `display: inline-grid` applied to it, you can see a `grid` badge next to it in the [**Elements**](/docs/devtools/open) panel.
 
@@ -19,32 +18,30 @@ Open the **Layout** pane. When grids are included on a page, the Layout pane inc
 
 {% Img src=“image/admin/r4Ignwcmy4VzFqs3Zzb1.png”, alt=“Layout pane”, width=“800”, height=“524” %}
 
-Grid viewing options {: \#options }
------------------------------------
+## Grid viewing options {: \#options }
 
 The **Grid** section in the **Layout** pane contains 2 sub sections:
 
--   Overlay display settings
--   Grid overlays
+- Overlay display settings
+- Grid overlays
 
 Let’s look into each of these sub sections in detail.
 
-Overlay display settings {: \#display-settings }
-------------------------------------------------
+## Overlay display settings {: \#display-settings }
 
 The **Overlay display settings** consists of 2 parts:
 
 1.  A dropdown menu with options within:
 
--   **Hide line labels**: Hide the line labels for each grid overlay.
--   **Show lines number**: Show the line numbers for each grid overlay (selected by default).
--   **Show line names**: Show the line names for each grid overlay in the case of grids with line names.
+- **Hide line labels**: Hide the line labels for each grid overlay.
+- **Show lines number**: Show the line numbers for each grid overlay (selected by default).
+- **Show line names**: Show the line names for each grid overlay in the case of grids with line names.
 
 1.  Checkboxes with options within:
 
--   **Show track sizes**: Toggle to show or hide track sizes.
--   **Show area names**: Toggle to show or hide area names, in the case of grids with named grid areas.
--   **Extend grid lines**: By default, grid lines are only shown inside the element with `display: grid` or `display: inline-grid` set on it; when toggling this option on, the grid lines extend to the edge of the viewport along each axis.
+- **Show track sizes**: Toggle to show or hide track sizes.
+- **Show area names**: Toggle to show or hide area names, in the case of grids with named grid areas.
+- **Extend grid lines**: By default, grid lines are only shown inside the element with `display: grid` or `display: inline-grid` set on it; when toggling this option on, the grid lines extend to the edge of the viewport along each axis.
 
 Let’s examine these settings in more detail.
 
@@ -92,8 +89,7 @@ Enable the **Extend grid lines** checkbox to extend the grid lines to the edge o
 
 {% Img src=“image/admin/OlajZ73i2Y8hlAIZAwFD.png”, alt=“Extend grid lines”, width=“800”, height=“524” %}
 
-Grid overlays {: \#overlays }
------------------------------
+## Grid overlays {: \#overlays }
 
 The **Grid overlays** section contains a list of grids that are present on the page, each with a checkbox, along with various options.
 

@@ -2,14 +2,13 @@
 
 {% include 'partials/nacl-warning.njk' %}
 
-------------------------------------------------------------------------
+---
 
 Native Client applications use the <a href="http://en.wikipedia.org/wiki/OpenGL_ES" class="reference external">OpenGL ES 2.0</a> API for 3D rendering. This document describes how to call the OpenGL ES 2.0 interface in a Native Client module and how to build an efficient rendering loop. It also explains how to validate GPU drivers and test for specific GPU capabilities, and provides tips to help ensure your rendering code runs efficiently.
 
 **Note**: 3D drawing and OpenGL are complex topics. This document deals only with issues directly related to programming in the Native Client environment. To learn more about OpenGL ES 2.0 itself, see the <a href="http://opengles-book.com/" class="reference external">OpenGL ES 2.0 Programming Guide</a>.
 
-Validating the client graphics platform
----------------------------------------
+## Validating the client graphics platform
 
 Native Client is a software technology that lets you code an application once and run it on multiple platforms without worrying about the implementation details on every possible target platform. It’s difficult to provide the same support at the hardware level. Graphics hardware comes from many different manufacturers and is controlled by drivers of varying quality. A particular GPU driver may not support every OpenGL ES 2.0 feature, and some drivers are known to have vulnerabilities that can be exploited.
 
@@ -31,18 +30,18 @@ Once you’ve passed the JavaScript validation tests, it’s safe to add a Nativ
 
 Not every GPU supports every extension or has the same amount of texture units, vertex attributes, etc. On startup, call `glGetString(GL_EXTENSIONS)` and check for the extensions and the features you need. For example:
 
--   If you are using non power-of-2 texture with mipmaps, make sure `GL_OES_texture_npot` exists.
--   If you are using floating point textures, make sure `GL_OES_texture_float` exists.
--   If you are using DXT1, DXT3, or DXT5 textures, make sure the corresponding extensions `GL_ANGLE_texture_compression_dxt1`, `GL_ANGLE_texture_compression_dxt3`, and `GL_ANGLE_texture_compression_dxt5` exist.
--   If you are using the functions `glDrawArraysInstancedANGLE`, `glDrawElementsInstancedANGLE`, `glVertexAttribDivisorANGLE`, or the PPAPI interface `PPB_OpenGLES2InstancedArrays`, make sure the corresponding extension `GL_ANGLE_instanced_arrays` exists.
--   If you are using the function `glRenderbufferStorageMultisampleEXT`, or the PPAPI interface `PPB_OpenGLES2FramebufferMultisample`, make sure the corresponding extension `GL_CHROMIUM_framebuffer_multisample` exists.
--   If you are using the functions `glGenQueriesEXT`, `glDeleteQueriesEXT`, `glIsQueryEXT`, `glBeginQueryEXT`, `glEndQueryEXT`, `glGetQueryivEXT`, `glGetQueryObjectuivEXT`, or the PPAPI interface `PPB_OpenGLES2Query`, make sure the corresponding extension `GL_EXT_occlusion_query_boolean` exists.
--   If you are using the functions `glMapBufferSubDataCHROMIUM`, `glUnmapBufferSubDataCHROMIUM`, `glMapTexSubImage2DCHROMIUM`, `glUnmapTexSubImage2DCHROMIUM`, or the PPAPI interface `PPB_OpenGLES2ChromiumMapSub`, make sure the corresponding extension `GL_CHROMIUM_map_sub` exists.
+- If you are using non power-of-2 texture with mipmaps, make sure `GL_OES_texture_npot` exists.
+- If you are using floating point textures, make sure `GL_OES_texture_float` exists.
+- If you are using DXT1, DXT3, or DXT5 textures, make sure the corresponding extensions `GL_ANGLE_texture_compression_dxt1`, `GL_ANGLE_texture_compression_dxt3`, and `GL_ANGLE_texture_compression_dxt5` exist.
+- If you are using the functions `glDrawArraysInstancedANGLE`, `glDrawElementsInstancedANGLE`, `glVertexAttribDivisorANGLE`, or the PPAPI interface `PPB_OpenGLES2InstancedArrays`, make sure the corresponding extension `GL_ANGLE_instanced_arrays` exists.
+- If you are using the function `glRenderbufferStorageMultisampleEXT`, or the PPAPI interface `PPB_OpenGLES2FramebufferMultisample`, make sure the corresponding extension `GL_CHROMIUM_framebuffer_multisample` exists.
+- If you are using the functions `glGenQueriesEXT`, `glDeleteQueriesEXT`, `glIsQueryEXT`, `glBeginQueryEXT`, `glEndQueryEXT`, `glGetQueryivEXT`, `glGetQueryObjectuivEXT`, or the PPAPI interface `PPB_OpenGLES2Query`, make sure the corresponding extension `GL_EXT_occlusion_query_boolean` exists.
+- If you are using the functions `glMapBufferSubDataCHROMIUM`, `glUnmapBufferSubDataCHROMIUM`, `glMapTexSubImage2DCHROMIUM`, `glUnmapTexSubImage2DCHROMIUM`, or the PPAPI interface `PPB_OpenGLES2ChromiumMapSub`, make sure the corresponding extension `GL_CHROMIUM_map_sub` exists.
 
 Check for system capabilites with `glGetIntegerv` and adjust shader programs as well as texture and vertex data accordingly:
 
--   If you are using textures in vertex shaders, make sure `glGetIntegerv(GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS, ...)` and `glGetIntegerv(GL_MAX_TEXTURE_SIZE, ...)` return values greater than 0.
--   If you are using more than 8 textures in a single shader, make sure `glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, ...)` returns a value greater than or equal to the number of simultaneous textures you need.
+- If you are using textures in vertex shaders, make sure `glGetIntegerv(GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS, ...)` and `glGetIntegerv(GL_MAX_TEXTURE_SIZE, ...)` return values greater than 0.
+- If you are using more than 8 textures in a single shader, make sure `glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, ...)` returns a value greater than or equal to the number of simultaneous textures you need.
 
 ### Vetting the driver in the Chrome Web Store
 
@@ -76,14 +75,13 @@ It can be helpful to include information about known dubious drivers in your use
 
 You can test your driver validation code by running Chrome with the following flags (all at once) and watching how your application responds:
 
--   `--disable-webgl`
--   `--disable-pepper-3d`
--   `--disable_multisampling`
--   `--disable-accelerated-compositing`
--   `--disable-accelerated-2d-canvas`
+- `--disable-webgl`
+- `--disable-pepper-3d`
+- `--disable_multisampling`
+- `--disable-accelerated-compositing`
+- `--disable-accelerated-2d-canvas`
 
-Calling OpenGL ES 2.0 commands
-------------------------------
+## Calling OpenGL ES 2.0 commands
 
 There are three ways to write OpenGL ES 2.0 calls in Native Client.
 
@@ -91,40 +89,40 @@ There are three ways to write OpenGL ES 2.0 calls in Native Client.
 
 You can make OpenGL ES 2.0 calls through a Pepper extension library. The SDK example `examples/api/graphics_3d` works this way. In the file `graphics_3d.cc`, the key initialization steps are as follows:
 
--   Add these includes at the top of the file:
+- Add these includes at the top of the file:
 
-        #include <GLES2/gl2.h>
-        #include "ppapi/lib/gl/gles2/gl2ext_ppapi.h"
+      #include <GLES2/gl2.h>
+      #include "ppapi/lib/gl/gles2/gl2ext_ppapi.h"
 
--   Define the function `InitGL`. The exact specification of `attrib_list` will be application specific.
+- Define the function `InitGL`. The exact specification of `attrib_list` will be application specific.
 
-        bool InitGL(int32_t new_width, int32_t new_height) {
-          if (!glInitializePPAPI(pp::Module::Get()->get_browser_interface())) {
-            fprintf(stderr, "Unable to initialize GL PPAPI!\n");
-            return false;
-          }
-
-          const int32_t attrib_list[] = {
-            PP_GRAPHICS3DATTRIB_ALPHA_SIZE, 8,
-            PP_GRAPHICS3DATTRIB_DEPTH_SIZE, 24,
-            PP_GRAPHICS3DATTRIB_WIDTH, new_width,
-            PP_GRAPHICS3DATTRIB_HEIGHT, new_height,
-            PP_GRAPHICS3DATTRIB_NONE
-          };
-
-          context_ = pp::Graphics3D(this, attrib_list);
-          if (!BindGraphics(context_)) {
-            fprintf(stderr, "Unable to bind 3d context!\n");
-            context_ = pp::Graphics3D();
-            glSetCurrentContextPPAPI(0);
-            return false;
-          }
-
-          glSetCurrentContextPPAPI(context_.pp_resource());
-          return true;
+      bool InitGL(int32_t new_width, int32_t new_height) {
+        if (!glInitializePPAPI(pp::Module::Get()->get_browser_interface())) {
+          fprintf(stderr, "Unable to initialize GL PPAPI!\n");
+          return false;
         }
 
--   Include logic in `Instance::DidChangeView` to call `InitGL` whenever necessary: upon application launch (when the graphics context is NULL) and whenever the module’s View changes size.
+        const int32_t attrib_list[] = {
+          PP_GRAPHICS3DATTRIB_ALPHA_SIZE, 8,
+          PP_GRAPHICS3DATTRIB_DEPTH_SIZE, 24,
+          PP_GRAPHICS3DATTRIB_WIDTH, new_width,
+          PP_GRAPHICS3DATTRIB_HEIGHT, new_height,
+          PP_GRAPHICS3DATTRIB_NONE
+        };
+
+        context_ = pp::Graphics3D(this, attrib_list);
+        if (!BindGraphics(context_)) {
+          fprintf(stderr, "Unable to bind 3d context!\n");
+          context_ = pp::Graphics3D();
+          glSetCurrentContextPPAPI(0);
+          return false;
+        }
+
+        glSetCurrentContextPPAPI(context_.pp_resource());
+        return true;
+      }
+
+- Include logic in `Instance::DidChangeView` to call `InitGL` whenever necessary: upon application launch (when the graphics context is NULL) and whenever the module’s View changes size.
 
 ### Use Regal
 
@@ -132,14 +130,13 @@ If you are porting an OpenGL ES 2.0 application, or are comfortable writing in O
 
 ### Use the Pepper API
 
-Your code can call the Pepper PPB\_OpenGLES2 API directly, as with any Pepper interface. When you write in this way, each invocation of an OpenGL ES 2.0 function must begin with a reference to the Pepper interface, and the first argument is the graphics context. To invoke the function `glCompileShader`, your code might look like:
+Your code can call the Pepper PPB_OpenGLES2 API directly, as with any Pepper interface. When you write in this way, each invocation of an OpenGL ES 2.0 function must begin with a reference to the Pepper interface, and the first argument is the graphics context. To invoke the function `glCompileShader`, your code might look like:
 
     ppb_g3d_interface->CompileShader(graphicsContext, shader);
 
 This approach specifically targets the Pepper APIs. Each call corresponds to a OpenGL ES 2.0 function, but the syntax is unique to Native Client, so the source file is not portable.
 
-Implementing a rendering loop
------------------------------
+## Implementing a rendering loop
 
 Graphics applications require a continuous frame render-and-redraw cycle that runs at a high frequency. To achieve the best frame rate, is important to understand how the OpenGL ES 2.0 code in a Native Client module interacts with Chrome.
 
@@ -180,8 +177,7 @@ The SDK example `graphics_3d` uses the function `MainLoop` (in `hello_world.cc`)
       }
     }
 
-Managing the OpenGL ES 2.0 pipeline
------------------------------------
+## Managing the OpenGL ES 2.0 pipeline
 
 OpenGL ES 2.0 commands do not run in the Chrome or Native Client processes. They are passed into a FIFO queue in shared memory which is best understood as a <a href="http://www.chromium.org/developers/design-documents/gpu-command-buffer" class="reference external">GPU command buffer</a>. The command buffer is shared by a dedicated GPU process. By using a separate GPU process, Chrome implements another layer of runtime security, vetting all OpenGL ES 2.0 commands and their arguments before they are sent on to the GPU. Buffering commands through the FIFO also speeds up your code, since each OpenGL ES 2.0 call in your Native Client thread returns immediately, while the processing may be delayed as the GPU works down the commands queued up in the FIFO.
 
@@ -189,8 +185,7 @@ Before the screen is updated, all the intervening OpenGL ES 2.0 commands must be
 
 Sometimes a 3D application can write to the FIFO in a way that’s difficult to handle. The command pipeline may fill up and your code will have to wait for the GPU to flush the FIFO. If this is the case, you may be able to add `glFlush` calls to speed up the flow of the OpenGL ES 2.0 command FIFO. Before you start to add your own flushes, first try to determine if pipeline saturation is really the problem by monitoring the rendering time per frame and looking for irregular spikes that do not consistently fall on the same OpenGL ES 2.0 call. If you’re convinced the pipeline needs to be accelerated, insert `glFlush` calls in your code before starting blocks of processing that do not generate OpenGL ES 2.0 commands. For example, issue a flush before you begin any multithreaded particle work, so that the command buffer will be clear when you start doing OpenGL ES 2.0 calls again. Determining where and how often to call `glFlush` can be tricky, you will need to experiment to find the sweet spot.
 
-Rendering and inactive tabs
----------------------------
+## Rendering and inactive tabs
 
 Users will often switch between tabs in a multi-tab browser. A well-behaved application that’s performing 3D rendering should pause any real-time processing and yield cycles to other processes when its tab becomes inactive.
 
@@ -217,31 +212,30 @@ You can detect and respond to the activation or deactivation of a tab with JavaS
 
 You can also detect and respond to the activation or deactivation of a tab directly from your Native Client module by including code in the function `pp::Instance::DidChangeView`, which is called whenever a change in the module’s view occurs. The code can call `ppb::View::IsPageVisible` to determine if the page is visible or not. The most common cause of invisible pages is that the page is in a background tab.
 
-Tips and best practices
------------------------
+## Tips and best practices
 
 Here are some suggestions for writing safe code and getting the maximum performance with the Pepper 3D API.
 
 ### Do’s
 
--   **Make sure to enable attrib 0.** OpenGL requires that you enable attrib 0, but OpenGL ES 2.0 does not. For example, you can define a vertex shader with 2 attributes, numbered like this:
+- **Make sure to enable attrib 0.** OpenGL requires that you enable attrib 0, but OpenGL ES 2.0 does not. For example, you can define a vertex shader with 2 attributes, numbered like this:
 
-        glBindAttribLocation(program, "positions", 1);
-        glBindAttribLocation(program, "normals", 2);
+      glBindAttribLocation(program, "positions", 1);
+      glBindAttribLocation(program, "normals", 2);
 
-    In this case the shader is not using attrib 0 and Chrome may have to perform some additional work if it is emulating OpenGL ES 2.0 on top of OpenGL. It’s always more efficient to enable attrib 0, even if you do not use it.
+  In this case the shader is not using attrib 0 and Chrome may have to perform some additional work if it is emulating OpenGL ES 2.0 on top of OpenGL. It’s always more efficient to enable attrib 0, even if you do not use it.
 
--   **Check how shaders compile.** Shaders can compile differently on different systems, which can result in `glGetAttrib*` functions returning different results. Be sure that the vertex attribute indices match the corresponding name each time you recompile a shader.
--   **Update indices sparingly.** For security reasons, all indices must be validated. If you change indices, Native Client will validate them again. Structure your code so indices are not updated often.
--   **Use a smaller plugin and let CSS scale it.** If you’re running into fillrate issues, it may be beneficial to perform scaling via CSS. The size your plugin renders is determined by the width and height attributes of the `<embed>` element for the module. The actual size displayed on the web page is controlled by the CSS styles applied to the element.
--   **Avoid matrix-to-matrix conversions.** With some versions of Mac OS, there is a driver problem when compiling shaders. If you get compiler errors for matrix transforms, avoid matrix-to-matrix conversions. For instance, upres a vec3 to a vec4 before transforming it by a mat4, rather than converting the mat4 to a mat3.
+- **Check how shaders compile.** Shaders can compile differently on different systems, which can result in `glGetAttrib*` functions returning different results. Be sure that the vertex attribute indices match the corresponding name each time you recompile a shader.
+- **Update indices sparingly.** For security reasons, all indices must be validated. If you change indices, Native Client will validate them again. Structure your code so indices are not updated often.
+- **Use a smaller plugin and let CSS scale it.** If you’re running into fillrate issues, it may be beneficial to perform scaling via CSS. The size your plugin renders is determined by the width and height attributes of the `<embed>` element for the module. The actual size displayed on the web page is controlled by the CSS styles applied to the element.
+- **Avoid matrix-to-matrix conversions.** With some versions of Mac OS, there is a driver problem when compiling shaders. If you get compiler errors for matrix transforms, avoid matrix-to-matrix conversions. For instance, upres a vec3 to a vec4 before transforming it by a mat4, rather than converting the mat4 to a mat3.
 
 ### Don’ts
 
--   **Don’t use client side buffers.** OpenGL ES 2.0 can use client side data with `glVertexAttribPointer` and `glDrawElements`, but this is really slow. Try to avoid client side buffers. Use Vertex Buffer Objects (VBOs) instead.
--   **Don’t mix vertex data and index data.** By default, Pepper 3D binds buffers to a single point. You could create a buffer and bind it to both `GL_ARRAY_BUFFER` and `GL_ELEMENT_ARRAY_BUFFER`, but that would be expensive overhead and it is not recommended.
--   **Don’t call glGet\* or glCheck\* during rendering.** This is normal advice for OpenGL programs, but is particularly important for 3D on Chrome. Calls to any OpenGL ES 2.0 function whose name begins with these strings blocks the Native Client thread. This includes `glGetError`; avoid calling it in release builds.
--   **Don’t use fixed point (GL\_FIXED) vertex attributes.** Fixed point attributes are not supported in OpenGL ES 2.0, so emulating them in OpenGL ES 2.0 is slow. By default, `GL_FIXED` support is turned off in the Pepper 3D API.
--   **Don’t read data from the GPU.** Don’t call `glReadPixels`, as it is slow.
--   **Don’t update a small portion of a large buffer.** In the current OpenGL ES 2.0 implementation when you update a portion of a buffer (with `glSubBufferData` for example) the entire buffer must be reprocessed. To avoid this problem, keep static and dynamic data in different buffers.
--   **Don’t call glDisable(GL\_TEXTURE\_2D).** This is an OpenGL ES 2.0 error. Each time it is called, an error messages will appear in Chrome’s `about:gpu` tab.
+- **Don’t use client side buffers.** OpenGL ES 2.0 can use client side data with `glVertexAttribPointer` and `glDrawElements`, but this is really slow. Try to avoid client side buffers. Use Vertex Buffer Objects (VBOs) instead.
+- **Don’t mix vertex data and index data.** By default, Pepper 3D binds buffers to a single point. You could create a buffer and bind it to both `GL_ARRAY_BUFFER` and `GL_ELEMENT_ARRAY_BUFFER`, but that would be expensive overhead and it is not recommended.
+- **Don’t call glGet\* or glCheck\* during rendering.** This is normal advice for OpenGL programs, but is particularly important for 3D on Chrome. Calls to any OpenGL ES 2.0 function whose name begins with these strings blocks the Native Client thread. This includes `glGetError`; avoid calling it in release builds.
+- **Don’t use fixed point (GL_FIXED) vertex attributes.** Fixed point attributes are not supported in OpenGL ES 2.0, so emulating them in OpenGL ES 2.0 is slow. By default, `GL_FIXED` support is turned off in the Pepper 3D API.
+- **Don’t read data from the GPU.** Don’t call `glReadPixels`, as it is slow.
+- **Don’t update a small portion of a large buffer.** In the current OpenGL ES 2.0 implementation when you update a portion of a buffer (with `glSubBufferData` for example) the entire buffer must be reprocessed. To avoid this problem, keep static and dynamic data in different buffers.
+- **Don’t call glDisable(GL_TEXTURE_2D).** This is an OpenGL ES 2.0 error. Each time it is called, an error messages will appear in Chrome’s `about:gpu` tab.

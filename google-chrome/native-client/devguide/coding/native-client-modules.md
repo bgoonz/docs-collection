@@ -2,28 +2,26 @@
 
 {% include 'partials/nacl-warning.njk' %}
 
-------------------------------------------------------------------------
+---
 
 This document describes the classes and functions that you need to implement in a Native Client module in order for Chrome to load, initialize, and run it. The requirements are the same regardless of whether or not the module uses PNaCl, but depend on whether the module is written in C or C++.
 
--   <a href="#introduction" id="id2" class="reference internal">Introduction</a>
--   <a href="#writing-modules-in-c" id="id3" class="reference internal">Writing modules in C</a>
--   <a href="#id1" id="id4" class="reference internal">Writing modules in C++</a>
+- <a href="#introduction" id="id2" class="reference internal">Introduction</a>
+- <a href="#writing-modules-in-c" id="id3" class="reference internal">Writing modules in C</a>
+- <a href="#id1" id="id4" class="reference internal">Writing modules in C++</a>
 
-Introduction
-------------
+## Introduction
 
 Native Client modules do not have a `main()` function. When a module loads, the Native Client runtime calls the code in the module to create an instance and initialize the interfaces for the APIs the module uses. This initialization sequence depends on whether the module is written in C or C++ and requires that you implement specific functions in each case.
 
-Writing modules in C
---------------------
+## Writing modules in C
 
-The C API uses a prefix convention to show whether an interface is implemented in the browser or in a module. Interfaces starting with `PPB_` (which can be read as “Pepper *browser*”) are implemented in the browser and they are called from your module. Interfaces starting with `PPP_` (“Pepper *plugin*”) are implemented in the module; they are called from the browser and will execute on the main thread of the module instance.
+The C API uses a prefix convention to show whether an interface is implemented in the browser or in a module. Interfaces starting with `PPB_` (which can be read as “Pepper _browser_”) are implemented in the browser and they are called from your module. Interfaces starting with `PPP_` (“Pepper _plugin_”) are implemented in the module; they are called from the browser and will execute on the main thread of the module instance.
 
 When you implement a Native Client module in C you must include these components:
 
--   The functions `PPP_InitializeModule` and `PPP_GetInterface`
--   Code that implements the interface `PPP_Instance` and any other C interfaces that your module uses
+- The functions `PPP_InitializeModule` and `PPP_GetInterface`
+- Code that implements the interface `PPP_Instance` and any other C interfaces that your module uses
 
 For each PPP interface, you must implement all of its functions, create the struct through which the browser calls the interface, and insure that the function `PPP_GetInterface` returns the appropriate struct for the interface.
 
@@ -95,14 +93,13 @@ These steps are illustrated in the code excerpt below, which shows the implement
             return PP_OK;
     }
 
-Writing modules in C++
-----------------------
+## Writing modules in C++
 
 When you implement a Native Client module in C++ you must include these components:
 
--   The factory function called `CreateModule()`
--   Code that defines your own Module class (derived from the `pp::Module` class)
--   Code that defines your own Instance class (derived from the `pp:Instance` class)
+- The factory function called `CreateModule()`
+- Code that defines your own Module class (derived from the `pp::Module` class)
+- Code that defines your own Instance class (derived from the `pp:Instance` class)
 
 In the “Hello tutorial” example (in the `getting_started/part1` directory of the NaCl SDK), these three components are specified in the file `hello_tutorial.cc`. Here is the factory function:
 

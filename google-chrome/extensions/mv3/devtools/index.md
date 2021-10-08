@@ -99,12 +99,13 @@ Each panel is its own HTML file, which can include other resources (JavaScript, 
 on). Creating a basic panel looks like this:
 
 ```js
-chrome.devtools.panels.create("My Panel",
-    "MyPanelIcon.png",
-    "Panel.html",
-    function(panel) {
-      // code invoked on panel creation
-    }
+chrome.devtools.panels.create(
+  "My Panel",
+  "MyPanelIcon.png",
+  "Panel.html",
+  function (panel) {
+    // code invoked on panel creation
+  }
 );
 ```
 
@@ -113,11 +114,13 @@ JavaScript executed in a panel or sidebar pane has access to the the same APIs a
 Creating a basic sidebar pane for the Elements panel looks like this:
 
 ```js
-chrome.devtools.panels.elements.createSidebarPane("My Sidebar",
-    function(sidebar) {
-        // sidebar initialization code here
-        sidebar.setObject({ some_data: "Some data to show" });
-});
+chrome.devtools.panels.elements.createSidebarPane(
+  "My Sidebar",
+  function (sidebar) {
+    // sidebar initialization code here
+    sidebar.setObject({ some_data: "Some data to show" });
+  }
+);
 ```
 
 There are several ways to display content in a sidebar pane:
@@ -156,17 +159,17 @@ The following code snippets show how to inject a content script using `executeSc
 // DevTools page -- devtools.js
 // Create a connection to the background page
 var backgroundPageConnection = chrome.runtime.connect({
-    name: "devtools-page"
+  name: "devtools-page",
 });
 
 backgroundPageConnection.onMessage.addListener(function (message) {
-    // Handle responses from the background page, if any
+  // Handle responses from the background page, if any
 });
 
 // Relay the tab ID to the background page
 backgroundPageConnection.postMessage({
-    tabId: chrome.devtools.inspectedWindow.tabId,
-    scriptToInject: "content_script.js"
+  tabId: chrome.devtools.inspectedWindow.tabId,
+  scriptToInject: "content_script.js",
 });
 ```
 
@@ -174,19 +177,20 @@ Code for the background page:
 
 ```js
 // Background page -- background.js
-chrome.runtime.onConnect.addListener(function(devToolsConnection) {
-    // assign the listener function to a variable so we can remove it later
-    var devToolsListener = function(message, sender, sendResponse) {
-        // Inject a content script into the identified tab
-        chrome.scripting.executeScript(message.tabId,
-            { file: message.scriptToInject });
-    }
-    // add the listener
-    devToolsConnection.onMessage.addListener(devToolsListener);
-
-    devToolsConnection.onDisconnect.addListener(function() {
-         devToolsConnection.onMessage.removeListener(devToolsListener);
+chrome.runtime.onConnect.addListener(function (devToolsConnection) {
+  // assign the listener function to a variable so we can remove it later
+  var devToolsListener = function (message, sender, sendResponse) {
+    // Inject a content script into the identified tab
+    chrome.scripting.executeScript(message.tabId, {
+      file: message.scriptToInject,
     });
+  };
+  // add the listener
+  devToolsConnection.onMessage.addListener(devToolsListener);
+
+  devToolsConnection.onDisconnect.addListener(function () {
+    devToolsConnection.onMessage.removeListener(devToolsListener);
+  });
 });
 ```
 
@@ -205,7 +209,7 @@ for inspecting an element:
 ```js
 chrome.devtools.inspectedWindow.eval(
   "inspect($$('head script[data-soak=main]')[0])",
-  function(result, isException) { }
+  function (result, isException) {}
 );
 ```
 
@@ -239,15 +243,16 @@ The code in your content script might look something like this:
 
 ```js
 function setSelectedElement(el) {
-    // do something with the selected element
+  // do something with the selected element
 }
 ```
 
 Invoke the method from the DevTools page like this:
 
 ```js
-chrome.devtools.inspectedWindow.eval("setSelectedElement($0)",
-    { useContentScriptContext: true });
+chrome.devtools.inspectedWindow.eval("setSelectedElement($0)", {
+  useContentScriptContext: true,
+});
 ```
 
 The `useContentScriptContext: true` option specifies that the expression must be evaluated in the
@@ -285,50 +290,48 @@ connection.
 var connections = {};
 
 chrome.runtime.onConnect.addListener(function (port) {
-
-    var extensionListener = function (message, sender, sendResponse) {
-
-        // The original connection event doesn't include the tab ID of the
-        // DevTools page, so we need to send it explicitly.
-        if (message.name == "init") {
-          connections[message.tabId] = port;
-          return;
-        }
-
-	// other message handling
+  var extensionListener = function (message, sender, sendResponse) {
+    // The original connection event doesn't include the tab ID of the
+    // DevTools page, so we need to send it explicitly.
+    if (message.name == "init") {
+      connections[message.tabId] = port;
+      return;
     }
 
-    // Listen to messages sent from the DevTools page
-    port.onMessage.addListener(extensionListener);
+    // other message handling
+  };
 
-    port.onDisconnect.addListener(function(port) {
-        port.onMessage.removeListener(extensionListener);
+  // Listen to messages sent from the DevTools page
+  port.onMessage.addListener(extensionListener);
 
-        var tabs = Object.keys(connections);
-        for (var i=0, len=tabs.length; i < len; i++) {
-          if (connections[tabs[i]] == port) {
-            delete connections[tabs[i]]
-            break;
-          }
-        }
-    });
+  port.onDisconnect.addListener(function (port) {
+    port.onMessage.removeListener(extensionListener);
+
+    var tabs = Object.keys(connections);
+    for (var i = 0, len = tabs.length; i < len; i++) {
+      if (connections[tabs[i]] == port) {
+        delete connections[tabs[i]];
+        break;
+      }
+    }
+  });
 });
 
 // Receive message from content script and relay to the devTools page for the
 // current tab
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-    // Messages from content scripts should have sender.tab set
-    if (sender.tab) {
-      var tabId = sender.tab.id;
-      if (tabId in connections) {
-        connections[tabId].postMessage(request);
-      } else {
-        console.log("Tab not found in connection list.");
-      }
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  // Messages from content scripts should have sender.tab set
+  if (sender.tab) {
+    var tabId = sender.tab.id;
+    if (tabId in connections) {
+      connections[tabId].postMessage(request);
     } else {
-      console.log("sender.tab not defined.");
+      console.log("Tab not found in connection list.");
     }
-    return true;
+  } else {
+    console.log("sender.tab not defined.");
+  }
+  return true;
 });
 ```
 
@@ -337,12 +340,12 @@ The DevTools page (or panel or sidebar pane) establishes the connection like thi
 ```js
 // Create a connection to the background page
 var backgroundPageConnection = chrome.runtime.connect({
-    name: "panel"
+  name: "panel",
 });
 
 backgroundPageConnection.postMessage({
-    name: 'init',
-    tabId: chrome.devtools.inspectedWindow.tabId
+  name: "init",
+  tabId: chrome.devtools.inspectedWindow.tabId,
 });
 ```
 
@@ -360,16 +363,19 @@ API. Here's an example, assuming the background script from the previous section
 ```js
 // injected-script.js
 
-window.postMessage({
-  greeting: 'hello there!',
-  source: 'my-devtools-extension'
-}, '*');
+window.postMessage(
+  {
+    greeting: "hello there!",
+    source: "my-devtools-extension",
+  },
+  "*"
+);
 ```
 
 ```js
 // content-script.js
 
-window.addEventListener('message', function(event) {
+window.addEventListener("message", function (event) {
   // Only accept messages from the same frame
   if (event.source !== window) {
     return;
@@ -378,8 +384,11 @@ window.addEventListener('message', function(event) {
   var message = event.data;
 
   // Only accept messages that we know are ours
-  if (typeof message !== 'object' || message === null ||
-      !message.source === 'my-devtools-extension') {
+  if (
+    typeof message !== "object" ||
+    message === null ||
+    !message.source === "my-devtools-extension"
+  ) {
     return;
   }
 
@@ -403,19 +412,19 @@ DevTools window is open, you need to count the connect and disconnect events as 
 // background.js
 var openCount = 0;
 chrome.runtime.onConnect.addListener(function (port) {
-    if (port.name == "devtools-page") {
-      if (openCount == 0) {
-        alert("DevTools window opening.");
-      }
-      openCount++;
-
-      port.onDisconnect.addListener(function(port) {
-          openCount--;
-          if (openCount == 0) {
-            alert("Last DevTools window closing.");
-          }
-      });
+  if (port.name == "devtools-page") {
+    if (openCount == 0) {
+      alert("DevTools window opening.");
     }
+    openCount++;
+
+    port.onDisconnect.addListener(function (port) {
+      openCount--;
+      if (openCount == 0) {
+        alert("Last DevTools window closing.");
+      }
+    });
+  }
 });
 ```
 
@@ -426,7 +435,7 @@ The DevTools page creates a connection like this:
 
 // Create a connection to the background page
 var backgroundPageConnection = chrome.runtime.connect({
-    name: "devtools-page"
+  name: "devtools-page",
 });
 ```
 
@@ -470,16 +479,14 @@ You can find examples that use DevTools APIs in [Samples][46].
 [13]: /docs/extensions/reference
 [14]: /docs/extensions/mv3/devtools.panels#method-ExtensionSidebarPane-setPage
 [15]: /docs/extensions/mv3/devtools.panels#method-ExtensionSidebarPane-setObject
-[16]:
-  /extensions/devtools.panels#method-ExtensionSidebarPane-setExpression
+[16]: /extensions/devtools.panels#method-ExtensionSidebarPane-setExpression
 [17]: /docs/extensions/scripting#method-executeScript
 [18]: /docs/extensions/mv3/devtools.inspectedWindow#property-tabId
 [19]: /docs/extensions/scripting#method-executeScript
 [20]: #selected-element
 [21]: /docs/extensions/mv3/devtools.inspectedWindow#method-eval
 [22]: /docs/devtools/docs/commandline-api
-[23]:
-  https://github.com/RedRibbon/SOAK/blob/ffdfad68ffb6051fa2d4e9db0219b3d234ac1ae8/pages/devtools.js#L6-L8
+[23]: https://github.com/RedRibbon/SOAK/blob/ffdfad68ffb6051fa2d4e9db0219b3d234ac1ae8/pages/devtools.js#L6-L8
 [24]: /docs/extensions/scripting#method-executeScript
 [25]: /docs/extensions/mv3/devtools.inspectedWindow
 [26]: /docs/extensions/mv3/devtools.inspectedWindow#method-eval

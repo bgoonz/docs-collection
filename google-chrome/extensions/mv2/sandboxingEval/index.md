@@ -74,13 +74,13 @@ on the page, and executing the `postMessage` method on its `contentWindow`. The 
 containing two properties: `context` and `command`. We'll dive into both in a moment.
 
 ```js
-chrome.browserAction.onClicked.addListener(function() {
- var iframe = document.getElementById('theFrame');
- var message = {
-   command: 'render',
-   context: {thing: 'world'}
- };
- iframe.contentWindow.postMessage(message, '*');
+chrome.browserAction.onClicked.addListener(function () {
+  var iframe = document.getElementById("theFrame");
+  var message = {
+    command: "render",
+    context: { thing: "world" },
+  };
+  iframe.contentWindow.postMessage(message, "*");
 });
 ```
 
@@ -100,8 +100,8 @@ template in the way Handlebars suggests:
 </script>
 <script>
   var templates = [];
-  var source = document.getElementById('hello-world-template').innerHTML;
-  templates['hello'] = Handlebars.compile(source);
+  var source = document.getElementById("hello-world-template").innerHTML;
+  templates["hello"] = Handlebars.compile(source);
 </script>
 ```
 
@@ -118,15 +118,18 @@ will be passed back to the Event Page so the extension can do something useful w
 
 ```html
 <script>
-  window.addEventListener('message', function(event) {
+  window.addEventListener("message", function (event) {
     var command = event.data.command;
-    var name = event.data.name || 'hello';
-    switch(command) {
-      case 'render':
-        event.source.postMessage({
-          name: name,
-          html: templates[name](event.data.context)
-        }, event.origin);
+    var name = event.data.name || "hello";
+    switch (command) {
+      case "render":
+        event.source.postMessage(
+          {
+            name: name,
+            html: templates[name](event.data.context),
+          },
+          event.origin
+        );
         break;
 
       // case 'somethingElse':
@@ -155,8 +158,7 @@ time.
 [2]: /docs/extensions/mv2/contentSecurityPolicy
 [3]: http://angularjs.org/
 [4]: http://crbug.com/107538
-[5]:
-  http://www.whatwg.org/specs/web-apps/current-work/multipage/origin-0.html#sandboxed-origin-browsing-context-flag
+[5]: http://www.whatwg.org/specs/web-apps/current-work/multipage/origin-0.html#sandboxed-origin-browsing-context-flag
 [6]: /docs/extensions/mv2/samples#sandboxed-frame
 [7]: http://handlebarsjs.com
 [8]: /docs/extensions/examples/howto/sandbox/sandbox.html

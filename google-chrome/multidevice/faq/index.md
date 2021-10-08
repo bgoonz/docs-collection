@@ -1,7 +1,6 @@
 2014-02-28
 
-Chrome for Android
-------------------
+## Chrome for Android
 
 ### Is Chrome for Android open source?
 

@@ -44,7 +44,7 @@ JavaScript environment without conflicting with the page or other extensions' co
 
 {% Aside %}
 
-An *isolated world* is a private execution environment that isn't accessible to the page or other
+An _isolated world_ is a private execution environment that isn't accessible to the page or other
 extensions. A practical consequence of this isolation is that JavaScript variables in an extension's
 content scripts are not visible to the host page or other extensions' content scripts. The concept was
 originally introduced with the initial launch of Chrome, providing isolation for browser tabs.
@@ -60,9 +60,11 @@ An extension may run in a web page with code similar to the example below.
     var greeting = "hello, ";
     var button = document.getElementById("mybutton");
     button.person_name = "Bob";
-    button.addEventListener("click", () =>
-      alert(greeting + button.person_name + ".")
-    , false);
+    button.addEventListener(
+      "click",
+      () => alert(greeting + button.person_name + "."),
+      false
+    );
   </script>
 </html>
 ```
@@ -74,9 +76,11 @@ That extension could inject the following content script using one of the techni
 var greeting = "hola, ";
 var button = document.getElementById("mybutton");
 button.person_name = "Roberto";
-button.addEventListener("click", () =>
-  alert(greeting + button.person_name + ".")
-, false);
+button.addEventListener(
+  "click",
+  () => alert(greeting + button.person_name + "."),
+  false
+);
 ```
 
 With this change, both alerts appear in sequence when the button is clicked.
@@ -160,6 +164,7 @@ They can include JavaScript files, CSS files, or both. All auto-run content scri
 </table>
 
 {% if false %}
+
 ### Inject with dynamic declarations {: #dynamic-declarative }
 
 {% Aside 'caution' %}
@@ -177,8 +182,8 @@ You should use dynamic declarations in the following cases:
 **TODO**
 
 - Uses the JS scripting API
-    - example of adding a script
-    - example of removing a script
+  - example of adding a script
+  - example of removing a script
 - Q: Is this going to be the cannonical reference material for content scripts? If so, we may want
   to include examples for the relevant Scripting API methods.
 
@@ -193,6 +198,7 @@ chrome.scripting.registerContentScript(optionsObject, callback);
 ```js
 chrome.scripting.unregisterContentScript(idArray, callback);
 ```
+
 {% endif %}
 
 ### Inject programmatically {: #programmatic }
@@ -225,7 +231,7 @@ Content scripts can be injected as files…
 
 ```js
 //// content-script.js ////
-document.body.style.backgroundColor = 'orange';
+document.body.style.backgroundColor = "orange";
 ```
 
 ```js
@@ -233,7 +239,7 @@ document.body.style.backgroundColor = 'orange';
 chrome.action.onClicked.addListener((tab) => {
   chrome.scripting.executeScript({
     target: { tabId: tab.id },
-    files: ['content-script.js']
+    files: ["content-script.js"],
   });
 });
 ```
@@ -243,13 +249,13 @@ chrome.action.onClicked.addListener((tab) => {
 ```js
 //// background.js ////
 function injectedFunction() {
-  document.body.style.backgroundColor = 'orange';
+  document.body.style.backgroundColor = "orange";
 }
 
 chrome.action.onClicked.addListener((tab) => {
   chrome.scripting.executeScript({
     target: { tabId: tab.id },
-    function: injectedFunction
+    function: injectedFunction,
   });
 });
 ```
@@ -271,10 +277,11 @@ chrome.action.onClicked.addListener((tab) => {
   chrome.scripting.executeScript({
     target: { tabId: tab.id },
     function: injectedFunction,
-    arguments: ['orange']
+    arguments: ["orange"],
   });
 });
 ```
+
 {% endif %}
 
 ### Exclude matches and globs {: #matchAndGlob }
@@ -319,8 +326,8 @@ The content script will be injected into a page if both of the following are tru
 
 - Its URL matches any `matches` pattern and any `include_globs` pattern
 - The URL doesn't also match an `exclude_matches` or `exclude_globs` pattern.
-Because the `matches` property is required, `exclude_matches`, `include_globs`, and `exclude_globs`
-can only be used to limit which pages will be affected.
+  Because the `matches` property is required, `exclude_matches`, `include_globs`, and `exclude_globs`
+  can only be used to limit which pages will be affected.
 
 The following extension injects the content script into **https://www.nytimes.com/ health**
 but not into **https://www.nytimes.com/ business** .
@@ -339,6 +346,7 @@ but not into **https://www.nytimes.com/ business** .
   ...
 }
 ```
+
 ```js/2
 chrome.scripting.registerContentScript({
   id: 1,
@@ -382,6 +390,7 @@ This extension injects the content script into **https://www.nytimes.com/arts/in
   ...
 }
 ```
+
 ```js/3
 chrome.scripting.registerContentScript({
   id: 1,
@@ -409,6 +418,7 @@ This extension injects the content script into **https://history.nytimes.com** a
   ...
 }
 ```
+
 ```js/3
 chrome.scripting.registerContentScript({
   id: 1,
@@ -436,6 +446,7 @@ One, all, or some of these can be included to achieve the correct scope.
   ...
 }
 ```
+
 ```js/2-4
 chrome.scripting.registerContentScript({
   matches: ['https://*.nytimes.com/*'],
@@ -466,6 +477,7 @@ preferred and default value is `"document_idle"`, but you can also specify `"doc
   ...
 }
 ```
+
 ```js/2
 chrome.scripting.registerContentScript({
   matches: ['https://*.nytimes.com/*'],
@@ -532,6 +544,7 @@ tab.
   ...
 }
 ```
+
 ```js/2
 chrome.scripting.registerContentScript({
   matches: ['https://*.nytimes.com/*'],
@@ -569,23 +582,34 @@ An example can be accomplished using [`window.postMessage`][27]:
 ```js
 var port = chrome.runtime.connect();
 
-window.addEventListener("message", (event) => {
-  // We only accept messages from ourselves
-  if (event.source != window) {
-    return;
-  }
+window.addEventListener(
+  "message",
+  (event) => {
+    // We only accept messages from ourselves
+    if (event.source != window) {
+      return;
+    }
 
-  if (event.data.type && (event.data.type == "FROM_PAGE")) {
-    console.log("Content script received: " + event.data.text);
-    port.postMessage(event.data.text);
-  }
-}, false);
+    if (event.data.type && event.data.type == "FROM_PAGE") {
+      console.log("Content script received: " + event.data.text);
+      port.postMessage(event.data.text);
+    }
+  },
+  false
+);
 ```
 
 ```js
-document.getElementById("theButton").addEventListener("click", () => {
-  window.postMessage({ type: "FROM_PAGE", text: "Hello from the webpage!" }, "*");
-}, false);
+document.getElementById("theButton").addEventListener(
+  "click",
+  () => {
+    window.postMessage(
+      { type: "FROM_PAGE", text: "Hello from the webpage!" },
+      "*"
+    );
+  },
+  false
+);
 ```
 
 The non-extension page, example.html, posts messages to itself. This message is intercepted and
@@ -605,37 +629,45 @@ Be sure to filter for malicious web pages. For example, the following patterns a
 disallowed in MV3:
 
 {% Compare 'worse' %}
+
 ```js
-const data = document.getElementById("json-data")
+const data = document.getElementById("json-data");
 // WARNING! Might be evaluating an evil script!
-const parsed = eval("(" + data + ")")
+const parsed = eval("(" + data + ")");
 ```
+
 {% endCompare %}
 
 {% Compare 'worse' %}
+
 ```js
 const elmt_id = ...
 // WARNING! elmt_id might be "); ... evil script ... //"!
 window.setTimeout("animate(" + elmt_id + ")", 200);
 ```
+
 {% endCompare %}
 
 Instead, prefer safer APIs that do not run scripts:
 
 {% Compare 'better' %}
+
 ```js
-const data = document.getElementById("json-data")
+const data = document.getElementById("json-data");
 // JSON.parse does not evaluate the attacker's scripts.
 const parsed = JSON.parse(data);
 ```
+
 {% endCompare %}
 
 {% Compare 'better' %}
+
 ```js
 const elmt_id = ...
 // The closure form of setTimeout does not evaluate scripts.
 window.setTimeout(() => animate(elmt_id), 200);
 ```
+
 {% endCompare %}
 
 [1]: https://www.w3.org/TR/DOM-Level-2-HTML/
@@ -670,5 +702,4 @@ window.setTimeout(() => animate(elmt_id), 200);
 [31]: #functionality
 [32]: #dynamic-declarative
 [33]: /docs/extensions/reference/permissions
-
 [ref-error]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError

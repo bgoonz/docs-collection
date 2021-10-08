@@ -2,7 +2,7 @@
 
 {% include 'partials/nacl-warning.njk' %}
 
-------------------------------------------------------------------------
+---
 
 The Native Client Security Contest has ended—check out the <a href="/docs/native-client/community/security-contest/index#contest-winners" class="reference internal"><em>winning submissions</em></a>. We welcome your continued involvement in the project. You can help by submitting <a href="http://code.google.com/p/nativeclient/issues/list" class="reference external">bugs</a> and participating in the <a href="http://groups.google.com/group/native-client-discuss" class="reference external">Native Client discussion group</a>.
 
@@ -45,7 +45,7 @@ ENTRY IN THIS CONTEST CONSTITUTES YOUR ACCEPTANCE OF THESE TERMS AND CONDITIONS.
     3.  Inner Sandbox: The “Inner Sandbox” means the Native Client security system that a) inspects executables before running them to try to detect the potential for an executable to produce prohibited behavior, and b) prevents from running any executables that are detected to have the potential to produce prohibited behavior.
     4.  Issue: An “Issue” means an entry of a single Exploit by a Participant into the <a href="http://code.google.com/p/nativeclient/issues/list" class="reference external">Native Client Issue Tracker</a> using a properly filled out Security Contest Template. Once the Exploit has been properly entered it becomes an Issue.
     5.  Native Client Issue Tracker: The “Native Client Issue Tracker” is located at <a href="http://code.google.com/p/nativeclient/issues/list" class="reference external">http://code.google.com/p/nativeclient/issues/list</a>. It is a web application that manages and maintains a list of Issues, including Issues that are not eligible for contest entry.
-    6.  Native Client Version Number: The “Native Client Version Number” is defined as the number between the platform name (separated by an ‘\_’) and the file extension (separated by a ‘.’) in the Native Client download. For example, if the the filename of the download on the Native Client download page is “nacl\_linux\_0.1\_32\_2009\_01\_16.tgz” or “nacl\_windows\_0.1\_32\_2009\_01\_16.zip”, the Version Number is “0.1\_32\_2009\_01\_16”.
+    6.  Native Client Version Number: The “Native Client Version Number” is defined as the number between the platform name (separated by an ‘\_’) and the file extension (separated by a ‘.’) in the Native Client download. For example, if the the filename of the download on the Native Client download page is “nacl_linux_0.1_32_2009_01_16.tgz” or “nacl_windows_0.1_32_2009_01_16.zip”, the Version Number is “0.1_32_2009_01_16”.
     7.  Outer Sandbox: The “Outer Sandbox” means the Native Client security system that 1) observes executables while they are running to detect the attempts at prohibited behavior and 2) terminates misbehaving executables if it observes any attempts to produce prohibited behavior.
     8.  Participant: A “Participant” means any individual or team of individuals that has agreed to these Terms, meets the eligibility criteria described below, and is participating in the Contest.
     9.  Side Channel Attack: A “Side Channel Attack” means any attack based on information gained as a side-effect of the implementation of a cryptosystem, rather than brute force or theoretical weaknesses in the algorithms. For example, attacks that use timing information, power consumption variation, electromagnetic leaks or sound to obtain information illicitly are side channel attacks. Exploits that are Side Channel Attacks are excluded from the Contest.
@@ -91,16 +91,16 @@ ENTRY IN THIS CONTEST CONSTITUTES YOUR ACCEPTANCE OF THESE TERMS AND CONDITIONS.
 
     1.  Minimum requirements for Issues: Participant must identify an Exploit and enter the Exploit into the <a href="http://code.google.com/p/nativeclient/issues/list" class="reference external">Native Client Issue Tracker</a>. Once the Exploit is submitted it becomes an Issue. Each submitted Issue must include (i) the following information and (ii) all additional information requested on the “Security Contest Template”:
         1.  The user name (in the case of Individual Participants) or the team name (in the case of team Participants) of the Participant submitting the Issue, which must be identical to the user name or team name submitted during the registration process.
-        2.  A gzipped tar archive (with paths relative to nacl/googleclient/native\_client/tests/) that contains any instructions and files necessary to reproduce the Exploit, which must include:
+        2.  A gzipped tar archive (with paths relative to nacl/googleclient/native_client/tests/) that contains any instructions and files necessary to reproduce the Exploit, which must include:
             1.  A README.txt file that describes:
-                -   The version number of current version of Native Client at the time of submission. Issues submitted with a version number listed other than the current version at the time of submission will be invalid;
-                -   The steps required to reproduce the Exploit;
-                -   The effect of the Exploit; and
-                -   Platform requirements for the Exploit, including but not necessarily limited to:
-                -   browser version;
-                -   operating system name(s) and version(s); and/or
-                -   any other platform requirements relevant to the Exploit.
-            2.  If the Exploit requires a binary executable, both the source code and binary executable must be provided upon creation of the Issue. Any subsequent updates to the source code or binary executable after the creation of the Issue will not be considered for the purposes of this Contest. The binary executable must build cleanly by executing the command “make” in the exploit directory (e.g. nacl/googleclient/native\_client/tests/exploit1).
+                - The version number of current version of Native Client at the time of submission. Issues submitted with a version number listed other than the current version at the time of submission will be invalid;
+                - The steps required to reproduce the Exploit;
+                - The effect of the Exploit; and
+                - Platform requirements for the Exploit, including but not necessarily limited to:
+                - browser version;
+                - operating system name(s) and version(s); and/or
+                - any other platform requirements relevant to the Exploit.
+            2.  If the Exploit requires a binary executable, both the source code and binary executable must be provided upon creation of the Issue. Any subsequent updates to the source code or binary executable after the creation of the Issue will not be considered for the purposes of this Contest. The binary executable must build cleanly by executing the command “make” in the exploit directory (e.g. nacl/googleclient/native_client/tests/exploit1).
     2.  Verified Issues: In order for an Issue to become a Verified Issue, Google will first examine the submitted Issue to determine whether it complies with the following:
         1.  The Exploit must not contain or depend upon access or use of any third party software or code that Google does not have readily available to it or that would require complying with third party license agreement that Google in its sole discretion deems onerous or burdensome.
         2.  Google must be able to replicate the Exploit in its sole discretion.
@@ -110,24 +110,24 @@ ENTRY IN THIS CONTEST CONSTITUTES YOUR ACCEPTANCE OF THESE TERMS AND CONDITIONS.
         2.  Google will update the Native Client source code base at most twice per week. These updates, if they occur, will appear Mondays and Thursdays between 3 p.m. and 8 p.m. Pacific Time.
         3.  Issues will not be valid if they have been entered before the later of (i) the Contest Start Date or (ii) the time at which all members of a team Participant or the individual Participant, as the case may be, have accepted these Terms.
     4.  Excluded Exploits. The following types of Exploits are invalid for the purposes of this Contest:
-        -   Covert Channel Attacks;
-        -   Sidechannel Attacks;
-        -   Exploits requiring a virtualized CPU;
-        -   Exploits that rely on features, misfeatures or defects of virtual machines (i.e. VMWare, Xen, Parallels etc.);
-        -   Exploits that require the machine to be previously compromised by malicious software (including but not limited to viruses or malware); and
-        -   Exploits that rely on hardware failures, other than Exploits which, in Google’s sole judgment, depend on CPU errata but which can be reproduced reliably with a common system configuration and under normal operating conditions, or statistically improbable hardware behaviors. Examples include but are not limited to Exploits that rely on memory errors induced by cosmic radiation, and Exploits that require abnormal heating, cooling or other abnormal physical conditions.
+        - Covert Channel Attacks;
+        - Sidechannel Attacks;
+        - Exploits requiring a virtualized CPU;
+        - Exploits that rely on features, misfeatures or defects of virtual machines (i.e. VMWare, Xen, Parallels etc.);
+        - Exploits that require the machine to be previously compromised by malicious software (including but not limited to viruses or malware); and
+        - Exploits that rely on hardware failures, other than Exploits which, in Google’s sole judgment, depend on CPU errata but which can be reproduced reliably with a common system configuration and under normal operating conditions, or statistically improbable hardware behaviors. Examples include but are not limited to Exploits that rely on memory errors induced by cosmic radiation, and Exploits that require abnormal heating, cooling or other abnormal physical conditions.
     5.  Completeness. Issues submitted that lack any of the above materials or fail to meet any of the above criteria, may not be considered in the judging process at Google’s sole discretion. Issues that are not included in a Participant Summary (see section below) will not be considered.
 
 10. Summary
 
     1.  Every Participant must submit a Summary at the <a href="http://code.google.com/p/nativeclient/issues/list" class="reference external">Native Client Issue Tracker</a> complying with the requirements of this section. The Participant must select no more than 10 of the Verified Issues submitted by the Participant for inclusion on the Summary. Each Summary must be in English and must contain the following information:
-        -   The Issues must be listed in descending order of severity, as determined by the Participant in accordance with the Judging Criteria.
-        -   Each Issue listed in the Summary must be identified by ID number of the Issue. The ID number is the identifying number created for each Issue as listed on the <a href="http://code.google.com/p/nativeclient/issues/list" class="reference external">Native Client Issue Tracker</a>.
-        -   A description of the effect of each Exploit.
-        -   The platform requirements of each Exploit.
-        -   The version number(s) of Native Client software affected by each Exploit (which must be the version number of the Native Client software current at the time the Issue was submitted to the <a href="http://code.google.com/p/nativeclient/issues/list" class="reference external">Native Client Issue Tracker</a>).
-        -   Any other details about the Exploit and the submission that are relevant to the judging criteria, such as, for example, the approach used in finding the exploits, innovative or scalable techniques used to discover exploits, or architectural analysis.
-        -   The team name or user name of the Participant. Google may, in its sole discretion, eliminate or disqualify any Summary that lists user names or team names that are not identical to the user name or team name of the Participant listed on the Contest entry form.
+        - The Issues must be listed in descending order of severity, as determined by the Participant in accordance with the Judging Criteria.
+        - Each Issue listed in the Summary must be identified by ID number of the Issue. The ID number is the identifying number created for each Issue as listed on the <a href="http://code.google.com/p/nativeclient/issues/list" class="reference external">Native Client Issue Tracker</a>.
+        - A description of the effect of each Exploit.
+        - The platform requirements of each Exploit.
+        - The version number(s) of Native Client software affected by each Exploit (which must be the version number of the Native Client software current at the time the Issue was submitted to the <a href="http://code.google.com/p/nativeclient/issues/list" class="reference external">Native Client Issue Tracker</a>).
+        - Any other details about the Exploit and the submission that are relevant to the judging criteria, such as, for example, the approach used in finding the exploits, innovative or scalable techniques used to discover exploits, or architectural analysis.
+        - The team name or user name of the Participant. Google may, in its sole discretion, eliminate or disqualify any Summary that lists user names or team names that are not identical to the user name or team name of the Participant listed on the Contest entry form.
     2.  Each Summary must be a maximum of 8 pages long, in PDF format viewable with Adobe Reader version 9. The Summary must be formatted for 8.5 inches x11 inches or A4 paper, with a minimum font size of 10 pt. Any submission that does not meet these formatting criteria may be disqualified at the sole discretion of Google.
     3.  All Issues listed in the Summary will be verified by Google before submission of the Summary to the Judges after the Contest Closing Date. Participants may submit or resubmit their Summary at any time during the duration of the Contest, however, the Judges will consider only the last Summary from each Participant prior to the Contest Closing Date and ignore all other Summaries previously submitted by the Participant.
 
@@ -141,41 +141,41 @@ ENTRY IN THIS CONTEST CONSTITUTES YOUR ACCEPTANCE OF THESE TERMS AND CONDITIONS.
 
             1.  Severity: the more disruptive the effects of the Exploit, the higher its quality. Here is a non-exhaustive ranking of the most common Exploits starting from ‘minor’ to ‘severe’:
 
-                -   Browser crash;
+                - Browser crash;
 
-                -   Denial of service or machine crash;
+                - Denial of service or machine crash;
 
-                -   Compromise of the Outer Sandbox;
+                - Compromise of the Outer Sandbox;
 
-                -   Information leak (such as of a cookie or password);
+                - Information leak (such as of a cookie or password);
 
-                -   Compromise of both the Inner and Outer Sandbox; and/or
+                - Compromise of both the Inner and Outer Sandbox; and/or
 
-                -   Prohibited side effect (such as reading or writing files to the client machine), escalation of privilege (such as executing other programs outside of Native Client).
+                - Prohibited side effect (such as reading or writing files to the client machine), escalation of privilege (such as executing other programs outside of Native Client).
 
                 Any Exploit that does not address the above elements will be evaluated on a case-by-case basis and the severity of such Exploits will be determined solely at the Judge’s discretion.
 
             2.  Scope: the more computers that an Exploit would potentially affect, the bigger its scope and therefore higher the quality of the Exploit. Consider the following:
 
-                -   Exploits that affect all platforms supported by Native Client (where platform is defined as a browser, operating system and hardware combination) have higher quality than an Exploit specific to a particular platform.
+                - Exploits that affect all platforms supported by Native Client (where platform is defined as a browser, operating system and hardware combination) have higher quality than an Exploit specific to a particular platform.
 
-                -   Exploits that require non-current or beta versions (historic or future) of hardware or software are lower quality.
+                - Exploits that require non-current or beta versions (historic or future) of hardware or software are lower quality.
 
-                -   Exploits that rely on concurrent usage of other installed software or web content must make a compelling case about the likelihood of the prerequisite software or content being present, or they will be considered of lower quality.
+                - Exploits that rely on concurrent usage of other installed software or web content must make a compelling case about the likelihood of the prerequisite software or content being present, or they will be considered of lower quality.
 
             3.  Reliability: The more frequent or probable the occurrence identified by the Exploit, the more “reliable” it may be. Consider the following:
 
-                -   Exploits that require uncommon software to be installed on the machine in order to function will be deemed to have lower quality.
+                - Exploits that require uncommon software to be installed on the machine in order to function will be deemed to have lower quality.
 
-                -   Entries that include Exploits that cannot be reproduced 100% of the time, but which can be reproduced a significant percentage of the time, will be deemed to have a lower quality to account for a lowered probability that the attack will succeed.
+                - Entries that include Exploits that cannot be reproduced 100% of the time, but which can be reproduced a significant percentage of the time, will be deemed to have a lower quality to account for a lowered probability that the attack will succeed.
 
             4.  Style: Submissions that demonstrate exceptional style will receive a higher ranking. Factors that contribute to style include:
 
-                -   Ingenuity in mechanism used to bypass security;
+                - Ingenuity in mechanism used to bypass security;
 
-                -   Uniqueness of the Exploit;
+                - Uniqueness of the Exploit;
 
-                -   Ingenuity in methods used to discover vulnerabilities; and/or Minimal size of Exploit to achieve the effect.
+                - Ingenuity in methods used to discover vulnerabilities; and/or Minimal size of Exploit to achieve the effect.
 
         2.  the Quantity of Exploits: Participants that submit more Exploits in their Summary (but no more than 10) may receive a higher ranking, weighted by quality. However, it is still possible that a Participant who submits one Exploit could still outweigh a Participant that submits several Exploits.
 
@@ -200,10 +200,10 @@ ENTRY IN THIS CONTEST CONSTITUTES YOUR ACCEPTANCE OF THESE TERMS AND CONDITIONS.
     1.  Information Required for Eligibility
 
         1.  On or about May 15th 2009 and upon selection of potential winners, Google will contact all winning Participants using the email addresses submitted at registration. In order to win the Contest and receive prizes, Participants, including each individual on a team, must provide additional information including:
-            -   first and last name;
-            -   address;
-            -   phone number; and
-            -   all other necessary information required by the US tax and legal authorities and /or the authorities of the countries they reside in.
+            - first and last name;
+            - address;
+            - phone number; and
+            - all other necessary information required by the US tax and legal authorities and /or the authorities of the countries they reside in.
         2.  All Participants will need to verify their identity with Google, before receiving their prize; however, Participants may provide an alias for use in any public documentation and marketing material issued publicly by Google, subject to limitations of the law and as required by law enforcement. Please be aware that in some jurisdictions, a list of winners must be made available and your name, and not the alias, will be provided on that list. If a Participant, or in the case of a team, any individual member of the team, refuses or fails to provide the necessary information to Google within 14 days of the Contest administrators’ request for the required information, then Google may, in its sole discretion, disqualify the Participant’s entry and select as an alternative potential winner the Participant with the next highest overall ranking. Google will not be held responsible for any failure of potential winners to receive notification that they are potential winners. Except where prohibited by law, each potential winner may be required to sign and return a Declaration of Eligibility, Liability & Publicity Release and Release of Rights and provide any additional information that may be required by Google. If required, potential winners must return all such required documents within 14 calendar days following attempted notification or such potential winner will be deemed to have forfeited the prize and Google will select the Participant with the next highest overall ranking as the potential winner.
         3.  Prizes will be awarded within 6 months after the Contest End Date.
         4.  If fewer than 5 Participants or teams are found eligible, fewer than 5 winners will be selected.
@@ -252,13 +252,13 @@ ENTRY IN THIS CONTEST CONSTITUTES YOUR ACCEPTANCE OF THESE TERMS AND CONDITIONS.
 
         Pursuant to EU law pertaining to data collection and processing, you are informed that:
 
-        -   The data controller is Google and the data recipients are Google and its agents;
+        - The data controller is Google and the data recipients are Google and its agents;
 
-        -   Your data is collected for purposes of administration of the Native Client Security Contest;
+        - Your data is collected for purposes of administration of the Native Client Security Contest;
 
-        -   You have a right of access to and withdrawal of your personal data. You also have a right of opposition to the data collection, under certain circumstances. To exercise such right, You may write to: Native Client Security Contest, Google Inc., 1600 Amphitheater Parkway, Mountain View, CA 94043, USA.
+        - You have a right of access to and withdrawal of your personal data. You also have a right of opposition to the data collection, under certain circumstances. To exercise such right, You may write to: Native Client Security Contest, Google Inc., 1600 Amphitheater Parkway, Mountain View, CA 94043, USA.
 
-        -   Your personal data will be transferred to the U.S.
+        - Your personal data will be transferred to the U.S.
 
     7.  Indemnity. To the maximum extent permitted by law, each Participant indemnifies and agrees to keep indemnified Google and Judges at all times from and against any liability, claims, demands, losses, damages, costs and expenses resulting from any act, default or omission of the Participant and/or a breach of any warranty set forth herein. To the maximum extent permitted by law, each Participant agrees to defend, indemnify and hold harmless Google, its affiliates and their respective directors, officers, employees and agents from and against any and all claims, actions, suits or proceedings, as well as any and all losses, liabilities, damages, costs and expenses (including reasonable attorneys fees) arising out of or accruing from:
 

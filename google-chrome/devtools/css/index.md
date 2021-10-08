@@ -2,8 +2,7 @@
 
 Complete these interactive tutorials to learn the basics of viewing and changing a page’s CSS using Chrome DevTools.
 
-View an element’s CSS {: \#view }
----------------------------------
+## View an element’s CSS {: \#view }
 
 1.  Right-click the `Inspect Me!` text below and select **Inspect**. The **Elements** panel of DevTools opens. The `Inspect Me!` element is highlighted in the **DOM Tree**.
 
@@ -25,8 +24,7 @@ If you’d like to dock your DevTools window to the right of your viewport, like
 
 **Figure 2**. CSS classes being applied to the selected element, such as `aloha`, are displayed in the **Styles** tab
 
-Add a CSS declaration to an element {: \#declarations }
--------------------------------------------------------
+## Add a CSS declaration to an element {: \#declarations }
 
 Use the **Styles** tab when you want to change or add CSS declarations to an element.
 
@@ -42,8 +40,7 @@ Use the **Styles** tab when you want to change or add CSS declarations to an ele
 
 **Figure 3**. The `background-color:honeydew` declaration has been applied to the element via the `element.style` section of the **Styles** tab
 
-Add a CSS class to an element {: \#classes }
---------------------------------------------
+## Add a CSS class to an element {: \#classes }
 
 Use the **Styles** tab to see how an element looks when a CSS class is applied to or removed from an element.
 
@@ -58,8 +55,7 @@ Use the **Styles** tab to see how an element looks when a CSS class is applied t
 
 **Figure 4**. The `color_me` class has been applied to the element via the **.cls** section of the **Styles** tab
 
-Add a pseudostate to a class {: \#pseudostates }
-------------------------------------------------
+## Add a pseudostate to a class {: \#pseudostates }
 
 Use the **Styles** tab to permanently apply a CSS pseudostate to an element. DevTools supports `:active`, `:focus`, `:hover`, `:visited`, and others.
 
@@ -75,8 +71,7 @@ Use the **Styles** tab to permanently apply a CSS pseudostate to an element. Dev
 
 **Figure 5**. Toggling the `:hover` pseudostate on an element
 
-Change the dimensions of an element {: \#box-model }
-----------------------------------------------------
+## Change the dimensions of an element {: \#box-model }
 
 Use the **Box Model** interactive diagram in the **Styles** tab to change the width, height, padding, margin, or border length of an element.
 

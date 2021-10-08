@@ -1,7 +1,6 @@
 2020-12-07
 
-Add yourself to the authors list
---------------------------------
+## Add yourself to the authors list
 
 1.  Add a new object to [`authors.yml`](https://github.com/GoogleChrome/developer.chrome.com/blob/main/site/_data/i18n/authors.yml) with the following structure. Make sure to choose a unique author slug.
 
@@ -30,8 +29,7 @@ Add yourself to the authors list
           "homepage": "https://jaimiesmithis.cool/"
         }
 
-Create a profile image
-----------------------
+## Create a profile image
 
 1.  Follow the [Images and video](/docs/handbook/how-to/add-media/) guide to upload your photo to the CDN.
 

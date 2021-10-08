@@ -1,6 +1,6 @@
 2013-05-12
 
-***Warning:*** Starting in version 57, Chrome will no longer allow external web content (including embedded frames and scripts) inside sandboxed pages. Please use a [webview](/docs/apps/webview_tag) instead.
+**_Warning:_** Starting in version 57, Chrome will no longer allow external web content (including embedded frames and scripts) inside sandboxed pages. Please use a [webview](/docs/apps/webview_tag) instead.
 
 Defines a collection of app or extension pages that are to be served in a sandboxed unique origin, and optionally a Content Security Policy to use with them. Being in a sandbox has two implications:
 

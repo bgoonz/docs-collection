@@ -70,12 +70,12 @@ into the code, in order to inspect values as the script executes. For example:
 ```js
 function updateLabel() {
   var addend1 = getNumber1();
-  console.log('addend1:', addend1);
+  console.log("addend1:", addend1);
   var addend2 = getNumber2();
-  console.log('addend2:', addend2);
+  console.log("addend2:", addend2);
   var sum = addend1 + addend2;
-  console.log('sum:', sum);
-  label.textContent = addend1 + ' + ' + addend2 + ' = ' + sum;
+  console.log("sum:", sum);
+  label.textContent = addend1 + " + " + addend2 + " = " + sum;
 }
 ```
 
@@ -171,7 +171,7 @@ code that you want to pause on, use a line-of-code breakpoint:
 1.  Look at the last line of code in `updateLabel()`:
 
     ```js
-    label.textContent = addend1 + ' + ' + addend2 + ' = ' + sum;
+    label.textContent = addend1 + " + " + addend2 + " = " + sum;
     ```
 
 2.  To the left of the code you can see the line number of this particular line of code, which is

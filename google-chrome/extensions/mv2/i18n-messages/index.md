@@ -4,10 +4,9 @@
 
 Each internationalized extension or app has at least one file named `messages.json` that provides locale-specific strings. This page describes the format of `messages.json` files. For information on how to internationalize and localize, see the [Internationalization](/docs/extensions/i18n) page.
 
-Field summary {: \#overview }
------------------------------
+## Field summary {: \#overview }
 
-The following code shows the supported fields for `messages.json`. Only the “*name*” and “message” fields are required.
+The following code shows the supported fields for `messages.json`. Only the “_name_” and “message” fields are required.
 
     {
       "name": {
@@ -24,10 +23,9 @@ The following code shows the supported fields for `messages.json`. Only the “*
       ...
     }
 
-Example {: \#example }
-----------------------
+## Example {: \#example }
 
-Here’s a `messages.json` file that defines three messages named “prompt\_for\_name”, “hello”, and “bye”:
+Here’s a `messages.json` file that defines three messages named “prompt_for_name”, “hello”, and “bye”:
 
     {
       "prompt_for_name": {
@@ -59,22 +57,21 @@ Here’s a `messages.json` file that defines three messages named “prompt\_for
       }
     }
 
-Field details {: \#field\_details }
------------------------------------
+## Field details {: \#field_details }
 
 This section describes each field that can appear in a `messages.json` file. For details on how the messages file is used—for example, what happens when a locale doesn’t define all the messages—see [Internationalization](/docs/extensions/i18n).
 
 ### name {: \#name }
 
-Actually, there’s no field called “name”. This field’s name is the name of the message—the same *name* that you see in `__MSG__name___` or `getMessage("_name_")`.
+Actually, there’s no field called “name”. This field’s name is the name of the message—the same _name_ that you see in `__MSG__name___` or `getMessage("_name_")`.
 
 The name is a case-insensitive key that lets you retrieve the localized message text. The name can include the following characters:
 
--   A-Z
--   a-z
--   0-9
--   \_ (underscore)
--   @
+- A-Z
+- a-z
+- 0-9
+- \_ (underscore)
+- @
 
 **Note:** Don’t define names that begin with “@@”. Those names are reserved for [predefined messages](i18n#overview-predefined).
 
@@ -94,7 +91,7 @@ For more examples of using names, see the [Internationalization](/docs/extension
 
 ### message {: \#message }
 
-The translated message, in the form of a string that can contain [placeholders](#placeholders). Use `$_placeholder_name_$` (case insensitive) to refer to a particular placeholder. For example, you can refer to a placeholder named “our\_site” as `$our_site$`, `$OUR_SITE$`, or `$oUR_sITe$`.
+The translated message, in the form of a string that can contain [placeholders](#placeholders). Use `$_placeholder_name_$` (case insensitive) to refer to a particular placeholder. For example, you can refer to a placeholder named “our_site” as `$our_site$`, `$OUR_SITE$`, or `$oUR_sITe$`.
 
 Here are three examples of messages, taken from the [Example](#example) section:
 
@@ -108,7 +105,7 @@ To put a dollar sign (`$`) into the string, use `$$`. For example, use the follo
 
     "message": "Amount (in $$)"
 
-Although placeholders such as `$USER$` are the preferred way of referring to *substitution strings* (strings specified using the *substitutions* parameter of [i18n.getMessage](/docs/extensions/i18n#method-getMessage)) you can also refer to substitution strings directly within the message. For example, the following message refers to the first three substitution strings passed into `getMessage()`:
+Although placeholders such as `$USER$` are the preferred way of referring to _substitution strings_ (strings specified using the _substitutions_ parameter of [i18n.getMessage](/docs/extensions/i18n#method-getMessage)) you can also refer to substitution strings directly within the message. For example, the following message refers to the first three substitution strings passed into `getMessage()`:
 
     "message": "Params: $1, $2, $3"
 
@@ -116,7 +113,7 @@ Despite that example, we recommend that you stick to using placeholders instead 
 
 ### description {: \#description }
 
-*Optional.* A description of the message, intended to give context or details to help the translator make the best possible translation.
+_Optional._ A description of the message, intended to give context or details to help the translator make the best possible translation.
 
 Here are three examples of descriptions, taken from the [Example](#example) section:
 
@@ -128,20 +125,20 @@ Here are three examples of descriptions, taken from the [Example](#example) sect
 
 ### placeholders {: \#placeholders }
 
-*Optional.* Defines one or more substrings to be used within the message. Here are two reasons you might want to use a placeholder:
+_Optional._ Defines one or more substrings to be used within the message. Here are two reasons you might want to use a placeholder:
 
--   To define the text for a part of your message that shouldn’t be translated. Examples: HTML code, trademarked names, formatting specifiers.
--   To refer to a substitution string passed into `getMessage()`. Example: `$1`.
+- To define the text for a part of your message that shouldn’t be translated. Examples: HTML code, trademarked names, formatting specifiers.
+- To refer to a substitution string passed into `getMessage()`. Example: `$1`.
 
 Each placeholder has a name, a “content” item, and an optional “example” item. A placeholder’s name is case-insensitive and can contain the same characters as a [message name](#name).
 
-The “content” item’s value is a string that can refer to substitution strings, which are specified using the [i18n.getMessage](/docs/extensions/i18n#method-getMessage) method’s *substitutions* parameter. The value of a “content” item is typically something like “Example.com” or “$1”. If you refer to a substitution string that doesn’t exist, you get an empty string. The following table shows how `$_n_` strings correspond to strings specified by the *substitutions* parameter.
+The “content” item’s value is a string that can refer to substitution strings, which are specified using the [i18n.getMessage](/docs/extensions/i18n#method-getMessage) method’s _substitutions_ parameter. The value of a “content” item is typically something like “Example.com” or “$1”. If you refer to a substitution string that doesn’t exist, you get an empty string. The following table shows how `$_n_` strings correspond to strings specified by the _substitutions_ parameter.
 
 <table><thead><tr class="header"><th><em>substitutions</em> parameter</th><th>Value of $1</th><th>Value of $2</th><th>Value of $3</th></tr></thead><tbody><tr class="odd"><td><code>userName</code></td><td>value of <code>userName</code></td><td><code>""</code></td><td><code>""</code></td></tr><tr class="even"><td><code>[“Cira”, “Kathy”]</code></td><td><code>“Cira”</code></td><td><code>“Kathy”</code></td><td><code>""</code></td></tr></tbody></table>
 
 The “example” item (optional, but highly recommended) helps translators by showing how the content appears to the end user. For example, a placeholder for a dollar amount should have an example like `"$23.45"`.
 
-The following snippet, taken from the [Example](#example) section, shows a “placeholders” item that contains two placeholders named “our\_site” and “user”. The “our\_site” placeholder has no “example” item because its value is obvious from the “content” field.
+The following snippet, taken from the [Example](#example) section, shows a “placeholders” item that contains two placeholders named “our_site” and “user”. The “our_site” placeholder has no “example” item because its value is obvious from the “content” field.
 
     "placeholders": {
       "our_site": {

@@ -27,10 +27,10 @@ the right.
 Here's the Snippet source code from **Figure 1**:
 
 ```js
-console.log('Hello, Snippets!');
-document.body.innerHTML = '';
-var p = document.createElement('p');
-p.textContent = 'Hello, Snippets!';
+console.log("Hello, Snippets!");
+document.body.innerHTML = "";
+var p = document.createElement("p");
+p.textContent = "Hello, Snippets!";
 document.body.appendChild(p);
 ```
 

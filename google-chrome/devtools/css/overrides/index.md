@@ -2,8 +2,7 @@
 
 This guide assumes that you’re familiar with inspecting CSS in Chrome DevTools. See [Get Started With Viewing And Changing CSS](/docs/devtools/css) to learn the basics.
 
-Overview {: \#overview }
-------------------------
+## Overview {: \#overview }
 
 Suppose that you just added some CSS to your nav and want to make sure the new styles are being applied properly. When you refresh the page the nav looks the same as before. Something is wrong. The first thing to do is [inspect the element](/docs/devtools/css/reference#select) and make sure that your new CSS is actually being applied to the nav. If you can see your new CSS in the Styles pane, but your new CSS is crossed out, it means that there’s some other CSS that is overriding your new CSS. In CSS terminology this concept is called [Specificity](https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity). Chrome DevTools can help you find the old CSS that is causing your new CSS to not be applied.
 
@@ -11,8 +10,7 @@ Suppose that you just added some CSS to your nav and want to make sure the new s
 
 **Figure 1**. The `max-height: 512px` declaration is crossed out.
 
-Find overrides in the Computed pane {: \#computed }
----------------------------------------------------
+## Find overrides in the Computed pane {: \#computed }
 
 1.  From the **Elements** panel, open the **Computed** pane.
 
@@ -32,8 +30,7 @@ Find overrides in the Computed pane {: \#computed }
 
     **Figure 4**. Viewing the `max-height` declaration’s source code in the Sources panel.
 
-Filter properties {: \#filter }
--------------------------------
+## Filter properties {: \#filter }
 
 If you want to focus on a specific property, type that property name in the **Filter** textbox.
 
@@ -41,7 +38,6 @@ If you want to focus on a specific property, type that property name in the **Fi
 
 **Figure 5**. Filtering out properties that do not contain `max` in the Computed pane.
 
-Show all properties {: \#all }
-------------------------------
+## Show all properties {: \#all }
 
 If you want to see all properties that are being applied to the element, including [user-agent stylesheets](https://developer.mozilla.org/en-US/docs/Web/CSS/Cascade#User-agent_stylesheets), enable the **Show All** checkbox (next to the [**Filter**](#filter) textbox).

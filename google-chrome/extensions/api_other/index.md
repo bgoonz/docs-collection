@@ -11,14 +11,14 @@ Use [XMLHttpRequest](/docs/extensions/mv2/xhr) to request data from one or more 
 HTML and other emerging APIs  
 Google Chrome supports modern HTML features, along with other emerging APIs. Here are some of the APIs you can use:
 
--   audio ([tutorial](http://www.html5rocks.com/tutorials/audio/quick/))
--   application cache ([tutorial](http://www.html5rocks.com/tutorials/appcache/beginner/))
--   canvas ([articles](http://www.html5rocks.com/en/tutorials/#canvas))
--   geolocation ([tutorial](http://www.html5rocks.com/tutorials/geolocation/trip_meter/))
--   local storage ([tutorial](http://www.html5rocks.com/en/tutorials/offline/storage/))
--   notifications ([tutorial](http://www.html5rocks.com/tutorials/notifications/quick/))
--   video ([tutorial](http://www.html5rocks.com/en/tutorials/video/basics/))
--   web database ([tutorial](http://www.html5rocks.com/tutorials/webdatabase/todo/))
+- audio ([tutorial](http://www.html5rocks.com/tutorials/audio/quick/))
+- application cache ([tutorial](http://www.html5rocks.com/tutorials/appcache/beginner/))
+- canvas ([articles](http://www.html5rocks.com/en/tutorials/#canvas))
+- geolocation ([tutorial](http://www.html5rocks.com/tutorials/geolocation/trip_meter/))
+- local storage ([tutorial](http://www.html5rocks.com/en/tutorials/offline/storage/))
+- notifications ([tutorial](http://www.html5rocks.com/tutorials/notifications/quick/))
+- video ([tutorial](http://www.html5rocks.com/en/tutorials/video/basics/))
+- web database ([tutorial](http://www.html5rocks.com/tutorials/webdatabase/todo/))
 
 See [html5rocks.com](http://www.html5rocks.com) for HTML5 information, tutorials, an interactive playground, and links to other resources.
 

@@ -1,7 +1,6 @@
 2021-01-12
 
-Details
--------
+## Details
 
 Use a details section to hide extra information from the user until it’s needed. It can have an optional preview.
 
@@ -61,8 +60,7 @@ This is the body of the Details component. It **can** contain markdown.
 
 {% endDetails %}
 
-Asides
-------
+## Asides
 
 Use asides to provide information that’s related to but distinct from the content in the body of the post or codelab. Asides should generally be short—no more than 2–3 lines.
 
@@ -143,7 +141,7 @@ Here is a fancy [named markdown link](https://google.com). {% endAside %}
     includes the term in italics. For example, "A _portal_ is…"
     {% endAside %}{% endraw %}
 
-{% Aside ‘key-term’ %} Use the key-term aside to define a term that’s essential to understanding an idea in the body copy. Key-term asides should be a single sentence that includes the term in italics. For example, “A *portal* is…” {% endAside %}
+{% Aside ‘key-term’ %} Use the key-term aside to define a term that’s essential to understanding an idea in the body copy. Key-term asides should be a single sentence that includes the term in italics. For example, “A _portal_ is…” {% endAside %}
 
 ### Codelab asides
 
@@ -153,8 +151,7 @@ Here is a fancy [named markdown link](https://google.com). {% endAside %}
 
 {% Aside ‘codelab’ %} Get started: [Measure your page performance with Lighthouse](#). {% endAside %}
 
-Blockquotes
------------
+## Blockquotes
 
 Use blockquotes to emphasize a quotation that’s important to the main idea of a post. (For example, in a case study you might include a quotation from someone on the partner organization’s management team.)
 
@@ -174,8 +171,7 @@ Always include a `<cite>` element indicating the quote’s source at the end of 
 >
 > Jon Doe
 
-Buttons
--------
+## Buttons
 
 In general, you shouldn’t need to add buttons to your posts. These buttons are shown for reference.
 
@@ -185,15 +181,11 @@ In general, you shouldn’t need to add buttons to your posts. These buttons are
 
 Text button
 
-  
-
     <button class="material-button button-filled color-bg bg-primary">
       Filled button
     </button>
 
 Filled button
-
-  
 
     <button class="material-button button-filled button-round color-bg bg-primary">
       Round button
@@ -201,15 +193,13 @@ Filled button
 
 Round button
 
-Code
-----
+## Code
 
 developer.chrome.com uses the same syntax highlighter as web.dev.
 
 See the [Code](https://web.dev/handbook/markup-code/) post for more details.
 
-Columns
--------
+## Columns
 
 Columns can be used to place elements side-by-side. This works well for blocks of code or images. On mobile the columns will stack vertically.
 
@@ -287,8 +277,7 @@ Columns can be used to place elements side-by-side. This works well for blocks o
 
 {% endColumns %}
 
-Compare
--------
+## Compare
 
     {% raw %}{% Compare 'better' %}
     The right way to do something
@@ -383,17 +372,16 @@ To support localization all custom labels will need to be added to the `site/_da
 
 {% endCompare %}
 
-Glitches {: \#glitches }
-------------------------
+## Glitches {: \#glitches }
 
 ### Create a Glitch
 
--   Remix the [web-dev-hello-webpage](https://glitch.com/~web-dev-hello-webpage) or [web-dev-hello-express](https://glitch.com/~web-dev-hello-express) template.
--   Click **Project options** and update the description of the Glitch.
--   Update `README.md`.
--   Update `package.json` (if it exists).
--   Add the project to [the web.dev team on Glitch](https://glitch.com/@webdev).
--   Set the avatar of the project to the [web.dev logo](https://cdn.glitch.com/9b775a52-d700-4208-84e9-18578ee75266%2Ficon.jpeg?v=1585082912878).
+- Remix the [web-dev-hello-webpage](https://glitch.com/~web-dev-hello-webpage) or [web-dev-hello-express](https://glitch.com/~web-dev-hello-express) template.
+- Click **Project options** and update the description of the Glitch.
+- Update `README.md`.
+- Update `package.json` (if it exists).
+- Add the project to [the web.dev team on Glitch](https://glitch.com/@webdev).
+- Set the avatar of the project to the [web.dev logo](https://cdn.glitch.com/9b775a52-d700-4208-84e9-18578ee75266%2Ficon.jpeg?v=1585082912878).
 
 ### Embed a Glitch
 
@@ -418,15 +406,14 @@ It’s OK to adjust the `height` of the Glitch wrapper element if you need more 
 
 Shortcode object fields allow for modifying how the embed is presented:
 
--   {`string | string[]`} `allow?` List of feature policies of an IFrame either as an array of strings, or as a `;` separated list. By default the following policies are enabled:
-    -   `'camera', 'clipboard-read', 'clipboard-write', 'encrypted-media', 'geolocation', 'microphone', 'midi'`
--   {`string`} `id` ID of Glitch project.
--   {`string`} `path?` Lets you specify which source code file to show.
--   {`number`} `previewSize?` Defines what percentage of the embed should be dedicated to the preview, default is 100.
--   {`number`} `height?` Height, in pixels, of the Glitch wrapper element.
+- {`string | string[]`} `allow?` List of feature policies of an IFrame either as an array of strings, or as a `;` separated list. By default the following policies are enabled:
+  - `'camera', 'clipboard-read', 'clipboard-write', 'encrypted-media', 'geolocation', 'microphone', 'midi'`
+- {`string`} `id` ID of Glitch project.
+- {`string`} `path?` Lets you specify which source code file to show.
+- {`number`} `previewSize?` Defines what percentage of the embed should be dedicated to the preview, default is 100.
+- {`number`} `height?` Height, in pixels, of the Glitch wrapper element.
 
-Images
-------
+## Images
 
 Images should always use the {% raw %}`{% Img %}`{% endraw %} shortcode. This shortcode will be generated for you when you upload your image to our CDN. See the [Add an image or video guide](https://developer.chrome.com/docs/handbook/how-to/add-media/) for upload instructions.
 
@@ -442,8 +429,6 @@ Images with a white background should use the `.screenshot` class to give them a
     {% raw %}{% Img src='image/BrQidfK9jaQyIHwdw91aVpkPiib2/TDNgfhI9byR4eeGQ0Xxv.png', alt='Screenshot', height="302", width="770", class="screenshot screenshot--filled" %}{% endraw %}
 
 {% Img src=‘image/BrQidfK9jaQyIHwdw91aVpkPiib2/TDNgfhI9byR4eeGQ0Xxv.png’, alt=‘Screenshot’, height=“302”, width=“770”, class=“screenshot” %}
-
-  
 
 {% Img src=‘image/BrQidfK9jaQyIHwdw91aVpkPiib2/TDNgfhI9byR4eeGQ0Xxv.png’, alt=‘Screenshot’, height=“302”, width=“770”, class=“screenshot screenshot–filled” %}
 
@@ -489,8 +474,7 @@ To include a caption along with an image, use `<figure>` with `<figcaption>` and
 
 A good boy.
 
-Lists
------
+## Lists
 
 See the [Lists section of the Grammar, mechanics, and usage post](https://web.dev/handbook/grammar/#lists) for information about when to use each list type.
 
@@ -512,9 +496,9 @@ Use standard Markdown syntax for lists: `1.` for ordered lists and `-` for unord
     - Lorem ipsum dolor sit amet…
     - Lorem ipsum dolor sit amet…
 
--   Lorem ipsum dolor sit amet…
--   Lorem ipsum dolor sit amet…
--   Lorem ipsum dolor sit amet…
+- Lorem ipsum dolor sit amet…
+- Lorem ipsum dolor sit amet…
+- Lorem ipsum dolor sit amet…
 
 ### Definition list
 
@@ -533,8 +517,7 @@ This is one definition of the second term.
 
 This is another definition of the second term.
 
-Tabs
-----
+## Tabs
 
 Use `web-tabs` component to display information in a form of horizontal tabs. Attribute `title` becomes the title of the corresponding tab panel.
 
@@ -580,8 +563,7 @@ I’m content of Tab 1
 
     const hello = 'world';
 
-Tables
-------
+## Tables
 
 By default tables are only as wide as their content and are horizontally centered.
 
@@ -697,8 +679,7 @@ By default all tables will `overflow-x` on small screens in order to be responsi
 
 <table><thead><tr class="header"><th>Person</th><th>Number</th><th>Third Column</th></tr></thead><tbody><tr class="odd"><td>Someone Lastname</td><td>900</td><td>Nullam quis risus eget urna mollis ornare vel eu leo.</td></tr><tr class="even"><td><a href="#">Person Name</a></td><td>1200</td><td>Vestibulum id ligula porta felis euismod semper. Donec ullamcorper nulla non metus auctor fringilla.</td></tr><tr class="odd"><td>Another Person</td><td>1500</td><td>Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Nullam id dolor id nibh ultricies vehicula ut id elit.</td></tr><tr class="even"><td>Last One</td><td>2800</td><td>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</td></tr></tbody></table>
 
-Video
------
+## Video
 
 Videos should always use the {% raw %}`{% Video %}`{% endraw %} shortcode. This shortcode will be generated for you when you upload your video to our CDN. See the [Add an image or video guide](https://developer.chrome.com/docs/handbook/how-to/add-media/) for upload instructions.
 
@@ -710,8 +691,7 @@ Videos should always use the {% raw %}`{% Video %}`{% endraw %} shortcode. This 
 
 See the [Add an image or video guide](https://developer.chrome.com/docs/handbook/how-to/add-media/).
 
-YouTube
--------
+## YouTube
 
 Use the {% raw %}`{% YouTube %}`{% endraw %} shortcode to embed a YouTube video.
 

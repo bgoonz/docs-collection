@@ -2,22 +2,20 @@
 
 This page lists the ways you can customize Chrome DevTools.
 
-Settings {: \#settings }
-------------------------
+## Settings {: \#settings }
 
 **Settings** &gt; **Preferences** contains many options for customizing DevTools.
 
 To open Settings, do one of the following:
 
--   Press F1 while DevTools is in focus.
--   Click **Settings**.
+- Press F1 while DevTools is in focus.
+- Click **Settings**.
 
 {% Img src=“image/admin/JT10WadwpzpCOuHkWHw9.png”, alt=“Settings.”, width=“800”, height=“524” %}
 
 **Figure 1**. Settings.
 
-Drawer {: \#drawer }
---------------------
+## Drawer {: \#drawer }
 
 The **Drawer** contains many hidden features.
 
@@ -33,8 +31,7 @@ Click **More** {% Img src=“image/admin/412azsDzeKPM2HQ6p5Rr.png”, alt=“Mor
 
 **Figure 3**: The button for opening Drawer tabs, outlined in blue.
 
-Reorder panels {: \#reorder }
------------------------------
+## Reorder panels {: \#reorder }
 
 Click and drag a panel tab to change its ordering. Your custom tab order persists across DevTools sessions.
 
@@ -42,8 +39,7 @@ Click and drag a panel tab to change its ordering. Your custom tab order persist
 
 **Figure 4**: A DevTools window with a custom tab ordering. By default, the Network panel tab is usually the fourth from the left. In the screenshot, it’s the first from the left.
 
-Change DevTools placement {: \#placement }
-------------------------------------------
+## Change DevTools placement {: \#placement }
 
 See [Chrome DevTools Placement](/docs/devtools/customize/placement).
 
@@ -51,8 +47,7 @@ See [Chrome DevTools Placement](/docs/devtools/customize/placement).
 
 **Figure 5**. Undocked DevTools.
 
-Dark theme {: \#dark-theme }
-----------------------------
+## Dark theme {: \#dark-theme }
 
 See [Enable Dark Theme](/docs/devtools/customize/dark-theme).
 
@@ -60,8 +55,7 @@ See [Enable Dark Theme](/docs/devtools/customize/dark-theme).
 
 **Figure 6**. The dark theme.
 
-Experiments {: \#experiments }
-------------------------------
+## Experiments {: \#experiments }
 
 To enable DevTools experiments:
 

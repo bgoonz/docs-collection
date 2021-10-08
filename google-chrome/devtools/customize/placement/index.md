@@ -14,8 +14,7 @@ By default DevTools is docked to the right of your viewport. You can also dock t
 
 **Figure 3**. Undocked.
 
-Change placement from the main menu {: \#menu }
------------------------------------------------
+## Change placement from the main menu {: \#menu }
 
 1.  Click **Customize And Control DevTools** {% Img src=“image/admin/J6eHTetqRq8OA4vAFZgN.png”, alt=“Customize And Control DevTools”, width=“6”, height=“26” %} and select **Undock Into Separate Window** {% Img src=“image/admin/32ywiTV2crhhBz4Qy24M.png”, alt=“Undock”, width=“28”, height=“24” %}, **Dock To Bottom** {% Img src=“image/admin/ckt768UpO2BOngVqYbfG.png”, alt=“Dock To Bottom”, width=“28”, height=“24” %}, or **Dock To Left** {% Img src=“image/admin/rrwMCjKldgIkwl7bCH1p.png”, alt=“Dock To Left”, width=“28”, height=“24” %}.
 
@@ -23,8 +22,7 @@ Change placement from the main menu {: \#menu }
 
     **Figure 4**. Selecting **Undock Into Separate Window**.
 
-Change placement from the Command Menu {: \#commandmenu }
----------------------------------------------------------
+## Change placement from the Command Menu {: \#commandmenu }
 
 1.  [Open the Command Menu](/docs/devtools/command-menu).
 2.  Run one of the following commands: `Dock to left`, `Dock to right`, `Dock to bottom`, `Undock into separate window` or `Restore last dock position`. To toggle `Restore last dock position` with a keyboard shortcut, press Control+Shift+D (Linux/Windows) or Command+Shift+D (Mac).

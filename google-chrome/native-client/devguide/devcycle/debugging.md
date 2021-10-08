@@ -2,37 +2,36 @@
 
 {% include 'partials/nacl-warning.njk' %}
 
-------------------------------------------------------------------------
+---
 
 This document describes tools and techniques you can use to debug, monitor, and measure your application’s performance.
 
 Table Of Contents
 
--   <a href="#diagnostic-information" id="id2" class="reference internal">Diagnostic information</a>
+- <a href="#diagnostic-information" id="id2" class="reference internal">Diagnostic information</a>
 
-    -   <a href="#viewing-process-statistics-with-the-task-manager" id="id3" class="reference internal">Viewing process statistics with the task manager</a>
-    -   <a href="#controlling-the-level-of-native-client-error-and-warning-messages" id="id4" class="reference internal">Controlling the level of Native Client error and warning messages</a>
+  - <a href="#viewing-process-statistics-with-the-task-manager" id="id3" class="reference internal">Viewing process statistics with the task manager</a>
+  - <a href="#controlling-the-level-of-native-client-error-and-warning-messages" id="id4" class="reference internal">Controlling the level of Native Client error and warning messages</a>
 
--   <a href="#basic-debugging" id="id5" class="reference internal">Basic debugging</a>
+- <a href="#basic-debugging" id="id5" class="reference internal">Basic debugging</a>
 
-    -   <a href="#writing-messages-to-the-javascript-console" id="id6" class="reference internal">Writing messages to the JavaScript console</a>
-    -   <a href="#debugging-with-printf" id="id7" class="reference internal">Debugging with printf</a>
-    -   <a href="#using-chrome-s-stdout-and-stderr-streams" id="id8" class="reference internal">Using Chrome’s stdout and stderr Streams</a>
+  - <a href="#writing-messages-to-the-javascript-console" id="id6" class="reference internal">Writing messages to the JavaScript console</a>
+  - <a href="#debugging-with-printf" id="id7" class="reference internal">Debugging with printf</a>
+  - <a href="#using-chrome-s-stdout-and-stderr-streams" id="id8" class="reference internal">Using Chrome’s stdout and stderr Streams</a>
 
-        -   <a href="#redirecting-output-to-log-files" id="id9" class="reference internal">Redirecting output to log files</a>
+    - <a href="#redirecting-output-to-log-files" id="id9" class="reference internal">Redirecting output to log files</a>
 
-    -   <a href="#logging-calls-to-pepper-interfaces" id="id10" class="reference internal">Logging calls to Pepper interfaces</a>
-    -   <a href="#debugging-with-visual-studio" id="id11" class="reference internal">Debugging with Visual Studio</a>
-    -   <a href="#debugging-with-nacl-gdb" id="id12" class="reference internal">Debugging with nacl-gdb</a>
+  - <a href="#logging-calls-to-pepper-interfaces" id="id10" class="reference internal">Logging calls to Pepper interfaces</a>
+  - <a href="#debugging-with-visual-studio" id="id11" class="reference internal">Debugging with Visual Studio</a>
+  - <a href="#debugging-with-nacl-gdb" id="id12" class="reference internal">Debugging with nacl-gdb</a>
 
-        -   <a href="#debugging-pnacl-pexes-pepper-35-or-later" id="id13" class="reference internal">Debugging PNaCl pexes (Pepper 35 or later)</a>
-        -   <a href="#debugging-pnacl-pexes-with-older-pepper-toolchains" id="id14" class="reference internal">Debugging PNaCl pexes (with older Pepper toolchains)</a>
-        -   <a href="#running-nacl-gdb" id="id15" class="reference internal">Running nacl-gdb</a>
+    - <a href="#debugging-pnacl-pexes-pepper-35-or-later" id="id13" class="reference internal">Debugging PNaCl pexes (Pepper 35 or later)</a>
+    - <a href="#debugging-pnacl-pexes-with-older-pepper-toolchains" id="id14" class="reference internal">Debugging PNaCl pexes (with older Pepper toolchains)</a>
+    - <a href="#running-nacl-gdb" id="id15" class="reference internal">Running nacl-gdb</a>
 
--   <a href="#debugging-with-other-tools" id="id16" class="reference internal">Debugging with other tools</a>
+- <a href="#debugging-with-other-tools" id="id16" class="reference internal">Debugging with other tools</a>
 
-Diagnostic information
-----------------------
+## Diagnostic information
 
 ### Viewing process statistics with the task manager
 
@@ -49,12 +48,11 @@ From the Task Manager you can view the changing memory allocations of all the pr
 
 Native Client prints warning and error messages to stdout and stderr. You can increase the amount of Native Client’s diagnostic output by setting the following <a href="http://en.wikipedia.org/wiki/Environment_variable" class="reference external">environment variables</a>:
 
--   `NACL_PLUGIN_DEBUG=1`
--   `NACL_SRPC_DEBUG=[1-255]` (use a higher number for more verbose debug output)
--   `NACLVERBOSITY=[1-255]`
+- `NACL_PLUGIN_DEBUG=1`
+- `NACL_SRPC_DEBUG=[1-255]` (use a higher number for more verbose debug output)
+- `NACLVERBOSITY=[1-255]`
 
-Basic debugging
----------------
+## Basic debugging
 
 ### Writing messages to the JavaScript console
 
@@ -80,12 +78,12 @@ By default stdout and stderr will appear in Chrome’s stdout and stderr stream 
 
 You can redirect stdout and stderr to output files by setting these environment variables:
 
--   `NACL_EXE_STDOUT=c:\nacl_stdout.log`
--   `NACL_EXE_STDERR=c:\nacl_stderr.log`
+- `NACL_EXE_STDOUT=c:\nacl_stdout.log`
+- `NACL_EXE_STDERR=c:\nacl_stderr.log`
 
 There is another variable, `NACLLOG`, that you can use to redirect Native Client’s internally-generated messages. This variable is set to stderr by default; you can redirect these messages to an output file by setting the variable as follows:
 
--   `NACLLOG=c:\nacl.log`
+- `NACLLOG=c:\nacl.log`
 
 **Note:** If you set the `NACL_EXE_STDOUT`, `NACL_EXE_STDERR`, or `NACLLOG` variables to redirect output to a file, you must run Chrome with the `--no-sandbox` flag. You must also be careful that each variable points to a different file.
 
@@ -103,7 +101,7 @@ If you develop on a Windows platform you can use the <a href="/docs/native-clien
 
 ### <span id="using-gdb"></span>Debugging with nacl-gdb
 
-The Native Client SDK includes a command-line debugger that you can use to debug Native Client modules. The debugger is based on the GNU debugger <a href="http://www.gnu.org/software/gdb/" class="reference external">gdb</a>, and is located at `pepper_<version>/toolchain/<platform>_x86_newlib/bin/x86_64-nacl-gdb` (where *&lt;platform&gt;* is the platform of your development machine: `win`, `mac`, or `linux`).
+The Native Client SDK includes a command-line debugger that you can use to debug Native Client modules. The debugger is based on the GNU debugger <a href="http://www.gnu.org/software/gdb/" class="reference external">gdb</a>, and is located at `pepper_<version>/toolchain/<platform>_x86_newlib/bin/x86_64-nacl-gdb` (where _&lt;platform&gt;_ is the platform of your development machine: `win`, `mac`, or `linux`).
 
 Note that this same copy of GDB can be used to debug any NaCl program, whether built using newlib or glibc for x86-32, x86-64 or ARM. In the SDK, `i686-nacl-gdb` is an alias for `x86_64-nacl-gdb`, and the `newlib` and `glibc` toolchains both contain the same version of GDB.
 
@@ -142,31 +140,31 @@ Whether you publish the NMF file containing the debug URL to the release web ser
 
 If you want to use GDB to debug a program that is compiled with the PNaCl toolchain, you must convert the `pexe` file to a `nexe`. (You can skip this step if you are using the GCC toolchain, or if you are using pepper 35 or later.)
 
--   Firstly, make sure you are passing the `-g` <a href="/docs/native-client/devguide/devcycle/building#compile-flags" class="reference internal"><em>compile option</em></a> to `pnacl-clang` to enable generating debugging info. You might also want to omit `-O2` from the compile-time and link-time options.
--   Secondly, use `pnacl-translate` to convert your `pexe` to one or more
+- Firstly, make sure you are passing the `-g` <a href="/docs/native-client/devguide/devcycle/building#compile-flags" class="reference internal"><em>compile option</em></a> to `pnacl-clang` to enable generating debugging info. You might also want to omit `-O2` from the compile-time and link-time options.
+- Secondly, use `pnacl-translate` to convert your `pexe` to one or more
 
-    `nexe` files. For example:
+  `nexe` files. For example:
 
-        nacl_sdk/pepper_<version>/toolchain/win_pnacl/bin/pnacl-translate \
-          --allow-llvm-bitcode-input hello_world.pexe -arch x86-32 \
-          -o hello_world_x86_32.nexe
-        nacl_sdk/pepper_<version>/toolchain/win_pnacl/bin/pnacl-translate \
-          --allow-llvm-bitcode-input hello_world.pexe -arch x86-64 \
-          -o hello_world_x86_64.nexe
+      nacl_sdk/pepper_<version>/toolchain/win_pnacl/bin/pnacl-translate \
+        --allow-llvm-bitcode-input hello_world.pexe -arch x86-32 \
+        -o hello_world_x86_32.nexe
+      nacl_sdk/pepper_<version>/toolchain/win_pnacl/bin/pnacl-translate \
+        --allow-llvm-bitcode-input hello_world.pexe -arch x86-64 \
+        -o hello_world_x86_64.nexe
 
-    For this, use the non-finalized `pexe` file produced by `pnacl-clang`, not the `pexe` file produced by `pnacl-finalize`. The latter `pexe` has debugging info stripped out. The option `--allow-llvm-bitcode-input` tells `pnacl-translate` to accept a non-finalized `pexe`.
+  For this, use the non-finalized `pexe` file produced by `pnacl-clang`, not the `pexe` file produced by `pnacl-finalize`. The latter `pexe` has debugging info stripped out. The option `--allow-llvm-bitcode-input` tells `pnacl-translate` to accept a non-finalized `pexe`.
 
--   Replace the `nmf` <a href="/docs/native-client/devguide/coding/application-structure#manifest-file" class="reference internal"><em>manifest file</em></a> that points to your `pexe` file with one that points to the `nexe` files. For the example `nexe` filenames above, the new `nmf` file would contain:
+- Replace the `nmf` <a href="/docs/native-client/devguide/coding/application-structure#manifest-file" class="reference internal"><em>manifest file</em></a> that points to your `pexe` file with one that points to the `nexe` files. For the example `nexe` filenames above, the new `nmf` file would contain:
 
-        {
-          "program": {
-            "x86-32": {"url": "hello_world_x86_32.nexe"},
-            "x86-64": {"url": "hello_world_x86_64.nexe"},
-          }
+      {
+        "program": {
+          "x86-32": {"url": "hello_world_x86_32.nexe"},
+          "x86-64": {"url": "hello_world_x86_64.nexe"},
         }
+      }
 
--   Change the `<embed>` HTML element to use `type="application/x-nacl"` rather than `type="application/x-pnacl"`.
--   Copy the `nexe` and `nmf` files to the location that your local web server serves files from.
+- Change the `<embed>` HTML element to use `type="application/x-nacl"` rather than `type="application/x-pnacl"`.
+- Copy the `nexe` and `nmf` files to the location that your local web server serves files from.
 
 **Note:** If you know whether Chrome is using the x86-32 or x86-64 version of the NaCl sandbox on your system, you can translate the `pexe` once to a single x86-32 or x86-64 `nexe`. Otherwise, you might find it easier to translate the `pexe` to both `nexe` formats as described above.
 
@@ -258,9 +256,9 @@ Follow the instructions below to debug your module with nacl-gdb:
 
     A couple of notes on how to specify path names in the nacl-gdb commands above:
 
-    -   You can use a forward slash to separate directories on Linux, Mac, and Windows. If you use a backslash to separate directories on Windows, you must escape the backslash by using a double backslash “\\” between directories.
+    - You can use a forward slash to separate directories on Linux, Mac, and Windows. If you use a backslash to separate directories on Windows, you must escape the backslash by using a double backslash “\\” between directories.
 
-    -   If any directories in the path have spaces in their name, you must put quotation marks around the path.
+    - If any directories in the path have spaces in their name, you must put quotation marks around the path.
 
     As an example, here is a what these nacl-gdb commands might look like on Windows:
 
@@ -319,7 +317,6 @@ See the <a href="http://sourceware.org/gdb/current/onlinedocs/gdb/#toc_Top" clas
 
 To interrupt execution of your module, press &lt;Ctrl-c&gt;. When you’re done debugging, close the Chrome window and type `q` to quit gdb.
 
-Debugging with other tools
---------------------------
+## Debugging with other tools
 
 If you cannot use the <a href="#visual-studio" class="reference internal"><em>Visual Studio add-in</em></a>, or you want to use a debugger other than nacl-gdb, you must manually build your module as a Pepper plugin (sometimes referred to as a “<a href="http://www.chromium.org/nativeclient/getting-started/getting-started-background-and-basics#TOC-Trusted-vs-Untrusted" class="reference external">trusted</a>” or “in-process” plugin). Pepper plugins (.DLL files on Windows; .so files on Linux; .bundle files on Mac) are loaded directly in either the Chrome renderer process or a separate plugin process, rather than in Native Client. Building a module as a trusted Pepper plugin allows you to use standard debuggers and development tools on your system, but when you’re finished developing the plugin, you need to port it to Native Client (i.e., build the module with one of the toolchains in the NaCl SDK so that the module runs in Native Client). For details on this advanced development technique, see <a href="http://www.chromium.org/nativeclient/how-tos/debugging-documentation/debugging-a-trusted-plugin" class="reference external">Debugging a Trusted Plugin</a>. Note that starting with the `pepper_22` bundle, the NaCl SDK for Windows includes pre-built libraries and library source code, making it much easier to build a module into a .DLL.

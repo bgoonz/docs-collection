@@ -12,8 +12,7 @@ For tips on scaling WebView content for mobile devices, see [Pixel-Perfect UI in
 
 The new WebView also supports [remote debugging](/devtools/docs/remote-debugging) using the Chrome DevTools.
 
-WebView FAQ
------------
+## WebView FAQ
 
 ### What version of Chrome is it based on?
 
@@ -39,7 +38,7 @@ The new WebView adds **Chrome/\_version\_** to the user-agent string. Refer to [
 
 ### How do I set the user-agent of the WebView?
 
-You can set the user-agent by using the Java [setUserAgentString](http://developer.android.com/reference/android/webkit/WebSettings.html#setUserAgentString(java.lang.String)) method. This method only changes the user-agent string for requests sent by the WebView itself.
+You can set the user-agent by using the Java [setUserAgentString](<http://developer.android.com/reference/android/webkit/WebSettings.html#setUserAgentString(java.lang.String)>) method. This method only changes the user-agent string for requests sent by the WebView itself.
 
 You can’t set the user-agent string used for `XMLHttpRequest`s made from JavaScript. Those requests always use the default user-agent string.
 

@@ -326,13 +326,11 @@ The steps you should follow to ensure this are:
 [53]: /docs/extensions/reference/runtime#event-onInstalled
 [54]: #faq-lifecycle-events
 [55]: https://crbug.com
-[56]:
-  https://bugs.chromium.org/p/chromium/issues/list?can=2&q=component%3DPlatform>Extensions+Type%3DBug+chrome.scripting.executeScript
+[56]: https://bugs.chromium.org/p/chromium/issues/list?can=2&q=component%3DPlatform>Extensions+Type%3DBug+chrome.scripting.executeScript
 [57]: https://crbug.com/new
 [58]: https://groups.google.com/a/chromium.org/group/chromium-extensions/topics
 [59]: https://crbug.com
-[60]:
-  https://bugs.chromium.org/p/chromium/issues/list?can=2&q=component%3DPlatform>Extensions+Type%3DFeature+shortcuts
+[60]: https://bugs.chromium.org/p/chromium/issues/list?can=2&q=component%3DPlatform>Extensions+Type%3DFeature+shortcuts
 [61]: https://crbug.com/new
 [62]: https://groups.google.com/a/chromium.org/group/chromium-extensions/topics
 [stringify]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify

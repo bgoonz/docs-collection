@@ -62,5 +62,4 @@ Can't see your WebViews on the **chrome://inspect page**?
   **chrome://inspect** page.
 
 [1]: /docs/devtools/remote-debugging/
-[2]:
-  https://developer.android.com/reference/android/webkit/WebView.html#setWebContentsDebuggingEnabled(boolean)
+[2]: https://developer.android.com/reference/android/webkit/WebView.html#setWebContentsDebuggingEnabled(boolean)

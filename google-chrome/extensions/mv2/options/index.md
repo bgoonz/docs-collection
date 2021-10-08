@@ -20,27 +20,28 @@ Below is an example options page.
 ```html
 <!DOCTYPE html>
 <html>
-<head><title>My Test Extension Options</title></head>
-<body>
+  <head>
+    <title>My Test Extension Options</title>
+  </head>
+  <body>
+    Favorite color:
+    <select id="color">
+      <option value="red">red</option>
+      <option value="green">green</option>
+      <option value="blue">blue</option>
+      <option value="yellow">yellow</option>
+    </select>
 
-Favorite color:
-<select id="color">
- <option value="red">red</option>
- <option value="green">green</option>
- <option value="blue">blue</option>
- <option value="yellow">yellow</option>
-</select>
+    <label>
+      <input type="checkbox" id="like" />
+      I like colors.
+    </label>
 
-<label>
-  <input type="checkbox" id="like">
-  I like colors.
-</label>
+    <div id="status"></div>
+    <button id="save">Save</button>
 
-<div id="status"></div>
-<button id="save">Save</button>
-
-<script src="options.js"></script>
-</body>
+    <script src="options.js"></script>
+  </body>
 </html>
 ```
 
@@ -49,36 +50,41 @@ Save a user's preferred options across devices by using the [storage.sync][1] AP
 ```js
 // Saves options to chrome.storage
 function save_options() {
-  var color = document.getElementById('color').value;
-  var likesColor = document.getElementById('like').checked;
-  chrome.storage.sync.set({
-    favoriteColor: color,
-    likesColor: likesColor
-  }, function() {
-    // Update status to let user know options were saved.
-    var status = document.getElementById('status');
-    status.textContent = 'Options saved.';
-    setTimeout(function() {
-      status.textContent = '';
-    }, 750);
-  });
+  var color = document.getElementById("color").value;
+  var likesColor = document.getElementById("like").checked;
+  chrome.storage.sync.set(
+    {
+      favoriteColor: color,
+      likesColor: likesColor,
+    },
+    function () {
+      // Update status to let user know options were saved.
+      var status = document.getElementById("status");
+      status.textContent = "Options saved.";
+      setTimeout(function () {
+        status.textContent = "";
+      }, 750);
+    }
+  );
 }
 
 // Restores select box and checkbox state using the preferences
 // stored in chrome.storage.
 function restore_options() {
   // Use default value color = 'red' and likesColor = true.
-  chrome.storage.sync.get({
-    favoriteColor: 'red',
-    likesColor: true
-  }, function(items) {
-    document.getElementById('color').value = items.favoriteColor;
-    document.getElementById('like').checked = items.likesColor;
-  });
+  chrome.storage.sync.get(
+    {
+      favoriteColor: "red",
+      likesColor: true,
+    },
+    function (items) {
+      document.getElementById("color").value = items.favoriteColor;
+      document.getElementById("like").checked = items.likesColor;
+    }
+  );
 }
-document.addEventListener('DOMContentLoaded', restore_options);
-document.getElementById('save').addEventListener('click',
-    save_options);
+document.addEventListener("DOMContentLoaded", restore_options);
+document.getElementById("save").addEventListener("click", save_options);
 ```
 
 ## Declare options page behavior {: #declare_options }
@@ -100,7 +106,7 @@ registered under the `options_page` field.
 }
 ```
 
-{% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/Ej3H0FMApR7srtGbZfBZ.png", 
+{% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/Ej3H0FMApR7srtGbZfBZ.png",
        alt="Full page options", height="124", width="367" %}
 
 ### Embedded options {:#embedded_options }
@@ -149,11 +155,11 @@ An extension can link directly to the options page by calling
 ```
 
 ```js
-document.querySelector('#go-to-options').addEventListener('click', function() {
+document.querySelector("#go-to-options").addEventListener("click", function () {
   if (chrome.runtime.openOptionsPage) {
     chrome.runtime.openOptionsPage();
   } else {
-    window.open(chrome.runtime.getURL('options.html'));
+    window.open(chrome.runtime.getURL("options.html"));
   }
 });
 ```

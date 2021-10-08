@@ -14,8 +14,7 @@ Use rich desktop notifications to notify users that something important has happ
 
 You create the notification window using a bit of JavaScript and, optionally, an HTML page packaged inside your extension.
 
-Example {: \#example }
-----------------------
+## Example {: \#example }
 
 First, declare the `notifications` permission in your manifest:
 
@@ -55,13 +54,11 @@ Then, use `webkitNotifications` object to create notifications:
     // Then show the notification.
     notification.show();
 
-API reference {: \#reference }
-------------------------------
+## API reference {: \#reference }
 
 See the [Desktop Notifications Draft Specification](http://dev.chromium.org/developers/design-documents/desktop-notifications/api-specification).
 
-Communicating with other views {: \#communication }
----------------------------------------------------
+## Communicating with other views {: \#communication }
 
 You can communicate between a notification and other views in your extension using [extension.getBackgroundPage](/docs/extensions/extension#method-getBackgroundPage) and [extension.getViews](/docs/extensions/extension#method-getViews). For example:
 
@@ -71,8 +68,7 @@ You can communicate between a notification and other views in your extension usi
       win.doOtherThing();
     });
 
-More examples {: \#examples }
------------------------------
+## More examples {: \#examples }
 
 You can find a simple example of using notifications in the [examples/api/notifications](https://github.com/GoogleChrome/chrome-extensions-samples/tree/master/mv2-archive/api/notifications/) directory. For other examples and for help in viewing the source code, see [Samples](/docs/extensions/mv2/samples).
 

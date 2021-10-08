@@ -10,8 +10,7 @@ To start, create a new directory to hold the extension’s files.
 
 The completed extension can be downloaded [here](https://storage.googleapis.com/web-dev-uploads/file/WlD8wC6g8khYWPJUsQceQkhXSlv1/n7V7IbH6D6gqNCV7Kp5t.zip "get_started_complete.zip").
 
-Create the manifest {: \#manifest }
------------------------------------
+## Create the manifest {: \#manifest }
 
 Extensions start with their [manifest](/docs/extensions/mv2/manifest). Create a file called `manifest.json` and include the following code.
 
@@ -25,7 +24,7 @@ Extensions start with their [manifest](/docs/extensions/mv2/manifest). Create a 
 The directory holding the manifest file can be added as an extension in developer mode in its current state.
 
 1.  Open the Extension Management page by navigating to `chrome://extensions`.
-    -   The Extension Management page can also be opened by clicking on the Chrome menu, hovering over **More Tools** then selecting **Extensions**.
+    - The Extension Management page can also be opened by clicking on the Chrome menu, hovering over **More Tools** then selecting **Extensions**.
 2.  Enable Developer Mode by clicking the toggle switch next to **Developer mode**.
 3.  Click the **LOAD UNPACKED** button and select the extension directory.
 
@@ -33,8 +32,7 @@ The directory holding the manifest file can be added as an extension in develope
 
 Ta-da! The extension has been successfully installed. Because no icons were included in the manifest, a generic toolbar icon will be created for the extension.
 
-Add instruction {: \#background }
----------------------------------
+## Add instruction {: \#background }
 
 Although the extension has been installed, it has no instruction. Introduce a [background script](/docs/extensions/mv2/background_pages/) by creating a file titled `background.js`, and placing it inside the extension directory.
 
@@ -81,8 +79,7 @@ Navigate back to the extension management page and click the **Reload** link. A 
 
 Click the link to view the background script’s console log, “`The color is green.`”
 
-Introduce a user interface {: \#user\_interface }
--------------------------------------------------
+## Introduce a user interface {: \#user_interface }
 
 Extensions can have many forms of a [user interface](/user_interface), but this one will use a [popup](/user_interface#popup). Create and add a file titled `popup.html` to the directory. This extension uses a button to change the background color.
 
@@ -225,8 +222,7 @@ This code grabs the button from `popup.html` and requests the color value from s
 
 Reload the extension to view the green button.
 
-Layer logic {: \#logic }
-------------------------
+## Layer logic {: \#logic }
 
 The extension now knows the popup should be available to users on [developer.chrome.com](/docs/) and displays a colored button, but needs logic for further user interaction. Update `popup.js` to include the following code.
 
@@ -256,8 +252,7 @@ The extension is now fully functional! Reload the extension, refresh this page, 
 
 {% Aside ‘gotchas’ %} Extensions can not inject content scripts on internal Chrome pages like “chrome://extensions”. Be sure to try out the extension on a real webpage like <https://google.com>. {% endAside %}
 
-Give users options {: \#options }
----------------------------------
+## Give users options {: \#options }
 
 The extension currently only allows users to change the background to green. Including an options page gives users more control over the extension’s functionality, further customizing their browsing experience.
 
@@ -323,14 +318,13 @@ Last step is to add the options logic. Create a file called `options.js` in the 
 
 Four color options are provided then generated as buttons on the options page with onclick event listeners. When the user clicks a button, it updates the color value in the extension’s global storage. Since all of the extension’s files pull the color information from global storage no other values need to be updated.
 
-Take the next step {: \#next-steps }
-------------------------------------
+## Take the next step {: \#next-steps }
 
 Congratulations! The directory now holds a fully-functional, albeit simplistic, Chrome extension.
 
 What’s next?
 
--   The [Chrome Extension Overview](/overview) backs up a bit, and fills in a lot of detail about the Extensions architecture in general, and some specific concepts developers will want to be familiar with.
--   Learn about the options available for debugging Extensions in the [debugging tutorial](/tut_debugging).
--   Chrome Extensions have access to powerful APIs above and beyond what’s available on the open web. The [chrome.\* APIs documentation](/reference) will walk through each API.
--   The [developer’s guide](/docs/extensions/mv2/devguide/) has dozens of additional links to pieces of documentation relevant to advanced extension creation.
+- The [Chrome Extension Overview](/overview) backs up a bit, and fills in a lot of detail about the Extensions architecture in general, and some specific concepts developers will want to be familiar with.
+- Learn about the options available for debugging Extensions in the [debugging tutorial](/tut_debugging).
+- Chrome Extensions have access to powerful APIs above and beyond what’s available on the open web. The [chrome.\* APIs documentation](/reference) will walk through each API.
+- The [developer’s guide](/docs/extensions/mv2/devguide/) has dozens of additional links to pieces of documentation relevant to advanced extension creation.

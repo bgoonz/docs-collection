@@ -2,8 +2,7 @@
 
 This article outlines some useful tips to enhance your application’s user experience.
 
-Flicker of colors when the application loads
---------------------------------------------
+## Flicker of colors when the application loads
 
 Ever noticed a flash of black and white when an application loads up with a WebView?
 
@@ -21,8 +20,7 @@ In Android it’s generally good practice to define color values in a `res/value
 
     mWebView.setBackgroundColor(getResources().getColor(R.color.my_color_name));
 
-Touch Feedback
---------------
+## Touch Feedback
 
 One of the common differences between native and web applications is the lack of touch feedback in many web apps.
 

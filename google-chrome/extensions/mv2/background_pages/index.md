@@ -6,17 +6,16 @@ Extensions are event based programs used to modify or enhance the Chrome browsin
 
 A background page is loaded when it is needed, and unloaded when it goes idle. Some examples of events include:
 
--   The extension is first installed or updated to a new version.
--   The background page was listening for an event, and the event is dispatched.
--   A content script or other extension [sends a message.](/docs/extensions/mv2/messaging)
--   Another view in the extension, such as a popup, calls [`runtime.getBackgroundPage`](/docs/extensions/reference/runtime#method-getBackgroundPage).
+- The extension is first installed or updated to a new version.
+- The background page was listening for an event, and the event is dispatched.
+- A content script or other extension [sends a message.](/docs/extensions/mv2/messaging)
+- Another view in the extension, such as a popup, calls [`runtime.getBackgroundPage`](/docs/extensions/reference/runtime#method-getBackgroundPage).
 
 Once it has been loaded, a background page will stay running as long as it is performing an action, such as calling a Chrome API or issuing a network request. Additionally, the background page will not unload until all visible views and all message ports are closed. Note that opening a view does not cause the event page to load, but only prevents it from closing once loaded.
 
 Effective background scripts stay dormant until an event they are listening for fires, react with specified instructions, then unload.
 
-Register background scripts {: \#manifest }
--------------------------------------------
+## Register background scripts {: \#manifest }
 
 Background scripts are registered in the [manifest](/docs/extensions/reference/tabs) under the `"background"` field. They are listed in an array after the `"scripts"` key, and `"persistent"` should be specified as false.
 
@@ -54,8 +53,7 @@ The only occasion to keep a background script persistently active is if the exte
 
 If an extension currently uses a persistent background page, refer to [Background Migration Guide](/docs/extensions/mv2/background_migration) for instruction on how to switch to a non-persistent model.
 
-Initialize the extension {: \#initialization }
-----------------------------------------------
+## Initialize the extension {: \#initialization }
 
 Listen to the [`runtime.onInstalled`](/docs/extensions/reference/runtime#event-onInstalled) event to initialize an extension on installation. Use this event to set a state or for one-time initialization, such as a [context menu](/docs/extensions/reference/contextMenus).
 
@@ -67,8 +65,7 @@ Listen to the [`runtime.onInstalled`](/docs/extensions/reference/runtime#event-o
       });
     });
 
-Set up listeners {: \#listeners }
----------------------------------
+## Set up listeners {: \#listeners }
 
 Structure background scripts around events the extension depends on. Defining functionally relevant events allows background scripts to lie dormant until those events are fired and prevents the extension from missing important triggers.
 
@@ -103,8 +100,7 @@ Extensions can remove listeners from their background scripts by calling `remove
         chrome.runtime.onMessage.removeListener(event);
     });
 
-Filter events {: \#filters }
-----------------------------
+## Filter events {: \#filters }
 
 Use APIs that support [event filters](/docs/extensions/reference/events#filtered) to restrict listeners to the cases the extension cares about. If an extension is listening for the [`tabs.onUpdated`](/docs/extensions/reference/tabs#event-onUpdated) event, try using the [`webNavigation.onCompleted`](/docs/extensions/reference/webNavigation#event-onCompleted) event with filters instead, as the tabs API does not support filters.
 
@@ -112,8 +108,7 @@ Use APIs that support [event filters](/docs/extensions/reference/events#filtered
         alert("This is my favorite website!");
     }, {url: [{urlMatches : 'https://www.google.com/'}]});
 
-React to listeners {: \#react }
--------------------------------
+## React to listeners {: \#react }
 
 Listeners exist to trigger functionality once an event has fired. To react to an event, structure the desired reaction inside of the listener event.
 
@@ -128,8 +123,7 @@ Listeners exist to trigger functionality once an event has fired. To react to an
       };
     });
 
-Unload background scripts {: \#unloading }
-------------------------------------------
+## Unload background scripts {: \#unloading }
 
 Data should be persisted periodically so that important information is not lost if an extension crashes without receiving `onSuspend`. Use the [storage](/docs/extensions/reference/storage) API to assist with this.
 

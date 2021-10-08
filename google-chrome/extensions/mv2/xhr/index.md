@@ -26,7 +26,7 @@ example, if an extension contains a JSON configuration file called `config.json`
 ```js
 var xhr = new XMLHttpRequest();
 xhr.onreadystatechange = handleStateChange; // Implemented elsewhere.
-xhr.open("GET", chrome.extension.getURL('/config_resources/config.json'), true);
+xhr.open("GET", chrome.extension.getURL("/config_resources/config.json"), true);
 xhr.send();
 ```
 
@@ -113,24 +113,24 @@ Instead, prefer safer APIs that do not run scripts:
 ```js
 var xhr = new XMLHttpRequest();
 xhr.open("GET", "https://api.example.com/data.json", true);
-xhr.onreadystatechange = function() {
+xhr.onreadystatechange = function () {
   if (xhr.readyState == 4) {
     // JSON.parse does not evaluate the attacker's scripts.
     var resp = JSON.parse(xhr.responseText);
   }
-}
+};
 xhr.send();
 ```
 
 ```js
 var xhr = new XMLHttpRequest();
 xhr.open("GET", "https://api.example.com/data.json", true);
-xhr.onreadystatechange = function() {
+xhr.onreadystatechange = function () {
   if (xhr.readyState == 4) {
     // innerText does not let the attacker inject HTML elements.
     document.getElementById("resp").innerText = xhr.responseText;
   }
-}
+};
 xhr.send();
 ```
 
@@ -162,10 +162,14 @@ chrome.runtime.onMessage.addListener(
 
 ```js
 chrome.runtime.sendMessage(
-    {contentScriptQuery: 'fetchUrl',
-     url: 'https://another-site.com/price-query?itemId=' +
-              encodeURIComponent(request.itemId)},
-    response => parsePrice(response.text()));
+  {
+    contentScriptQuery: "fetchUrl",
+    url:
+      "https://another-site.com/price-query?itemId=" +
+      encodeURIComponent(request.itemId),
+  },
+  (response) => parsePrice(response.text())
+);
 ```
 
 In the approach above, the content script can ask the extension to fetch any URL that the extension

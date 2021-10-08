@@ -8,8 +8,7 @@ Extensions have a wide range of functional possibilities. They can modify web co
 
 Consider extensions the gateway to making the Chrome browser the most personalized browser.
 
-Extension files {: \#files }
-----------------------------
+## Extension files {: \#files }
 
 Extensions vary in types of files and amount of directories, but they are all required to have a [manifest](/docs/extensions/mv2/tabs). Some basic, but useful, extensions may consist of just the manifest and its toolbar icon.
 
@@ -60,18 +59,17 @@ In the absolute URL, the is a unique identifier that the extension system genera
 
 While working on an unpacked extension the extension ID can change. Specifically, the ID of an unpacked extension will change if the extension is loaded from a different directory; the ID will change again when the extension is packaged. If an extension’s code relies on an absolute URL, it can use the [`chrome.runtime.getURL()`](/docs/extensions/reference/runtime#method-getURL) method to avoid hardcoding the ID during development.
 
-Architecture {: \#arch }
-------------------------
+## Architecture {: \#arch }
 
 An extension’s architecture will depend on its functionality, but many robust extensions will include multiple components:
 
--   [Manifest](/docs/extensions/mv2/tabs)
--   [Background Script](#background_script)
--   [UI Elements](#pages)
--   [Content Script](#contentScripts)
--   [Options Page](#optionsPage)
+- [Manifest](/docs/extensions/mv2/tabs)
+- [Background Script](#background_script)
+- [UI Elements](#pages)
+- [Content Script](#contentScripts)
+- [Options Page](#optionsPage)
 
-### Background script {: \#background\_script }
+### Background script {: \#background_script }
 
 The [background script](/docs/extensions/mv2/background_pages) is the extension’s event handler; it contains listeners for browser events that are important to the extension. It lies dormant until an event is fired then performs the instructed logic. An effective background script is only loaded when it is needed and unloaded when it goes idle.
 
@@ -99,8 +97,7 @@ Content scripts can communicate with their parent extension by exchanging [messa
 
 Just as extensions allow users to customize the Chrome browser, the [options page](/docs/extensions/mv2/options) enables customization of the extension. Options can be used to enable features and allow users to choose what functionality is relevant to their needs.
 
-Using Chrome APIs {: \#apis }
------------------------------
+## Using Chrome APIs {: \#apis }
 
 In addition to having access to the same APIs as web pages, extensions can also use [extension-specific APIs](/docs/extensions/reference) that create tight integration with the browser. Extensions and webpages can both access the standard `window.open()` method to open a URL, but extensions can specify which window that URL should be displayed in by using the Chrome API [tabs.create](/docs/extensions/reference/tabs#method-create) method instead.
 
@@ -141,17 +138,15 @@ This method synchronously returns the URL as a `string` and performs no other as
 
 For more information, explore the [Chrome API reference docs](/docs/extensions/reference) and watch the following video.
 
-Communication between pages {: \#pageComm }
--------------------------------------------
+## Communication between pages {: \#pageComm }
 
 Different components in an extension often need to communicate with each other. Different HTML pages can find each other by using the [`chrome.extension`](/docs/extensions/reference/extension) methods, such as `getViews()` and `getBackgroundPage()`. Once a page has a reference to other extension pages the first one can invoke functions on the other pages and manipulate their DOMs. Additionally, all components of the extension can access values stored using the [storage](/docs/extensions/reference/storage) API and communicate through [message passing](/docs/extensions/mv2/messaging).
 
-Saving data and incognito mode {: \#incognito }
------------------------------------------------
+## Saving data and incognito mode {: \#incognito }
 
 Extensions can save data using the [storage](/docs/extensions/reference/storage) API, the HTML5 [web storage API](https://html.spec.whatwg.org/multipage/webstorage.html) , or by making server requests that result in saving data. When the extension needs to save something, first consider if it’s from an incognito window. By default, extensions don’t run in incognito windows.
 
-*Incognito mode* promises that the window will leave no tracks. When dealing with data from incognito windows, extensions should honor this promise. If an extension normally saves browsing history, don’t save history from incognito windows. However, extensions can store setting preferences from any window, incognito or not.
+_Incognito mode_ promises that the window will leave no tracks. When dealing with data from incognito windows, extensions should honor this promise. If an extension normally saves browsing history, don’t save history from incognito windows. However, extensions can store setting preferences from any window, incognito or not.
 
 To detect whether a window is in incognito mode, check the `incognito` property of the relevant [tabs.Tab](/docs/extensions/reference/tabs#type-Tab) or [windows.Window](/docs/extensions/reference/windows#type-Window) object.
 
@@ -163,11 +158,10 @@ To detect whether a window is in incognito mode, check the `incognito` property 
       }
     }
 
-Take the next step {: \#next-steps }
-------------------------------------
+## Take the next step {: \#next-steps }
 
 After reading the overview and completing the [Getting Started](/docs/extensions/mv2/getstarted) tutorial, developers should be ready to start writing their own extensions! Dive deeper into the world of custom Chrome with the following resources.
 
--   Learn about the options available for debugging Extensions in the [debugging tutorial](/docs/extensions/mv2/tut_debugging).
--   Chrome Extensions have access to powerful APIs above and beyond what’s available on the open web. The [chrome.\* APIs documentation](/docs/extensions/reference) will walk through each API.
--   The [developer’s guide](/docs/extensions/mv2/devguide) has dozens of additional links to pieces of documentation relevant to advanced extension creation.
+- Learn about the options available for debugging Extensions in the [debugging tutorial](/docs/extensions/mv2/tut_debugging).
+- Chrome Extensions have access to powerful APIs above and beyond what’s available on the open web. The [chrome.\* APIs documentation](/docs/extensions/reference) will walk through each API.
+- The [developer’s guide](/docs/extensions/mv2/devguide) has dozens of additional links to pieces of documentation relevant to advanced extension creation.

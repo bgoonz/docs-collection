@@ -4,21 +4,20 @@ A little known feature in Android lets you launch apps directly from a web page 
 
 The functionality has changed slightly in Chrome for Android, versions 25 and later. It is no longer possible to launch an Android app by setting an iframe’s `src` attribute. For example, navigating an iframe to a URI with a custom scheme such as `paulsawesomeapp://` will not work even if the user has the appropriate app installed. Instead, you should implement a user gesture to launch the app via a custom scheme, or use the “intent:” syntax described in this article.
 
-Syntax
-------
+## Syntax
 
 The best practice is to construct an intent anchor and embed that into the page so the user can launch the app. This gives you a lot more flexibility in controlling how apps are launched, including the ability to pass extra information into the app via [Intent Extras](http://developer.android.com/guide/components/intents-filters.html#extras).
 
 The basic syntax for an intent-based URI is as follows:
 
-    intent:  
-       HOST/URI-path // Optional host  
-       #Intent;  
-          package=\[string\];  
-          action=\[string\];  
-          category=\[string\];  
-          component=\[string\];  
-          scheme=\[string\];  
+    intent:
+       HOST/URI-path // Optional host
+       #Intent;
+          package=\[string\];
+          action=\[string\];
+          category=\[string\];
+          component=\[string\];
+          scheme=\[string\];
        end;
 
 See the [Android source](https://code.google.com/p/android-source-browsing/source/browse/core/java/android/content/Intent.java?repo=platform--frameworks--base#6514) for parsing details.
@@ -31,21 +30,20 @@ When an intent could not be resolved, or an external application could not be la
 
 Some example cases where Chrome does not launch an external application are as follows:
 
--   The intent could not be resolved, i.e., no app can handle the intent.
--   JavaScript timer tried to open an application without user gesture.
+- The intent could not be resolved, i.e., no app can handle the intent.
+- JavaScript timer tried to open an application without user gesture.
 
-Note that `S.<name>` is a way to define string extras. `S.browser_fallback_url` was chosen for backward compatibility, but the target app won’t see browser\_fallback\_url value as Chrome removes it.
+Note that `S.<name>` is a way to define string extras. `S.browser_fallback_url` was chosen for backward compatibility, but the target app won’t see browser_fallback_url value as Chrome removes it.
 
-Examples
---------
+## Examples
 
 Here’s an intent that launches the Zxing barcode scanner app. It follows the syntax thus:
 
-    intent:  
-       //scan/  
-       #Intent;  
-          package=com.google.zxing.client.android;  
-          scheme=zxing;  
+    intent:
+       //scan/
+       #Intent;
+          package=com.google.zxing.client.android;
+          scheme=zxing;
        end;
 
 To launch the Zxing barcode scanner app, you encode your `href` on the anchor as follows:
@@ -60,20 +58,18 @@ Also, if fallback URL is specified, the full URL will look like this:
 
 Now the URL will get you to zxing.org if the app could not be found, or the link was triggered from JavaScript without user gesture (or for other cases where we don’t launch an external application.)
 
-Considerations
---------------
+## Considerations
 
 If the activity you invoke via an intent contains [extras](http://developer.android.com/guide/components/intents-filters.html#extras), you can include these as well.
 
 Only activities that have the category filter, [android.intent.category.BROWSABLE](http://developer.android.com/reference/android/content/Intent.html#CATEGORY_BROWSABLE) are able to be invoked using this method as it indicates that the application is safe to open from the Browser.
 
-See also
---------
+## See also
 
--   [Android Intents and Intent Filters](http://developer.android.com/guide/components/intents-filters.html)
--   [Android Activities](http://developer.android.com/guide/components/activities.html)
+- [Android Intents and Intent Filters](http://developer.android.com/guide/components/intents-filters.html)
+- [Android Activities](http://developer.android.com/guide/components/activities.html)
 
 And Chrome doesn’t launch an external app for a given Intent URI in the following cases.
 
--   When the Intent URI is redirected from a typed in URL.
--   When the Intent URI is initiated without user gesture.
+- When the Intent URI is redirected from a typed in URL.
+- When the Intent URI is initiated without user gesture.

@@ -2,7 +2,7 @@
 
 {% include 'partials/nacl-warning.njk' %}
 
-------------------------------------------------------------------------
+---
 
 This glossary defines terms and names commonly used throughout the Native Client documentation.
 

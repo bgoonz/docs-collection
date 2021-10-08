@@ -76,10 +76,10 @@ following code in the **Console**, in order to insert the jQuery library into a 
 can run jQuery commands from the **Console**:
 
 ```js
-let script = document.createElement('script');
-script.src = 'https://code.jquery.com/jquery-3.2.1.min.js';
-script.crossOrigin = 'anonymous';
-script.integrity = 'sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=';
+let script = document.createElement("script");
+script.src = "https://code.jquery.com/jquery-3.2.1.min.js";
+script.crossOrigin = "anonymous";
+script.integrity = "sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=";
 document.head.appendChild(script);
 ```
 

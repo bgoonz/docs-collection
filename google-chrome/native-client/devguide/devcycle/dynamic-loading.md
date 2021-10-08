@@ -2,24 +2,23 @@
 
 {% include 'partials/nacl-warning.njk' %}
 
-------------------------------------------------------------------------
+---
 
--   <a href="#c-standard-libraries-glibc-and-newlib" id="id1" class="reference internal">C standard libraries: glibc and newlib</a>
--   <a href="#sdk-toolchains" id="id2" class="reference internal">SDK toolchains</a>
--   <a href="#specifying-and-delivering-shared-libraries" id="id3" class="reference internal">Specifying and delivering shared libraries</a>
+- <a href="#c-standard-libraries-glibc-and-newlib" id="id1" class="reference internal">C standard libraries: glibc and newlib</a>
+- <a href="#sdk-toolchains" id="id2" class="reference internal">SDK toolchains</a>
+- <a href="#specifying-and-delivering-shared-libraries" id="id3" class="reference internal">Specifying and delivering shared libraries</a>
 
-    -   <a href="#building-a-dynamically-linked-application" id="id4" class="reference internal">Building a dynamically linked application</a>
-    -   <a href="#generating-a-native-client-manifest-file-for-a-dynamically-linked-application" id="id5" class="reference internal">Generating a Native Client manifest file for a dynamically linked application</a>
-    -   <a href="#deploying-a-dynamically-linked-application" id="id6" class="reference internal">Deploying a dynamically linked application</a>
-    -   <a href="#opening-a-shared-library-at-runtime" id="id7" class="reference internal">Opening a shared library at runtime</a>
-    -   <a href="#troubleshooting" id="id8" class="reference internal">Troubleshooting</a>
+  - <a href="#building-a-dynamically-linked-application" id="id4" class="reference internal">Building a dynamically linked application</a>
+  - <a href="#generating-a-native-client-manifest-file-for-a-dynamically-linked-application" id="id5" class="reference internal">Generating a Native Client manifest file for a dynamically linked application</a>
+  - <a href="#deploying-a-dynamically-linked-application" id="id6" class="reference internal">Deploying a dynamically linked application</a>
+  - <a href="#opening-a-shared-library-at-runtime" id="id7" class="reference internal">Opening a shared library at runtime</a>
+  - <a href="#troubleshooting" id="id8" class="reference internal">Troubleshooting</a>
 
 Portable Native Client currently only supports static linking, and the only C library available for it is newlib. This page is only valid for Native Client, though PNaCl will eventually support some form of dynamic linking.
 
 This document describes how to create and deploy dynamically linked and loaded applications with the glibc library in the Native Client SDK. Before reading this document, we recommend reading <a href="/docs/native-client/devguide/devcycle/building" class="reference internal"><em>Building Native Client Modules</em></a>
 
-<span id="c-libraries"></span>C standard libraries: glibc and newlib
---------------------------------------------------------------------
+## <span id="c-libraries"></span>C standard libraries: glibc and newlib
 
 The Native Client SDK comes with two C standard libraries — glibc and newlib. These libraries are described in the table below.
 
@@ -27,22 +26,21 @@ The Native Client SDK comes with two C standard libraries — glibc and newlib. 
 
 For proprietary (closed-source) applications, your options are to either statically link to newlib, or dynamically link to glibc. We recommend dynamically linking to glibc, for a couple of reasons:
 
--   The glibc library is widely distributed (it’s included in Linux distributions), and as such it’s mature, hardened, and feature-rich. Your code is more likely to compile out-of-the-box with glibc.
--   Dynamic loading can provide a big performance benefit for your application if you can structure the application to defer loading of code that’s not needed for initial interaction with the user. It takes some work to put such code in shared libraries and to load the libraries at runtime, but the payoff is usually worth it. In future releases, Chrome may also support caching of common dynamically linked libraries such as libc.so between applications. This could significantly reduce download size and provide a further potential performance benefit (for example, the hello\_world example would only require downloading a .nexe file that’s on the order of 30KB, rather than a .nexe file and several libraries, which are on the order of 1.5MB).
+- The glibc library is widely distributed (it’s included in Linux distributions), and as such it’s mature, hardened, and feature-rich. Your code is more likely to compile out-of-the-box with glibc.
+- Dynamic loading can provide a big performance benefit for your application if you can structure the application to defer loading of code that’s not needed for initial interaction with the user. It takes some work to put such code in shared libraries and to load the libraries at runtime, but the payoff is usually worth it. In future releases, Chrome may also support caching of common dynamically linked libraries such as libc.so between applications. This could significantly reduce download size and provide a further potential performance benefit (for example, the hello_world example would only require downloading a .nexe file that’s on the order of 30KB, rather than a .nexe file and several libraries, which are on the order of 1.5MB).
 
 Native Client support for dynamic linking and loading is based on glibc. Thus, **if your Native Client application must dynamically link and load code (e.g., due to licensing considerations), we recommend that you use the glibc library.**
 
 **Disclaimer:**
 
--   **None of the above constitutes legal advice, or a description of the legal obligations you need to fulfill in order to be compliant with the LGPL or newlib licenses. The above description is only a technical explanation of the differences between newlib and glibc, and the choice you must make between the two libraries.**
+- **None of the above constitutes legal advice, or a description of the legal obligations you need to fulfill in order to be compliant with the LGPL or newlib licenses. The above description is only a technical explanation of the differences between newlib and glibc, and the choice you must make between the two libraries.**
 
 **Notes:**
 
--   Static linking with glibc is rarely used. Use this feature with caution.
--   The standard C++ runtime in Native Client is provided by libstdc++; this library is independent from and layered on top of glibc. Because of licensing restrictions, libstdc++ must be statically linked for commercial uses, even if the rest of an application is dynamically linked.
+- Static linking with glibc is rarely used. Use this feature with caution.
+- The standard C++ runtime in Native Client is provided by libstdc++; this library is independent from and layered on top of glibc. Because of licensing restrictions, libstdc++ must be statically linked for commercial uses, even if the rest of an application is dynamically linked.
 
-SDK toolchains
---------------
+## SDK toolchains
 
 The Native Client SDK contains multiple toolchains, which are differentiated by <a href="/docs/native-client/devguide/devcycle/building#target-architectures" class="reference internal"><em>target architecture</em></a> and C library:
 
@@ -54,8 +52,7 @@ In the directories listed above, &lt;platform&gt; is the platform of your develo
 
 To use the glibc library and dynamic linking in your application, you **must** use a glibc toolchain. Note that you must build all code in your application with one toolchain. Code from multiple toolchains cannot be mixed.
 
-Specifying and delivering shared libraries
-------------------------------------------
+## Specifying and delivering shared libraries
 
 One significant difference between newlib and glibc applications is that glibc applications must explicitly list and deploy the shared libraries that they use.
 
@@ -134,11 +131,11 @@ The Makefile in the dlopen example generates the manifest automatically using th
 
 Run python `create_nmf.py --help` to see a full description of the command-line flags. A few of the important flags are described below.
 
-`-s` *directory*  
-use *directory* to stage libraries (libraries are added to `lib32` and `lib64` subfolders)
+`-s` _directory_  
+use _directory_ to stage libraries (libraries are added to `lib32` and `lib64` subfolders)
 
-`-L` *directory*  
-add *directory* to the library search path. The default search path already includes the toolchain and SDK libraries directories.
+`-L` _directory_  
+add _directory_ to the library search path. The default search path already includes the toolchain and SDK libraries directories.
 
 **Note:** The `create_nmf` script can only automatically detect explicit shared library dependencies (for example, dependencies specified with the -l flag for the compiler/linker). If you want to include libraries that you intend to dlopen() at runtime you must explcitly list them in your call to `create_nmf`.
 
@@ -150,8 +147,8 @@ As described above, an application’s manifest file must explicitly list all th
 
 As explained in <a href="/docs/native-client/devguide/distributing" class="reference internal"><em>Distributing Your Application</em></a>, there are two basic ways to deploy a <a href="/apps" class="reference external">Chrome app</a>:
 
--   **hosted application:** all modules are hosted together on a web server of your choice
--   **packaged application:** all modules are packaged into one file, hosted in the Chrome Web Store, and downloaded to the user’s machine
+- **hosted application:** all modules are hosted together on a web server of your choice
+- **packaged application:** all modules are packaged into one file, hosted in the Chrome Web Store, and downloaded to the user’s machine
 
 The web store documentation contains a handy guide to <a href="/webstore/choosing" class="reference external">help you choose which to use</a>.
 
@@ -167,9 +164,9 @@ The best practice for opening libraries with `dlopen()` is to use a worker threa
 
 The dlopen example in the SDK demonstrates how to open a shared libraries at runtime. To reiterate, the example includes three C++ files:
 
--   `eightball.cc`: this is the shared library that implements the function `Magic8Ball()` (this file is compiled into libeightball.so)
--   `reverse.cc`: this is the shared library that implements the function `Reverse()` (this file is compiled into libreverse.so)
--   `dlopen.cc`: this is the Native Client module that loads the shared libraries and makes calls to `Magic8Ball()` and `Reverse()` in response to requests from JavaScript.
+- `eightball.cc`: this is the shared library that implements the function `Magic8Ball()` (this file is compiled into libeightball.so)
+- `reverse.cc`: this is the shared library that implements the function `Reverse()` (this file is compiled into libreverse.so)
+- `dlopen.cc`: this is the Native Client module that loads the shared libraries and makes calls to `Magic8Ball()` and `Reverse()` in response to requests from JavaScript.
 
 When the Native Client module starts, it kicks off a worker thread that calls `dlopen()` to load the two shared libraries. Once the module has a handle to the library, it fetches the addresses of the `Magic8Ball()` and `Reverse()` functions using `dlsym()`. When a user types in a query and clicks the ‘ASK!’ button, the module calls `Magic8Ball()` to generate an answer, and returns the result to the user. Likewise when the user clicks the ‘Reverse’ button it calls the `Reverse()` function to reverse the string.
 
@@ -189,12 +186,12 @@ The .nexe may not have been compiled correctly (e.g., the .nexe may be staticall
 If there are no obvious problems with your main.nexe entry in the .nmf file, check where main.nexe is being requested from. Use Chrome’s Developer Tools: Click the menu icon ![menu-icon](/docs/native-client/images/menu-icon.png), select Tools &gt; Developer Tools, click the Network tab, and look at the path in the Name column.
 
 **NaCl module load failed: ELF executable text/rodata segment has wrong starting address**  
-This error happens when using a newlib-style .nmf file instead of a glibc-style .nmf file. Make sure you build your application with the glic toolchain, and use the create\_nmf.py script to generate your .nmf file.
+This error happens when using a newlib-style .nmf file instead of a glibc-style .nmf file. Make sure you build your application with the glic toolchain, and use the create_nmf.py script to generate your .nmf file.
 
 **NativeClient: NaCl module load failed: Nexe crashed during startup**  
 This error message indicates that a module crashed while being loaded. You can determine which module crashed by looking at the Network tab in Chrome’s Developer Tools (see above). The module that crashed will be the last one that was loaded.
 
-**/lib/main.nexe: error while loading shared libraries: /lib/main.nexe: only ET\_DYN and ET\_EXEC can be loaded**  
+**/lib/main.nexe: error while loading shared libraries: /lib/main.nexe: only ET_DYN and ET_EXEC can be loaded**  
 This error message indicates that there is an error with the .so files listed in the .nmf file – either the files are the wrong type or kind, or an expected library is missing.
 
 **undefined reference to ‘dlopen’ collect2: ld returned 1 exit status**  

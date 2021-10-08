@@ -1,7 +1,6 @@
 2020-11-23
 
-Add an IFrame
--------------
+## Add an IFrame
 
 To add an IFrame to a post you can use a custom shortcode which optimizes IFrames on the site.
 

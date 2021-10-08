@@ -2,8 +2,7 @@
 
 There are a number of options you can use to create the perfect UI, this article will outline some of the best practices for the mobile web in general and then some specific tricks you could use for hybrid applications.
 
-Viewport
---------
+## Viewport
 
 The viewport meta tag is of the most important tags you need to add to your web app. Without it, the WebView may act as if your site is designed for desktop browsers. This causes your web page to be given a larger width (typically 980px) and scales it to fit the WebView’s width. In most cases, the result is a tiny overview version of the page that requires the user to pan and zoom to actually read content, like the image on the left.
 
@@ -21,17 +20,16 @@ By default the WebView will set the viewport to device-width, rather than defaul
 
 In some cases, you may need to display content that isn’t designed for mobile devices–for example, if you’re displaying content you don’t control. In this case, you need to force the WebView to use a desktop-size viewport:
 
--   [setUseWideViewPort(true)](http://developer.android.com/reference/android/webkit/WebSettings.html#setUseWideViewPort(boolean))
--   [setLoadWithOverviewMode(true)](http://developer.android.com/reference/android/webkit/WebSettings.html#setLoadWithOverviewMode(boolean))
+- [setUseWideViewPort(true)](<http://developer.android.com/reference/android/webkit/WebSettings.html#setUseWideViewPort(boolean)>)
+- [setLoadWithOverviewMode(true)](<http://developer.android.com/reference/android/webkit/WebSettings.html#setLoadWithOverviewMode(boolean)>)
 
-If these methods are not set *and* no viewport is specified, the WebView will try and set the viewport width based on the content size.
+If these methods are not set _and_ no viewport is specified, the WebView will try and set the viewport width based on the content size.
 
-In addition to doing this, you may want to use the new layout algorithm `TEXT_AUTOSIZING` introduced in Android 4.4, which increases the font size to make it more readable on a mobile device. See [setLayoutAlgorithm](http://developer.android.com/reference/android/webkit/WebSettings.html#setLayoutAlgorithm(android.webkit.WebSettings.LayoutAlgorithm)).
+In addition to doing this, you may want to use the new layout algorithm `TEXT_AUTOSIZING` introduced in Android 4.4, which increases the font size to make it more readable on a mobile device. See [setLayoutAlgorithm](<http://developer.android.com/reference/android/webkit/WebSettings.html#setLayoutAlgorithm(android.webkit.WebSettings.LayoutAlgorithm)>).
 
 {% Img src=“image/BrQidfK9jaQyIHwdw91aVpkPiib2/1604544955630.jpg”, alt=“An example of how a page looks before and after text autosizing.”, width=“656”, height=“616” %}
 
-Responsive Design
------------------
+## Responsive Design
 
 Responsive design is the notion of changing your UI depending on the dimensions of the screen size. Here we will look at some simple examples of how you can adapt your UI and images, but if you want to dig in to other topics then this article on [HTML5Rocks](http://www.html5rocks.com/en/mobile/responsivedesign/) is a good point of reference.
 
@@ -98,8 +96,7 @@ These are minor changes, but depending on your UI, media queries can help you to
 
 For more on designing for mobile devices, see [HTML5Rocks](http://www.html5rocks.com/en/mobile/).
 
-Images
-------
+## Images
 
 The variety of screens sizes and densities also presents challenges for images. Smaller images require less memory and are faster to load, but blur if you scale them up.
 
@@ -109,9 +106,9 @@ The images below show the blurring that occurs when you scale a low-density imag
 
 Here are a few tips and tricks to make sure your images look crisp and clear on any screen:
 
--   Use CSS for scalable effects.
--   Use vector graphics.
--   Provide high-resolution photos.
+- Use CSS for scalable effects.
+- Use vector graphics.
+- Provide high-resolution photos.
 
 ### Use CSS for scalable effects
 
@@ -131,8 +128,8 @@ If high compression is not suitable for your needs, try the WebP format, which g
 
 For more information on this topic:
 
--   [High DPI Images for Variable Pixel Densities](http://www.html5rocks.com/en/mobile/high-dpi/) on HTML5Rocks.
--   [Seeing the World Through High DPI](https://developers.google.com/events/io/sessions/350992350) video from Google I/O 2013.
+- [High DPI Images for Variable Pixel Densities](http://www.html5rocks.com/en/mobile/high-dpi/) on HTML5Rocks.
+- [Seeing the World Through High DPI](https://developers.google.com/events/io/sessions/350992350) video from Google I/O 2013.
 
 ### Fine grained control
 

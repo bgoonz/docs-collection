@@ -1,7 +1,6 @@
 2020-12-17
 
-Add an API
-----------
+## Add an API
 
 To add a reference page for a Chrome API, create a folder and `index.md` file inside `site/en/docs/extensions/reference/`. The folder name doesn’t directly relate to the API itself—control which API is rendered via frontmatter like this:
 
@@ -12,17 +11,16 @@ To add a reference page for a Chrome API, create a folder and `index.md` file in
     Something about this API. This text is completely optional. If you don't want to write anything,
     then you should include a comment like <!-- This is intentionally empty -->.
 
-The API name is assumed to be under “chrome.apiName”. If you are documenting an API like “chrome.input.ime”, then by convention, the folder name should be “input\_ime” but the API in your frontmatter should still be `api: input.ime`.
+The API name is assumed to be under “chrome.apiName”. If you are documenting an API like “chrome.input.ime”, then by convention, the folder name should be “input_ime” but the API in your frontmatter should still be `api: input.ime`.
 
 The existence of this page will cause the API itself to be displayed in the [top-level reference page](/docs/extensions/reference/). If it’s a Chrome Apps-only API, it will appear at the very bottom of that page, rather than in Stable, Beta or Dev.
 
-API Source
-----------
+## API Source
 
 The API reference is generated via the published APIs in [chrome-types on npm](https://www.npmjs.com/package/chrome-types). It’s possible for that dependency to get out-of-date; if you’re trying to document a new API, take these steps:
 
--   Run `npm install chrome-types` to ensure that latest version is available.
--   Run `npm run types` to build our fast internal reprensetation of the TypeScript definition files (this normally happens on checkout, but since you’ve updated the types, it needs a re-run)
+- Run `npm install chrome-types` to ensure that latest version is available.
+- Run `npm run types` to build our fast internal reprensetation of the TypeScript definition files (this normally happens on checkout, but since you’ve updated the types, it needs a re-run)
 
 If you’re just curious about what APIs are published (and not all are documented, matching the previous incanation of this site) then take a look inside `node_modules/chrome-types/index.d.ts` (or its peer file `platform_app.d.ts` for Chrome Apps-only APIs).
 

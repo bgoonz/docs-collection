@@ -2,95 +2,94 @@
 
 {% include 'partials/nacl-warning.njk' %}
 
-------------------------------------------------------------------------
+---
 
--   <a href="#what-is-native-client-good-for" id="id1" class="reference internal">What is Native Client Good For?</a>
+- <a href="#what-is-native-client-good-for" id="id1" class="reference internal">What is Native Client Good For?</a>
 
-    -   <a href="#why-did-google-build-native-client" id="id2" class="reference internal">Why did Google build Native Client?</a>
-    -   <a href="#when-should-i-use-portable-native-client-instead-of-native-client" id="id3" class="reference internal">When should I use Portable Native Client instead of Native Client?</a>
-    -   <a href="#when-should-i-use-portable-native-client-native-client" id="id4" class="reference internal">When should I use Portable Native Client / Native Client?</a>
-    -   <a href="#how-fast-does-code-run-in-portable-native-client" id="id5" class="reference internal">How fast does code run in Portable Native Client?</a>
-    -   <a href="#why-use-portable-native-client-instead-of-technology-x" id="id6" class="reference internal">Why use Portable Native Client instead of <em>&lt;technology X&gt;</em>?</a>
-    -   <a href="#if-i-want-direct-access-to-the-os-should-i-use-native-client" id="id7" class="reference internal">If I want direct access to the OS, should I use Native Client?</a>
+  - <a href="#why-did-google-build-native-client" id="id2" class="reference internal">Why did Google build Native Client?</a>
+  - <a href="#when-should-i-use-portable-native-client-instead-of-native-client" id="id3" class="reference internal">When should I use Portable Native Client instead of Native Client?</a>
+  - <a href="#when-should-i-use-portable-native-client-native-client" id="id4" class="reference internal">When should I use Portable Native Client / Native Client?</a>
+  - <a href="#how-fast-does-code-run-in-portable-native-client" id="id5" class="reference internal">How fast does code run in Portable Native Client?</a>
+  - <a href="#why-use-portable-native-client-instead-of-technology-x" id="id6" class="reference internal">Why use Portable Native Client instead of <em>&lt;technology X&gt;</em>?</a>
+  - <a href="#if-i-want-direct-access-to-the-os-should-i-use-native-client" id="id7" class="reference internal">If I want direct access to the OS, should I use Native Client?</a>
 
--   <a href="#development-environments-and-tools" id="id8" class="reference internal">Development Environments and Tools</a>
+- <a href="#development-environments-and-tools" id="id8" class="reference internal">Development Environments and Tools</a>
 
-    -   <a href="#what-development-environment-and-development-operating-system-do-you-recommend" id="id9" class="reference internal">What development environment and development operating system do you recommend?</a>
-    -   <a href="#i-m-not-familiar-with-native-development-tools-can-i-still-use-the-native-client-sdk" id="id10" class="reference internal">I’m not familiar with native development tools, can I still use the Native Client SDK?</a>
+  - <a href="#what-development-environment-and-development-operating-system-do-you-recommend" id="id9" class="reference internal">What development environment and development operating system do you recommend?</a>
+  - <a href="#i-m-not-familiar-with-native-development-tools-can-i-still-use-the-native-client-sdk" id="id10" class="reference internal">I’m not familiar with native development tools, can I still use the Native Client SDK?</a>
 
--   <a href="#openness-and-supported-architectures-and-languages" id="id11" class="reference internal">Openness, and Supported Architectures and Languages</a>
+- <a href="#openness-and-supported-architectures-and-languages" id="id11" class="reference internal">Openness, and Supported Architectures and Languages</a>
 
-    -   <a href="#is-native-client-open-is-it-a-standard" id="id12" class="reference internal">Is Native Client open? Is it a standard?</a>
-    -   <a href="#how-can-i-contribute-to-native-client" id="id13" class="reference internal">How can I contribute to Native Client?</a>
-    -   <a href="#what-are-the-supported-instruction-set-architectures" id="id14" class="reference internal">What are the supported instruction set architectures?</a>
-    -   <a href="#do-i-have-to-use-c-or-c-i-d-really-like-to-use-another-language" id="id15" class="reference internal">Do I have to use C or C++? I’d really like to use another language.</a>
-    -   <a href="#do-you-only-support-chrome-what-about-other-browsers" id="id16" class="reference internal">Do you only support Chrome? What about other browsers?</a>
-    -   <a href="#what-s-the-difference-between-npapi-and-pepper" id="id17" class="reference internal">What’s the difference between NPAPI and Pepper?</a>
-    -   <a href="#is-npapi-part-of-the-native-client-sdk" id="id18" class="reference internal">Is NPAPI part of the Native Client SDK?</a>
-    -   <a href="#does-native-client-support-simd-vector-instructions" id="id19" class="reference internal">Does Native Client support SIMD vector instructions?</a>
-    -   <a href="#can-i-use-native-client-for-3d-graphics" id="id20" class="reference internal">Can I use Native Client for 3D graphics?</a>
-    -   <a href="#does-native-client-support-concurrency-parallelism" id="id21" class="reference internal">Does Native Client support concurrency/parallelism?</a>
+  - <a href="#is-native-client-open-is-it-a-standard" id="id12" class="reference internal">Is Native Client open? Is it a standard?</a>
+  - <a href="#how-can-i-contribute-to-native-client" id="id13" class="reference internal">How can I contribute to Native Client?</a>
+  - <a href="#what-are-the-supported-instruction-set-architectures" id="id14" class="reference internal">What are the supported instruction set architectures?</a>
+  - <a href="#do-i-have-to-use-c-or-c-i-d-really-like-to-use-another-language" id="id15" class="reference internal">Do I have to use C or C++? I’d really like to use another language.</a>
+  - <a href="#do-you-only-support-chrome-what-about-other-browsers" id="id16" class="reference internal">Do you only support Chrome? What about other browsers?</a>
+  - <a href="#what-s-the-difference-between-npapi-and-pepper" id="id17" class="reference internal">What’s the difference between NPAPI and Pepper?</a>
+  - <a href="#is-npapi-part-of-the-native-client-sdk" id="id18" class="reference internal">Is NPAPI part of the Native Client SDK?</a>
+  - <a href="#does-native-client-support-simd-vector-instructions" id="id19" class="reference internal">Does Native Client support SIMD vector instructions?</a>
+  - <a href="#can-i-use-native-client-for-3d-graphics" id="id20" class="reference internal">Can I use Native Client for 3D graphics?</a>
+  - <a href="#does-native-client-support-concurrency-parallelism" id="id21" class="reference internal">Does Native Client support concurrency/parallelism?</a>
 
--   <a href="#coming-soon" id="id22" class="reference internal">Coming Soon</a>
+- <a href="#coming-soon" id="id22" class="reference internal">Coming Soon</a>
 
-    -   <a href="#do-native-client-modules-have-access-to-external-devices" id="id23" class="reference internal">Do Native Client modules have access to external devices?</a>
+  - <a href="#do-native-client-modules-have-access-to-external-devices" id="id23" class="reference internal">Do Native Client modules have access to external devices?</a>
 
--   <a href="#security-and-privacy" id="id24" class="reference internal">Security and Privacy</a>
+- <a href="#security-and-privacy" id="id24" class="reference internal">Security and Privacy</a>
 
-    -   <a href="#what-happens-to-my-data-when-i-use-native-client" id="id25" class="reference internal">What happens to my data when I use Native Client?</a>
-    -   <a href="#how-does-native-client-prevent-sandboxed-code-from-doing-bad-things" id="id26" class="reference internal">How does Native Client prevent sandboxed code from doing Bad Things?</a>
-    -   <a href="#how-does-google-know-that-the-safety-measures-in-native-client-are-sufficient" id="id27" class="reference internal">How does Google know that the safety measures in Native Client are sufficient?</a>
+  - <a href="#what-happens-to-my-data-when-i-use-native-client" id="id25" class="reference internal">What happens to my data when I use Native Client?</a>
+  - <a href="#how-does-native-client-prevent-sandboxed-code-from-doing-bad-things" id="id26" class="reference internal">How does Native Client prevent sandboxed code from doing Bad Things?</a>
+  - <a href="#how-does-google-know-that-the-safety-measures-in-native-client-are-sufficient" id="id27" class="reference internal">How does Google know that the safety measures in Native Client are sufficient?</a>
 
--   <a href="#development" id="id28" class="reference internal">Development</a>
+- <a href="#development" id="id28" class="reference internal">Development</a>
 
-    -   <a href="#how-do-i-debug" id="id29" class="reference internal">How do I debug?</a>
-    -   <a href="#how-do-i-build-x86-32-x86-64-or-arm-nexes" id="id30" class="reference internal">How do I build x86-32, x86-64 or ARM <code>.nexes</code>?</a>
-    -   <a href="#how-can-my-web-application-determine-which-nexe-to-load" id="id31" class="reference internal">How can my web application determine which <code>.nexe</code> to load?</a>
-    -   <a href="#is-it-possible-to-build-a-native-client-module-with-just-plain-c-not-c" id="id32" class="reference internal">Is it possible to build a Native Client module with just plain C (not C++)?</a>
-    -   <a href="#what-unix-system-calls-can-i-make-through-native-client" id="id33" class="reference internal">What UNIX system calls can I make through Native Client?</a>
-    -   <a href="#is-my-favorite-third-party-library-available-for-native-client" id="id34" class="reference internal">Is my favorite third-party library available for Native Client?</a>
-    -   <a href="#do-all-the-files-in-an-application-need-to-be-served-from-the-same-domain" id="id35" class="reference internal">Do all the files in an application need to be served from the same domain?</a>
+  - <a href="#how-do-i-debug" id="id29" class="reference internal">How do I debug?</a>
+  - <a href="#how-do-i-build-x86-32-x86-64-or-arm-nexes" id="id30" class="reference internal">How do I build x86-32, x86-64 or ARM <code>.nexes</code>?</a>
+  - <a href="#how-can-my-web-application-determine-which-nexe-to-load" id="id31" class="reference internal">How can my web application determine which <code>.nexe</code> to load?</a>
+  - <a href="#is-it-possible-to-build-a-native-client-module-with-just-plain-c-not-c" id="id32" class="reference internal">Is it possible to build a Native Client module with just plain C (not C++)?</a>
+  - <a href="#what-unix-system-calls-can-i-make-through-native-client" id="id33" class="reference internal">What UNIX system calls can I make through Native Client?</a>
+  - <a href="#is-my-favorite-third-party-library-available-for-native-client" id="id34" class="reference internal">Is my favorite third-party library available for Native Client?</a>
+  - <a href="#do-all-the-files-in-an-application-need-to-be-served-from-the-same-domain" id="id35" class="reference internal">Do all the files in an application need to be served from the same domain?</a>
 
--   <a href="#portability" id="id36" class="reference internal">Portability</a>
+- <a href="#portability" id="id36" class="reference internal">Portability</a>
 
-    -   <a href="#do-i-have-to-do-anything-special-to-make-my-application-run-on-different-operating-systems" id="id37" class="reference internal">Do I have to do anything special to make my application run on different operating systems?</a>
-    -   <a href="#how-easy-is-it-to-port-my-existing-native-code-to-native-client" id="id38" class="reference internal">How easy is it to port my existing native code to Native Client?</a>
+  - <a href="#do-i-have-to-do-anything-special-to-make-my-application-run-on-different-operating-systems" id="id37" class="reference internal">Do I have to do anything special to make my application run on different operating systems?</a>
+  - <a href="#how-easy-is-it-to-port-my-existing-native-code-to-native-client" id="id38" class="reference internal">How easy is it to port my existing native code to Native Client?</a>
 
--   <a href="#troubleshooting" id="id39" class="reference internal">Troubleshooting</a>
+- <a href="#troubleshooting" id="id39" class="reference internal">Troubleshooting</a>
 
-    -   <a href="#my-pexe-isn-t-loading-help" id="id40" class="reference internal">My <code>.pexe</code> isn’t loading, help!</a>
-    -   <a href="#my-nexe-files-never-finish-loading-what-gives" id="id41" class="reference internal">My <code>.nexe</code> files never finish loading. What gives?</a>
+  - <a href="#my-pexe-isn-t-loading-help" id="id40" class="reference internal">My <code>.pexe</code> isn’t loading, help!</a>
+  - <a href="#my-nexe-files-never-finish-loading-what-gives" id="id41" class="reference internal">My <code>.nexe</code> files never finish loading. What gives?</a>
 
 This document answers some frequently asked questions about Native Client (NaCl) and Portable Native Client (PNaCl, pronounced “pinnacle”). For a high-level overview of Native Client, see the <a href="/docs/native-client/overview" class="reference internal"><em>Technical Overview</em></a>.
 
 If you have questions that aren’t covered in this FAQ:
 
--   Scan through the <a href="/docs/native-client/sdk/release-notes" class="reference internal"><em>Release Notes</em></a>.
--   Search through or ask on the <a href="/docs/native-client/help" class="reference internal"><em>Native Client Forums</em></a>.
+- Scan through the <a href="/docs/native-client/sdk/release-notes" class="reference internal"><em>Release Notes</em></a>.
+- Search through or ask on the <a href="/docs/native-client/help" class="reference internal"><em>Native Client Forums</em></a>.
 
-What is Native Client Good For?
--------------------------------
+## What is Native Client Good For?
 
 ### Why did Google build Native Client?
 
--   **Performance:** Native Client modules run nearly as fast as native compiled code.
--   **Security:** Native Client lets users run native compiled code in the browser with the same level of security and privacy as traditional web applications.
--   **Convenience:**
+- **Performance:** Native Client modules run nearly as fast as native compiled code.
+- **Security:** Native Client lets users run native compiled code in the browser with the same level of security and privacy as traditional web applications.
+- **Convenience:**
 
-    -   Developers can leverage existing code, written in C/C++ or other languages, in their applications without forcing users to install a plugin.
-    -   This code can interact with the embedding web page as part of an HTML and JavaScript web application, or it can be a self-contained and immersive experience.
+  - Developers can leverage existing code, written in C/C++ or other languages, in their applications without forcing users to install a plugin.
+  - This code can interact with the embedding web page as part of an HTML and JavaScript web application, or it can be a self-contained and immersive experience.
 
--   **Portability:** Native Client and Portable Native Client applications can execute on:
+- **Portability:** Native Client and Portable Native Client applications can execute on:
 
-    -   The Windows, Mac, Linux or ChromeOS operating systems.
-    -   Processors with the x86-32, x86-64, or ARM instruction set architectures. Native Client also has experimental support for MIPS.
+  - The Windows, Mac, Linux or ChromeOS operating systems.
+  - Processors with the x86-32, x86-64, or ARM instruction set architectures. Native Client also has experimental support for MIPS.
 
 Portable Native client further enhances the above:
 
--   **Performance:** Each PNaCl release brings with it more performance enhancements. Already-released applications get faster over time, conserving user’s battery.
--   **Security:** Users are kept secure with an ever-improving sandbox model which adapts to novel attacks, without affecting already-released applications.
--   **Convenience:** Developers only need to ship a single `.pexe` file, not one `.nexe` file per supported architecture.
--   **Portability:** Developers and users don’t need to worry about already-released applications not working on new hardware: PNaCl already supports all architectures NaCl does, and as PNaCl evolves it gains support for new processors and fully uses their capabilities.
+- **Performance:** Each PNaCl release brings with it more performance enhancements. Already-released applications get faster over time, conserving user’s battery.
+- **Security:** Users are kept secure with an ever-improving sandbox model which adapts to novel attacks, without affecting already-released applications.
+- **Convenience:** Developers only need to ship a single `.pexe` file, not one `.nexe` file per supported architecture.
+- **Portability:** Developers and users don’t need to worry about already-released applications not working on new hardware: PNaCl already supports all architectures NaCl does, and as PNaCl evolves it gains support for new processors and fully uses their capabilities.
 
 For more details, refer to the <a href="/docs/native-client/nacl-and-pnacl" class="reference internal"><em>history behind and comparison of NaCl and PNaCl</em></a>.
 
@@ -102,14 +101,14 @@ See <a href="/docs/native-client/nacl-and-pnacl" class="reference internal"><em>
 
 The following are some typical use cases. For details, see the <a href="/docs/native-client/overview" class="reference internal"><em>Technical Overview</em></a>.
 
--   Porting existing applications or software components, written in C/C++ or virtual machines written in C/C++, for use in a web application.
--   Using compute-intensive applications, including threads and SIMD, such as:
+- Porting existing applications or software components, written in C/C++ or virtual machines written in C/C++, for use in a web application.
+- Using compute-intensive applications, including threads and SIMD, such as:
 
-    -   Scientific computing.
-    -   Handling multimedia for a web application.
-    -   Various aspects of web-based games, including physics engines and AI.
+  - Scientific computing.
+  - Handling multimedia for a web application.
+  - Various aspects of web-based games, including physics engines and AI.
 
--   Running untrusted code on a server or within an application (such as a plugin system for a game).
+- Running untrusted code on a server or within an application (such as a plugin system for a game).
 
 Portable Native Client and Native Client are versatile technologies which are used in many other contexts outside of Chrome.
 
@@ -125,13 +124,13 @@ Note that PNaCl supports performance features that are often used in native code
 
 For details, see:
 
--   <a href="https://www.youtube.com/watch?v=675znN6tntw&amp;list=PLOU2XLYxmsIIwGK7v7jg3gQvIAWJzdat_" class="reference external">PNaCl SIMD: Speed on the Web</a>.
--   <a href="https://nativeclient.googlecode.com/svn/data/site/NaCl_SFI.pdf" class="reference external">Adapting Software Fault Isolation to Contemporary CPU Architectures</a> (PDF).
--   <a href="http://research.google.com/pubs/pub34913.html" class="reference external">Native Client: A Sandbox for Portable, Untrusted x86 Code</a> (PDF).
+- <a href="https://www.youtube.com/watch?v=675znN6tntw&amp;list=PLOU2XLYxmsIIwGK7v7jg3gQvIAWJzdat_" class="reference external">PNaCl SIMD: Speed on the Web</a>.
+- <a href="https://nativeclient.googlecode.com/svn/data/site/NaCl_SFI.pdf" class="reference external">Adapting Software Fault Isolation to Contemporary CPU Architectures</a> (PDF).
+- <a href="http://research.google.com/pubs/pub34913.html" class="reference external">Native Client: A Sandbox for Portable, Untrusted x86 Code</a> (PDF).
 
 If your code isn’t performing as close to native speed as you’d expect, <a href="/docs/native-client/help" class="reference internal"><em>let us know</em></a>!
 
-### Why use Portable Native Client instead of *&lt;technology X&gt;*?
+### Why use Portable Native Client instead of _&lt;technology X&gt;_?
 
 Many other technologies can be compared to Portable Native Client: Flash, Java, Silverlight, ActiveX, .NET, asm.js, etc...
 
@@ -143,8 +142,7 @@ Portable Native Client complement other technologies by giving web developers a 
 
 No—Native Client does not provide direct access to the OS or devices, or otherwise bypass the JavaScript security model. For more information, see later sections of this FAQ.
 
-Development Environments and Tools
-----------------------------------
+## Development Environments and Tools
 
 ### What development environment and development operating system do you recommend?
 
@@ -158,8 +156,7 @@ You may find our <a href="/docs/native-client/devguide/tutorial/index" class="re
 
 You’ll need to learn how to use some tools (like GCC, LLVM, make, Eclipse, Visual Studio, or Xcode) before you can get very far with the SDK. Try seaching for an <a href="https://www.google.com/search?q=gcc+introduction" class="reference external">introduction to GCC</a>.
 
-Openness, and Supported Architectures and Languages
----------------------------------------------------
+## Openness, and Supported Architectures and Languages
 
 ### Is Native Client open? Is it a standard?
 
@@ -219,8 +216,7 @@ Native Client and Portable Native Client both support pthreads, C11/C++11 thread
 
 Native Client doesn’t support HTML5 Web Workers directly but can interact with JavaScript code which does.
 
-Coming Soon
------------
+## Coming Soon
 
 ### Do Native Client modules have access to external devices?
 
@@ -228,8 +224,7 @@ At this time Native Client modules do not have access to serial ports, camera de
 
 You can generally think of Pepper as the C/C++ bindings to the capabilities of HTML5. The goal is for Pepper and JavaScript to evolve together and stay on par with each other with respect to features and capabilities.
 
-Security and Privacy
---------------------
+## Security and Privacy
 
 ### What happens to my data when I use Native Client?
 
@@ -241,9 +236,9 @@ For additional information about privacy and Chrome, see the <a href="https://ww
 
 Native Client’s sandbox works by validating the untrusted code (the compiled Native Client module) before running it. The validator checks the following:
 
--   **Data integrity:** No loads or stores are permitted outside of the data sandbox. In particular this means that once loaded into memory, the binary is not writable. This is enforced by operating system protection mechanisms. While new instructions can be inserted at runtime to support things like JIT compilers, such instructions will be subject to runtime verification according to the following constraints before they are executed.
--   **No unsafe instructions:** The validator ensures that the Native Client application does not contain any unsafe instructions. Examples of unsafe instructions are `syscall`, `int`, and `lds`.
--   **Control flow integrity:** The validator ensures that all direct and indirect branches target a safe instruction.
+- **Data integrity:** No loads or stores are permitted outside of the data sandbox. In particular this means that once loaded into memory, the binary is not writable. This is enforced by operating system protection mechanisms. While new instructions can be inserted at runtime to support things like JIT compilers, such instructions will be subject to runtime verification according to the following constraints before they are executed.
+- **No unsafe instructions:** The validator ensures that the Native Client application does not contain any unsafe instructions. Examples of unsafe instructions are `syscall`, `int`, and `lds`.
+- **Control flow integrity:** The validator ensures that all direct and indirect branches target a safe instruction.
 
 The beauty of the Native Client sandbox is in reducing “safe” code to a few simple rules that can be verified by a small trusted validator: the compiler isn’t trusted. The same applies to Portable Native Client where even the `.pexe` to `.nexe` translator, a simplified compiler backend, isn’t trusted: it is validated before executing, and so is its output.
 
@@ -253,15 +248,14 @@ In addition to static analysis of untrusted code, the Native Client runtime also
 
 Google has taken several steps to ensure that Native Client’s security works, including:
 
--   Open source, peer-reviewed papers describing the design.
--   A <a href="/docs/native-client/community/security-contest/index" class="reference internal"><em>security contest</em></a>.
--   Multiple internal and external security reviews.
--   The ongoing vigilance of our engineering and developer community.
+- Open source, peer-reviewed papers describing the design.
+- A <a href="/docs/native-client/community/security-contest/index" class="reference internal"><em>security contest</em></a>.
+- Multiple internal and external security reviews.
+- The ongoing vigilance of our engineering and developer community.
 
 Google is committed to making Native Client safer than JavaScript and other popular browser technologies. If you have suggestions for security improvements, let the team know, by way of the <a href="https://groups.google.com/group/native-client-discuss" class="reference external">native-client-discuss</a> mailing list.
 
-Development
------------
+## Development
 
 ### How do I debug?
 
@@ -293,8 +287,7 @@ The `.nmf`, and `.nexe` or `.pexe` files must either be served from the same ori
 
 For applications installed from the Chrome Web Store the Web Store manifest must include the correct, verified domain of the embedding page.
 
-Portability
------------
+## Portability
 
 ### Do I have to do anything special to make my application run on different operating systems?
 
@@ -302,8 +295,8 @@ No. Native Client and Portable Native Client applications run without modificati
 
 However, to run on different instruction set architectures (such as x86-32, x86-64 or ARM), you currently have to either:
 
--   Use Portable Native Client.
--   Build and supply a separate `.nexe` file for each architecture, and make them available on the Chrome Web Store. See <a href="/docs/native-client/devguide/devcycle/building" class="reference internal"><em>target architectures</em></a> for details about which `.nexe` files will run on which architectures.
+- Use Portable Native Client.
+- Build and supply a separate `.nexe` file for each architecture, and make them available on the Chrome Web Store. See <a href="/docs/native-client/devguide/devcycle/building" class="reference internal"><em>target architectures</em></a> for details about which `.nexe` files will run on which architectures.
 
 ### How easy is it to port my existing native code to Native Client?
 
@@ -311,27 +304,26 @@ In most cases you won’t have to rewrite much, if any, code. The Native Client-
 
 The following kinds of code may be more challenging to port:
 
--   Code that does direct <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_t_c_p_socket/" class="reference external">TCP</a> or <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_u_d_p_socket/" class="reference external">UDP</a> networking. For security reasons these APIs are only available to <a href="/apps" class="reference external">Chrome apps</a> after asking for the appropriate permissions, not on the open web. Native Client is otherwise restricted to the networking APIs available in the browser. You may want to use to <a href="/docs/native-client/nacl_io/" class="reference external">nacl_io library</a> to use POSIX-like sockets.
--   Code that creates processes, including UNIX `fork`, won’t function as-is. However, threads are supported. You can nonetheless create new `<embed>` tags in your HTML page to launch new PNaCl processes. You can even use new `.pexe` files that your existing `.pexe` saved in a local filesystem. This is somewhat akin to `execve`, but the process management has to go through `postMessage` to JavaScript in order to create the new `<embed>`.
--   Code that needs to do local file I/O. Native Client is restricted to accessing URLs and to local storage in the browser (the Pepper <a href="/docs/native-client/devguide/coding/file-io" class="reference internal"><em>File IO API</em></a> has access to the same per-application storage that JavaScript has via Local Storage). HTML5 File System can be used, among others. For POSIX compatabiliy the Native Client SDK includes a library called nacl\_io which allows the application to interact with all these types of files via standard POSIX I/O functions (e.g. `open` / `fopen` / `read` / `write` / ...). See <a href="/docs/native-client/devguide/coding/nacl_io" class="reference internal"><em>Using NaCl I/O</em></a> for more details.
+- Code that does direct <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_t_c_p_socket/" class="reference external">TCP</a> or <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_u_d_p_socket/" class="reference external">UDP</a> networking. For security reasons these APIs are only available to <a href="/apps" class="reference external">Chrome apps</a> after asking for the appropriate permissions, not on the open web. Native Client is otherwise restricted to the networking APIs available in the browser. You may want to use to <a href="/docs/native-client/nacl_io/" class="reference external">nacl_io library</a> to use POSIX-like sockets.
+- Code that creates processes, including UNIX `fork`, won’t function as-is. However, threads are supported. You can nonetheless create new `<embed>` tags in your HTML page to launch new PNaCl processes. You can even use new `.pexe` files that your existing `.pexe` saved in a local filesystem. This is somewhat akin to `execve`, but the process management has to go through `postMessage` to JavaScript in order to create the new `<embed>`.
+- Code that needs to do local file I/O. Native Client is restricted to accessing URLs and to local storage in the browser (the Pepper <a href="/docs/native-client/devguide/coding/file-io" class="reference internal"><em>File IO API</em></a> has access to the same per-application storage that JavaScript has via Local Storage). HTML5 File System can be used, among others. For POSIX compatabiliy the Native Client SDK includes a library called nacl_io which allows the application to interact with all these types of files via standard POSIX I/O functions (e.g. `open` / `fopen` / `read` / `write` / ...). See <a href="/docs/native-client/devguide/coding/nacl_io" class="reference internal"><em>Using NaCl I/O</em></a> for more details.
 
-<span id="faq-troubleshooting"></span>Troubleshooting
------------------------------------------------------
+## <span id="faq-troubleshooting"></span>Troubleshooting
 
 ### My `.pexe` isn’t loading, help!
 
--   You must use Google Chrome version 31 or greater for Portable Native Client. Find your version of chrome by opening `about:chrome`, and <a href="http://www.google.com/chrome/" class="reference external">update Chrome</a> if you are on an older version. If you’re already using a recent version, open `about:components` and “Check for update” for PNaCl. Note that on ChromeOS PNaCl is always up to date, whereas on other operating systems it updates shortly after Chrome updates.
--   A PNaCl `.pexe` must be compiled with pepper\_31 SDK or higher. <a href="/docs/native-client/sdk/download#updating-bundles" class="reference internal"><em>Update your bundles</em></a> and make sure you’re using a version of Chrome that matches the SDK version.
--   Your application can verify that Portable Native Client is supported in JavaScript with `navigator.mimeTypes['application/x-pnacl'] !== undefined`. This is preferred over checking the Chrome version.
+- You must use Google Chrome version 31 or greater for Portable Native Client. Find your version of chrome by opening `about:chrome`, and <a href="http://www.google.com/chrome/" class="reference external">update Chrome</a> if you are on an older version. If you’re already using a recent version, open `about:components` and “Check for update” for PNaCl. Note that on ChromeOS PNaCl is always up to date, whereas on other operating systems it updates shortly after Chrome updates.
+- A PNaCl `.pexe` must be compiled with pepper_31 SDK or higher. <a href="/docs/native-client/sdk/download#updating-bundles" class="reference internal"><em>Update your bundles</em></a> and make sure you’re using a version of Chrome that matches the SDK version.
+- Your application can verify that Portable Native Client is supported in JavaScript with `navigator.mimeTypes['application/x-pnacl'] !== undefined`. This is preferred over checking the Chrome version.
 
 ### My `.nexe` files never finish loading. What gives?
 
 Here are ways to resolve some common problems that can prevent loading:
 
--   You must use Google Chrome version 14 or greater for Native Client.
--   If you haven’t already done so, enable the Native Client flag in Google Chrome. Type `about:flags` in the Chrome address bar, scroll down to “Native Client”, click the “Enable” link, scroll down to the bottom of the page, and click the “Relaunch Now” button (all browser windows will restart).
--   Verify that the Native Client plugin is enabled in Google Chrome. Type `about:plugins` in the Chrome address bar, scroll down to “Native Client”, and click the “Enable” link. (You do not need to relaunch Chrome after you enable the Native Client plugin).
--   Make sure that the `.nexe` files are being served from a web server. Native Client uses the same-origin security policy, which means that modules will not load in pages opened with the `file://` protocol. In particular, you can’t run the examples in the SDK by simply dragging the HTML files from the desktop into the browser. See <a href="/docs/native-client/devguide/devcycle/running" class="reference internal"><em>Running Native Client Applications</em></a> for instructions on how to run the httpd.py mini-server included in the SDK.
--   The `.nexe` files must have been compiled using SDK version 0.5 or greater.
--   You must load the correct `.nexe` file for your machine’s specific instruction set architecture (x86-32, x86-64 or ARM). You can ensure you’re loading the correct `.nexe` file by building a separate `.nexe` for each architecture, and using a `.nmf` manifest file to let the browser select the correct `.nexe` file. Note: the need to select a processor-specific `.nexe` goes away with Portable Native Client.
--   If things still aren’t working, <a href="/docs/native-client/help" class="reference internal"><em>ask for help</em></a>!
+- You must use Google Chrome version 14 or greater for Native Client.
+- If you haven’t already done so, enable the Native Client flag in Google Chrome. Type `about:flags` in the Chrome address bar, scroll down to “Native Client”, click the “Enable” link, scroll down to the bottom of the page, and click the “Relaunch Now” button (all browser windows will restart).
+- Verify that the Native Client plugin is enabled in Google Chrome. Type `about:plugins` in the Chrome address bar, scroll down to “Native Client”, and click the “Enable” link. (You do not need to relaunch Chrome after you enable the Native Client plugin).
+- Make sure that the `.nexe` files are being served from a web server. Native Client uses the same-origin security policy, which means that modules will not load in pages opened with the `file://` protocol. In particular, you can’t run the examples in the SDK by simply dragging the HTML files from the desktop into the browser. See <a href="/docs/native-client/devguide/devcycle/running" class="reference internal"><em>Running Native Client Applications</em></a> for instructions on how to run the httpd.py mini-server included in the SDK.
+- The `.nexe` files must have been compiled using SDK version 0.5 or greater.
+- You must load the correct `.nexe` file for your machine’s specific instruction set architecture (x86-32, x86-64 or ARM). You can ensure you’re loading the correct `.nexe` file by building a separate `.nexe` for each architecture, and using a `.nmf` manifest file to let the browser select the correct `.nexe` file. Note: the need to select a processor-specific `.nexe` goes away with Portable Native Client.
+- If things still aren’t working, <a href="/docs/native-client/help" class="reference internal"><em>ask for help</em></a>!

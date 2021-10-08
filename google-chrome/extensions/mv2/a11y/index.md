@@ -8,8 +8,7 @@ Everyone, not just users with special needs, can benefit from accessibility feat
 
 People may interact with an extension in a variety of ways. Some users have a standard monitor, keyboard and mouse - or they may depend on a screen magnifier and possibly a [screen reader](https://webaim.org/techniques/screenreader/). While it is impossible to predict what tools people will use to access an extension, there are steps any developer can take to make an extension as accessible as possible.
 
-Integrate accessible UI controls {: \#controls }
-------------------------------------------------
+## Integrate accessible UI controls {: \#controls }
 
 If users can’t access the user interface controls, they are unable to use an extension. The easiest way to create an accessible UI is to use a standard HTML control.
 
@@ -29,7 +28,7 @@ Whenever possible, use [standard HTML UI controls](https://developer.mozilla.org
 
 The [Web Accessibility Initiative - Accessible Rich Internet Applications](https://www.w3.org/WAI/standards-guidelines/aria/), WAI-ARIA, is a specification for making UI controls accessible to screen readers through a standard set of DOM attributes. These attributes provide information to the screen reader about the function and current state of controls on a web page.
 
-To add WAI-ARIA support to custom controls, the DOM elements of an extension will need to be modified to include attributes Chrome uses to raise events during user interaction. Screen readers respond to these events and describe the function of the control. DOM attributes specified by WAI-ARIA are classified into [*roles*](https://www.w3.org/TR/wai-aria/#roles), [*states*, and *properties*](https://www.w3.org/TR/wai-aria/#states_and_properties).
+To add WAI-ARIA support to custom controls, the DOM elements of an extension will need to be modified to include attributes Chrome uses to raise events during user interaction. Screen readers respond to these events and describe the function of the control. DOM attributes specified by WAI-ARIA are classified into [_roles_](https://www.w3.org/TR/wai-aria/#roles), [_states_, and _properties_](https://www.w3.org/TR/wai-aria/#states_and_properties).
 
     <div role="toolbar">
 
@@ -59,8 +58,7 @@ By default, the only elements in the HTML DOM that can receive keyboard focus ar
 
 Setting `tabIndex = -1` removes the element from the tab sequence but still allows the element to receive keyboard focus programmatically.
 
-Support keyboard access {: \#keyboard }
----------------------------------------
+## Support keyboard access {: \#keyboard }
 
 Extensions should be usable with just a keyboard, allowing users who can’t use a mouse, and power users who simply don’t, to access them.
 
@@ -120,8 +118,7 @@ A simple JavaScript keyboard handler could look like the following. Note how the
 
 Extensions can create explicit keyboard shortcuts to important extension UI elements. To implement these shortcuts, connect keyboard event listeners to controls. Make users aware of the available shortcuts by providing them in the [options page](/docs/extensions/mv2/options).
 
-Provide accessible content {: \#more }
---------------------------------------
+## Provide accessible content {: \#more }
 
 Providing accessible content is important to all users. Many of the following guidelines may sound familiar, as they reflect good practices for all web content.
 
@@ -155,7 +152,6 @@ Use the alt text to state the purpose of the image rather than a literal descrip
 
 If the extension must use text in an image, include the image text in the alt text. A good resource to refer to is the [WebAIM article on appropriate alt text](https://webaim.org/techniques/alttext/).
 
-Learn more {: \#learn\_more }
------------------------------
+## Learn more {: \#learn_more }
 
 Learn more about accessibility in Chrome by checking out the [A11ycasts](https://www.youtube.com/watch?v=Ag3DMNbL_ig&list=PLNYkxOF6rcICWx0C9LVWWVqvHlYJyqw7g) channel and reading through the [Chromium Accessibility Technical Documentation](https://www.chromium.org/developers/design-documents/accessibility#TOC-WAI-ARIA-Support).

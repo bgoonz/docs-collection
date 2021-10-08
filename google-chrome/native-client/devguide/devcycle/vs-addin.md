@@ -2,62 +2,60 @@
 
 {% include 'partials/nacl-warning.njk' %}
 
-------------------------------------------------------------------------
+---
 
 Table Of Contents
 
--   <a href="#introduction" id="id1" class="reference internal">Introduction</a>
--   <a href="#platforms" id="id2" class="reference internal">Platforms</a>
+- <a href="#introduction" id="id1" class="reference internal">Introduction</a>
+- <a href="#platforms" id="id2" class="reference internal">Platforms</a>
 
-    -   <a href="#the-ppapi-platform" id="id3" class="reference internal">The PPAPI platform</a>
-    -   <a href="#the-native-client-platforms" id="id4" class="reference internal">The Native Client platforms</a>
+  - <a href="#the-ppapi-platform" id="id3" class="reference internal">The PPAPI platform</a>
+  - <a href="#the-native-client-platforms" id="id4" class="reference internal">The Native Client platforms</a>
 
--   <a href="#installing-the-add-in" id="id5" class="reference internal">Installing the add-in</a>
+- <a href="#installing-the-add-in" id="id5" class="reference internal">Installing the add-in</a>
 
-    -   <a href="#set-environment-variables" id="id6" class="reference internal">Set environment variables</a>
-    -   <a href="#download-the-add-in" id="id7" class="reference internal">Download the add-in</a>
-    -   <a href="#run-the-installer" id="id8" class="reference internal">Run the installer</a>
+  - <a href="#set-environment-variables" id="id6" class="reference internal">Set environment variables</a>
+  - <a href="#download-the-add-in" id="id7" class="reference internal">Download the add-in</a>
+  - <a href="#run-the-installer" id="id8" class="reference internal">Run the installer</a>
 
--   <a href="#try-the-hello-world-gles-sample-project" id="id9" class="reference internal">Try the <code>hello_world_gles</code> sample project</a>
+- <a href="#try-the-hello-world-gles-sample-project" id="id9" class="reference internal">Try the <code>hello_world_gles</code> sample project</a>
 
-    -   <a href="#select-the-nacl64-platform" id="id10" class="reference internal">Select the NaCl64 platform</a>
-    -   <a href="#build-and-run-the-project" id="id11" class="reference internal">Build and run the project</a>
-    -   <a href="#test-the-nacl-gdb-debugger" id="id12" class="reference internal">Test the nacl-gdb debugger</a>
-    -   <a href="#test-the-visual-studio-debugger" id="id13" class="reference internal">Test the Visual Studio debugger</a>
-    -   <a href="#inspect-the-platform-properties" id="id14" class="reference internal">Inspect the platform properties</a>
+  - <a href="#select-the-nacl64-platform" id="id10" class="reference internal">Select the NaCl64 platform</a>
+  - <a href="#build-and-run-the-project" id="id11" class="reference internal">Build and run the project</a>
+  - <a href="#test-the-nacl-gdb-debugger" id="id12" class="reference internal">Test the nacl-gdb debugger</a>
+  - <a href="#test-the-visual-studio-debugger" id="id13" class="reference internal">Test the Visual Studio debugger</a>
+  - <a href="#inspect-the-platform-properties" id="id14" class="reference internal">Inspect the platform properties</a>
 
--   <a href="#developing-for-native-client-in-visual-studio" id="id15" class="reference internal">Developing for Native Client in Visual Studio</a>
+- <a href="#developing-for-native-client-in-visual-studio" id="id15" class="reference internal">Developing for Native Client in Visual Studio</a>
 
-    -   <a href="#adding-platforms-to-a-project" id="id16" class="reference internal">Adding platforms to a project</a>
-    -   <a href="#selecting-a-toolchain" id="id17" class="reference internal">Selecting a toolchain</a>
-    -   <a href="#adding-libraries-to-a-project" id="id18" class="reference internal">Adding libraries to a project</a>
-    -   <a href="#running-a-web-server" id="id19" class="reference internal">Running a web server</a>
-    -   <a href="#keeping-track-of-all-the-pieces" id="id20" class="reference internal">Keeping track of all the pieces</a>
-    -   <a href="#using-the-debuggers" id="id21" class="reference internal">Using the debuggers</a>
-    -   <a href="#disable-chrome-caching" id="id22" class="reference internal">Disable Chrome caching</a>
-    -   <a href="#a-warning-about-postmessage" id="id23" class="reference internal">A warning about PostMessage</a>
-    -   <a href="#porting-windows-applications-to-native-client-in-visual-studio" id="id24" class="reference internal">Porting Windows applications to Native Client in Visual Studio</a>
+  - <a href="#adding-platforms-to-a-project" id="id16" class="reference internal">Adding platforms to a project</a>
+  - <a href="#selecting-a-toolchain" id="id17" class="reference internal">Selecting a toolchain</a>
+  - <a href="#adding-libraries-to-a-project" id="id18" class="reference internal">Adding libraries to a project</a>
+  - <a href="#running-a-web-server" id="id19" class="reference internal">Running a web server</a>
+  - <a href="#keeping-track-of-all-the-pieces" id="id20" class="reference internal">Keeping track of all the pieces</a>
+  - <a href="#using-the-debuggers" id="id21" class="reference internal">Using the debuggers</a>
+  - <a href="#disable-chrome-caching" id="id22" class="reference internal">Disable Chrome caching</a>
+  - <a href="#a-warning-about-postmessage" id="id23" class="reference internal">A warning about PostMessage</a>
+  - <a href="#porting-windows-applications-to-native-client-in-visual-studio" id="id24" class="reference internal">Porting Windows applications to Native Client in Visual Studio</a>
 
 Whether you’re porting an existing project or starting from scratch, the Native Client Visual Studio add-in makes it easier to set up, build, run and debug your Native Client app by integrating the Native Client SDK development tools into the Visual Studio environment.
 
 The Native Client add-in requires Visual Studio 2012 or Visual Studio 2010 with Service Pack 1. No other versions of Visual Studio are currently supported. Visual Studio Express is also not supported.
 
-Introduction
-------------
+## Introduction
 
 The Native Client add-in for Visual Studio helps you develop your application more efficiently in many ways:
 
--   Organize and maintain your code as a Visual Studio project.
--   Iteratively write and test your application more easily. Visual Studio handles the details of launching a web server to serve your module and run the module in Chrome with a debugger attached.
--   Compile your module into a dynamically-linked library (DLL) using Visual Studio’s C/C++ compiler and run it as a Pepper plugin. This allows you to develop code incrementally, coding and/or porting one feature at a time into the Pepper APIs while continuing to use native Windows APIs that would otherwise be unavailable in an actual Native Client module.
--   Use Visual Studio’s built-in debugger to debug your code while it’s running as a Pepper plugin.
--   Compile your module into a .nexe or .pexe file using the Native Client SDK tools and run it as a bona fide Native Client module.
--   Use the Native Client debugger, nacl-gdb, to test your code when it’s running as a Native Client object.
+- Organize and maintain your code as a Visual Studio project.
+- Iteratively write and test your application more easily. Visual Studio handles the details of launching a web server to serve your module and run the module in Chrome with a debugger attached.
+- Compile your module into a dynamically-linked library (DLL) using Visual Studio’s C/C++ compiler and run it as a Pepper plugin. This allows you to develop code incrementally, coding and/or porting one feature at a time into the Pepper APIs while continuing to use native Windows APIs that would otherwise be unavailable in an actual Native Client module.
+- Use Visual Studio’s built-in debugger to debug your code while it’s running as a Pepper plugin.
+- Compile your module into a .nexe or .pexe file using the Native Client SDK tools and run it as a bona fide Native Client module.
+- Use the Native Client debugger, nacl-gdb, to test your code when it’s running as a Native Client object.
 
 The add-in defines five new Visual Studio platforms: `PPAPI`, `NaCl32`, `NaCl64`, `NaClARM`, and `PNaCl`. These platforms can be applied to the debug configuration of solutions and projects. The platforms configure the properties of your project so it can be built and run as either a Pepper plugin or a Native Client module. The platforms also define the behavior associated with the debug command so you can test your code while running in Visual Studio.
 
-Platforms
----------
+## Platforms
 
 It is helpful to consider the Visual Studio add-in platforms in two groups. One contains the PPAPI platform only. The other group, which we’ll call the Native Client platforms, contains platforms that all have “NaCl” in their names: `NaCl32`, `NaCl64`, `NaClARM`, and `PNaCl`. The diagram below shows the platforms, the ways they are normally used, and the build products they produce.
 
@@ -95,15 +93,14 @@ When you run the PNaCl platform from Visual Studio, Visual Studio uses the Nativ
 
 Note: The PNaCl platform currently supports the newlib toolchain only.
 
-Installing the add-in
----------------------
+## Installing the add-in
 
 In order to use the Native Client Visual Studio add-in, your development environment should include:
 
--   A 64-bit version of Windows Vista or Windows 7.
--   Visual Studio 2012 or Visual Service 2010 with Service Pack 1.
--   <a href="https://www.google.com/intl/en/chrome/browser/" class="reference external">Chrome</a> version 23 or greater. You can choose to develop using the latest <a href="https://www.google.com/intl/en/chrome/browser/canary.html" class="reference external">canary</a> build of Chrome, running the canary version side-by-side with (and separately from) your regular version of Chrome.
--   <a href="/docs/native-client/sdk/download" class="reference internal"><em>The Native Client SDK</em></a> with the `pepper_23` bundle or greater. The version of Chrome that you use must be equal or greater than the version of the SDK bundle.
+- A 64-bit version of Windows Vista or Windows 7.
+- Visual Studio 2012 or Visual Service 2010 with Service Pack 1.
+- <a href="https://www.google.com/intl/en/chrome/browser/" class="reference external">Chrome</a> version 23 or greater. You can choose to develop using the latest <a href="https://www.google.com/intl/en/chrome/browser/canary.html" class="reference external">canary</a> build of Chrome, running the canary version side-by-side with (and separately from) your regular version of Chrome.
+- <a href="/docs/native-client/sdk/download" class="reference internal"><em>The Native Client SDK</em></a> with the `pepper_23` bundle or greater. The version of Chrome that you use must be equal or greater than the version of the SDK bundle.
 
 ### Set environment variables
 
@@ -121,7 +118,7 @@ The Native Client Visual Studio add-in is a separate bundle in the SDK named `vs
 
 This creates a folder named `vs_addin`, containing the add-in itself, its installer files, and a directory of examples.
 
-Note: The vs\_addin bundle is only visible when you run `naclsdk` on a Windows system.
+Note: The vs_addin bundle is only visible when you run `naclsdk` on a Windows system.
 
 ### Run the installer
 
@@ -133,8 +130,8 @@ You can usually run the installer successfully with no arguments. The new platfo
 
 In some cases system resources may not be in their default locations. You might need to use these command line arguments when you run `install.bat`:
 
--   The MSBuild folder is assumed to be at `C:\Program Files (x86)\MSBuild`. You can specify an alternate path with the flag `--ms-build-path=<path>`. The installer assumes Visual Studio has created a user folder at
--   The addin itself is normally installed in `%USERPROFILE%\My Documents\Visual Studio 2012` (or 2010 for Visual Studio 2010). You can specify alternate paths with the `--vsuser-path=<path>` flag.
+- The MSBuild folder is assumed to be at `C:\Program Files (x86)\MSBuild`. You can specify an alternate path with the flag `--ms-build-path=<path>`. The installer assumes Visual Studio has created a user folder at
+- The addin itself is normally installed in `%USERPROFILE%\My Documents\Visual Studio 2012` (or 2010 for Visual Studio 2010). You can specify alternate paths with the `--vsuser-path=<path>` flag.
 
 From time to time an update to the Visual Studio add-in may become available. Updates are performed just like an installation. Download the new add-in using naclsdk update and run `install.bat` as administrator.
 
@@ -142,8 +139,7 @@ To uninstall the add-in, run `install.bat` as administrator and add the `--unins
 
 You can verify that the add-in has been installed and determine its version by selecting Add-in Manager in the Visual Studio Tools menu. If the add-in has been installed it will appear in the list of available add-ins. Select it and read its description.
 
-Try the `hello_world_gles` sample project
------------------------------------------
+## Try the `hello_world_gles` sample project
 
 The add-in comes with an examples directory. Open the sample project `examples\hello_world_gles\hello_world_gles.sln`. This project is an application that displays a spinning cube.
 
@@ -157,10 +153,10 @@ Open the sample project in Visual Studio, select the `Configuration Manager`, an
 
 Use the debugging command (F5) to build and run the project. As the wheels start to turn, you may be presented with one or more alerts. They are benign; you can accept them and set options to ignore them when that’s possible. Some of the messages you might see include:
 
--   “This project is out of date, would you like to build it?”
--   “Please specify the name of the executable file to be used for the debug session.” This should be the value of the environment variable CHROME\_PATH, which is usually supplied as the default value in the dialog.
--   “Debugging information for chrome.exe cannot be found.” This is to be expected, you are debugging your module’s code, not Chrome.
--   “Open file - security warning. The publisher could not be verified.” If Visual Studio is complaining about x86\_64-nacl-gdb.exe, that’s our debugger. Let it be.
+- “This project is out of date, would you like to build it?”
+- “Please specify the name of the executable file to be used for the debug session.” This should be the value of the environment variable CHROME_PATH, which is usually supplied as the default value in the dialog.
+- “Debugging information for chrome.exe cannot be found.” This is to be expected, you are debugging your module’s code, not Chrome.
+- “Open file - security warning. The publisher could not be verified.” If Visual Studio is complaining about x86_64-nacl-gdb.exe, that’s our debugger. Let it be.
 
 Once you’ve passed these hurdles, the application starts to run and you’ll see activity in three places:
 
@@ -170,7 +166,7 @@ Once you’ve passed these hurdles, the application starts to run and you’ll s
 
 ### Test the nacl-gdb debugger
 
-Add a breakpoint at the SwapBuffers call in the function MainLoop, which is in hello\_world.cc.
+Add a breakpoint at the SwapBuffers call in the function MainLoop, which is in hello_world.cc.
 
 ![/native-client/images/visualstudio2.png](/docs/native-client/images/visualstudio2.png)
 
@@ -184,8 +180,7 @@ If you’ve installed the `PPAPI` platform, go back to the `Configuration Manage
 
 At this point, it may be helpful to take a look at the properties that are associated with the PPAPI and Native Client platforms—see the settings in the sample project as an example.
 
-Developing for Native Client in Visual Studio
----------------------------------------------
+## Developing for Native Client in Visual Studio
 
 After you’ve installed the add-in and tried the sample project, you’re ready to start working with your own code. You can reuse the sample project and the PPAPI and Native Client platforms it already has by replacing the source code with your own. More likely, you will add the platforms to an existing project, or to a new project that you create from scratch.
 
@@ -199,9 +194,9 @@ Follow these steps to add the Native Client and PPAPI platforms to a project:
 4.  In most cases, you should select `<Empty>` in the “Copy settings from” menu. **Never copy settings between \`\`PPAPI\`\`, \`\`NaCl32\`\`, \`\`NaCl64\`\`, \`\`NaClARM\`\`, or \`\`PNaCl\`\` platforms**. You can copy settings from a Win32 platform, if one exists, but afterwards be sure that the project properties are properly set for the new platform, as mentioned in step 6 below.
 5.  If you like, check the “Create new solutions platform” box to create a solution platform in addition to a project platform. (This is optional, but it can be convenient since it lets you switch project platforms from the Visual Studio main window by selecting the solution platform that has the same name.)
 6.  Review the project properties for the new platform you just added. In most cases, the default properties for each platform should be correct, but it pays to check. Be especially careful about custom properties you may have set beforehand, or copied from a Win32 platform. Also confirm that the Configuration type is correct:
-    -   `Dynamic Library` for `PPAPI`
-    -   `Application (.pexe)` for `PNaCl`
-    -   `Application (.nexe)` for `NaCl32`, `NaCl64`, and `NaClARM`
+    - `Dynamic Library` for `PPAPI`
+    - `Application (.pexe)` for `PNaCl`
+    - `Application (.nexe)` for `NaCl32`, `NaCl64`, and `NaClARM`
 
 ### Selecting a toolchain
 
@@ -231,14 +226,14 @@ If there is no web server running at the specified port, Visual Studio will try 
 
 No matter where the web server lives or how it’s launched you must make sure that it has all the files that your application needs:
 
--   All Native Client applications must have an <a href="/docs/native-client/devguide/coding/application-structure#html-file" class="reference internal"><em>html host page</em></a>. This file is typically called `index.html`. The host page must have an embed tag with its type attribute set to `application-type/x-nacl`. If you plan to use a Native Client platform the embed tag must also include a src attribute pointing to a Native Client manifest (.mnf) file.
--   If you are using a Native Client platform you must include a valid <a href="/docs/native-client/devguide/coding/application-structure#manifest-file" class="reference internal"><em>manifest file</em></a>. The manifest file points to the .pexe or .nexe files that Visual Studio builds. These will be placed in the directory specified in the project’s `General > Output Directory` configuration property, which is usually `$(ProjectDir)$(ToolchainName)`. Visual Studio can use the Native Client SDK script create\_nmf.py to automatically generate the manifest file for you. To use this script set the project’s `Linker > General > Create NMF Automatically` property to “yes.”
+- All Native Client applications must have an <a href="/docs/native-client/devguide/coding/application-structure#html-file" class="reference internal"><em>html host page</em></a>. This file is typically called `index.html`. The host page must have an embed tag with its type attribute set to `application-type/x-nacl`. If you plan to use a Native Client platform the embed tag must also include a src attribute pointing to a Native Client manifest (.mnf) file.
+- If you are using a Native Client platform you must include a valid <a href="/docs/native-client/devguide/coding/application-structure#manifest-file" class="reference internal"><em>manifest file</em></a>. The manifest file points to the .pexe or .nexe files that Visual Studio builds. These will be placed in the directory specified in the project’s `General > Output Directory` configuration property, which is usually `$(ProjectDir)$(ToolchainName)`. Visual Studio can use the Native Client SDK script create_nmf.py to automatically generate the manifest file for you. To use this script set the project’s `Linker > General > Create NMF Automatically` property to “yes.”
 
 If you are letting Visual Studio discover and run the SDK server, these files should be placed in the project directory. If you are running your own server, you must be sure that the host page `index.html` is placed in your server’s root directory. Remember, if you’re using one of the Native Client platforms the paths for the manifest file and .pexe or .nexe files must be reachable from the server.
 
-The structure of the manifest file can be more complicated if your application uses Native Client’s ability to dynamically link libraries. You may have to add additional information about dynamically linked libraries to the manifest file even if you create it automatically. The use and limitations of the create\_nmf tool are explained in <a href="/docs/native-client/devguide/devcycle/dynamic-loading#dynamic-loading-manifest" class="reference internal"><em>Generating a Native Client manifest file for a dynamically linked application</em></a>.
+The structure of the manifest file can be more complicated if your application uses Native Client’s ability to dynamically link libraries. You may have to add additional information about dynamically linked libraries to the manifest file even if you create it automatically. The use and limitations of the create_nmf tool are explained in <a href="/docs/native-client/devguide/devcycle/dynamic-loading#dynamic-loading-manifest" class="reference internal"><em>Generating a Native Client manifest file for a dynamically linked application</em></a>.
 
-You can look at the example projects in the SDK to see how the index and manifest files are organized. The example project `hello_nacl` has a subdirectory also called `hello_nacl`. That folder contains `index.html` and `hello_nacl.nmf`. The nexe file is found in `NaCl64\newlib\Debug\hello_nacl_64.nexe`. The `hello_world_gles` example project contains a subdirectory called hello\_world\_gles\`. That directory contains html files built with both toolchains (`index_glibc.html` and `index_newlib.html`). The .nexe and .nmf files are found in the newlib and glibc subfolders. For additional information about the parts of a Native Client application, see <a href="/docs/native-client/devguide/coding/application-structure" class="reference internal"><em>Application Structure</em></a>.
+You can look at the example projects in the SDK to see how the index and manifest files are organized. The example project `hello_nacl` has a subdirectory also called `hello_nacl`. That folder contains `index.html` and `hello_nacl.nmf`. The nexe file is found in `NaCl64\newlib\Debug\hello_nacl_64.nexe`. The `hello_world_gles` example project contains a subdirectory called hello_world_gles\`. That directory contains html files built with both toolchains (`index_glibc.html` and `index_newlib.html`). The .nexe and .nmf files are found in the newlib and glibc subfolders. For additional information about the parts of a Native Client application, see <a href="/docs/native-client/devguide/coding/application-structure" class="reference internal"><em>Application Structure</em></a>.
 
 ### Using the debuggers
 

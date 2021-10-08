@@ -58,7 +58,7 @@ Here's a `messages.json` file that defines three messages named "prompt_for_name
     "description": "Say goodbye to the user",
     "placeholders": {
       "our_site": {
-        "content": "Example.com",
+        "content": "Example.com"
       },
       "user": {
         "content": "$1",

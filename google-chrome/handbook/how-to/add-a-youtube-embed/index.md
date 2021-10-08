@@ -1,7 +1,6 @@
 2020-11-30
 
-Add a YouTube Embed
--------------------
+## Add a YouTube Embed
 
 To add an YouTube embed to a post you can use a custom shortcode.
 

@@ -2,31 +2,30 @@
 
 {% include 'partials/nacl-warning.njk' %}
 
-------------------------------------------------------------------------
+---
 
--   <a href="#overview" id="id1" class="reference internal">Overview</a>
--   <a href="#using-the-native-client-sdk-build-system" id="id2" class="reference internal">Using the Native Client SDK build system</a>
+- <a href="#overview" id="id1" class="reference internal">Overview</a>
+- <a href="#using-the-native-client-sdk-build-system" id="id2" class="reference internal">Using the Native Client SDK build system</a>
 
-    -   <a href="#simplifying-the-makefile" id="id3" class="reference internal">Simplifying the Makefile</a>
-    -   <a href="#choosing-valid-toolchains-and-including-common-mk" id="id4" class="reference internal">Choosing valid toolchains, and including common.mk</a>
-    -   <a href="#configuring-your-project" id="id5" class="reference internal">Configuring your project</a>
-    -   <a href="#build-macros" id="id6" class="reference internal">Build macros</a>
+  - <a href="#simplifying-the-makefile" id="id3" class="reference internal">Simplifying the Makefile</a>
+  - <a href="#choosing-valid-toolchains-and-including-common-mk" id="id4" class="reference internal">Choosing valid toolchains, and including common.mk</a>
+  - <a href="#configuring-your-project" id="id5" class="reference internal">Configuring your project</a>
+  - <a href="#build-macros" id="id6" class="reference internal">Build macros</a>
 
--   <a href="#making-index-html-work-for-chrome-apps" id="id7" class="reference internal">Making index.html work for Chrome Apps</a>
+- <a href="#making-index-html-work-for-chrome-apps" id="id7" class="reference internal">Making index.html work for Chrome Apps</a>
 
-    -   <a href="#csp-rules" id="id8" class="reference internal">CSP rules</a>
-    -   <a href="#making-index-html-csp-compliant" id="id9" class="reference internal">Making index.html CSP-compliant</a>
-    -   <a href="#making-index-html-support-different-toolchains-and-configurations" id="id10" class="reference internal">Making index.html support different toolchains and configurations</a>
+  - <a href="#csp-rules" id="id8" class="reference internal">CSP rules</a>
+  - <a href="#making-index-html-csp-compliant" id="id9" class="reference internal">Making index.html CSP-compliant</a>
+  - <a href="#making-index-html-support-different-toolchains-and-configurations" id="id10" class="reference internal">Making index.html support different toolchains and configurations</a>
 
--   <a href="#sharing-common-code-with-common-js" id="id11" class="reference internal">Sharing common code with common.js</a>
+- <a href="#sharing-common-code-with-common-js" id="id11" class="reference internal">Sharing common code with common.js</a>
 
-    -   <a href="#loading-the-page-and-creating-the-module" id="id12" class="reference internal">Loading the page and creating the module</a>
+  - <a href="#loading-the-page-and-creating-the-module" id="id12" class="reference internal">Loading the page and creating the module</a>
 
--   <a href="#example-specific-behavior-with-example-js" id="id13" class="reference internal">Example-specific behavior with example.js</a>
--   <a href="#compile-the-native-client-module-and-run-the-application-again" id="id14" class="reference internal">Compile the Native Client module and run the application again</a>
+- <a href="#example-specific-behavior-with-example-js" id="id13" class="reference internal">Example-specific behavior with example.js</a>
+- <a href="#compile-the-native-client-module-and-run-the-application-again" id="id14" class="reference internal">Compile the Native Client module and run the application again</a>
 
-Overview
---------
+## Overview
 
 This tutorial shows how to convert the finished PNaCl web application from <a href="/docs/native-client/devguide/tutorial/tutorial-part1" class="reference internal"><em>Part 1</em></a> to use the Native Client SDK build system and common JavaScript files. It also demonstrates some techniques to make your web application <a href="/apps/contentSecurityPolicy" class="reference external">Content Security Policy (CSP)-compliant</a>, which is necessary for <a href="/apps" class="reference external">Chrome Apps</a>.
 
@@ -34,8 +33,7 @@ Using the Native Client SDK build system makes it easy to build with all of the 
 
 The finished code for this example can be found in the `pepper_$(VERSION)/getting_started/part2` directory in the Native Client SDK download.
 
-Using the Native Client SDK build system
-----------------------------------------
+## Using the Native Client SDK build system
 
 This section describes how to use the SDK build system. To do so, we’ll make changes in the makefile. Because the makefile in part1 and part2 are so different, it is easier to start from scratch. Here is the contents of the new makefile. The following sections will describe it in more detail.
 
@@ -157,8 +155,7 @@ Finally, the NMF rule generates a NaCl manifest file (`.nmf`) that references ea
 
     $(eval $(call NMF_RULE,$(TARGET),))
 
-Making index.html work for Chrome Apps
---------------------------------------
+## Making index.html work for Chrome Apps
 
 This section describes the changes necessary to make the HTML and JavaScript in part1 CSP-compliant. This is required if you want to build a <a href="/apps" class="reference external">Chrome App</a>, but is not necessary if you want to use PNaCl on the open web.
 
@@ -166,9 +163,9 @@ This section describes the changes necessary to make the HTML and JavaScript in 
 
 <a href="/apps/contentSecurityPolicy#what" class="reference external">Chrome Apps CSP</a> restricts you from doing the following:
 
--   You can’t use inline scripting in your Chrome App pages. The restriction bans both `<script>` blocks and event handlers (`<button onclick="...">`).
--   You can’t reference any external resources in any of your app files (except for video and audio resources). You can’t embed external resources in an iframe.
--   You can’t use string-to-JavaScript methods like `eval()` and `new Function()`.
+- You can’t use inline scripting in your Chrome App pages. The restriction bans both `<script>` blocks and event handlers (`<button onclick="...">`).
+- You can’t reference any external resources in any of your app files (except for video and audio resources). You can’t embed external resources in an iframe.
+- You can’t use string-to-JavaScript methods like `eval()` and `new Function()`.
 
 ### Making index.html CSP-compliant
 
@@ -213,8 +210,7 @@ Next, we remove the `embed` element that is described in HTML. This will be auto
     -->
     <div id="listener"></div>
 
-Sharing common code with common.js
-----------------------------------
+## Sharing common code with common.js
 
 `common.js` contains JavaScript code that each example uses to create a NaCl module, handle messages from that module and other common tasks like displaying the module load status and logging messages. Explaining all of `common.js` is outside the scope of this document, but please look at the documentation in that file for more information.
 
@@ -332,8 +328,7 @@ When the module finishes loading, it will dispatch a `load` event, and the event
       }
     }
 
-Example-specific behavior with example.js
------------------------------------------
+## Example-specific behavior with example.js
 
 As described in the previous section, `common.js` will call certain functions during the module loading process. This example only needs to respond to two: `moduleDidLoad` and `handleMessage`.
 
@@ -358,8 +353,7 @@ As described in the previous section, `common.js` will call certain functions du
       logEl.textContent += message.data;
     }
 
-Compile the Native Client module and run the application again
---------------------------------------------------------------
+## Compile the Native Client module and run the application again
 
 1.  Compile the Native Client module by running the `make` command again.
 

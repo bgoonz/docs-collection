@@ -60,7 +60,6 @@ published by the `storage.managed` API.
   // "properties" maps an optional key of this object to its schema. At the
   // top-level object, these keys are the policy names supported.
   "properties": {
-
     // The policy name "AutoSave" is mapped to its schema, which in this case
     // declares it as a simple boolean value.
     // "title" and "description" are optional and are used to show a

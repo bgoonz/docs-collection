@@ -2,26 +2,25 @@
 
 {% include 'partials/nacl-warning.njk' %}
 
-------------------------------------------------------------------------
+---
 
--   <a href="#overview" id="id2" class="reference internal">Overview</a>
--   <a href="#handling-browser-events" id="id3" class="reference internal">Handling browser events</a>
+- <a href="#overview" id="id2" class="reference internal">Overview</a>
+- <a href="#handling-browser-events" id="id3" class="reference internal">Handling browser events</a>
 
-    -   <a href="#didchangeview" id="id4" class="reference internal">DidChangeView()</a>
-    -   <a href="#didchangefocus" id="id5" class="reference internal">DidChangeFocus()</a>
+  - <a href="#didchangeview" id="id4" class="reference internal">DidChangeView()</a>
+  - <a href="#didchangefocus" id="id5" class="reference internal">DidChangeFocus()</a>
 
--   <a href="#handling-input-events" id="id6" class="reference internal">Handling input events</a>
+- <a href="#handling-input-events" id="id6" class="reference internal">Handling input events</a>
 
-    -   <a href="#registering-a-module-to-accept-input-events" id="id7" class="reference internal">Registering a module to accept input events</a>
-    -   <a href="#determining-and-branching-on-event-types" id="id8" class="reference internal">Determining and branching on event types</a>
-    -   <a href="#threading-and-blocking" id="id9" class="reference internal">Threading and blocking</a>
+  - <a href="#registering-a-module-to-accept-input-events" id="id7" class="reference internal">Registering a module to accept input events</a>
+  - <a href="#determining-and-branching-on-event-types" id="id8" class="reference internal">Determining and branching on event types</a>
+  - <a href="#threading-and-blocking" id="id9" class="reference internal">Threading and blocking</a>
 
 This section describes view change, focus, and input event handling for a Native Client module. The section assumes you are familiar with the material presented in the <a href="/docs/native-client/overview" class="reference internal"><em>Technical Overview</em></a>.
 
-There are two examples used in this section to illustrate basic programming techniques. The `input_events` example is used to illustrate how your module can react to keyboard and mouse input event. The `mouse_lock` example is used to illustrate how your module can react to view change events. You can find these examples in the `/pepper_<version>/examples/api/input_event` and `/pepper_<version>/examples/api/mouse_lock` directories in the Native Client SDK. There is also the ppapi\_simple library that can be used to to implement most of the boiler plate. The `pi_generator` example in `/pepper_<version>/examples/demo/pi_generator` uses ppapi\_simple to manage view change events and 2D graphics.
+There are two examples used in this section to illustrate basic programming techniques. The `input_events` example is used to illustrate how your module can react to keyboard and mouse input event. The `mouse_lock` example is used to illustrate how your module can react to view change events. You can find these examples in the `/pepper_<version>/examples/api/input_event` and `/pepper_<version>/examples/api/mouse_lock` directories in the Native Client SDK. There is also the ppapi_simple library that can be used to to implement most of the boiler plate. The `pi_generator` example in `/pepper_<version>/examples/demo/pi_generator` uses ppapi_simple to manage view change events and 2D graphics.
 
-Overview
---------
+## Overview
 
 When a user interacts with the web page using a keyboard, mouse or some other input device, the browser generates input events. In a traditional web application, these input events are passed to and handled in JavaScript, typically through event listeners and event handlers. In a Native Client application, user interaction with an instance of a module (e.g., clicking inside the rectangle managed by a module) also generates input events, which are passed to the module. The browser also passes view change and focus events that affect a module’s instance to the module. Native Client modules can override certain functions in the <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_instance" class="reference external">pp::Instance</a> class to handle input and browser events. These functions are listed in the table below:
 
@@ -29,8 +28,7 @@ When a user interacts with the web page using a keyboard, mouse or some other in
 
 These interfaces are found in the <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_instance" class="reference external">pp::Instance class</a>. The sections below provide examples of how to handle these events.
 
-Handling browser events
------------------------
+## Handling browser events
 
 ### DidChangeView()
 
@@ -61,8 +59,8 @@ In the `mouse_lock` example, `DidChangeView()` checks the previous size of insta
 
 For more information about graphics contexts and how to manipulate images, see:
 
--   <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_image_data" class="reference external">pp::ImageData class</a>
--   <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_graphics2_d" class="reference external">pp::Graphics2D class</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_image_data" class="reference external">pp::ImageData class</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_graphics2_d" class="reference external">pp::Graphics2D class</a>
 
 ### DidChangeFocus()
 
@@ -73,8 +71,7 @@ For more information about graphics contexts and how to manipulate images, see:
       // the instance.
     }
 
-Handling input events
----------------------
+## Handling input events
 
 Input events are events that occur when the user interacts with a module instance using the mouse, keyboard, or other input device (e.g., touch screen). This section describes how the `input_events` example handles input events.
 
@@ -171,9 +168,9 @@ In a typical implementation, the `HandleInputEvent()` function determines the ty
 
 Notice that the generic `InputEvent` received by `HandleInputEvent()` is converted into a specific type after the event type is determined. The event types handled in the example code are `MouseInputEvent`, `WheelInputEvent`, and `KeyboardInputEvent`. There are also `TouchInputEvents`. For the latest list of event types, see the <a href="/docs/native-client/pepper_stable/c/classpp_1_1_input_event" class="reference external">InputEvent documentation</a>. For reference information related to the these event classes, see the following documentation:
 
--   <a href="/docs/native-client/pepper_stable/c/classpp_1_1_mouse_input_event" class="reference external">pp::MouseInputEvent class</a>
--   <a href="/docs/native-client/pepper_stable/c/classpp_1_1_wheel_input_event" class="reference external">pp::WheelInputEvent class</a>
--   <a href="/docs/native-client/pepper_stable/c/classpp_1_1_keyboard_input_event" class="reference external">pp::KeyboardInputEvent class</a>
+- <a href="/docs/native-client/pepper_stable/c/classpp_1_1_mouse_input_event" class="reference external">pp::MouseInputEvent class</a>
+- <a href="/docs/native-client/pepper_stable/c/classpp_1_1_wheel_input_event" class="reference external">pp::WheelInputEvent class</a>
+- <a href="/docs/native-client/pepper_stable/c/classpp_1_1_keyboard_input_event" class="reference external">pp::KeyboardInputEvent class</a>
 
 ### Threading and blocking
 

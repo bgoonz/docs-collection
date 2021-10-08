@@ -4,8 +4,7 @@
 
 Extensions hosted outside of the [Chrome Web Store](http://chrome.google.com/webstore) can only be installed by Linux users. This article describes how to package, host, and update `.crx` files from a personal server. If distributing an extension or theme solely through the [Chrome Web Store](http://chrome.google.com/webstore), consult [Webstore Hosting and Updating](/docs/extensions/mv2/hosting).
 
-Packaging {: \#packaging }
---------------------------
+## Packaging {: \#packaging }
 
 Extensions and themes are served as `.crx` files. When uploading through the [Chrome Developer Dashboard](https://chrome.google.com/webstore/developer/dashboard) , the dashboard creates the `.crx` file automatically. If published on a personal server, the `.crx` file will need to be created locally or downloaded from the Chrome Web Store.
 
@@ -67,38 +66,36 @@ Package extensions in the command line by invoking [`chrome.exe`](https://www.ch
 
     chrome.exe --pack-extension=C:\myext --pack-extension-key=C:\myext.pem
 
-Hosting {: \#hosting }
-----------------------
+## Hosting {: \#hosting }
 
 A server that hosts `.crx` files must use appropriate HTTP headers to allow users to install the extension by clicking a link.
 
 Google Chrome considers a file to be installable if **either** of the following is true:
 
--   The file has the content type `application/x-chrome-extension`
--   The file suffix is `.crx` and **both** of the following are true:
-    -   The file **is not** served with the HTTP header `X-Content-Type-Options: nosniff`
-    -   The file **is** served with one of the following content types:
-        -   empty string
-        -   “text/plain”
-        -   “application/octet-stream”
-        -   “unknown/unknown”
-        -   “application/unknown”
-        -   “\*/\*”
+- The file has the content type `application/x-chrome-extension`
+- The file suffix is `.crx` and **both** of the following are true:
+  - The file **is not** served with the HTTP header `X-Content-Type-Options: nosniff`
+  - The file **is** served with one of the following content types:
+    - empty string
+    - “text/plain”
+    - “application/octet-stream”
+    - “unknown/unknown”
+    - “application/unknown”
+    - “\*/\*”
 
 The most common reason for failing to recognize an installable file is that the server sends the header `X-Content-Type-Options: nosniff`. The second most common reason is that the server sends an unknown content type—one that isn’t in the previous list. To fix an HTTP header issue, either change the configuration of the server or try hosting the `.crx` file at another server.
 
-Updating {: \#update }
-----------------------
+## Updating {: \#update }
 
 Every few hours, the browser checks installed extensions for an update URL. For each one, it makes a request to that URL looking for an update manifest XML file.
 
--   The content returned by an update check is an *update manifest* XML document listing the latest version of an extension.
+- The content returned by an update check is an _update manifest_ XML document listing the latest version of an extension.
 
 If the update manifest mentions a version that is more recent than what is installed, the browser downloads and installs the new version. As with manual updates, the new `.crx` file must be signed with the same private key as the currently installed version.
 
 **Note:** In order to maintain user privacy, Google Chrome does not send any Cookie headers with autoupdate manifest requests, and ignores any Set-Cookie headers in the responses to those requests.
 
-### Update URL {: \#update\_url }
+### Update URL {: \#update_url }
 
 Extensions hosted on servers outside of the Chrome Webstore must include the `update_url` field in their [`manifest.json`](/docs/extensions/mv2/tabs) file.
 
@@ -109,7 +106,7 @@ Extensions hosted on servers outside of the Chrome Webstore must include the `up
       ...
     }
 
-### Update manifest {: \#update\_manifest }
+### Update manifest {: \#update_manifest }
 
 The update manifest returned by the server should be an XML document.
 
@@ -134,7 +131,7 @@ The default update check frequency is several hours, but an update can be forced
 
 This will start checks for all installed extensions.
 
-### Advanced usage: request parameters {: \#request\_parameters }
+### Advanced usage: request parameters {: \#request_parameters }
 
 The basic autoupdate mechanism is designed to make the server-side work as easy as just dropping a static XML file onto any plain web server, such as Apache, and updating that XML file as new extension versions are released.
 
@@ -150,12 +147,12 @@ Where `_<extension_data>_` is a URL-encoded string of the format:
 
 For example, two extensions point to the same update URL (`https://test.com/extension_updates.php`):
 
--   Extension 1
-    -   ID: “aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa”
-    -   Version: “1.1”
--   Extension 2
-    -   ID: “bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb”
-    -   Version: “0.4”
+- Extension 1
+  - ID: “aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa”
+  - Version: “1.1”
+- Extension 2
+  - ID: “bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb”
+  - Version: “0.4”
 
 The request to update each individual extension would be,
 
@@ -171,7 +168,7 @@ Multiple extensions can be listed in a single request for each unique update URL
 
 If the number of installed extensions using the same update URL is large enough that a GET request URL is too long (over 2000 characters or so), the update check issues additional GET requests as necessary.
 
-### Advanced usage: minimum browser version {: \#minimum\_browser\_version }
+### Advanced usage: minimum browser version {: \#minimum_browser_version }
 
 As more APIs are added to the extensions system, an updated version of an extension that will work only with newer versions of the browser may be released. While Google Chrome itself is autoupdated, it can take a few days before the majority of the user base has updated to any given new release. To ensure that a given update will apply only to Google Chrome versions at or higher than a specific version, add the “prodversionmin” attribute to the element in the update response.
 

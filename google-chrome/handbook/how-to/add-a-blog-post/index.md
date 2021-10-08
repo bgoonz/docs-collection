@@ -1,14 +1,12 @@
 2021-01-27
 
-Clone the sample post
----------------------
+## Clone the sample post
 
 Duplicate the example post located in `site/en/blog/_example/` and rename the folder to match whatever slug you want to use for your url.
 
 Posts support markdown syntax with some additional features and shortcodes.
 
-Metadata
---------
+## Metadata
 
 Each `index.md` file starts with YAML Front Matter. See `site/en/blog/_example/` for documentation of all supported metadata.
 
@@ -22,7 +20,6 @@ Follow the [add media guide](/docs/handbook/how-to/add-media/) to upload your im
 
 Paste that into the `hero` field in your YAML frontmatter.
 
-Components
-----------
+## Components
 
 See the [components guide](/docs/handbook/components/) for a full list of supported elements.

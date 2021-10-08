@@ -10,8 +10,7 @@ The Console Utilities API contains a collection of convenience functions for per
 
 Looking for `console.log()`, `console.error()`, and the rest of the `console.*` functions? See [Console API Reference](/docs/devtools/console/api).
 
-$\_ {: \#recent }
------------------
+## $\_ {: \#recent }
 
 `$_` returns the value of the most recently evaluated expression.
 
@@ -23,8 +22,7 @@ In the next example, the evaluated expression initially contains an array of nam
 
 {% Img src=“image/admin/d2jU3P5gc4G2OuK4PMQ1.png”, alt=“$\_ changes when new commands are evaluated”, width=“800”, height=“319” %}
 
-$0 - $4 {: \#recent-many }
---------------------------
+## $0 - $4 {: \#recent-many }
 
 The `$0`, `$1`, `$2`, `$3` and `$4` commands work as a historical reference to the last five DOM elements inspected within the Elements panel or the last five JavaScript heap objects selected in the Profiles panel. `$0` returns the most recently selected element or JavaScript object, `$1` returns the second most recently selected one, and so on.
 
@@ -36,8 +34,7 @@ The image below shows a different element selected in the same page. The `$0` no
 
 {% Img src=“image/admin/ET1JJFtUIXvaoPCGQ94C.png”, alt=“Example of $1”, width=“800”, height=“318” %}
 
-$(selector, \[startNode\]) {: \#querySelector-function }
---------------------------------------------------------
+## $(selector, \[startNode\]) {: \#querySelector-function }
 
 `$(selector)` returns the reference to the first DOM element with the specified CSS selector. When called with one argument, this function is an alias for the [document.querySelector()](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector) function.
 
@@ -63,7 +60,8 @@ The following example returns a reference to the first element after the current
 
 {% endAside %}
 
-$$(selector, \[startNode\]) {: \#querySelectorAll-function }
+$$
+(selector, \[startNode\]) {: \#querySelectorAll-function }
 ------------------------------------------------------------
 
 `$$(selector)` returns an array of elements that match the given CSS selector. This command is equivalent to calling [document.querySelectorAll()](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelectorAll).
@@ -347,3 +345,4 @@ values(object) {: \#values-function }
 `values(object)` returns an array containing the values of all properties belonging to the specified object.
 
     values(object);
+$$

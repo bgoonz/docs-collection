@@ -4,8 +4,7 @@
 
 Content scripts are files that run in the context of web pages. By using the standard [Document Object Model](http://www.w3.org/TR/DOM-Level-2-HTML/) (DOM), they are able to read details of the web pages the browser visits, make changes to them and pass information to their parent extension.
 
-Understand content script capabilities {: \#capabilities }
-----------------------------------------------------------
+## Understand content script capabilities {: \#capabilities }
 
 Content scripts can access Chrome APIs used by their parent extension by exchanging [messages](/docs/extensions/mv2/messaging) with the extension. They can also access the URL of an extension’s file with `chrome.runtime.getURL()` and use the result the same as other URLs.
 
@@ -15,21 +14,20 @@ Content scripts can access Chrome APIs used by their parent extension by exchang
 
 Additionally, content script can access the following chrome APIs directly:
 
--   [i18n](/docs/extensions/reference/i18n)
--   [storage](/docs/extensions/reference/storage)
--   [runtime](/docs/extensions/reference/runtime):
-    -   [connect](/docs/extensions/reference/runtime#method-connect)
-    -   [getManifest](/docs/extensions/reference/runtime#method-getManifest)
-    -   [getURL](/docs/extensions/reference/runtime#method-getURL)
-    -   [id](/docs/extensions/reference/runtime#property-id)
-    -   [onConnect](/docs/extensions/reference/runtime#event-onConnect)
-    -   [onMessage](/docs/extensions/reference/runtime#event-onMessage)
-    -   [sendMessage](/docs/extensions/reference/runtime#method-sendMessage)
+- [i18n](/docs/extensions/reference/i18n)
+- [storage](/docs/extensions/reference/storage)
+- [runtime](/docs/extensions/reference/runtime):
+  - [connect](/docs/extensions/reference/runtime#method-connect)
+  - [getManifest](/docs/extensions/reference/runtime#method-getManifest)
+  - [getURL](/docs/extensions/reference/runtime#method-getURL)
+  - [id](/docs/extensions/reference/runtime#property-id)
+  - [onConnect](/docs/extensions/reference/runtime#event-onConnect)
+  - [onMessage](/docs/extensions/reference/runtime#event-onMessage)
+  - [sendMessage](/docs/extensions/reference/runtime#method-sendMessage)
 
 Content scripts are unable to access other APIs directly.
 
-Work in isolated worlds {: \#isolated\_world }
-----------------------------------------------
+## Work in isolated worlds {: \#isolated_world }
 
 Content scripts live in an isolated world, allowing a content script to makes changes to its JavaScript environment without conflicting with the page or additional content scripts.
 
@@ -62,8 +60,7 @@ Isolated worlds do not allow for content scripts, the extension, and the web pag
 
 {% YouTube id=“laLudeUmXHM” %}
 
-Inject scripts {: \#functionality }
------------------------------------
+## Inject scripts {: \#functionality }
 
 Content Scripts can be [programmatically](#programmatic) or [declaratively](#declaratively) injected.
 
@@ -154,14 +151,14 @@ Glob properties follow a different, more flexible syntax than [match patterns](/
 
 For example, the glob **http:// ??? .example.com/foo/ \*** matches any of the following:
 
--   **http:// www .example.com/foo /bar**
--   **http:// the .example.com/foo /**
+- **http:// www .example.com/foo /bar**
+- **http:// the .example.com/foo /**
 
-However, it does *not* match the following:
+However, it does _not_ match the following:
 
--   **http:// my .example.com/foo/bar**
--   **http:// example .com/foo/**
--   **http://www.example.com/foo**
+- **http:// my .example.com/foo/bar**
+- **http:// example .com/foo/**
+- **http://www.example.com/foo**
 
 This extension would inject the content script into **http:/www.nytimes.com/ arts /index.html** and **http://www.nytimes.com/ jobs /index.html** but not into **http://www.nytimes.com/ sports /index.html**.
 
@@ -210,7 +207,7 @@ One, all, or some of these can be included to achieve the correct scope.
       ...
     }
 
-#### Run time {: \#run\_time }
+#### Run time {: \#run_time }
 
 When JavaScript files are injected into the web page is controlled by the `run_at` field. The preffered and default field is `"document_idle"`, but can also be specified as `"document_start"` or `"document_end"` if needed.
 
@@ -254,8 +251,7 @@ The `"all_frames"` field allows the extension to specify if JavaScript and CSS f
 <br />
 If specified <code>true</code>, it will inject into all frames, even if the frame is not the topmost frame in the tab. Each frame is checked independently for URL requirements, it will not inject into child frames if the URL requirements are not met.</td></tr></tbody></table>
 
-Communication with the embedding page {: \#host-page-communication }
---------------------------------------------------------------------
+## Communication with the embedding page {: \#host-page-communication }
 
 Although the execution environments of content scripts and the pages that host them are isolated from each other, they share access to the page’s DOM. If the page wishes to communicate with the content script, or with the extension via the content script, it must do so through the shared DOM.
 
@@ -281,8 +277,7 @@ An example can be accomplished using [`window.postMessage`](https://developer.mo
 
 The non-extension page, example.html, posts messages to itself. This message is intercepted and inspected by the content script and then posted to the extension process. In this way, the page establishes a line of communication to the extension process. The reverse is possible through similar means.
 
-Stay secure {: \#security }
----------------------------
+## Stay secure {: \#security }
 
 While isolated worlds provide a layer of protection, using content scripts can create vulnerabilities in an extension and the web page. If the content script receives content from a separate website, such as making an [XMLHttpRequest](/docs/extensions/mv2/xhr), be careful to filter content [cross-site scripting](http://en.wikipedia.org/wiki/Cross-site_scripting) attacks before injecting it. Only communicate over HTTPS in order to avoid [“man-in-the-middle”](http://en.wikipedia.org/wiki/Man-in-the-middle_attack) attacks.
 

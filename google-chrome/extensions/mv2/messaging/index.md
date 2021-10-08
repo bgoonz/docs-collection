@@ -32,7 +32,7 @@ side, if there is one.
 Sending a request from a content script looks like this:
 
 ```js
-chrome.runtime.sendMessage({greeting: "hello"}, function(response) {
+chrome.runtime.sendMessage({ greeting: "hello" }, function (response) {
   console.log(response.farewell);
 });
 ```
@@ -42,10 +42,14 @@ specify which tab to send it to. This example demonstrates sending a message to 
 in the selected tab.
 
 ```js
-chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-  chrome.tabs.sendMessage(tabs[0].id, {greeting: "hello"}, function(response) {
-    console.log(response.farewell);
-  });
+chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+  chrome.tabs.sendMessage(
+    tabs[0].id,
+    { greeting: "hello" },
+    function (response) {
+      console.log(response.farewell);
+    }
+  );
 });
 ```
 
@@ -53,15 +57,14 @@ On the receiving end, you need to set up an [runtime.onMessage][6] event listene
 message. This looks the same from a content script or extension page.
 
 ```js
-chrome.runtime.onMessage.addListener(
-  function(request, sender, sendResponse) {
-    console.log(sender.tab ?
-                "from a content script:" + sender.tab.url :
-                "from the extension");
-    if (request.greeting == "hello")
-      sendResponse({farewell: "goodbye"});
-  }
-);
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  console.log(
+    sender.tab
+      ? "from a content script:" + sender.tab.url
+      : "from the extension"
+  );
+  if (request.greeting == "hello") sendResponse({ farewell: "goodbye" });
+});
 ```
 
 In the above example, `sendResponse` was called synchronously. If you want to asynchronously use
@@ -89,13 +92,12 @@ sending and receiving messages through that connection.
 Here is how you open a channel from a content script, and send and listen for messages:
 
 ```js
-var port = chrome.runtime.connect({name: "knockknock"});
-port.postMessage({joke: "Knock knock"});
-port.onMessage.addListener(function(msg) {
-  if (msg.question == "Who's there?")
-    port.postMessage({answer: "Madame"});
+var port = chrome.runtime.connect({ name: "knockknock" });
+port.postMessage({ joke: "Knock knock" });
+port.onMessage.addListener(function (msg) {
+  if (msg.question == "Who's there?") port.postMessage({ answer: "Madame" });
   else if (msg.question == "Madame who?")
-    port.postMessage({answer: "Madame... Bovary"});
+    port.postMessage({ answer: "Madame... Bovary" });
 });
 ```
 
@@ -110,15 +112,15 @@ use to send and receive messages through the connection. Here's what it looks li
 incoming connections:
 
 ```js
-chrome.runtime.onConnect.addListener(function(port) {
+chrome.runtime.onConnect.addListener(function (port) {
   console.assert(port.name == "knockknock");
-  port.onMessage.addListener(function(msg) {
+  port.onMessage.addListener(function (msg) {
     if (msg.joke == "Knock knock")
-      port.postMessage({question: "Who's there?"});
+      port.postMessage({ question: "Who's there?" });
     else if (msg.answer == "Madame")
-      port.postMessage({question: "Madame who?"});
+      port.postMessage({ question: "Madame who?" });
     else if (msg.answer == "Madame... Bovary")
-      port.postMessage({question: "I don't get it."});
+      port.postMessage({ question: "I don't get it." });
   });
 });
 ```
@@ -161,21 +163,23 @@ each:
 
 ```js
 // For simple requests:
-chrome.runtime.onMessageExternal.addListener(
-  function(request, sender, sendResponse) {
-    if (sender.id == blocklistedExtension)
-      return;  // don't allow this extension access
-    else if (request.getTargetData)
-      sendResponse({targetData: targetData});
-    else if (request.activateLasers) {
-      var success = activateLasers();
-      sendResponse({activateLasers: success});
-    }
-  });
+chrome.runtime.onMessageExternal.addListener(function (
+  request,
+  sender,
+  sendResponse
+) {
+  if (sender.id == blocklistedExtension) return;
+  // don't allow this extension access
+  else if (request.getTargetData) sendResponse({ targetData: targetData });
+  else if (request.activateLasers) {
+    var success = activateLasers();
+    sendResponse({ activateLasers: success });
+  }
+});
 
 // For long-lived connections:
-chrome.runtime.onConnectExternal.addListener(function(port) {
-  port.onMessage.addListener(function(msg) {
+chrome.runtime.onConnectExternal.addListener(function (port) {
+  port.onMessage.addListener(function (msg) {
     // See other examples for sample onMessage handlers.
   });
 });
@@ -225,11 +229,13 @@ extension. For example:
 var editorExtensionId = "abcdefghijklmnoabcdefhijklmnoabc";
 
 // Make a simple request:
-chrome.runtime.sendMessage(editorExtensionId, {openUrlInEditor: url},
-  function(response) {
-    if (!response.success)
-      handleError(url);
-  });
+chrome.runtime.sendMessage(
+  editorExtensionId,
+  { openUrlInEditor: url },
+  function (response) {
+    if (!response.success) handleError(url);
+  }
+);
 ```
 
 From your app or extension, you may listen to messages from web pages via the
@@ -237,13 +243,14 @@ From your app or extension, you may listen to messages from web pages via the
 messaging][33]. Only the web page can initiate a connection. Here is an example:
 
 ```js
-chrome.runtime.onMessageExternal.addListener(
-  function(request, sender, sendResponse) {
-    if (sender.url == blocklistedWebsite)
-      return;  // don't allow this web page access
-    if (request.openUrlInEditor)
-      openUrl(request.openUrlInEditor);
-  });
+chrome.runtime.onMessageExternal.addListener(function (
+  request,
+  sender,
+  sendResponse
+) {
+  if (sender.url == blocklistedWebsite) return; // don't allow this web page access
+  if (request.openUrlInEditor) openUrl(request.openUrlInEditor);
+});
 ```
 
 ## Native messaging {: #native-messaging }
@@ -270,14 +277,14 @@ extension background page as well as to content scripts running inside other web
 Specifically, avoid using dangerous APIs such as the ones below:
 
 ```js
-chrome.tabs.sendMessage(tab.id, {greeting: "hello"}, function(response) {
+chrome.tabs.sendMessage(tab.id, { greeting: "hello" }, function (response) {
   // WARNING! Might be evaluating an evil script!
   var resp = eval("(" + response.farewell + ")");
 });
 ```
 
 ```js
-chrome.tabs.sendMessage(tab.id, {greeting: "hello"}, function(response) {
+chrome.tabs.sendMessage(tab.id, { greeting: "hello" }, function (response) {
   // WARNING! Might be injecting a malicious script!
   document.getElementById("resp").innerHTML = response.farewell;
 });
@@ -286,14 +293,14 @@ chrome.tabs.sendMessage(tab.id, {greeting: "hello"}, function(response) {
 Instead, prefer safer APIs that do not run scripts:
 
 ```js
-chrome.tabs.sendMessage(tab.id, {greeting: "hello"}, function(response) {
+chrome.tabs.sendMessage(tab.id, { greeting: "hello" }, function (response) {
   // JSON.parse does not evaluate the attacker's scripts.
   var resp = JSON.parse(response.farewell);
 });
 ```
 
 ```js
-chrome.tabs.sendMessage(tab.id, {greeting: "hello"}, function(response) {
+chrome.tabs.sendMessage(tab.id, { greeting: "hello" }, function (response) {
   // innerText does not let the attacker inject HTML elements.
   document.getElementById("resp").innerText = response.farewell;
 });

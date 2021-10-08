@@ -6,8 +6,7 @@ Implementing non-persistent background scripts will greatly reduce the resource 
 
 Enhance an extension’s performance by migrating a persistent background script to an event-based non-persistent model.
 
-Designate persistence as false {: \#persistence }
--------------------------------------------------
+## Designate persistence as false {: \#persistence }
 
 Locate the `"background"` key in the extension [manifest](/docs/extensions/reference/tabs) file, then add or update the `"persistent"` field to false.
 
@@ -33,8 +32,7 @@ The same applies to background scripts that rely on an HTML file.
       ...
     }
 
-Surface event listeners {: \#listeners }
-----------------------------------------
+## Surface event listeners {: \#listeners }
 
 Listeners must be at the top-level to activate the background script if an important event is triggered. Registered listeners may need to be restructred to a synchronous pattern. Structuring listeners, as below, will not allow them to be invoked because they are not registered synchronously.
 
@@ -49,8 +47,7 @@ Instead, keep listeners at top-level and unnested.
       // run startup function
     })
 
-Record state changes in storage {: \#storage }
-----------------------------------------------
+## Record state changes in storage {: \#storage }
 
 Use the [storage API](/docs/extensions/reference/storage) to set and return states and values. Use `local.set` to update on the local machine.
 
@@ -63,8 +60,7 @@ Use `local.get` to grab the value of that variable.
       // Do something with awesomeVariable
     });
 
-Transform timers into alarms {: \#timers }
-------------------------------------------
+## Transform timers into alarms {: \#timers }
 
 DOM-based timers, such as `window.setTimeout()` or `window.setInterval()`, are not honored in non-persistent background scripts if they trigger when the event page is dormant.
 
@@ -83,8 +79,7 @@ Then add a listener.
       alert("Hello, world!")
     });
 
-Update calls for background script functions {: \#backgroundFunctions }
------------------------------------------------------------------------
+## Update calls for background script functions {: \#backgroundFunctions }
 
 If using [`extension.getBackgroundPage`](/docs/extensions/reference/extension#method-getBackgroundPage) to call a function from the background page, update to [`runtime.getBackgroundPage`](/docs/extensions/reference/runtime#method-getBackgroundPage). The newer method activates the non-persistent script before returning it.
 

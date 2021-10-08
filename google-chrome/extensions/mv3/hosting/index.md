@@ -65,5 +65,4 @@ automatically update the extension for users after the new version is published.
 [8]: /docs/extensions/mv3/linux_hosting
 [9]: /docs/extensions/mv2/hosting_changes
 [10]: https://chrome.google.com/webstore/developer/dashboard
-
 [version]: /docs/extensions/mv2/manifest/version/

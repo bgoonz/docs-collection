@@ -12,32 +12,28 @@ An example of one of these tools is [Grunt](http://gruntjs.com/), a JavaScript t
 
 In this tutorial you’ll use Yeoman to create a new basic web application, then integrate the Android Studio build system ([Gradle](http://www.gradle.org/)) with Grunt, to build your web application. You’ll also set up Grunt tasks to launch a local live-reload server for testing your application in the browser, so you don’t have to manually refresh the page each time you change an HTML, CSS or JavaScript file.
 
-Prerequisites
--------------
+## Prerequisites
 
 Before getting started, you’ll need to install a few prerequisites:
 
 1.  Install Yeoman: <https://github.com/yeoman/yeoman/wiki/Getting-Started>
 2.  Install Android Studio: [http://developer.android.com/sdk/installing/studio.html](https://developer.android.com/studio/install)
 
-Step 1. Create a new project in Android Studio with a WebView
--------------------------------------------------------------
+## Step 1. Create a new project in Android Studio with a WebView
 
 You can find a full instructions on how to do this in the [Getting Started Guide](/docs/multidevice/webview/gettingstarted/).
 
-Step 2. Create a subdirectory in your Android Studio project for the web app content
-------------------------------------------------------------------------------------
+## Step 2. Create a subdirectory in your Android Studio project for the web app content
 
 After you’ve created your project, create a new top level directory:
 
--   In Android Studio, right-click the project folder and selecting **New** &gt; **Directory**.
+- In Android Studio, right-click the project folder and selecting **New** &gt; **Directory**.
 
-    Name the directory `webapp`.
+  Name the directory `webapp`.
 
 {% Img src=“image/BrQidfK9jaQyIHwdw91aVpkPiib2/1604541811944.png”, alt=“Creating a new directory.”, width=“656”, height=“142” %}
 
-Step 3. Create a Yeoman project in your new directory
------------------------------------------------------
+## Step 3. Create a Yeoman project in your new directory
 
 In a terminal `cd` to the the `webapp` directory in the project.
 
@@ -57,8 +53,7 @@ Before proceeding to the next step, test the app by running the following comman
 
 A new tab should open in your browser, connecting to a local server started by Grunt. If you change one of the HTML, CSS or JavaScript files in the project, the page automatically reloads and updates. If you run `grunt build` a new directory, `dist`, is created and your web app is compressed, optimised and made into a production ready version inside this folder.
 
-Step 4. Configure the Gradle build
-----------------------------------
+## Step 4. Configure the Gradle build
 
 In your `webapp` directory create a new file called `build.gradle`.
 
@@ -83,8 +78,7 @@ Open `settings.gradle` in the root directory and add the following line:
 
     include ':webapp'
 
-Step 5. Build your WebApp when you build the android app
---------------------------------------------------------
+## Step 5. Build your WebApp when you build the android app
 
 The final step is to get the web app to build and then copy the app into the `assets` directory of our Android app.
 
@@ -146,8 +140,7 @@ This task specifies the dependencies for all of your project’s builds, for eac
 
 The `assemble` tasks assembles the output of the project, so the web app needs to be copied over to the Android project first.
 
-Step 6. Make sure everything works
-----------------------------------
+## Step 6. Make sure everything works
 
 In Android Studio, you should have no `assets` directory in your Android applications `src` folder.
 
@@ -159,12 +152,11 @@ Don’t forget you’ll need to set the WebView to use the `index.html` page:
 
 Now press **Run** and let your application build. You should see an `assets` directory with your web application in the `www` subdirectory.
 
-Step 7. What about live server and live reload?
------------------------------------------------
+## Step 7. What about live server and live reload?
 
 So now you have a good build process for your Android application. But what about developing and debugging the web content? Live reloading can be pretty useful for making quick changes.
 
-To enable this, you can create two “product flavors” for your app, one a *live server version* and one a *static version*, where the web content is packaged into the Android application.
+To enable this, you can create two “product flavors” for your app, one a _live server version_ and one a _static version_, where the web content is packaged into the Android application.
 
 In your Android app’s `build.gradle` add the following lines in bold at the end of the `android` element:
 
@@ -193,16 +185,15 @@ Then view the **Build Variants** which are in the bottom left corner of Android 
 
 {% Img src=“image/BrQidfK9jaQyIHwdw91aVpkPiib2/1604541989518.png”, alt=“LiveserverDebug”, width=“656”, height=“540” %}
 
-For each ***productFlavor*** there are ***Debug*** and ***Release*** versions, which the Android plugin for Gradle gives you by default. This determines whether the build should be a debug build or a release build suitable to deploy on the Play store.
+For each **_productFlavor_** there are **_Debug_** and **_Release_** versions, which the Android plugin for Gradle gives you by default. This determines whether the build should be a debug build or a release build suitable to deploy on the Play store.
 
 Now you have two versions, but they don’t actually do anything different yet.
 
-Step 8. Load from a live server
--------------------------------
+## Step 8. Load from a live server
 
 In this step, you’ll configure your application to load a different URL depending on which product flavor you build.
 
-In your Android application, the files common to all product flavors are in `src/main`. To add code or resources specific to one product flavor, you create another directory under `src` with the same name as your ***productFlavor***. When you build for that build variant, Gradle and the Android plugin merge these additional files on top of the files in `src/main`.
+In your Android application, the files common to all product flavors are in `src/main`. To add code or resources specific to one product flavor, you create another directory under `src` with the same name as your **_productFlavor_**. When you build for that build variant, Gradle and the Android plugin merge these additional files on top of the files in `src/main`.
 
 In this case, you’ll define the URL as a string resource, and use that resource in your code instead of a hard-coded URL.
 

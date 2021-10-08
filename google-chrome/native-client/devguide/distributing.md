@@ -2,20 +2,19 @@
 
 {% include 'partials/nacl-warning.njk' %}
 
-------------------------------------------------------------------------
+---
 
--   <a href="#portable-native-client" id="id2" class="reference internal">Portable Native Client</a>
--   <a href="#non-portable-native-client" id="id3" class="reference internal">Non-portable Native Client</a>
+- <a href="#portable-native-client" id="id2" class="reference internal">Portable Native Client</a>
+- <a href="#non-portable-native-client" id="id3" class="reference internal">Non-portable Native Client</a>
 
-    -   <a href="#chrome-apps" id="id4" class="reference internal">Chrome apps</a>
-    -   <a href="#extension" id="id5" class="reference internal">Extension</a>
-    -   <a href="#hosted-application" id="id6" class="reference internal">Hosted application</a>
-    -   <a href="#registering-native-client-modules-to-handle-mime-types" id="id7" class="reference internal">Registering Native Client modules to handle MIME types</a>
+  - <a href="#chrome-apps" id="id4" class="reference internal">Chrome apps</a>
+  - <a href="#extension" id="id5" class="reference internal">Extension</a>
+  - <a href="#hosted-application" id="id6" class="reference internal">Hosted application</a>
+  - <a href="#registering-native-client-modules-to-handle-mime-types" id="id7" class="reference internal">Registering Native Client modules to handle MIME types</a>
 
 This document describes how to distribute Portable Native Client applications on the web, and Native Client applications through the <a href="/webstore" class="reference external">Chrome Web Store</a> (CWS).
 
-Portable Native Client
-----------------------
+## Portable Native Client
 
 Portable Native Client is enabled by default for web pages, so no separate distribution step is required. Making PNaCl a part of your web application is as simple as embedding a manifest file that points to a **pexe**. See the <a href="/docs/native-client/overview" class="reference internal"><em>technical overview</em></a> for more details.
 
@@ -23,17 +22,16 @@ Portable Native Client is enabled by default for web pages, so no separate distr
 
 The only constraint for distributing PNaCl modules with a web application is abiding by the <a href="http://en.wikipedia.org/wiki/Same_origin_policy" class="reference external">Same-origin policy</a>. The PNaCl manifest and **pexe** must either be served from the same domain with the HTML, or the <a href="http://en.wikipedia.org/wiki/Cross-origin_resource_sharing" class="reference external">CORS mechanism</a> should be used to safely host them on a different domain.
 
-Non-portable Native Client
---------------------------
+## Non-portable Native Client
 
 NaCl modules are only allowed for applications distributed through the <a href="https://chrome.google.com/webstore/category/apps" class="reference external">Chrome Web Store (CWS)</a> The CWS requirement is in place to prevent the proliferation of Native Client executables (**nexe**s) compiled for specific architecures (e.g., x86-32, x86-64, or ARM).
 
 In general, the considerations and guidelines for distributing applications through the Chrome Web Store apply to applications that contain NaCl modules as well. Here are a few pointers to relevant documentation:
 
--   <a href="/webstore" class="reference external">CWS Overview</a>
--   <a href="/webstore/choosing" class="reference external">Choosing an App Type</a>
--   <a href="/apps" class="reference external">Getting started with Chrome apps</a>
--   <a href="/extensions" class="reference external">Chrome extensions</a>
+- <a href="/webstore" class="reference external">CWS Overview</a>
+- <a href="/webstore/choosing" class="reference external">Choosing an App Type</a>
+- <a href="/apps" class="reference external">Getting started with Chrome apps</a>
+- <a href="/extensions" class="reference external">Chrome extensions</a>
 
 In this document, we’ll focus only on distribution issues specific to applications that contain NaCl modules.
 
@@ -49,8 +47,8 @@ As described above, to upload a Chrome app to the CWS you have to create a zip f
 
 Starting with Chrome 28, the Chrome Web Store includes a feature called **multi-platform zip files.** This feature lets you structure your application directory and zip file in a way that reduces the size of the user download package. Here’s how this feature works:
 
--   You still include all the .nexe files in the zip file that you upload to the CWS, but you designate specific .nexe files (and other files if appropriate) for specific architectures.
--   The Chrome Web Store re-packages your app, so that users only download the files that they need for their specific architecture.
+- You still include all the .nexe files in the zip file that you upload to the CWS, but you designate specific .nexe files (and other files if appropriate) for specific architectures.
+- The Chrome Web Store re-packages your app, so that users only download the files that they need for their specific architecture.
 
 Here is how to use this feature:
 
@@ -81,19 +79,19 @@ Here is how to use this feature:
 
     Please note a few important points about the app directory structure:
 
-    -   The architecture-specific subdirectories:
+    - The architecture-specific subdirectories:
 
-        -   can have arbitrary names;
+      - can have arbitrary names;
 
-        -   must be directly under the `_platform_specific` directory; and
+      - must be directly under the `_platform_specific` directory; and
 
-        -   must be listed in the CWS manifest file (see step 3 below).
+      - must be listed in the CWS manifest file (see step 3 below).
 
-    -   You can include a fallback subdirectory that provides a download package with all the architecture-specific files. (In the example above this is the `all/` subdirectory.) This folder is used if the user has an earlier version of Chrome (prior to Chrome 28) that does not support multi-platform zip files.
+    - You can include a fallback subdirectory that provides a download package with all the architecture-specific files. (In the example above this is the `all/` subdirectory.) This folder is used if the user has an earlier version of Chrome (prior to Chrome 28) that does not support multi-platform zip files.
 
-    -   You cannot include any files directly in the folder `_platform_specific`. All architecture-specific files must be under one of the architecture-specific subdirectories.
+    - You cannot include any files directly in the folder `_platform_specific`. All architecture-specific files must be under one of the architecture-specific subdirectories.
 
-    -   Files that are not under the `_platform_specific` directory are included in all download packages. (In the example above, that includes `my_app.html`, `my_module.nmf`, and the `css/`, `images/`, and `scripts/` directories.)
+    - Files that are not under the `_platform_specific` directory are included in all download packages. (In the example above, that includes `my_app.html`, `my_module.nmf`, and the `css/`, `images/`, and `scripts/` directories.)
 
 3.  Modify the CWS manifest file, `manifest.json`, so that it specifies which subdirectory under `_platform_specific` corresponds to which architecture.
 
@@ -159,16 +157,16 @@ Here is how to use this feature:
 
 #### <span id="additional-considerations-packaged"></span>Additional considerations for a Chrome app
 
--   In the description of your application in the CWS, make sure to mention that your application is a Native Client application that only works with the Chrome browser. Also make sure to identify the minimum version of Chrome that your application requires.
--   Hosted and packaged applications have a “launch” parameter in the CWS manifest. This parameter is present only in apps (not extensions), and it tells Google Chrome what to show when a user starts an installed app. For example:
+- In the description of your application in the CWS, make sure to mention that your application is a Native Client application that only works with the Chrome browser. Also make sure to identify the minimum version of Chrome that your application requires.
+- Hosted and packaged applications have a “launch” parameter in the CWS manifest. This parameter is present only in apps (not extensions), and it tells Google Chrome what to show when a user starts an installed app. For example:
 
-        "launch": {
-          "web_url": "http://mail.google.com/mail/"
-        }
+      "launch": {
+        "web_url": "http://mail.google.com/mail/"
+      }
 
--   If you want to write local data using the Pepper <a href="/docs/native-client/peppercpp/classpp_1_1_file_i_o" class="reference external">FileIO</a> API, you must set the ‘unlimitedStorage’ permission in your Chrome Web Store manifest file, just as you would for a JavaScript application that uses the HTML5 File API.
--   For Chrome apps, you can only use in-app purchases.
--   You can place your application in the Google Web Store with access only to certain people for testing. See <a href="/webstore/publish" class="reference external">Publishing to test accounts</a> for more information.
+- If you want to write local data using the Pepper <a href="/docs/native-client/peppercpp/classpp_1_1_file_i_o" class="reference external">FileIO</a> API, you must set the ‘unlimitedStorage’ permission in your Chrome Web Store manifest file, just as you would for a JavaScript application that uses the HTML5 File API.
+- For Chrome apps, you can only use in-app purchases.
+- You can place your application in the Google Web Store with access only to certain people for testing. See <a href="/webstore/publish" class="reference external">Publishing to test accounts</a> for more information.
 
 ### Extension
 
@@ -196,7 +194,7 @@ If you want Chrome to use a Native Client module to display a particular type of
 
 The value of “path” is the location of a Native Client manifest file (.nmf) within the application directory. For more information on Native Client manifest files, see <a href="/docs/native-client/devguide/coding/application-structure#manifest-file" class="reference internal"><em>Manifest Files</em></a>.
 
-The value of “mime\_type” is a specific MIME type that you want the Native Client module to handle. Each MIME type can be associated with only one .nmf file, but a single .nmf file might handle multiple MIME types. The following example shows an extension with two .nmf files that handle three MIME types.
+The value of “mime_type” is a specific MIME type that you want the Native Client module to handle. Each MIME type can be associated with only one .nmf file, but a single .nmf file might handle multiple MIME types. The following example shows an extension with two .nmf files that handle three MIME types.
 
     {
        "name": "My Native Client Spreadsheet and Document Viewer",

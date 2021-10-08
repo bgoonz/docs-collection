@@ -55,8 +55,8 @@ Set the text of the badge by calling [`chrome.browserAction.setBadgeText`][3] an
 by calling [`chrome.browserAction.setBadgeBackgroundColor`][4] .
 
 ```js
-chrome.browserAction.setBadgeText({text: 'ON'});
-chrome.browserAction.setBadgeBackgroundColor({color: '#4688F1'});
+chrome.browserAction.setBadgeText({ text: "ON" });
+chrome.browserAction.setBadgeBackgroundColor({ color: "#4688F1" });
 ```
 
 ## Activate the extension on select pages {: #page_action }
@@ -95,21 +95,21 @@ extension sets a condition that the url must include a 'g'. If the condition is 
 calls [`declarativeContent.ShowPageAction()`][10].
 
 ```js
-chrome.runtime.onInstalled.addListener(function() {
+chrome.runtime.onInstalled.addListener(function () {
   // Replace all rules ...
-  chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
+  chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
     // With a new rule ...
     chrome.declarativeContent.onPageChanged.addRules([
       {
         // That fires when a page's URL contains a 'g' ...
         conditions: [
           new chrome.declarativeContent.PageStateMatcher({
-            pageUrl: { urlContains: 'g' },
-          })
+            pageUrl: { urlContains: "g" },
+          }),
         ],
         // And shows the extension's page action.
-        actions: [ new chrome.declarativeContent.ShowPageAction() ]
-      }
+        actions: [new chrome.declarativeContent.ShowPageAction()],
+      },
     ]);
   });
 });
@@ -206,11 +206,11 @@ clicking one of the provided buttons.
     <title>Water Popup</title>
   </head>
   <body>
-      <img src='./stay_hydrated.png' id='hydrateImage'>
-      <button id='sampleSecond' value='0.1'>Sample Second</button>
-      <button id='15min' value='15'>15 Minutes</button>
-      <button id='30min' value='30'>30 Minutes</button>
-      <button id='cancelAlarm'>Cancel Alarm</button>
+    <img src="./stay_hydrated.png" id="hydrateImage" />
+    <button id="sampleSecond" value="0.1">Sample Second</button>
+    <button id="15min" value="15">15 Minutes</button>
+    <button id="30min" value="30">30 Minutes</button>
+    <button id="cancelAlarm">Cancel Alarm</button>
     <script src="popup.js"></script>
   </body>
 </html>
@@ -233,11 +233,11 @@ Popups can also be set dynamically by calling [`browserAction.setPopup`][18] or
 [`pageAction.setPopup`][19].
 
 ```js
-chrome.storage.local.get('signed_in', function(data) {
+chrome.storage.local.get("signed_in", function (data) {
   if (data.signed_in) {
-    chrome.browserAction.setPopup({popup: 'popup.html'});
+    chrome.browserAction.setPopup({ popup: "popup.html" });
   } else {
-    chrome.browserAction.setPopup({popup: 'popup_sign_in.html'});
+    chrome.browserAction.setPopup({ popup: "popup_sign_in.html" });
   }
 });
 ```
@@ -268,24 +268,27 @@ Tooltips can also be set or updated by calling [`browserAction.setTitle`][22] an
 [`pageAction.setTitle`][23].
 
 ```js
-chrome.browserAction.onClicked.addListener(function(tab) {
-  chrome.browserAction.setTitle({tabId: tab.id, title: "You are on tab:" + tab.id});
+chrome.browserAction.onClicked.addListener(function (tab) {
+  chrome.browserAction.setTitle({
+    tabId: tab.id,
+    title: "You are on tab:" + tab.id,
+  });
 });
 ```
 
 Specialized locale strings are implemented with [Internationalization][24]. Create directories to
 house language specific messages within a folder called `_locales`, like this:
 
-* `_locales/en/messages.json`
-* `_locales/es/messages.json`
+- `_locales/en/messages.json`
+- `_locales/es/messages.json`
 
 [Format messages][25] inside of each language's `messages.json`.
 
 ```json
 {
   "__MSG_tooltip__": {
-      "message": "Hello!",
-      "description": "Tooltip Greeting."
+    "message": "Hello!",
+    "description": "Tooltip Greeting."
   }
 }
 ```
@@ -293,8 +296,8 @@ house language specific messages within a folder called `_locales`, like this:
 ```json
 {
   "__MSG_tooltip__": {
-      "message": "Hola!",
-      "description": "Tooltip Greeting."
+    "message": "Hola!",
+    "description": "Tooltip Greeting."
   }
 }
 ```
@@ -341,9 +344,9 @@ The extension listens to the [`omnibox.onInputEntered`][28] event. After it's tr
 extension opens a new tab containing a Google search for the user's entry.
 
 ```js
-chrome.omnibox.onInputEntered.addListener(function(text) {
+chrome.omnibox.onInputEntered.addListener(function (text) {
   // Encode user input for special characters , / ? : @ & = + $ #
-  var newURL = 'https://www.google.com/search?q=' + encodeURIComponent(text);
+  var newURL = "https://www.google.com/search?q=" + encodeURIComponent(text);
   chrome.tabs.create({ url: newURL });
 });
 ```
@@ -378,13 +381,13 @@ Create a context menu by calling [`contextMenus.create`][30] in the [background 
 should be done under the [`runtime.onInstalled`][32] listener event.
 
 ```js
-chrome.runtime.onInstalled.addListener(function() {
+chrome.runtime.onInstalled.addListener(function () {
   for (let key of Object.keys(kLocales)) {
     chrome.contextMenus.create({
       id: key,
       title: kLocales[key],
-      type: 'normal',
-      contexts: ['selection'],
+      type: "normal",
+      contexts: ["selection"],
     });
   }
 });
@@ -392,18 +395,18 @@ chrome.runtime.onInstalled.addListener(function() {
 
 ```js
 const kLocales = {
-  'com.au': 'Australia',
-  'com.br': 'Brazil',
-  'ca': 'Canada',
-  'cn': 'China',
-  'fr': 'France',
-  'it': 'Italy',
-  'co.in': 'India',
-  'co.jp': 'Japan',
-  'com.ms': 'Mexico',
-  'ru': 'Russia',
-  'co.za': 'South Africa',
-  'co.uk': 'United Kingdom'
+  "com.au": "Australia",
+  "com.br": "Brazil",
+  ca: "Canada",
+  cn: "China",
+  fr: "France",
+  it: "Italy",
+  "co.in": "India",
+  "co.jp": "Japan",
+  "com.ms": "Mexico",
+  ru: "Russia",
+  "co.za": "South Africa",
+  "co.uk": "United Kingdom",
 };
 ```
 
@@ -448,18 +451,22 @@ extension listens to the [`commands.onCommand`][36] event in the [background scr
 functionality for each registered combination.
 
 ```js
-chrome.commands.onCommand.addListener(function(command) {
-  chrome.tabs.query({currentWindow: true}, function(tabs) {
+chrome.commands.onCommand.addListener(function (command) {
+  chrome.tabs.query({ currentWindow: true }, function (tabs) {
     // Sort tabs according to their index in the window.
-    tabs.sort((a, b) => { return a.index < b.index; });
-    let activeIndex = tabs.findIndex((tab) => { return tab.active; });
+    tabs.sort((a, b) => {
+      return a.index < b.index;
+    });
+    let activeIndex = tabs.findIndex((tab) => {
+      return tab.active;
+    });
     let lastTab = tabs.length - 1;
     let newIndex = -1;
-    if (command === 'flip-tabs-forward')
+    if (command === "flip-tabs-forward")
       newIndex = activeIndex === 0 ? lastTab : activeIndex - 1;
-    else  // 'flip-tabs-backwards'
-      newIndex = activeIndex === lastTab ? 0 : activeIndex + 1;
-    chrome.tabs.update(tabs[newIndex].id, {active: true, highlighted: true});
+    // 'flip-tabs-backwards'
+    else newIndex = activeIndex === lastTab ? 0 : activeIndex + 1;
+    chrome.tabs.update(tabs[newIndex].id, { active: true, highlighted: true });
   });
 });
 ```
@@ -520,11 +527,11 @@ pages.
 ```html
 <html>
   <head>
-  <title>New Tab</title>
+    <title>New Tab</title>
   </head>
   <body>
     <h1>Hello World</h1>
-  <script src="logic.js"></script>
+    <script src="logic.js"></script>
   </body>
 </html>
 ```

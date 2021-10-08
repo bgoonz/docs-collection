@@ -1,32 +1,29 @@
 2020-10-23
 
-Navigate to the media uploader
-------------------------------
+## Navigate to the media uploader
 
 Visit [the image uploader page](https://web-dev-uploads.web.app/) and sign-in using your Google corporate account. Note that this page only allows Googlers access, so signing in with a personal account will fail.
 
 {% Aside %} Prior to September 2021, there were different uploaders for developer.chrome.com and web.dev. Now, all assets are uploaded through a single uploader. This means you can migrate content between the sites and use the same sources. {% endAside %}
 
-Choose a file
--------------
+## Choose a file
 
 Upload a high quality image (jpg or png if you need alpha transparency). Our image CDN will handle converting the image to webp if the browser supports it and it will resize the image so you don’t have to.
 
--   Drag one or more files to the **Drop files here!** area
--   Click **Upload**
+- Drag one or more files to the **Drop files here!** area
+- Click **Upload**
 
 A preview of the image or video with a shortcode snippet will appear. It should look something like this:
 
     {% raw %}{% Img src="image/foR0vJZKULb5AGJExlazy1xYDgI2/ZOR0at2oFXeasz6jKylI.jpg", alt="ALT_TEXT_HERE", width="380", height="240" %}{% endraw %}
 
--   Click the copy button to copy the snippet to your clipboard 📋
+- Click the copy button to copy the snippet to your clipboard 📋
 
-Paste!
-------
+## Paste!
 
 Paste the copied code from the previous step into your article.
 
-Be sure to replace the text that says “ALT\_TEXT\_HERE” with your own description of the image. You can read more about writing effective alt text over on [the web.dev handbook](https://web.dev/handbook/inclusion-and-accessibility/#use-inclusive-images).
+Be sure to replace the text that says “ALT_TEXT_HERE” with your own description of the image. You can read more about writing effective alt text over on [the web.dev handbook](https://web.dev/handbook/inclusion-and-accessibility/#use-inclusive-images).
 
 {% Aside %} You may notice that the generated code is using either the {% raw %}`{% Img %}`{% endraw%} or {% raw %}`{% Video %}`{% endraw%} shortcodes. These are custom components for `developer.chrome.com` that ensure our media is responsive 📱 {% endAside %}
 

@@ -34,4 +34,4 @@ Each MIME type can be associated with only one `.nmf` file, but a single `.nmf` 
       }]
     }
 
-**Note:** You can use Native Client modules in extensions without specifying “nacl\_modules”. Use “nacl\_modules” only if you want the browser to use your Native Client module to display a particular type of content.
+**Note:** You can use Native Client modules in extensions without specifying “nacl_modules”. Use “nacl_modules” only if you want the browser to use your Native Client module to display a particular type of content.

@@ -2,32 +2,29 @@
 
 {% include ‘partials/extensions/mv2-legacy-page.md’ %}
 
-Overview {: \#overview }
-------------------------
+## Overview {: \#overview }
 
 A DevTools extension adds functionality to the Chrome DevTools. It can add new UI panels and sidebars, interact with the inspected page, get information about network requests, and more. View [featured DevTools extensions](https://chrome.google.com/webstore/category/ext/11-web-development). DevTools extensions have access to an additional set of DevTools-specific extension APIs:
 
--   [`devtools.inspectedWindow`](/docs/extensions/reference/devtools_inspectedWindow)
--   [`devtools.network`](/docs/extensions/reference/devtools_network)
--   [`devtools.panels`](/docs/extensions/reference/devtools_panels)
+- [`devtools.inspectedWindow`](/docs/extensions/reference/devtools_inspectedWindow)
+- [`devtools.network`](/docs/extensions/reference/devtools_network)
+- [`devtools.panels`](/docs/extensions/reference/devtools_panels)
 
 A DevTools extension is structured like any other extension: it can have a background page, content scripts, and other items. In addition, each DevTools extension has a DevTools page, which has access to the DevTools APIs.
 
 {% Img src=“image/BrQidfK9jaQyIHwdw91aVpkPiib2/kcLMpTY6qtez03TVSqt4.png”, alt=“Architecture diagram showing DevTools page communicating with the inspected window and the background page. The background page is shown communicating with the content scripts and accessing extension APIs. The DevTools page has access to the DevTools APIs, for example, creating panels.”, height=“556”, width=“522” %}
 
-The DevTools page {: \#devtools-page }
---------------------------------------
+## The DevTools page {: \#devtools-page }
 
 An instance of the extension’s DevTools page is created each time a DevTools window opens. The DevTools page exists for the lifetime of the DevTools window. The DevTools page has access to the DevTools APIs and a limited set of extension APIs. Specifically, the DevTools page can:
 
--   Create and interact with panels using the [`devtools.panels`](/docs/extensions/reference/devtools_panels) APIs.
--   Get information about the inspected window and evaluate code in the inspected window using the [`devtools.inspectedWindow`](/docs/extensions/reference/devtools_inspectedWindow) APIs.
--   Get information about network requests using the [`devtools.network`](/docs/extensions/reference/devtools_network) APIs.
+- Create and interact with panels using the [`devtools.panels`](/docs/extensions/reference/devtools_panels) APIs.
+- Get information about the inspected window and evaluate code in the inspected window using the [`devtools.inspectedWindow`](/docs/extensions/reference/devtools_inspectedWindow) APIs.
+- Get information about network requests using the [`devtools.network`](/docs/extensions/reference/devtools_network) APIs.
 
 The DevTools page cannot use most of the extensions APIs directly. It has access to the same subset of the [`extension`](/docs/extensions/reference/extension) and [`runtime`](/docs/extensions/reference/runtime) APIs that a content script has access to. Like a content script, a DevTools page can communicate with the background page using [Message Passing](/docs/extensions/mv2/messaging). For an example, see [Injecting a Content Script](#injecting).
 
-Creating a DevTools extension {: \#creating }
----------------------------------------------
+## Creating a DevTools extension {: \#creating }
 
 To create a DevTools page for your extension, add the `devtools_page` field in the extension manifest:
 
@@ -51,13 +48,12 @@ The `chrome.devtools.*` API modules are available only to the pages loaded withi
 
 There are also some DevTools APIs that are still experimental. Refer to [chrome.experimental.\* APIs](/docs/extensions/reference/experimental) for the list of experimental APIs and guidelines on how to use them.
 
-DevTools UI elements: panels and sidebar panes {: \#devtools-ui }
------------------------------------------------------------------
+## DevTools UI elements: panels and sidebar panes {: \#devtools-ui }
 
 In addition to the usual extension UI elements, such as browser actions, context menus and popups, a DevTools extension can add UI elements to the DevTools window:
 
--   A *panel* is a top-level tab, like the Elements, Sources, and Network panels.
--   A *sidebar pane* presents supplementary UI related to a panel. The Styles, Computed Styles, and Event Listeners panes on the Elements panel are examples of sidebar panes. (Note that the appearance of sidebar panes may not match the image, depending on the version of Chrome you’re using, and where the DevTools window is docked.)
+- A _panel_ is a top-level tab, like the Elements, Sources, and Network panels.
+- A _sidebar pane_ presents supplementary UI related to a panel. The Styles, Computed Styles, and Event Listeners panes on the Elements panel are examples of sidebar panes. (Note that the appearance of sidebar panes may not match the image, depending on the version of Chrome you’re using, and where the DevTools window is docked.)
 
 {% Img src=“image/BrQidfK9jaQyIHwdw91aVpkPiib2/TDNgfhI9byR4eeGQ0Xxv.png”, alt=“DevTools window showing Elements panel and Styles sidebar pane.”, height=“302”, width=“770” %}
 
@@ -83,14 +79,13 @@ Creating a basic sidebar pane for the Elements panel looks like this:
 
 There are several ways to display content in a sidebar pane:
 
--   HTML content. Call [`setPage`](/docs/extensions/reference/devtools_panels#method-ExtensionSidebarPane-setPage) to specify an HTML page to display in the pane.
--   JSON data. Pass a JSON object to [`setObject`](/docs/extensions/reference/devtools_panels#method-ExtensionSidebarPane-setObject).
--   JavaScript expression. Pass an expression to [`setExpression`](/docs/extensions/reference/devtools_panels#method-ExtensionSidebarPane-setExpression). DevTools evaluates the expression in the context of the inspected page, and displays the return value.
+- HTML content. Call [`setPage`](/docs/extensions/reference/devtools_panels#method-ExtensionSidebarPane-setPage) to specify an HTML page to display in the pane.
+- JSON data. Pass a JSON object to [`setObject`](/docs/extensions/reference/devtools_panels#method-ExtensionSidebarPane-setObject).
+- JavaScript expression. Pass an expression to [`setExpression`](/docs/extensions/reference/devtools_panels#method-ExtensionSidebarPane-setExpression). DevTools evaluates the expression in the context of the inspected page, and displays the return value.
 
 For both `setObject` and `setExpression`, the pane displays the value as it would appear in the DevTools console. However, `setExpression` lets you display DOM elements and arbitrary JavaScript objects, while `setObject` only supports JSON objects.
 
-Communicating between extension components {: \#solutions }
------------------------------------------------------------
+## Communicating between extension components {: \#solutions }
 
 The following sections describe some typical scenarios for communicating between the different components of a DevTools extension.
 
@@ -151,7 +146,7 @@ By default, the expression is evaluated in the context of the main frame of the 
       function(result, isException) { }
     );
 
-Alternatively, use the `useContentScriptContext: true` option for `inspectedWindow.eval()` to evaluate the expression in the same context as the content scripts. Calling `eval` with `useContentScriptContext: true` does not *create* a content script context, so you must load a context script before calling `eval`, either by calling `executeScript` or by specifying a content script in the `manifest.json` file.
+Alternatively, use the `useContentScriptContext: true` option for `inspectedWindow.eval()` to evaluate the expression in the same context as the content scripts. Calling `eval` with `useContentScriptContext: true` does not _create_ a content script context, so you must load a context script before calling `eval`, either by calling `executeScript` or by specifying a content script in the `manifest.json` file.
 
 Once the context script context exists, you can use this option to inject additional content scripts.
 
@@ -163,8 +158,8 @@ The content script doesn’t have direct access to the current selected element.
 
 To pass the selected element to a content script:
 
--   Create a method in the content script that takes the selected element as an argument.
--   Call the method from the DevTools page using [`inspectedWindow.eval`](/docs/extensions/reference/devtools_inspectedWindow#method-eval) with the `useContentScriptContext: true` option.
+- Create a method in the content script that takes the selected element as an argument.
+- Call the method from the DevTools page using [`inspectedWindow.eval`](/docs/extensions/reference/devtools_inspectedWindow#method-eval) with the `useContentScriptContext: true` option.
 
 The code in your content script might look something like this:
 
@@ -193,9 +188,9 @@ To `postMessage` from a devtools panel, you’ll need a reference to its `window
 
 Messaging between the DevTools page and content scripts is indirect, by way of the background page.
 
-When sending a message *to* a content script, the background page can use the [`tabs.sendMessage`](/docs/extensions/reference/tabs#method-sendMessage) method, which directs a message to the content scripts in a specific tab, as shown in [Injecting a Content Script](#injecting).
+When sending a message _to_ a content script, the background page can use the [`tabs.sendMessage`](/docs/extensions/reference/tabs#method-sendMessage) method, which directs a message to the content scripts in a specific tab, as shown in [Injecting a Content Script](#injecting).
 
-When sending a message *from* a content script, there is no ready-made method to deliver a message to the correct DevTools page instance associated with the current tab. As a workaround, you can have the DevTools page establish a long-lived connection with the background page, and have the background page keep a map of tab IDs to connections, so it can route each message to the correct connection.
+When sending a message _from_ a content script, there is no ready-made method to deliver a message to the correct DevTools page instance associated with the current tab. As a workaround, you can have the DevTools page establish a long-lived connection with the background page, and have the background page keep a map of tab IDs to connections, so it can route each message to the correct connection.
 
     // background.js
     var connections = {};
@@ -326,25 +321,22 @@ The DevTools page creates a connection like this:
         name: "devtools-page"
     });
 
-DevTools extension examples
----------------------------
+## DevTools extension examples
 
 Browse the source of these DevTools extension examples:
 
--   [Polymer Devtools Extension](https://github.com/PolymerLabs/polymer-devtools-extension) - uses many helpers running in the host page to query DOM/JS state to send back to the custom panel.
--   [React DevTools Extension](https://github.com/facebook/react/tree/master/packages/react-devtools) - Uses a submodule of Blink to reuse DevTools UI components.
--   [Ember Inspector](https://github.com/emberjs/ember-inspector) - Shared extension core with adapters for both Chrome and Firefox.
--   [Coquette-inspect](https://github.com/thomasboyt/coquette-inspect) - A clean React-based extension with a debugging agent injected into the host page.
--   our [DevTools Extension Gallery](https://chrome.google.com/webstore/category/ext/11-web-development) and [Sample Extensions](https://github.com/GoogleChrome/chrome-extensions-samples) have more worthwhile apps to install, try out, and learn from.
+- [Polymer Devtools Extension](https://github.com/PolymerLabs/polymer-devtools-extension) - uses many helpers running in the host page to query DOM/JS state to send back to the custom panel.
+- [React DevTools Extension](https://github.com/facebook/react/tree/master/packages/react-devtools) - Uses a submodule of Blink to reuse DevTools UI components.
+- [Ember Inspector](https://github.com/emberjs/ember-inspector) - Shared extension core with adapters for both Chrome and Firefox.
+- [Coquette-inspect](https://github.com/thomasboyt/coquette-inspect) - A clean React-based extension with a debugging agent injected into the host page.
+- our [DevTools Extension Gallery](https://chrome.google.com/webstore/category/ext/11-web-development) and [Sample Extensions](https://github.com/GoogleChrome/chrome-extensions-samples) have more worthwhile apps to install, try out, and learn from.
 
-More information {: \#more }
-----------------------------
+## More information {: \#more }
 
 For information on the standard APIs that extensions can use, see [chrome.\* APIs](/docs/extensions/reference/) and [Other APIs](/docs/extensions/api_other/).
 
 [Give us feedback!](http://groups.google.com/group/google-chrome-developer-tools/topics) Your comments and suggestions help us improve the APIs.
 
-Examples {: \#examples }
-------------------------
+## Examples {: \#examples }
 
 You can find examples that use DevTools APIs in [Samples](https://github.com/GoogleChrome/chrome-extensions-samples).

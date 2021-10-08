@@ -10,9 +10,9 @@ To use most chrome.\* APIs, your extension must declare its intent in the permis
 of the [manifest][1]. Extensions can request three categories of permissions, specified using the
 respective keys in the manifest:
 
-* **`permissions`** contain items from a list of known strings (such as "geolocation")
-* **`optional_permissions`** are like regular `permissions`, but are granted by the extension's user at runtime, rather than in advance
-* **`host_permissions`** contain one or more [match patterns][2] that give access to one or more hosts
+- **`permissions`** contain items from a list of known strings (such as "geolocation")
+- **`optional_permissions`** are like regular `permissions`, but are granted by the extension's user at runtime, rather than in advance
+- **`host_permissions`** contain one or more [match patterns][2] that give access to one or more hosts
 
 Permissions help to limit damage if your extension is compromised by
 malware. Some permissions are displayed to users for their consent before

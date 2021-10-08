@@ -44,10 +44,10 @@ Call `debugger` from your code to pause on that line. This is equivalent to a [l
 breakpoint][9], except that the breakpoint is set in your code, not in the DevTools UI.
 
 ```js
-console.log('a');
-console.log('b');
+console.log("a");
+console.log("b");
 debugger;
-console.log('c');
+console.log("c");
 ```
 
 ### Conditional line-of-code breakpoints {: #conditional-loc }
@@ -188,8 +188,8 @@ a [line-of-code breakpoint][11] on the first line of the function.
 
 ```js
 function sum(a, b) {
-  let result = a + b; // DevTools pauses on this line.
-  return result;
+  let result = a + b; // DevTools pauses on this line.
+  return result;
 }
 debug(sum); // Pass the function object, not a string.
 sum();
@@ -201,14 +201,14 @@ DevTools throws a `ReferenceError` if the function you want to debug is not in s
 
 ```js
 (function () {
-  function hey() {
-    console.log('hey');
-  }
-  function yo() {
-    console.log('yo');
-  }
-  debug(yo); // This works.
-  yo();
+  function hey() {
+    console.log("hey");
+  }
+  function yo() {
+    console.log("yo");
+  }
+  debug(yo); // This works.
+  yo();
 })();
 debug(hey); // This doesn't work. hey() is out of scope.
 ```

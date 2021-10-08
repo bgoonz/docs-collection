@@ -1,28 +1,26 @@
 ---
-layout: 'layouts/doc-post.njk'
+layout: "layouts/doc-post.njk"
 
 # The page title. This appears at the top of the doc and as the page name
 # in Google Search.
 title: Extensions platform vision
 
 # This appears in the ToC of the project landing page at
-# /docs/[project-name]/. It also appears in the <meta description> used in 
+# /docs/[project-name]/. It also appears in the <meta description> used in
 # Google Search.
-description: 'Where the extensions platform is headed and why'
+description: "Where the extensions platform is headed and why"
 
 # The publish date
 date: 2020-11-09
-
 # An optional updated date
 # updated: 2020-10-16
 
 # A list of authors. These usernames correspond to the keys in the
 # _data/authorsData.json file.
-
 ---
 
 Chrome extensions are one of the most-loved and most-used features of the
-Chrome browser.  Extensions can solve a myriad of use cases for a diverse set
+Chrome browser. Extensions can solve a myriad of use cases for a diverse set
 of users, and in one form or another they are becoming a staple feature of most
 major browsers.
 
@@ -62,7 +60,6 @@ scope for improvement in the privacy and security of extensions; we also intend
 to focus on performance, while improving extension capability
 and preserving webbiness.
 
-
 ## Where we're headed
 
 The Chrome extensions platform continues to evolve. The specific course we're
@@ -70,10 +67,10 @@ steering focuses on improvements to security, performance, and privacy &mdash;
 while preserving or extending the capability of extensions and keeping a
 webby developer experience.
 
-{% 
-  Img src='image/SHhb2PDKzXTggPGAYpv8JgR81pX2/1604881144327.svg', 
-  alt='Diagram showing privacy, security, and performance as pillars atop a foundation of webbiness and performance', 
-  width='426', 
+{%
+  Img src='image/SHhb2PDKzXTggPGAYpv8JgR81pX2/1604881144327.svg',
+  alt='Diagram showing privacy, security, and performance as pillars atop a foundation of webbiness and performance',
+  width='426',
   height='345'
 %}
 
@@ -88,7 +85,7 @@ resources outside the extension context
 
 **Performance** &mdash; Ensure that extensions work well on all devices:
 performance issues don't detract from the browser experience, and Chrome
-runs smoothly even when  many extensions are installed.
+runs smoothly even when many extensions are installed.
 
 **Webbiness** &mdash; Embrace the web platform way of doing things, helping to
 lower barriers to developer engagement, and benefit as the web platform continues to evolve.
@@ -109,8 +106,8 @@ The extensions platform will provide greater user visibility and control, so
 that users can more easily manage how extensions access their data and
 other resources. The platform already begins to address this by:
 
-* Letting the user modify the host permissions granted to extensions
-* The extensions menu showing which items can or want to access the current page
+- Letting the user modify the host permissions granted to extensions
+- The extensions menu showing which items can or want to access the current page
 
 We'll continue to improve this user experience. Look for an increasing emphasis
 on temporary, in-context style of permissions grants, constraining passive
@@ -122,7 +119,6 @@ It's also important that users make informed decisions about how their data is
 handled. We'll be introducing new ways to help users understand what data each
 extension accesses and how it uses that data, so that users have control of
 their data.
-
 
 ### A new approach to user data access
 
@@ -137,10 +133,9 @@ extensions perform work without requiring data access. Chrome's
 [declarativeNetRequest](/extensions/declarativeNetRequest)
 is an example of this approach.
 
-
 ### Better alignment with the web platform
 
-Chrome extensions continue to build on *and extend* web technologies. This
+Chrome extensions continue to build on _and extend_ web technologies. This
 helps to minimize obstacles to developer engagement. Look for further adoption
 of open web capabilities, in addition to extension-specific technologies.
 
@@ -172,7 +167,7 @@ single purpose policy.
 
 The vision set forth in this article represents a strategic direction &mdash;
 like a compass heading or north star. Manifest V3 and its associated features
-are a major step in this strategic direction. 
+are a major step in this strategic direction.
 
 To learn about Manifest V3 itself and its features, see [Overview of Manifest
 V3](/docs/extensions/mv3/intro/mv3-overview).
@@ -189,9 +184,9 @@ MV3 changes. Expect these changes in early 2021.
 
 The initial steps in this area have already launched:
 
-* The ability to modify an extension's host access (see [Trustworthy Chrome Extensions,
+- The ability to modify an extension's host access (see [Trustworthy Chrome Extensions,
   by Default](https://blog.chromium.org/2018/10/trustworthy-chrome-extensions-by-default.html)).
-* Moving extensions out of the right-click menu and into a button on the extensions menu
+- Moving extensions out of the right-click menu and into a button on the extensions menu
   (see [A new home for your extensions](https://blog.google/products/chrome/more-intuitive-privacy-and-security-controls-chrome/)).
 
 ### Future related changes
@@ -201,4 +196,3 @@ with explicit user consent required to grant site access. We'll also be
 providing new ways for users to defer permission grants until run time, so that
 users understand the context of the permission being requested. These changes
 are intended to provide greater user visibility of permissions.
-

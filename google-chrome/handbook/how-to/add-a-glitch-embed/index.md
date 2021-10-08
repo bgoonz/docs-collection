@@ -1,7 +1,6 @@
 2020-11-23
 
-Add a Glitch Embed
-------------------
+## Add a Glitch Embed
 
 To add an Glitch embed to a post you can use a custom shortcode which optimizes Glitch embeds on the site.
 

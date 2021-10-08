@@ -146,11 +146,11 @@ are also not supported. For example, suppose you had the following code in your 
 
 ```html
 <html>
-<head>
-  <script>
-    function myFunc() { ... }
-  </script>
-</head>
+  <head>
+    <script>
+      function myFunc() { ... }
+    </script>
+  </head>
 </html>
 ```
 
@@ -162,7 +162,8 @@ Web developers, will not execute. For example, consider common instances such as
 
 ```html
 <body onload="initialize()">
-<button onclick="handleClick()" id="button1">
+  <button onclick="handleClick()" id="button1"></button>
+</body>
 ```
 
 These will not work in manifest V2 extensions. Remove the inline event handlers, place them in your
@@ -170,8 +171,7 @@ external JS file and use `addEventListener()` to register event handlers for the
 example, in your JS code, use:
 
 ```html
-window.addEventListener("load", initialize);
-...
+window.addEventListener("load", initialize); ...
 document.getElementById("button1").addEventListener("click",handleClick);
 ```
 

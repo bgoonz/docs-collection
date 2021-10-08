@@ -4,21 +4,19 @@ Use Device Mode to approximate how your page looks and performs on a mobile devi
 
 Device Mode is the name for the loose collection of features in Chrome DevTools that help you simulate mobile devices. These features include:
 
--   [Simulating a mobile viewport](#viewport)
--   [Throttling the network](#network)
--   [Throttling the CPU](#cpu)
--   [Simulating geolocation](#geolocation)
--   [Setting orientation](#orientation)
+- [Simulating a mobile viewport](#viewport)
+- [Throttling the network](#network)
+- [Throttling the CPU](#cpu)
+- [Simulating geolocation](#geolocation)
+- [Setting orientation](#orientation)
 
-Limitations {: \#limitations }
-------------------------------
+## Limitations {: \#limitations }
 
 Think of Device Mode as a [first-order approximation](https://en.wikipedia.org/wiki/Order_of_approximation#First-order) of how your page looks and feels on a mobile device. With Device Mode you don’t actually run your code on a mobile device. You simulate the mobile user experience from your laptop or desktop.
 
 There are some aspects of mobile devices that DevTools will never be able to simulate. For example, the architecture of mobile CPUs is very different than the architecture of laptop or desktop CPUs. When in doubt, your best bet is to actually run your page on a mobile device. Use [Remote Debugging](/docs/devtools/remote-debugging) to view, change, debug, and profile a page’s code from your laptop or desktop while it actually runs on a mobile device.
 
-Simulate a mobile viewport {: \#viewport }
-------------------------------------------
+## Simulate a mobile viewport {: \#viewport }
 
 Click **Toggle Device Toolbar** {% Img src=“image/admin/9FiBHFCzfPgP8sy6LMx7.png”, alt=“Toggle Device Toolbar”, width=“30”, height=“32” %} to open the UI that enables you to simulate a mobile viewport.
 
@@ -141,8 +139,7 @@ Use the **Zoom** list to zoom in or out.
 
 **Figure 15**. Zoom
 
-Throttle the network and CPU {: \#throttle }
---------------------------------------------
+## Throttle the network and CPU {: \#throttle }
 
 To throttle the network and CPU, select **Mid-tier mobile** or **Low-end mobile** from the **Throttle** list.
 
@@ -186,8 +183,7 @@ You can also set network throttling from the **Performance** panel. Click **Capt
 
 **Figure 21**. Setting network throttling from the Performance panel
 
-Override geolocation {: \#geolocation }
----------------------------------------
+## Override geolocation {: \#geolocation }
 
 To open the geolocation overriding UI click **Customize and control DevTools** {% Img src=“image/admin/MEV74GBA0djVjJ36fPf3.png”, alt=“Customize and control DevTools”, width=“6”, height=“26” %} and then select **More tools** &gt; **Sensors**.
 
@@ -207,8 +203,7 @@ Select one of the presets from the **Location** list, or select **Other…** to 
 
 **Figure 24**. Geolocation
 
-Set orientation {: \#orientation }
-----------------------------------
+## Set orientation {: \#orientation }
 
 To open the orientation UI click **Customize and control DevTools** {% Img src=“image/admin/MEV74GBA0djVjJ36fPf3.png”, alt=“Customize and control DevTools”, width=“6”, height=“26” %} and then select **More tools** &gt; **Sensors**.
 

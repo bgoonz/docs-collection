@@ -4,8 +4,7 @@
 
 Most extensions are hosted in the [Chrome Web Store](https://chrome.google.com/webstore/category/extensions) to best [protect users from malicious extensions](http://blog.chromium.org/2015/05/continuing-to-protect-chrome-users-from.html).
 
-Hosting {: \#hosting }
-----------------------
+## Hosting {: \#hosting }
 
 All extensions are distributed to users as a special ZIP file with a `.crx` suffix. Extensions hosted in the [Chrome Web Store](/docs/webstore) are uploaded through the [Developer Dashboard](https://chrome.google.com/webstore/developer/dashboard) as `.zip` files. The [publishing](/docs/webstore/publish) process automatically converts the `.zip` into a `.crx` file.
 
@@ -17,8 +16,7 @@ There are three exceptions to the Chrome Web Store hosting rule:
 
 [Read more about the hosting policy](/docs/extensions/mv2/hosting_changes).
 
-Updating {: \#updating }
-------------------------
+## Updating {: \#updating }
 
 The Chrome Browser periodically checks for new versions of installed extensions and updates them without user intervention.
 

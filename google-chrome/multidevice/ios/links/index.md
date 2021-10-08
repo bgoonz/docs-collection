@@ -2,15 +2,14 @@
 
 The easiest way to have your iOS app open links in Chrome is to use the [OpenInChromeController class](https://github.com/GoogleChrome/OpenInChrome). This API is described here along with the URI schemes it supports.
 
-Using OpenInChromeController to open links
-------------------------------------------
+## Using OpenInChromeController to open links
 
 The **OpenInChromeController** class provides methods that encapsulate the URI schemes and the scheme replacement process also described in this document. Use this class to check if Chrome is installed or to specify the URL to open.
 
 ### Methods
 
--   **isChromeInstalled**: returns YES if Chrome is installed
--   **openInChrome**: opens a given URL in Chrome
+- **isChromeInstalled**: returns YES if Chrome is installed
+- **openInChrome**: opens a given URL in Chrome
 
 For example, use the OpenInChromeController class as follows:
 
@@ -18,20 +17,18 @@ For example, use the OpenInChromeController class as follows:
         [openInController_ openInChrome:urlToOpen];
     }
 
-Downloading the class file
---------------------------
+## Downloading the class file
 
 The OpenInChromeController class file is available [here](https://github.com/GoogleChrome/OpenInChrome). Copy it into your Xcode installation.
 
 The rest of this document describes the underpinnings of this API.
 
-URI schemes
------------
+## URI schemes
 
 Chrome for iOS handles the following URI Schemes:
 
--   **googlechrome** for http
--   **googlechromes** for https
+- **googlechrome** for http
+- **googlechromes** for https
 
 To check if Chrome is installed, an app can simply check if either of these URI schemes is available:
 

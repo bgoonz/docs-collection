@@ -68,7 +68,7 @@ An extension's files can be referred to by using a relative URL, just as files i
 page.
 
 ```html
-<img src="images/my_image.png">
+<img src="images/my_image.png" />
 ```
 
 Additionally, each file can also be accessed using an absolute URL.
@@ -166,8 +166,8 @@ If the [tabs.query][30] method were synchronous, it may look something like belo
 
 ```js
 //THIS CODE DOESN'T WORK
-var tab = chrome.tabs.query({'active': true}); //WRONG!!!
-chrome.tabs.update(tab.id, {url:newUrl});
+var tab = chrome.tabs.query({ active: true }); //WRONG!!!
+chrome.tabs.update(tab.id, { url: newUrl });
 someOtherFunction();
 ```
 
@@ -184,8 +184,8 @@ To correctly query a tab and update its URL the extension must use the callback 
 
 ```js
 //THIS CODE WORKS
-chrome.tabs.query({'active': true}, function(tabs) {
-  chrome.tabs.update(tabs[0].id, {url: newUrl});
+chrome.tabs.query({ active: true }, function (tabs) {
+  chrome.tabs.update(tabs[0].id, { url: newUrl });
 });
 someOtherFunction();
 ```
@@ -235,7 +235,7 @@ function saveTabData(tab) {
   if (tab.incognito) {
     return;
   } else {
-    chrome.storage.local.set({data: tab.url});
+    chrome.storage.local.set({ data: tab.url });
   }
 }
 ```
@@ -294,6 +294,5 @@ following resources.
 [40]: /docs/extensions/mv3/tut_debugging
 [41]: /docs/extensions/reference
 [42]: /docs/extensions/mv3/devguide
-
 [sample-gmail]: https://github.com/GoogleChrome/chrome-extensions-samples/tree/main/mv2-archive/extensions/gmail
 [sample-mappy]: https://github.com/GoogleChrome/chrome-extensions-samples/tree/main/mv2-archive/extensions/mappy

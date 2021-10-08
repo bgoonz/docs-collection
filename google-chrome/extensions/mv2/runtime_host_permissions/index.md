@@ -99,10 +99,12 @@ Before:
 ```
 
 ```js
-chrome.cookies.get({url: 'https://example.com', name: 'mycookie'},
-                    function(cookie) {
-                      // Use the cookie.
-                    });
+chrome.cookies.get(
+  { url: "https://example.com", name: "mycookie" },
+  function (cookie) {
+    // Use the cookie.
+  }
+);
 ```
 
 After:
@@ -119,17 +121,20 @@ After:
 // Note: permissions.request() requires a user gesture, so this
 // may only be done in response to a user action.
 chrome.permissions.request(
-    {origins: ['https://example.com']},
-    function(granted) {
-      if (granted) {
-        chrome.cookies.get({url: 'https://example.com', name: 'mycookie'},
-                            function(cookie) {
-                              // Use the cookie.
-                            });
-      } else {
-        // Handle grant failure
-      }
-    });
+  { origins: ["https://example.com"] },
+  function (granted) {
+    if (granted) {
+      chrome.cookies.get(
+        { url: "https://example.com", name: "mycookie" },
+        function (cookie) {
+          // Use the cookie.
+        }
+      );
+    } else {
+      // Handle grant failure
+    }
+  }
+);
 ```
 
 ## Migration {: #migration }

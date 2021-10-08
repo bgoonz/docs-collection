@@ -51,7 +51,7 @@ respond to these events and describe the function of the control. DOM attributes
 WAI-ARIA are classified into [_roles_][4], [_states_, and _properties_][5].
 
 ```html
-<div role="toolbar">
+<div role="toolbar"></div>
 ```
 
 The [`aria-activedescendant`][6] property specifies which child of a toolbar receives focus when the
@@ -62,9 +62,9 @@ Consider the complete specification for an example toolbar below:
 
 ```html
 <div role="toolbar" tabindex="0" aria-activedescendant="button1">
-  <img src="buttoncut.png" role="button" alt="cut" id="button1">
-  <img src="buttoncopy.png" role="button" alt="copy" id="button2">
-  <img src="buttonpaste.png" role="button" alt="paste" id="button3">
+  <img src="buttoncut.png" role="button" alt="cut" id="button1" />
+  <img src="buttoncopy.png" role="button" alt="copy" id="button2" />
+  <img src="buttonpaste.png" role="button" alt="paste" id="button3" />
 </div>
 ```
 
@@ -86,7 +86,7 @@ and form controls. However, setting the HTML attribute `tabIndex` to `0` places 
 default tab sequence, enabling them to receive keyboard focus.
 
 ```js
-element.tabIndex = 0
+element.tabIndex = 0;
 ```
 
 ```js
@@ -127,7 +127,7 @@ A simple JavaScript keyboard handler could look like the following. Note how the
 button.
 
 ```js
- function optionKeyEvent(event) {
+function optionKeyEvent(event) {
   var tb = event.target;
   var buttonid;
 
@@ -159,12 +159,17 @@ button.
 ```
 
 ```html
-<div role="toolbar" tabindex="0" aria-activedescendant="button1" id="tb1"
-     onkeydown="return optionKeyEvent(event);"
-     onkeypress="return optionKeyEvent(event);">
-  <img src="buttoncut" role="button" alt="cut" id="button1">
-  <img src="buttoncopy" role="button" alt="copy" id="button1">
-  <img src="buttonpaste" role="button" alt="paste" id="button1">
+<div
+  role="toolbar"
+  tabindex="0"
+  aria-activedescendant="button1"
+  id="tb1"
+  onkeydown="return optionKeyEvent(event);"
+  onkeypress="return optionKeyEvent(event);"
+>
+  <img src="buttoncut" role="button" alt="cut" id="button1" />
+  <img src="buttoncopy" role="button" alt="copy" id="button1" />
+  <img src="buttonpaste" role="button" alt="paste" id="button1" />
 </div>
 ```
 
@@ -215,7 +220,7 @@ information on captions.
 Provide informative alt text for images.
 
 ```html
-<img src="img.jpg" alt="The logo for the extension">
+<img src="img.jpg" alt="The logo for the extension" />
 ```
 
 Use the alt text to state the purpose of the image rather than a literal description of the contents

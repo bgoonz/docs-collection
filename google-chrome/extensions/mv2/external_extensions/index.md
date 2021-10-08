@@ -6,20 +6,19 @@ All Chrome extensions must be distributed either directly from the Chrome Web St
 
 Usually, users install extensions from the Chrome Web Store, but sometimes you might want an extension to be installed via other means. Here are two typical cases:
 
--   An extension is associated with some other software, and the extension should be installed whenever the user installs that other software.
--   A network admin wants to install the same extensions throughout their organization.
+- An extension is associated with some other software, and the extension should be installed whenever the user installs that other software.
+- A network admin wants to install the same extensions throughout their organization.
 
-An extension that is not installed from the Chrome Web Store is known as an *external extension*. For developers who want to distribute an extension as part of the installation process for other software, or for network admins that want to distribute an extension throughout their organization, Google Chrome supports the following extension installation methods:
+An extension that is not installed from the Chrome Web Store is known as an _external extension_. For developers who want to distribute an extension as part of the installation process for other software, or for network admins that want to distribute an extension throughout their organization, Google Chrome supports the following extension installation methods:
 
--   Using a preferences JSON file (for Mac OS X and Linux only)
--   Using the Windows registry (for Windows only)
+- Using a preferences JSON file (for Mac OS X and Linux only)
+- Using the Windows registry (for Windows only)
 
 Both ways support installing an extension hosted at an `update_URL`. On Windows and Mac, the `update_URL` must point to the Chrome Web Store where the extension must be hosted.
 
 The preferences file on [Linux can point to your own server where you are hosting the extension](/docs/extensions/mv2/linux_hosting). The preferences JSON file also supports installing an extension from a `.crx` extension file on the user’s Linux computer.
 
-Before you begin {: \#prereqs }
--------------------------------
+## Before you begin {: \#prereqs }
 
 First, [publish](/webstore/publish) the extension in the Chrome Web Store, or package a [`.crx` file](/docs/extensions/mv2/hosting) and make sure that it installs successfully.
 
@@ -33,14 +32,13 @@ If installing from an [update URL](/docs/apps/autoupdate#update_url), ensure tha
 
 Before you edit the preferences file or the registry, make a note of the following:
 
--   The intended **location** of the extension’s `.crx` file, or the update URL from which it is served
--   The extension’s **version** (from the manifest file or the **chrome://extensions** page)
--   The extension’s **ID** (from the **chrome://extensions** page when you’ve loaded the packed extension)
+- The intended **location** of the extension’s `.crx` file, or the update URL from which it is served
+- The extension’s **version** (from the manifest file or the **chrome://extensions** page)
+- The extension’s **ID** (from the **chrome://extensions** page when you’ve loaded the packed extension)
 
 The following examples assume the version is `1.0` and the ID is `aaaaaaaaaabbbbbbbbbbcccccccccc`.
 
-Using a preferences file {: \#preferences }
--------------------------------------------
+## Using a preferences file {: \#preferences }
 
 {% Aside %}
 
@@ -69,28 +67,32 @@ Using a preferences file {: \#preferences }
 
     **Note:** Use `chmod` if necessary to make sure that the `aaaaaaaaaabbbbbbbbbbcccccccccc.json` files are world-readable.
 
-3.  Linux only: If you are installing from a file, specify the extension’s location and version with fields named “external\_crx” and “external\_version” in the file created above.
-    -   Example:
+3.  Linux only: If you are installing from a file, specify the extension’s location and version with fields named “external_crx” and “external_version” in the file created above.
+
+    - Example:
     -     {
                 "external_crx": "/home/share/extension.crx",
                 "external_version": "1.0"
               }
 
-    -   **Note:** You need to escape each `\` character in the location. For example, `\\server\share\extension.crx` would be `"\\\\server\\share\\extension.crx"`.
+    - **Note:** You need to escape each `\` character in the location. For example, `\\server\share\extension.crx` would be `"\\\\server\\share\\extension.crx"`.
 
-4.  If you are installing from an update URL, specify the extension’s update URL with field name “external\_update\_url”.
+4.  If you are installing from an update URL, specify the extension’s update URL with field name “external_update_url”.
 5.  Example of installation from local .crx file (Linux only):
-    1.    {
-                "external_update_url": "http://myhost.com/mytestextension/updates.xml"
-              }
+
+    1.  {
+        "external_update_url": "http://myhost.com/mytestextension/updates.xml"
+        }
 
 6.  Example of installation from the Chrome Webstore (Mac and Linux):
-    1.    {
-                "external_update_url": "https://clients2.google.com/service/update2/crx"
-              }
 
-7.  If you would like to install extension only for some browser locales, you can list supported locales in field name “supported\_locale”. Locale may specify parent locale like “en”, in this case the extension will be installed for all English locales like “en-US”, “en-GB”, etc. If another browser locale is selected that is not supported by the extension, the external extensions will be uninstalled. If “supported\_locales” list is missing, the extension will be installed for any locale.
-    -   Example:
+    1.  {
+        "external_update_url": "https://clients2.google.com/service/update2/crx"
+        }
+
+7.  If you would like to install extension only for some browser locales, you can list supported locales in field name “supported_locale”. Locale may specify parent locale like “en”, in this case the extension will be installed for all English locales like “en-US”, “en-GB”, etc. If another browser locale is selected that is not supported by the extension, the external extensions will be uninstalled. If “supported_locales” list is missing, the extension will be installed for any locale.
+
+    - Example:
     -     {
                 "external_update_url": "https://clients2.google.com/service/update2/crx",
                 "supported_locales": [ "en", "fr", "de" ]
@@ -115,14 +117,13 @@ On Mac OS, the external extensions files for all users are only read if file sys
 4.  Search for the string **Can not read external extensions**. If there is a problem reading the external extensions files, you will see an error message. Look for another error message directly above it, which should explain the issue. For example, if you see the following error: “Path /Library/Application Support/Google/Chrome is owned by the wrong group”, you need to use `chgrp` or the Finder’s Get Info dialog to change the directory’s group owner to the Administrator group.
 5.  After fixing the issue, relaunch Chrome. Test that the external extension is now installed. It is possible that one permissions error keeps Chrome from detecting a second error. If the external extension was not installed, repeat these steps until you do not see an error in the Console application.
 
-Using the Windows registry {: \#registry }
-------------------------------------------
+## Using the Windows registry {: \#registry }
 
 1.  Find or create the following key in the registry:
-    -   32-bit Windows: `HKEY_LOCAL_MACHINE\Software\Google\Chrome\Extensions`
-    -   64-bit Windows: `HKEY_LOCAL_MACHINE\Software\Wow6432Node\Google\Chrome\Extensions`
+    - 32-bit Windows: `HKEY_LOCAL_MACHINE\Software\Google\Chrome\Extensions`
+    - 64-bit Windows: `HKEY_LOCAL_MACHINE\Software\Wow6432Node\Google\Chrome\Extensions`
 2.  Create a new key (folder) under the **Extensions** key with the same name as the ID of your extension (for example, `aaaaaaaaaabbbbbbbbbbcccccccccc`).
-3.  In your extension key, create a property, “update\_url”, and set it to the value: “https://clients2.google.com/service/update2/crx” (this points to your extension’s crx in the Chrome Web Store):
+3.  In your extension key, create a property, “update_url”, and set it to the value: “https://clients2.google.com/service/update2/crx” (this points to your extension’s crx in the Chrome Web Store):
 
         {
           "update_url": "https://clients2.google.com/service/update2/crx"
@@ -130,8 +131,7 @@ Using the Windows registry {: \#registry }
 
 4.  Launch the browser and go to **chrome://extensions**; you should see the extension listed.
 
-Updating and uninstalling {: \#updating }
------------------------------------------
+## Updating and uninstalling {: \#updating }
 
 Google Chrome scans the metadata entries in the preferences and registry each time the browser starts, and makes any necessary changes to the installed external extensions.
 
@@ -139,8 +139,7 @@ To update your extension to a new version, update the file, and then update the 
 
 To uninstall your extension (for example, if your software is uninstalled), remove your preference file (aaaaaaaaaabbbbbbbbbbcccccccccc.json) or the metadata from the registry.
 
-FAQ {: \#faq }
---------------
+## FAQ {: \#faq }
 
 This section answers common questions about external extensions.
 
@@ -150,23 +149,23 @@ Yes, but only as an install from a Chrome Web Store `update_URL`, not from a loc
 
 **Can I specify a URL as a path to the external extension?**
 
-Yes, use the [preferences JSON](#preferences) file for Mac OS X and Linux; the [registry](#registry) for Windows. The extension must be hosted as explained in [hosting](/docs/extensions/mv2/hosting). In the preferences file, use the “external\_update\_url” property to point to an [update manifest](/docs/apps/autoupdate#update_manifest) that has the URL for your extension. In the Windows registry, use the “update\_url” property.
+Yes, use the [preferences JSON](#preferences) file for Mac OS X and Linux; the [registry](#registry) for Windows. The extension must be hosted as explained in [hosting](/docs/extensions/mv2/hosting). In the preferences file, use the “external_update_url” property to point to an [update manifest](/docs/apps/autoupdate#update_manifest) that has the URL for your extension. In the Windows registry, use the “update_url” property.
 
 **What are some common mistakes when installing with the preferences file?**
 
--   Not specifying the same id/version as the one listed in the `.crx`
--   The .json file (`aaaaaaaaaabbbbbbbbbbcccccccccc.json`) is in the wrong location or the ID specified does not match the extension ID.
--   Syntax error in JSON file (forgetting to separate entries with comma or leaving a trailing comma somewhere)
--   JSON file entry points to the wrong path to the `.crx` (or path specified but no filename)
--   Backslashes in UNC path not escaped (for example, `"\\server\share\file"` is wrong; it should be `"\\\\server\\share\\extension"`)
--   Permissions problems on a network share
+- Not specifying the same id/version as the one listed in the `.crx`
+- The .json file (`aaaaaaaaaabbbbbbbbbbcccccccccc.json`) is in the wrong location or the ID specified does not match the extension ID.
+- Syntax error in JSON file (forgetting to separate entries with comma or leaving a trailing comma somewhere)
+- JSON file entry points to the wrong path to the `.crx` (or path specified but no filename)
+- Backslashes in UNC path not escaped (for example, `"\\server\share\file"` is wrong; it should be `"\\\\server\\share\\extension"`)
+- Permissions problems on a network share
 
 **What are some common mistakes when installing with the registry?**
 
--   Not specifying the same id/version as the one listed in the Chrome Web Store
--   Key created in the wrong location in the registry
--   Registry entry points to the wrong path to the `.crx` file in the Chrome Web Store
--   Permissions problems on a network share
+- Not specifying the same id/version as the one listed in the Chrome Web Store
+- Key created in the wrong location in the registry
+- Registry entry points to the wrong path to the `.crx` file in the Chrome Web Store
+- Permissions problems on a network share
 
 **How do I update my native binaries and extension in-step?**
 

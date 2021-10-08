@@ -4,8 +4,7 @@ Discover new workflows in this comprehensive reference of Chrome DevTools featur
 
 See [Get Started with Viewing and Changing CSS](/docs/devtools/css) to learn the basics.
 
-Select an element {: \#select }
--------------------------------
+## Select an element {: \#select }
 
 The **Elements** panel of DevTools lets you view or change the CSS of one element at a time. The selected element is highlighted blue in the **DOM Tree**. The element’s styles are shown in the **Styles** pane. See [View an element’s CSS](/docs/devtools/css#view) for a tutorial.
 
@@ -15,13 +14,12 @@ The **Elements** panel of DevTools lets you view or change the CSS of one elemen
 
 There are many ways to select an element:
 
--   In your viewport, right-click the element and select **Inspect**.
--   In DevTools, click **Select an element** {% Img src=“image/BrQidfK9jaQyIHwdw91aVpkPiib2/7HgaRejtWu4NfpPOTtJU.png”, alt=“Select an element”, width=“26”, height=“26” %} or press Command+Shift+C (Mac) or Control+Shift+C (Windows, Linux), and then click the element in the viewport.
--   In DevTools, click the element in the **DOM Tree**.
--   In DevTools, run a query like `document.querySelector('p')` in the **Console**, right-click the result, and then select **Reveal in Elements panel**.
+- In your viewport, right-click the element and select **Inspect**.
+- In DevTools, click **Select an element** {% Img src=“image/BrQidfK9jaQyIHwdw91aVpkPiib2/7HgaRejtWu4NfpPOTtJU.png”, alt=“Select an element”, width=“26”, height=“26” %} or press Command+Shift+C (Mac) or Control+Shift+C (Windows, Linux), and then click the element in the viewport.
+- In DevTools, click the element in the **DOM Tree**.
+- In DevTools, run a query like `document.querySelector('p')` in the **Console**, right-click the result, and then select **Reveal in Elements panel**.
 
-View CSS {: \#view }
---------------------
+## View CSS {: \#view }
 
 ### View the external stylesheet where a rule is defined {: \#view-external }
 
@@ -138,15 +136,14 @@ The Coverage tab shows you what CSS a page actually uses.
 
 See [Force DevTools Into Print Preview Mode](/docs/devtools/css/print-preview).
 
-Change CSS {: \#change }
-------------------------
+## Change CSS {: \#change }
 
 ### Add a CSS declaration to an element {: \#add-declaration }
 
 Since the order of declarations affects how an element is styled, you can add declarations in different ways:
 
--   [Add a inline declaration](#add-declaration-inline). Equivalent to adding a `style` attribute to the element’s HTML.
--   [Add a declaration to a style rule](#add-declaration-to-rule).
+- [Add a inline declaration](#add-declaration-inline). Equivalent to adding a `style` attribute to the element’s HTML.
+- [Add a declaration to a style rule](#add-declaration-to-rule).
 
 **What workflow should you use?** For most scenarios, you probably want to use the inline declaration workflow. Inline declarations have higher specificity than external ones, so the inline workflow ensures that the changes take effect in the element as you’d expect. See [Selector Types](https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity#Selector_Types) for more on specificity.
 
@@ -186,10 +183,10 @@ Double-click a declaration’s name or value to change it. See [Change declarati
 
 While editing the value of a declaration, you can use the following keyboard shortcuts to increment the value by a fixed amount:
 
--   Option+Up (Mac) or Alt+Up (Windows, Linux) to increment by 0.1.
--   Up to change the value by 1, or by 0.1 if the current value is between -1 and 1.
--   Shift+Up to increment by 10.
--   Shift+Command+Up (Mac) or Shift+Page Up (Windows, Linux) to increment the value by 100.
+- Option+Up (Mac) or Alt+Up (Windows, Linux) to increment by 0.1.
+- Up to change the value by 1, or by 0.1 if the current value is between -1 and 1.
+- Shift+Up to increment by 10.
+- Shift+Command+Up (Mac) or Shift+Page Up (Windows, Linux) to increment the value by 100.
 
 Decrementing also works. Just replace each instance of Up mentioned above with Down.
 

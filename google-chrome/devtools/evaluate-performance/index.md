@@ -320,10 +320,8 @@ tips for improving various aspects of runtime performance, such as:
 [3]: https://support.google.com/chrome/answer/95464
 [4]: /docs/devtools/customize/#placement
 [5]: https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame
-[6]:
-  https://developers.google.com/web/fundamentals/performance/rendering/avoid-large-complex-layouts-and-layout-thrashing#avoid_forced_synchronous_layouts
-[7]:
-  https://developers.google.com/web/fundamentals/performance/rendering/stick-to-compositor-only-properties-and-manage-layer-count#use_transform_and_opacity_changes_for_animations
+[6]: https://developers.google.com/web/fundamentals/performance/rendering/avoid-large-complex-layouts-and-layout-thrashing#avoid_forced_synchronous_layouts
+[7]: https://developers.google.com/web/fundamentals/performance/rendering/stick-to-compositor-only-properties-and-manage-layer-count#use_transform_and_opacity_changes_for_animations
 [8]: https://developers.google.com/web/fundamentals/performance/rail
 [9]: http://stackoverflow.com/questions/ask?tags=google-chrome-devtools
 [10]: https://developers.google.com/web/fundamentals/performance/rendering
@@ -332,6 +330,5 @@ tips for improving various aspects of runtime performance, such as:
 [13]: https://developers.google.com/web/fundamentals/performance/rendering/reduce-the-scope-and-complexity-of-style-calculations
 [14]: https://developers.google.com/web/fundamentals/performance/rendering/avoid-large-complex-layouts-and-layout-thrashing
 [15]: https://developers.google.com/web/fundamentals/performance/rendering/simplify-paint-complexity-and-reduce-paint-areas
-[16]:
-  https://developers.google.com/web/fundamentals/performance/rendering/stick-to-compositor-only-properties-and-manage-layer-count
+[16]: https://developers.google.com/web/fundamentals/performance/rendering/stick-to-compositor-only-properties-and-manage-layer-count
 [17]: https://developers.google.com/web/fundamentals/performance/rendering/debounce-your-input-handlers

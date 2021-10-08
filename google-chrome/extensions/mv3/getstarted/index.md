@@ -89,11 +89,11 @@ multiple extension components to access that value and update it. Inside the ext
 ```js
 // background.js
 
-let color = '#3aa757';
+let color = "#3aa757";
 
 chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.sync.set({ color });
-  console.log('Default background color set to %cgreen', `color: ${color}`);
+  console.log("Default background color set to %cgreen", `color: ${color}`);
 });
 ```
 
@@ -122,8 +122,7 @@ views**, becomes available with a blue link, **service worker**.
 
 {% Img src="image/BhuKGJaIeLNPW9ehns59NfwqKxF2/dx9EpIKK949olhe8qraK.png", alt="Inspect views", width="566", height="353" %}
 
-Click the link to view the background script's console log, "`Default background color set to
-green`"
+Click the link to view the background script's console log, "`Default background color set to green`"
 
 ## Introduce a user interface {: #user_interface }
 
@@ -135,7 +134,7 @@ the background color.
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="button.css">
+    <link rel="stylesheet" href="button.css" />
   </head>
   <body>
     <button id="changeColor"></button>
@@ -177,8 +176,7 @@ button {
 }
 
 button.current {
-  box-shadow: 0 0 0 2px white,
-              0 0 0 4px black;
+  box-shadow: 0 0 0 2px white, 0 0 0 4px black;
 }
 ```
 
@@ -344,11 +342,10 @@ Start by creating a file in the directory named `options.html` and include the f
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="button.css">
+    <link rel="stylesheet" href="button.css" />
   </head>
   <body>
-    <div id="buttonDiv">
-    </div>
+    <div id="buttonDiv"></div>
     <div>
       <p>Choose a different background color!</p>
     </div>

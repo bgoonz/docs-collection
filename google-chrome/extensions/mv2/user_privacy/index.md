@@ -72,20 +72,23 @@ features.
 Clicking **Okay!** will trigger the following event in the background script.
 
 ```js
-document.querySelector('#button').addEventListener('click', function(event) {
+document.querySelector("#button").addEventListener("click", function (event) {
   // Permissions must be requested from inside a user gesture, like a button's
   // click handler.
-  chrome.permissions.request({
-    permissions: ['tabs'],
-    origins: ['https://www.google.com/']
-  }, function(granted) {
-    // The callback argument will be true if the user granted the permissions.
-    if (granted) {
-      // doSomething();
-    } else {
-      // doSomethingElse();
+  chrome.permissions.request(
+    {
+      permissions: ["tabs"],
+      origins: ["https://www.google.com/"],
+    },
+    function (granted) {
+      // The callback argument will be true if the user granted the permissions.
+      if (granted) {
+        // doSomething();
+      } else {
+        // doSomethingElse();
+      }
     }
-  });
+  );
 });
 ```
 
