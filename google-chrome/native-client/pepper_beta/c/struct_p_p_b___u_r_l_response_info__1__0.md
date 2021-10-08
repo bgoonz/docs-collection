@@ -1,25 +1,22 @@
----json {"title":"PPB\_URLResponseInfo Struct Reference"} ---
+---json {"title":"PPB_URLResponseInfo Struct Reference"} ---
 
-Data Fields
------------
+## Data Fields
 
 <table><tbody><tr class="odd"><td style="text-align: right;"><a href="/docs/native-client/pepper_beta/c/group___enums#ga4f272d99be14aacafe08dfd4ef830918" class="el">PP_Bool</a>(* </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___u_r_l_response_info__1__0#a0bb553375716a3966176ae01f6146d5a" class="el">IsURLResponseInfo</a> )(<a href="/docs/native-client/pepper_beta/c/group___typedefs#gafdc3895ee80f4750d0d95ae1b677e9b7" class="el">PP_Resource</a> resource)</td></tr><tr class="even"><td style="text-align: right;">struct <a href="/docs/native-client/pepper_beta/c/struct_p_p___var/" class="el">PP_Var</a>(* </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___u_r_l_response_info__1__0#a3fff27f7102320e9efbd59dc83e62ddf" class="el">GetProperty</a> )(<a href="/docs/native-client/pepper_beta/c/group___typedefs#gafdc3895ee80f4750d0d95ae1b677e9b7" class="el">PP_Resource</a> response, <a href="/docs/native-client/pepper_beta/c/group___enums#ga642e6199b27df69aad84aff5597041e0" class="el">PP_URLResponseProperty</a> property)</td></tr><tr class="odd"><td style="text-align: right;"><a href="/docs/native-client/pepper_beta/c/group___typedefs#gafdc3895ee80f4750d0d95ae1b677e9b7" class="el">PP_Resource</a>(* </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___u_r_l_response_info__1__0#a5c826b8217ceede947eda843e0566d2b" class="el">GetBodyAsFileRef</a> )(<a href="/docs/native-client/pepper_beta/c/group___typedefs#gafdc3895ee80f4750d0d95ae1b677e9b7" class="el">PP_Resource</a> response)</td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
 <span id="details" class="anchor" style="margin: 0;"></span>
 
-Detailed Description
---------------------
+## Detailed Description
 
-The PPB\_URLResponseInfo interface contains APIs for examining URL responses.
+The PPB_URLResponseInfo interface contains APIs for examining URL responses.
 
 Refer to `PPB_URLLoader` for further information.
 
-------------------------------------------------------------------------
+---
 
-Field Documentation
--------------------
+## Field Documentation
 
 <span id="a5c826b8217ceede947eda843e0566d2b" class="anchor" style="margin: 0;"></span>
 
@@ -29,7 +26,8 @@ Field Documentation
 
 This is only valid if `PP_URLREQUESTPROPERTY_STREAMTOFILE` was set on the `URLRequestInfo` used to produce this response. This file remains valid until the `URLLoader` associated with this `URLResponseInfo` is closed or destroyed.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>request</td><td>A <code>PP_Resource</code> corresponding to a <code>URLResponseInfo</code>.</td></tr></tbody></table>
 
 <!-- -->
@@ -43,7 +41,8 @@ A `PP_Resource` corresponding to a `FileRef` if successful, 0 if `PP_URLREQUESTP
 
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___u_r_l_response_info__1__0#a3fff27f7102320e9efbd59dc83e62ddf" class="el" title="GetProperty() gets a response property.">GetProperty()</a> gets a response property.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>request</td><td>A <code>PP_Resource</code> corresponding to a <code>URLResponseInfo</code>.</td></tr><tr class="even"><td>[in]</td><td>property</td><td>A <code>PP_URLResponseProperty</code> identifying the type of property in the response.</td></tr></tbody></table>
 
 <!-- -->
@@ -57,7 +56,8 @@ A `PP_Var` containing the response property value if successful, `PP_VARTYPE_VOI
 
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___u_r_l_response_info__1__0#a0bb553375716a3966176ae01f6146d5a" class="el" title="IsURLResponseInfo() determines if a response is a URLResponseInfo.">IsURLResponseInfo()</a> determines if a response is a `URLResponseInfo`.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a <code>URLResponseInfo</code>.</td></tr></tbody></table>
 
 <!-- -->
@@ -65,8 +65,8 @@ A `PP_Var` containing the response property value if successful, `PP_VARTYPE_VOI
 **Returns:**  
 `PP_TRUE` if the resource is a `URLResponseInfo`, `PP_FALSE` if the resource is invalid or some type other than `URLResponseInfo`.
 
-------------------------------------------------------------------------
+---
 
 The documentation for this struct was generated from the following file:
 
--   <a href="/docs/native-client/pepper_beta/c/ppb__url__response__info_8h/" class="el">ppb_url_response_info.h</a>
+- <a href="/docs/native-client/pepper_beta/c/ppb__url__response__info_8h/" class="el">ppb_url_response_info.h</a>

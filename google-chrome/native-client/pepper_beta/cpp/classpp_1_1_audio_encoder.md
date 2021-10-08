@@ -8,37 +8,34 @@ Inheritance diagram for pp::AudioEncoder:
 
 [List of all members.](/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_encoder-members/)
 
-Public Member Functions
------------------------
+## Public Member Functions
 
 <table><tbody><tr class="odd"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_encoder#afaf804d519fc0f2370c2d011b4e68378" class="el">AudioEncoder</a> ()</td></tr><tr class="even"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_encoder#a1b5126d5112082bfa782bf5423715030" class="el">AudioEncoder</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance_handle/" class="el">InstanceHandle</a> &amp;instance)</td></tr><tr class="odd"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_encoder#ac4a116ff790ce5dc1cc4847118aabc9d" class="el">AudioEncoder</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_encoder/" class="el">AudioEncoder</a> &amp;other)</td></tr><tr class="even"><td style="text-align: right;">int32_t </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_encoder#a34b94c7bb1f509f4b56bfe7349560669" class="el">GetSupportedProfiles</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback_with_output/" class="el">CompletionCallbackWithOutput</a>&lt; std::vector&lt; PP_AudioProfileDescription &gt; &gt; &amp;cc)</td></tr><tr class="odd"><td style="text-align: right;">int32_t </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_encoder#a28aa43f8c92b387b81e7cf63219c2933" class="el">Initialize</a> (uint32_t channels, PP_AudioBuffer_SampleRate input_sample_rate, PP_AudioBuffer_SampleSize input_sample_size, PP_AudioProfile output_profile, uint32_t initial_bitrate, PP_HardwareAcceleration acceleration, const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback/" class="el">CompletionCallback</a> &amp;cc)</td></tr><tr class="even"><td style="text-align: right;">int32_t </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_encoder#a706b305dae8bc5f5e0bca4491c991d59" class="el">GetNumberOfSamples</a> ()</td></tr><tr class="odd"><td style="text-align: right;">int32_t </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_encoder#a113d4a018e987f2f5227c6e0dc8a7687" class="el">GetBuffer</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback_with_output/" class="el">CompletionCallbackWithOutput</a>&lt; <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_buffer/" class="el">AudioBuffer</a> &gt; &amp;cc)</td></tr><tr class="even"><td style="text-align: right;">int32_t </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_encoder#a75278dc12dfcc3d000e47e17f014be19" class="el">Encode</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_buffer/" class="el">AudioBuffer</a> &amp;buffer, const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback/" class="el">CompletionCallback</a> &amp;cc)</td></tr><tr class="odd"><td style="text-align: right;">int32_t </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_encoder#ad1a2c96562e2baa7a61d63fbb8a49999" class="el">GetBitstreamBuffer</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback_with_output/" class="el">CompletionCallbackWithOutput</a>&lt; PP_AudioBitstreamBuffer &gt; &amp;cc)</td></tr><tr class="even"><td style="text-align: right;">void </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_encoder#a9c5b90b6dbfd81154b28f402197184bc" class="el">RecycleBitstreamBuffer</a> (const PP_AudioBitstreamBuffer &amp;bitstream_buffer)</td></tr><tr class="odd"><td style="text-align: right;">void </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_encoder#aa64ea3b0313335817833a72ceed96114" class="el">RequestBitrateChange</a> (uint32_t bitrate)</td></tr><tr class="even"><td style="text-align: right;">void </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_encoder#a5f5f533624660ca8561fea403da85f5b" class="el">Close</a> ()</td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
 <span id="details" class="anchor" style="margin: 0;"></span>
 
-Detailed Description
---------------------
+## Detailed Description
 
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio/" class="el" title="An audio resource.">Audio</a> encoder interface.
 
 Typical usage:
 
--   Call Create() to create a new audio encoder resource.
--   Call GetSupportedFormats() to determine which codecs and profiles are available.
--   Call <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_encoder#a28aa43f8c92b387b81e7cf63219c2933" class="el" title="Initializes a audio encoder resource.">Initialize()</a> to initialize the encoder for a supported profile.
--   Call <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_encoder#a113d4a018e987f2f5227c6e0dc8a7687" class="el" title="Gets a blank audio frame which can be filled with audio data and passed to the encoder.">GetBuffer()</a> to get a blank frame and fill it in, or get an audio frame from another resource, e.g. `PPB_MediaStreamAudioTrack`.
--   Call <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_encoder#a75278dc12dfcc3d000e47e17f014be19" class="el" title="Encodes an audio buffer.">Encode()</a> to push the audio buffer to the encoder. If an external buffer is pushed, wait for completion to recycle the frame.
--   Call <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_encoder#ad1a2c96562e2baa7a61d63fbb8a49999" class="el" title="Gets the next encoded bitstream buffer from the encoder.">GetBitstreamBuffer()</a> continuously (waiting for each previous call to complete) to pull encoded buffers from the encoder.
--   Call <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_encoder#a9c5b90b6dbfd81154b28f402197184bc" class="el" title="Recycles a bitstream buffer back to the encoder.">RecycleBitstreamBuffer()</a> after consuming the data in the bitstream buffer.
--   To destroy the encoder, the plugin should release all of its references to it. Any pending callbacks will abort before the encoder is destroyed.
+- Call Create() to create a new audio encoder resource.
+- Call GetSupportedFormats() to determine which codecs and profiles are available.
+- Call <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_encoder#a28aa43f8c92b387b81e7cf63219c2933" class="el" title="Initializes a audio encoder resource.">Initialize()</a> to initialize the encoder for a supported profile.
+- Call <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_encoder#a113d4a018e987f2f5227c6e0dc8a7687" class="el" title="Gets a blank audio frame which can be filled with audio data and passed to the encoder.">GetBuffer()</a> to get a blank frame and fill it in, or get an audio frame from another resource, e.g. `PPB_MediaStreamAudioTrack`.
+- Call <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_encoder#a75278dc12dfcc3d000e47e17f014be19" class="el" title="Encodes an audio buffer.">Encode()</a> to push the audio buffer to the encoder. If an external buffer is pushed, wait for completion to recycle the frame.
+- Call <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_encoder#ad1a2c96562e2baa7a61d63fbb8a49999" class="el" title="Gets the next encoded bitstream buffer from the encoder.">GetBitstreamBuffer()</a> continuously (waiting for each previous call to complete) to pull encoded buffers from the encoder.
+- Call <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_encoder#a9c5b90b6dbfd81154b28f402197184bc" class="el" title="Recycles a bitstream buffer back to the encoder.">RecycleBitstreamBuffer()</a> after consuming the data in the bitstream buffer.
+- To destroy the encoder, the plugin should release all of its references to it. Any pending callbacks will abort before the encoder is destroyed.
 
 Available audio codecs vary by platform. All: opus.
 
-------------------------------------------------------------------------
+---
 
-Constructor & Destructor Documentation
---------------------------------------
+## Constructor & Destructor Documentation
 
 <span id="afaf804d519fc0f2370c2d011b4e68378" class="anchor" style="margin: 0;"></span>
 
@@ -52,7 +49,8 @@ Default constructor for creating an <a href="/docs/native-client/pepper_beta/cpp
 
 A constructor used to create a `AudioEncoder` and associate it with the provided `Instance`.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance with which this resource will be associated.</td></tr></tbody></table>
 
 <span id="ac4a116ff790ce5dc1cc4847118aabc9d" class="anchor" style="margin: 0;"></span>
@@ -61,13 +59,13 @@ A constructor used to create a `AudioEncoder` and associate it with the provided
 
 The copy constructor for `AudioEncoder`.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>other</td><td>A reference to a <code>AudioEncoder</code>.</td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
-Member Function Documentation
------------------------------
+## Member Function Documentation
 
 <span id="a5f5f533624660ca8561fea403da85f5b" class="anchor" style="margin: 0;"></span>
 
@@ -83,13 +81,14 @@ Any pending callbacks will still run, reporting `PP_ERROR_ABORTED` . It is not v
 
 Encodes an audio buffer.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>audio_buffer</td><td>The <code>AudioBuffer</code> to be encoded.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>CompletionCallback</code> to be called upon completion. Plugins that pass <code>AudioBuffer</code> resources owned by other resources should wait for completion before reusing them.</td></tr></tbody></table>
 
 <!-- -->
 
 **Returns:**  
-An int32\_t containing an error code from `pp_errors.h`. Returns PP\_ERROR\_FAILED if <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_encoder#a28aa43f8c92b387b81e7cf63219c2933" class="el" title="Initializes a audio encoder resource.">Initialize()</a> has not successfully completed.
+An int32_t containing an error code from `pp_errors.h`. Returns PP_ERROR_FAILED if <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_encoder#a28aa43f8c92b387b81e7cf63219c2933" class="el" title="Initializes a audio encoder resource.">Initialize()</a> has not successfully completed.
 
 <span id="ad1a2c96562e2baa7a61d63fbb8a49999" class="anchor" style="margin: 0;"></span>
 
@@ -97,13 +96,14 @@ An int32\_t containing an error code from `pp_errors.h`. Returns PP\_ERROR\_FAIL
 
 Gets the next encoded bitstream buffer from the encoder.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>CompletionCallbackWithOutput</code> to be called upon completion with the next bitstream buffer. The plugin can call GetBitstreamBuffer from the callback in order to continuously "pull" bitstream buffers from the encoder.</td></tr></tbody></table>
 
 <!-- -->
 
 **Returns:**  
-An int32\_t containing an error code from `pp_errors.h`. Returns PP\_ERROR\_FAILED if <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_encoder#a28aa43f8c92b387b81e7cf63219c2933" class="el" title="Initializes a audio encoder resource.">Initialize()</a> has not successfully completed. Returns PP\_ERROR\_INPROGRESS if a prior call to <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_encoder#ad1a2c96562e2baa7a61d63fbb8a49999" class="el" title="Gets the next encoded bitstream buffer from the encoder.">GetBitstreamBuffer()</a> has not completed.
+An int32_t containing an error code from `pp_errors.h`. Returns PP_ERROR_FAILED if <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_encoder#a28aa43f8c92b387b81e7cf63219c2933" class="el" title="Initializes a audio encoder resource.">Initialize()</a> has not successfully completed. Returns PP_ERROR_INPROGRESS if a prior call to <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_encoder#ad1a2c96562e2baa7a61d63fbb8a49999" class="el" title="Gets the next encoded bitstream buffer from the encoder.">GetBitstreamBuffer()</a> has not completed.
 
 <span id="a113d4a018e987f2f5227c6e0dc8a7687" class="anchor" style="margin: 0;"></span>
 
@@ -111,13 +111,14 @@ An int32\_t containing an error code from `pp_errors.h`. Returns PP\_ERROR\_FAIL
 
 Gets a blank audio frame which can be filled with audio data and passed to the encoder.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>CompletionCallbackWithOutput</code> to be called upon completion with the blank <code>AudioBuffer</code> resource.</td></tr></tbody></table>
 
 <!-- -->
 
 **Returns:**  
-An int32\_t containing an error code from `pp_errors.h`.
+An int32_t containing an error code from `pp_errors.h`.
 
 <span id="a706b305dae8bc5f5e0bca4491c991d59" class="anchor" style="margin: 0;"></span>
 
@@ -128,7 +129,7 @@ Gets the number of audio samples per channel that audio buffers must contain in 
 This will be the number of samples per channels contained in buffers returned by <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_encoder#a113d4a018e987f2f5227c6e0dc8a7687" class="el" title="Gets a blank audio frame which can be filled with audio data and passed to the encoder.">GetBuffer()</a>.
 
 **Returns:**  
-An int32\_t containing the number of samples required, or an error code from `pp_errors.h`. Returns PP\_ERROR\_FAILED if <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_encoder#a28aa43f8c92b387b81e7cf63219c2933" class="el" title="Initializes a audio encoder resource.">Initialize()</a> has not successfully completed.
+An int32_t containing the number of samples required, or an error code from `pp_errors.h`. Returns PP_ERROR_FAILED if <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_encoder#a28aa43f8c92b387b81e7cf63219c2933" class="el" title="Initializes a audio encoder resource.">Initialize()</a> has not successfully completed.
 
 <span id="a34b94c7bb1f509f4b56bfe7349560669" class="anchor" style="margin: 0;"></span>
 
@@ -138,7 +139,8 @@ Gets an array of supported audio encoder profiles.
 
 These can be used to choose a profile before calling <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_encoder#a28aa43f8c92b387b81e7cf63219c2933" class="el" title="Initializes a audio encoder resource.">Initialize()</a>.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>CompletionCallbackWithOutput</code> to be called upon completion with the PP_AudioProfileDescription structs.</td></tr></tbody></table>
 
 <!-- -->
@@ -154,13 +156,14 @@ Initializes a audio encoder resource.
 
 This should be called after <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_encoder#a34b94c7bb1f509f4b56bfe7349560669" class="el" title="Gets an array of supported audio encoder profiles.">GetSupportedProfiles()</a> and before any functions below.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>channels</td><td>The number of audio channels to encode.</td></tr><tr class="even"><td>[in]</td><td>input_sampling_rate</td><td>The sampling rate of the input audio buffer.</td></tr><tr class="odd"><td>[in]</td><td>input_sample_size</td><td>The sample size of the input audio buffer.</td></tr><tr class="even"><td>[in]</td><td>output_profile</td><td>A <code>PP_AudioProfile</code> specifying the codec profile of the encoded output stream.</td></tr><tr class="odd"><td>[in]</td><td>initial_bitrate</td><td>The initial bitrate for the encoder.</td></tr><tr class="even"><td>[in]</td><td>acceleration</td><td>A <code>PP_HardwareAcceleration</code> specifying whether to use a hardware accelerated or a software implementation.</td></tr><tr class="odd"><td>[in]</td><td>callback</td><td>A <code>CompletionCallback</code> to be called upon completion.</td></tr></tbody></table>
 
 <!-- -->
 
 **Returns:**  
-An int32\_t containing an error code from `pp_errors.h`. Returns PP\_ERROR\_NOTSUPPORTED if audio encoding is not available, or the requested codec profile is not supported. Returns PP\_ERROR\_NOMEMORY if bitstream buffers can't be created.
+An int32_t containing an error code from `pp_errors.h`. Returns PP_ERROR_NOTSUPPORTED if audio encoding is not available, or the requested codec profile is not supported. Returns PP_ERROR_NOMEMORY if bitstream buffers can't be created.
 
 <span id="a9c5b90b6dbfd81154b28f402197184bc" class="anchor" style="margin: 0;"></span>
 
@@ -168,7 +171,8 @@ An int32\_t containing an error code from `pp_errors.h`. Returns PP\_ERROR\_NOTS
 
 Recycles a bitstream buffer back to the encoder.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>bitstream_buffer</td><td>A<code>PP_AudioBitstreamBuffer</code> that is no longer needed by the plugin.</td></tr></tbody></table>
 
 <span id="aa64ea3b0313335817833a72ceed96114" class="anchor" style="margin: 0;"></span>
@@ -179,11 +183,12 @@ Requests a change to the encoding bitrate.
 
 This is only a request, fulfilled on a best-effort basis.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>audio_encoder</td><td>A <code>PP_Resource</code> identifying the audio encoder.</td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
 The documentation for this class was generated from the following file:
 
--   <a href="/docs/native-client/pepper_beta/cpp/audio__encoder_8h/" class="el">audio_encoder.h</a>
+- <a href="/docs/native-client/pepper_beta/cpp/audio__encoder_8h/" class="el">audio_encoder.h</a>

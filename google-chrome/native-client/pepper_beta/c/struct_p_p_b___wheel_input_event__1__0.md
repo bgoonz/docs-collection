@@ -1,23 +1,20 @@
----json {"title":"PPB\_WheelInputEvent Struct Reference"} ---
+---json {"title":"PPB_WheelInputEvent Struct Reference"} ---
 
-Data Fields
------------
+## Data Fields
 
 <table><tbody><tr class="odd"><td style="text-align: right;"><a href="/docs/native-client/pepper_beta/c/group___typedefs#gafdc3895ee80f4750d0d95ae1b677e9b7" class="el">PP_Resource</a>(* </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___wheel_input_event__1__0#ab9058129b7d0988881f1eea9734e4a4d" class="el">Create</a> )(<a href="/docs/native-client/pepper_beta/c/group___typedefs#ga89b662403e6a687bb914b80114c0d19d" class="el">PP_Instance</a> instance, <a href="/docs/native-client/pepper_beta/c/group___typedefs#ga71cb1042cdeb38d7881b121f3b09ce94" class="el">PP_TimeTicks</a> time_stamp, uint32_t modifiers, const struct <a href="/docs/native-client/pepper_beta/c/struct_p_p___float_point/" class="el">PP_FloatPoint</a> *wheel_delta, const struct <a href="/docs/native-client/pepper_beta/c/struct_p_p___float_point/" class="el">PP_FloatPoint</a> *wheel_ticks, <a href="/docs/native-client/pepper_beta/c/group___enums#ga4f272d99be14aacafe08dfd4ef830918" class="el">PP_Bool</a> scroll_by_page)</td></tr><tr class="even"><td style="text-align: right;"><a href="/docs/native-client/pepper_beta/c/group___enums#ga4f272d99be14aacafe08dfd4ef830918" class="el">PP_Bool</a>(* </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___wheel_input_event__1__0#aa67dcdcd6b98c48f5564987a0b080c13" class="el">IsWheelInputEvent</a> )(<a href="/docs/native-client/pepper_beta/c/group___typedefs#gafdc3895ee80f4750d0d95ae1b677e9b7" class="el">PP_Resource</a> resource)</td></tr><tr class="odd"><td style="text-align: right;">struct <a href="/docs/native-client/pepper_beta/c/struct_p_p___float_point/" class="el">PP_FloatPoint</a>(* </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___wheel_input_event__1__0#a7a6b1fb017bb6d872b014def298f70db" class="el">GetDelta</a> )(<a href="/docs/native-client/pepper_beta/c/group___typedefs#gafdc3895ee80f4750d0d95ae1b677e9b7" class="el">PP_Resource</a> wheel_event)</td></tr><tr class="even"><td style="text-align: right;">struct <a href="/docs/native-client/pepper_beta/c/struct_p_p___float_point/" class="el">PP_FloatPoint</a>(* </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___wheel_input_event__1__0#acc7a5e1f0cfe6481ccc33bbb3b06cd33" class="el">GetTicks</a> )(<a href="/docs/native-client/pepper_beta/c/group___typedefs#gafdc3895ee80f4750d0d95ae1b677e9b7" class="el">PP_Resource</a> wheel_event)</td></tr><tr class="odd"><td style="text-align: right;"><a href="/docs/native-client/pepper_beta/c/group___enums#ga4f272d99be14aacafe08dfd4ef830918" class="el">PP_Bool</a>(* </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___wheel_input_event__1__0#a51ceeec58953923770768c283405612b" class="el">GetScrollByPage</a> )(<a href="/docs/native-client/pepper_beta/c/group___typedefs#gafdc3895ee80f4750d0d95ae1b677e9b7" class="el">PP_Resource</a> wheel_event)</td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
 <span id="details" class="anchor" style="margin: 0;"></span>
 
-Detailed Description
---------------------
+## Detailed Description
 
 The `PPB_WheelIputEvent` interface contains pointers to several functions related to wheel input events.
 
-------------------------------------------------------------------------
+---
 
-Field Documentation
--------------------
+## Field Documentation
 
 <span id="ab9058129b7d0988881f1eea9734e4a4d" class="anchor" style="margin: 0;"></span>
 
@@ -27,7 +24,8 @@ Field Documentation
 
 Normally you will get a wheel event passed through the `HandleInputEvent` and will not need to create them, but some applications may want to create their own for internal use.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance for which this event occurred.</td></tr><tr class="even"><td>[in]</td><td>time_stamp</td><td>A <code>PP_TimeTicks</code> indicating the time when the event occurred.</td></tr><tr class="odd"><td>[in]</td><td>modifiers</td><td>A bit field combination of the <code>PP_InputEvent_Modifier</code> flags.</td></tr><tr class="even"><td>[in]</td><td>wheel_delta</td><td>The scroll wheel's horizontal and vertical scroll amounts.</td></tr><tr class="odd"><td>[in]</td><td>wheel_ticks</td><td>The number of "clicks" of the scroll wheel that have produced the event.</td></tr><tr class="even"><td>[in]</td><td>scroll_by_page</td><td>When true, the user is requesting to scroll by pages. When false, the user is requesting to scroll by lines.</td></tr></tbody></table>
 
 <!-- -->
@@ -47,13 +45,14 @@ This amount is system dependent and will take into account the user's preferred 
 
 Devices will be of varying resolution. Some mice with large detents will only generate integer scroll amounts. But fractional values are also possible, for example, on some trackpads and newer mice that don't have "clicks".
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>wheel_event</td><td>A <code>PP_Resource</code> corresponding to a wheel event.</td></tr></tbody></table>
 
 <!-- -->
 
 **Returns:**  
-The vertical and horizontal scroll values. The units are either in pixels (when scroll\_by\_page is false) or pages (when scroll\_by\_page is true). For example, y = -3 means scroll up 3 pixels when scroll\_by\_page is false, and scroll up 3 pages when scroll\_by\_page is true.
+The vertical and horizontal scroll values. The units are either in pixels (when scroll_by_page is false) or pages (when scroll_by_page is true). For example, y = -3 means scroll up 3 pixels when scroll_by_page is false, and scroll up 3 pages when scroll_by_page is true.
 
 <span id="a51ceeec58953923770768c283405612b" class="anchor" style="margin: 0;"></span>
 
@@ -61,7 +60,8 @@ The vertical and horizontal scroll values. The units are either in pixels (when 
 
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___wheel_input_event__1__0#a51ceeec58953923770768c283405612b" class="el" title="GetScrollByPage() indicates if the scroll delta x/y indicates pages or lines to scroll by...">GetScrollByPage()</a> indicates if the scroll delta x/y indicates pages or lines to scroll by.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>wheel_event</td><td>A <code>PP_Resource</code> corresponding to a wheel event.</td></tr></tbody></table>
 
 <!-- -->
@@ -79,7 +79,8 @@ The value may have system-specific acceleration applied to it, depending on the 
 
 If you are scrolling, you probably want to use the delta values. These tick events can be useful if you aren't doing actual scrolling and don't want or pixel values. An example may be cycling between different items in a game.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>wheel_event</td><td>A <code>PP_Resource</code> corresponding to a wheel event.</td></tr></tbody></table>
 
 <!-- -->
@@ -93,7 +94,8 @@ The number of "clicks" of the scroll wheel. You may receive fractional values fo
 
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___wheel_input_event__1__0#aa67dcdcd6b98c48f5564987a0b080c13" class="el" title="IsWheelInputEvent() determines if a resource is a wheel event.">IsWheelInputEvent()</a> determines if a resource is a wheel event.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>wheel_event</td><td>A <code>PP_Resource</code> corresponding to an event.</td></tr></tbody></table>
 
 <!-- -->
@@ -101,8 +103,8 @@ The number of "clicks" of the scroll wheel. You may receive fractional values fo
 **Returns:**  
 `PP_TRUE` if the given resource is a valid wheel input event.
 
-------------------------------------------------------------------------
+---
 
 The documentation for this struct was generated from the following file:
 
--   <a href="/docs/native-client/pepper_beta/c/ppb__input__event_8h/" class="el">ppb_input_event.h</a>
+- <a href="/docs/native-client/pepper_beta/c/ppb__input__event_8h/" class="el">ppb_input_event.h</a>

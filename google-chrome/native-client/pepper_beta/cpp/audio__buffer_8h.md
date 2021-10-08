@@ -1,15 +1,13 @@
----json {"title":"audio\_buffer.h File Reference"} ---
+---json {"title":"audio_buffer.h File Reference"} ---
 
-Include dependency graph for audio\_buffer.h:
+Include dependency graph for audio_buffer.h:
 
 ![](/docs/native-client/pepper_beta/cpp/audio__buffer_8h__incl.png)
 
-Classes
--------
+## Classes
 
 <table><tbody><tr class="odd"><td style="text-align: right;">class  </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_buffer/" class="el">pp::AudioBuffer</a></td></tr></tbody></table>
 
-Namespaces
-----------
+## Namespaces
 
 <table><tbody><tr class="odd"><td style="text-align: right;">namespace  </td><td><a href="/docs/native-client/pepper_beta/cpp/namespacepp/" class="el">pp</a></td></tr></tbody></table>

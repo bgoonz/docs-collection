@@ -2,29 +2,25 @@
 
 [List of all members.](/docs/native-client/pepper_beta/cpp/classpp_1_1_core-members/)
 
-Public Member Functions
------------------------
+## Public Member Functions
 
 <table><tbody><tr class="odd"><td style="text-align: right;">void </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_core#a09c663df7fcb527b3e5e71ea07531899" class="el">AddRefResource</a> (PP_Resource resource)</td></tr><tr class="even"><td style="text-align: right;">void </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_core#a5fd1b4530d9f01ebf3c50115238a8195" class="el">ReleaseResource</a> (PP_Resource resource)</td></tr><tr class="odd"><td style="text-align: right;">PP_Time </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_core#a8c7991d43fc5b4fce51095ad7dccaec1" class="el">GetTime</a> ()</td></tr><tr class="even"><td style="text-align: right;">PP_TimeTicks </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_core#ae80748da9fe60f2b83fbf3e18978f86f" class="el">GetTimeTicks</a> ()</td></tr><tr class="odd"><td style="text-align: right;">void </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_core#af20d1f92600f588bc74115fcbd17a1c7" class="el">CallOnMainThread</a> (int32_t delay_in_milliseconds, const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback/" class="el">CompletionCallback</a> &amp;callback, int32_t result=0)</td></tr><tr class="even"><td style="text-align: right;">bool </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_core#a052082be868f24d1f1807afa4eb7e7e4" class="el">IsMainThread</a> ()</td></tr></tbody></table>
 
-Friends
--------
+## Friends
 
 <table><tbody><tr class="odd"><td style="text-align: right;">class </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_core#a21f639900c480510650969df9c74d17d" class="el">Module</a></td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
 <span id="details" class="anchor" style="margin: 0;"></span>
 
-Detailed Description
---------------------
+## Detailed Description
 
 APIs related to memory management, time, and threads.
 
-------------------------------------------------------------------------
+---
 
-Member Function Documentation
------------------------------
+## Member Function Documentation
 
 <span id="a09c663df7fcb527b3e5e71ea07531899" class="anchor" style="margin: 0;"></span>
 
@@ -32,7 +28,8 @@ Member Function Documentation
 
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_core#a09c663df7fcb527b3e5e71ea07531899" class="el" title="AddRefResource() increments the reference count for the provided resource.">AddRefResource()</a> increments the reference count for the provided `resource`.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a resource.</td></tr></tbody></table>
 
 <span id="af20d1f92600f588bc74115fcbd17a1c7" class="anchor" style="margin: 0;"></span>
@@ -49,7 +46,8 @@ The |result| parameter will just be passed as the second argument to the callbac
 
 **Note:** If the browser is shutting down or if the module has no instances, then the callback function may not be called.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>delay_in_milliseconds</td><td>An int32_t delay in milliseconds.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>A <code>CompletionCallback</code> callback function that the browser will call after the specified delay.</td></tr><tr class="odd"><td>[in]</td><td>result</td><td>An int32_t that the browser will pass to the given <code>CompletionCallback</code>.</td></tr></tbody></table>
 
 <span id="a8c7991d43fc5b4fce51095ad7dccaec1" class="anchor" style="margin: 0;"></span>
@@ -91,20 +89,20 @@ true if the current thread is the main pepper thread, otherwise false.
 
 The resource will be deallocated if the reference count reaches zero.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to a resource.</td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
-Friends And Related Function Documentation
-------------------------------------------
+## Friends And Related Function Documentation
 
 <span id="a21f639900c480510650969df9c74d17d" class="anchor" style="margin: 0;"></span>
 
 <table><tbody><tr class="odd"><td>friend class <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_module/" class="el">Module</a><code> [friend]</code></td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
 The documentation for this class was generated from the following file:
 
--   <a href="/docs/native-client/pepper_beta/cpp/core_8h/" class="el">core.h</a>
+- <a href="/docs/native-client/pepper_beta/cpp/core_8h/" class="el">core.h</a>

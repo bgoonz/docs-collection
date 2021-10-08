@@ -1,14 +1,12 @@
----json {"title":"PPP\_InputEvent Struct Reference"} ---
+---json {"title":"PPP_InputEvent Struct Reference"} ---
 
-Data Fields
------------
+## Data Fields
 
 <table><tbody><tr class="odd"><td style="text-align: right;"><a href="/docs/native-client/pepper_beta/c/group___enums#ga4f272d99be14aacafe08dfd4ef830918" class="el">PP_Bool</a>(* </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_p___input_event__0__1#ae684a39a2bf6b58aee0f7420aab43150" class="el">HandleInputEvent</a> )(<a href="/docs/native-client/pepper_beta/c/group___typedefs#ga89b662403e6a687bb914b80114c0d19d" class="el">PP_Instance</a> instance, <a href="/docs/native-client/pepper_beta/c/group___typedefs#gafdc3895ee80f4750d0d95ae1b677e9b7" class="el">PP_Resource</a> input_event)</td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
-Field Documentation
--------------------
+## Field Documentation
 
 <span id="ae684a39a2bf6b58aee0f7420aab43150" class="anchor" style="margin: 0;"></span>
 
@@ -34,10 +32,10 @@ The caller of this function will maintain a reference to the input event resourc
 <!-- -->
 
 **Returns:**  
-PP\_TRUE if the event was handled, PP\_FALSE if not. If you have registered to filter this class of events by calling RequestFilteringInputEvents, and you return PP\_FALSE, the event will be forwarded to the page (and eventually the browser) for the default handling. For non-filtered events, the return value will be ignored.
+PP_TRUE if the event was handled, PP_FALSE if not. If you have registered to filter this class of events by calling RequestFilteringInputEvents, and you return PP_FALSE, the event will be forwarded to the page (and eventually the browser) for the default handling. For non-filtered events, the return value will be ignored.
 
-------------------------------------------------------------------------
+---
 
 The documentation for this struct was generated from the following file:
 
--   <a href="/docs/native-client/pepper_beta/c/ppp__input__event_8h/" class="el">ppp_input_event.h</a>
+- <a href="/docs/native-client/pepper_beta/c/ppp__input__event_8h/" class="el">ppp_input_event.h</a>

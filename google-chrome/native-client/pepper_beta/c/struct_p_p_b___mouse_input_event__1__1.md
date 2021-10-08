@@ -1,23 +1,20 @@
----json {"title":"PPB\_MouseInputEvent Struct Reference"} ---
+---json {"title":"PPB_MouseInputEvent Struct Reference"} ---
 
-Data Fields
------------
+## Data Fields
 
 <table><tbody><tr class="odd"><td style="text-align: right;"><a href="/docs/native-client/pepper_beta/c/group___typedefs#gafdc3895ee80f4750d0d95ae1b677e9b7" class="el">PP_Resource</a>(* </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___mouse_input_event__1__1#a3bde5af35e13f10a3472132e82b8bb45" class="el">Create</a> )(<a href="/docs/native-client/pepper_beta/c/group___typedefs#ga89b662403e6a687bb914b80114c0d19d" class="el">PP_Instance</a> instance, <a href="/docs/native-client/pepper_beta/c/group___enums#gaca7296cfec99fcb6646b7144d1d6a0c5" class="el">PP_InputEvent_Type</a> type, <a href="/docs/native-client/pepper_beta/c/group___typedefs#ga71cb1042cdeb38d7881b121f3b09ce94" class="el">PP_TimeTicks</a> time_stamp, uint32_t modifiers, <a href="/docs/native-client/pepper_beta/c/group___enums#ga25113f3c8d33e863fd38b3f70f8a5e6e" class="el">PP_InputEvent_MouseButton</a> mouse_button, const struct <a href="/docs/native-client/pepper_beta/c/struct_p_p___point/" class="el">PP_Point</a> *mouse_position, int32_t click_count, const struct <a href="/docs/native-client/pepper_beta/c/struct_p_p___point/" class="el">PP_Point</a> *mouse_movement)</td></tr><tr class="even"><td style="text-align: right;"><a href="/docs/native-client/pepper_beta/c/group___enums#ga4f272d99be14aacafe08dfd4ef830918" class="el">PP_Bool</a>(* </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___mouse_input_event__1__1#a4cf50f1f5527cf7e66788d4b47ae1638" class="el">IsMouseInputEvent</a> )(<a href="/docs/native-client/pepper_beta/c/group___typedefs#gafdc3895ee80f4750d0d95ae1b677e9b7" class="el">PP_Resource</a> resource)</td></tr><tr class="odd"><td style="text-align: right;"><a href="/docs/native-client/pepper_beta/c/group___enums#ga25113f3c8d33e863fd38b3f70f8a5e6e" class="el">PP_InputEvent_MouseButton</a>(* </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___mouse_input_event__1__1#a7a90bf6abb794ca5c42af76d8fd71d22" class="el">GetButton</a> )(<a href="/docs/native-client/pepper_beta/c/group___typedefs#gafdc3895ee80f4750d0d95ae1b677e9b7" class="el">PP_Resource</a> mouse_event)</td></tr><tr class="even"><td style="text-align: right;">struct <a href="/docs/native-client/pepper_beta/c/struct_p_p___point/" class="el">PP_Point</a>(* </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___mouse_input_event__1__1#ab7c3f20bd61bec3db563a7956fdeb7e0" class="el">GetPosition</a> )(<a href="/docs/native-client/pepper_beta/c/group___typedefs#gafdc3895ee80f4750d0d95ae1b677e9b7" class="el">PP_Resource</a> mouse_event)</td></tr><tr class="odd"><td style="text-align: right;">int32_t(* </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___mouse_input_event__1__1#a2850b783ad0136b5818d876a1a01af22" class="el">GetClickCount</a> )(<a href="/docs/native-client/pepper_beta/c/group___typedefs#gafdc3895ee80f4750d0d95ae1b677e9b7" class="el">PP_Resource</a> mouse_event)</td></tr><tr class="even"><td style="text-align: right;">struct <a href="/docs/native-client/pepper_beta/c/struct_p_p___point/" class="el">PP_Point</a>(* </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___mouse_input_event__1__1#a043229000d9f7d9436ae8a963bb6aca1" class="el">GetMovement</a> )(<a href="/docs/native-client/pepper_beta/c/group___typedefs#gafdc3895ee80f4750d0d95ae1b677e9b7" class="el">PP_Resource</a> mouse_event)</td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
 <span id="details" class="anchor" style="margin: 0;"></span>
 
-Detailed Description
---------------------
+## Detailed Description
 
 The `PPB_MouseInputEvent` interface contains pointers to several functions related to mouse input events.
 
-------------------------------------------------------------------------
+---
 
-Field Documentation
--------------------
+## Field Documentation
 
 <span id="a3bde5af35e13f10a3472132e82b8bb45" class="anchor" style="margin: 0;"></span>
 
@@ -27,7 +24,8 @@ Field Documentation
 
 Normally you will get a mouse event passed through the `HandleInputEvent` and will not need to create them, but some applications may want to create their own for internal use. The type must be one of the mouse event types.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance for which this event occurred.</td></tr><tr class="even"><td>[in]</td><td>type</td><td>A <code>PP_InputEvent_Type</code> identifying the type of input event.</td></tr><tr class="odd"><td>[in]</td><td>time_stamp</td><td>A <code>PP_TimeTicks</code> indicating the time when the event occurred.</td></tr><tr class="even"><td>[in]</td><td>modifiers</td><td>A bit field combination of the <code>PP_InputEvent_Modifier</code> flags.</td></tr><tr class="odd"><td>[in]</td><td>mouse_button</td><td>The button that changed for mouse down or up events. This value will be <code>PP_EVENT_MOUSEBUTTON_NONE</code> for mouse move, enter, and leave events.</td></tr><tr class="even"><td>[in]</td><td>mouse_position</td><td>A <code>Point</code> containing the x and y position of the mouse when the event occurred.</td></tr><tr class="odd"><td>[in]</td><td>mouse_movement</td><td>The change in position of the mouse.</td></tr></tbody></table>
 
 <!-- -->
@@ -41,7 +39,8 @@ A `PP_Resource` containing the new mouse input event.
 
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___mouse_input_event__1__1#a7a90bf6abb794ca5c42af76d8fd71d22" class="el" title="GetButton() returns the mouse button that generated a mouse down or up event.">GetButton()</a> returns the mouse button that generated a mouse down or up event.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>mouse_event</td><td>A <code>PP_Resource</code> corresponding to a mouse event.</td></tr></tbody></table>
 
 <!-- -->
@@ -61,7 +60,8 @@ Returns the change in position of the mouse.
 
 When the mouse is locked, although the mouse position doesn't actually change, this function still provides movement information, which indicates what the change in position would be had the mouse not been locked.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>mouse_event</td><td>A <code>PP_Resource</code> corresponding to a mouse event.</td></tr></tbody></table>
 
 <!-- -->
@@ -77,7 +77,8 @@ The change in position of the mouse, relative to the previous position.
 
 When the mouse is locked, it returns the last known mouse position just as mouse lock was entered.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>mouse_event</td><td>A <code>PP_Resource</code> corresponding to a mouse event.</td></tr></tbody></table>
 
 <!-- -->
@@ -91,7 +92,8 @@ The point associated with the mouse event, relative to the upper- left of the in
 
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___mouse_input_event__1__1#a4cf50f1f5527cf7e66788d4b47ae1638" class="el" title="IsMouseInputEvent() determines if a resource is a mouse event.">IsMouseInputEvent()</a> determines if a resource is a mouse event.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>PP_Resource</code> corresponding to an event.</td></tr></tbody></table>
 
 <!-- -->
@@ -99,8 +101,8 @@ The point associated with the mouse event, relative to the upper- left of the in
 **Returns:**  
 `PP_TRUE` if the given resource is a valid mouse input event, otherwise `PP_FALSE`.
 
-------------------------------------------------------------------------
+---
 
 The documentation for this struct was generated from the following file:
 
--   <a href="/docs/native-client/pepper_beta/c/ppb__input__event_8h/" class="el">ppb_input_event.h</a>
+- <a href="/docs/native-client/pepper_beta/c/ppb__input__event_8h/" class="el">ppb_input_event.h</a>

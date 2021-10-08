@@ -8,31 +8,27 @@ Inheritance diagram for pp::CompletionCallback:
 
 [List of all members.](/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback-members/)
 
-Public Member Functions
------------------------
+## Public Member Functions
 
 <table><tbody><tr class="odd"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback#a2dae27f9f015c3b9342a4a65f05bd356" class="el">CompletionCallback</a> ()</td></tr><tr class="even"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback#afe88416d324795a748d5112e197b0131" class="el">CompletionCallback</a> (PP_CompletionCallback_Func func, void *user_data)</td></tr><tr class="odd"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback#a14fd9478ff007a91a3cdfa397c8e6e56" class="el">CompletionCallback</a> (PP_CompletionCallback_Func func, void *user_data, int32_t <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback#a60e466572fe7de362969dd41179c971f" class="el">flags</a>)</td></tr><tr class="even"><td style="text-align: right;">void </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback#a89fb884e8af572e9bf38fb880e132438" class="el">set_flags</a> (int32_t <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback#a60e466572fe7de362969dd41179c971f" class="el">flags</a>)</td></tr><tr class="odd"><td style="text-align: right;">void </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback#a7795404cc15a4f96523c28db21d364c4" class="el">Run</a> (int32_t result)</td></tr><tr class="even"><td style="text-align: right;">void </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback#a2996ca2f2b640c7da6da9016a5b0cd16" class="el">RunAndClear</a> (int32_t result)</td></tr><tr class="odd"><td style="text-align: right;">bool </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback#a6ce66ec2655c9157cab494f248551b5f" class="el">IsOptional</a> () const</td></tr><tr class="even"><td style="text-align: right;">const PP_CompletionCallback &amp; </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback#ada943a747c94eebb1e32dbd6914c2526" class="el">pp_completion_callback</a> () const</td></tr><tr class="odd"><td style="text-align: right;">int32_t </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback#a60e466572fe7de362969dd41179c971f" class="el">flags</a> () const</td></tr><tr class="even"><td style="text-align: right;">int32_t </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback#a24d1648d1a92a5c36894ce081457e603" class="el">MayForce</a> (int32_t result) const</td></tr></tbody></table>
 
-Protected Attributes
---------------------
+## Protected Attributes
 
 <table><tbody><tr class="odd"><td style="text-align: right;">PP_CompletionCallback </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback#af071c756ff3eb007dfbea3f50df74111" class="el">cc_</a></td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
 <span id="details" class="anchor" style="margin: 0;"></span>
 
-Detailed Description
---------------------
+## Detailed Description
 
 This API enables you to implement and receive callbacks when Pepper operations complete asynchronously.
 
 You can create these objects yourself, but it is most common to use the <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback_factory/" class="el" title="CompletionCallbackFactory&lt;T&gt; may be used to create CompletionCallback objects that are bound to membe...">CompletionCallbackFactory</a> to allow the callbacks to call class member functions.
 
-------------------------------------------------------------------------
+---
 
-Constructor & Destructor Documentation
---------------------------------------
+## Constructor & Destructor Documentation
 
 <span id="a2dae27f9f015c3b9342a4a65f05bd356" class="anchor" style="margin: 0;"></span>
 
@@ -48,7 +44,8 @@ The default constructor will create a blocking `CompletionCallback` that can be 
 
 A constructor for creating a `CompletionCallback`.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>func</td><td>The function to be called on completion.</td></tr><tr class="even"><td>[in]</td><td>user_data</td><td>The user data to be passed to the callback function. This is optional and is typically used to help track state in case of multiple pending callbacks.</td></tr></tbody></table>
 
 <span id="a14fd9478ff007a91a3cdfa397c8e6e56" class="anchor" style="margin: 0;"></span>
@@ -57,13 +54,13 @@ A constructor for creating a `CompletionCallback`.
 
 A constructor for creating a `CompletionCallback` with specified flags.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>func</td><td>The function to be called on completion.</td></tr><tr class="even"><td>[in]</td><td>user_data</td><td>The user data to be passed to the callback function. This is optional and is typically used to help track state in case of multiple pending callbacks.</td></tr><tr class="odd"><td>[in]</td><td>flags</td><td>Bit field combination of <code>PP_CompletionCallback_Flag</code> flags used to control how non-NULL callbacks are scheduled by asynchronous methods.</td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
-Member Function Documentation
------------------------------
+## Member Function Documentation
 
 <span id="a60e466572fe7de362969dd41179c971f" class="anchor" style="margin: 0;"></span>
 
@@ -72,7 +69,7 @@ Member Function Documentation
 The <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback#a60e466572fe7de362969dd41179c971f" class="el" title="The flags() function returns flags used to control how non-NULL callbacks are scheduled by asynchrono...">flags()</a> function returns flags used to control how non-NULL callbacks are scheduled by asynchronous methods.
 
 **Returns:**  
-An int32\_t containing a bit field combination of `PP_CompletionCallback_Flag` flags.
+An int32_t containing a bit field combination of `PP_CompletionCallback_Flag` flags.
 
 <span id="a6ce66ec2655c9157cab494f248551b5f" class="anchor" style="margin: 0;"></span>
 
@@ -82,7 +79,7 @@ An int32\_t containing a bit field combination of `PP_CompletionCallback_Flag` f
 
 This flag allows any method taking such callback to complete synchronously and not call the callback if the operation would not block. This is useful when performance is an issue, and the operation bandwidth should not be limited to the processing speed of the message loop.
 
-On synchronous method completion, the completion result will be returned by the method itself. Otherwise, the method will return PP\_OK\_COMPLETIONPENDING, and the callback will be invoked asynchronously on the same thread where the PPB method was invoked.
+On synchronous method completion, the completion result will be returned by the method itself. Otherwise, the method will return PP_OK_COMPLETIONPENDING, and the callback will be invoked asynchronously on the same thread where the PPB method was invoked.
 
 **Returns:**  
 true if this callback is optional, otherwise false.
@@ -105,7 +102,8 @@ If the callback is required and `result` indicates that it has not been schedule
        return loader->Open(*loader, *url_request_info, cc);
      }
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>result</td><td>PP_OK_COMPLETIONPENDING or the result of the completed operation to be passed to the callback function. PP_OK_COMPLETIONPENDING indicates that the callback has already been scheduled. Other non-positive values correspond to error codes from <code>pp_errors.h</code>. Positive values indicate additional information such as bytes read.</td></tr></tbody></table>
 
 <!-- -->
@@ -130,7 +128,8 @@ A `PP_CompletionCallback`.
 
 Normally, the system runs a `CompletionCallback` after an asynchronous operation completes, but programs may wish to run the `CompletionCallback` manually in order to reuse the same code paths.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>result</td><td>The result of the operation to be passed to the callback function. Non-positive values correspond to the error codes from <code>pp_errors.h</code> (excluding <code>PP_OK_COMPLETIONPENDING</code>). Positive values indicate additional information such as bytes read.</td></tr></tbody></table>
 
 <span id="a2996ca2f2b640c7da6da9016a5b0cd16" class="anchor" style="margin: 0;"></span>
@@ -139,7 +138,8 @@ Normally, the system runs a `CompletionCallback` after an asynchronous operation
 
 <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback#a2996ca2f2b640c7da6da9016a5b0cd16" class="el" title="RunAndClear() is used to run the CompletionCallback and clear out the callback so that it cannot be r...">RunAndClear()</a> is used to run the `CompletionCallback` and clear out the callback so that it cannot be run a second time.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>result</td><td>The result of the operation to be passed to the callback function. Non-positive values correspond to the error codes from <code>pp_errors.h</code> (excluding <code>PP_OK_COMPLETIONPENDING</code>). Positive values indicate additional information such as bytes read.</td></tr></tbody></table>
 
 <span id="a89fb884e8af572e9bf38fb880e132438" class="anchor" style="margin: 0;"></span>
@@ -148,20 +148,20 @@ Normally, the system runs a `CompletionCallback` after an asynchronous operation
 
 The <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback#a89fb884e8af572e9bf38fb880e132438" class="el" title="The set_flags() function is used to set the flags used to control how non-NULL callbacks are schedule...">set_flags()</a> function is used to set the flags used to control how non-NULL callbacks are scheduled by asynchronous methods.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>flags</td><td>Bit field combination of <code>PP_CompletionCallback_Flag</code> flags used to control how non-NULL callbacks are scheduled by asynchronous methods.</td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
-Member Data Documentation
--------------------------
+## Member Data Documentation
 
 <span id="af071c756ff3eb007dfbea3f50df74111" class="anchor" style="margin: 0;"></span>
 
 <table><tbody><tr class="odd"><td>PP_CompletionCallback <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_completion_callback#af071c756ff3eb007dfbea3f50df74111" class="el">pp::CompletionCallback::cc_</a><code> [protected]</code></td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
 The documentation for this class was generated from the following file:
 
--   <a href="/docs/native-client/pepper_beta/cpp/completion__callback_8h/" class="el">completion_callback.h</a>
+- <a href="/docs/native-client/pepper_beta/cpp/completion__callback_8h/" class="el">completion_callback.h</a>

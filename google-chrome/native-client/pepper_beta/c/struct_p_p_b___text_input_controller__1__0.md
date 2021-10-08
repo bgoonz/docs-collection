@@ -1,23 +1,20 @@
----json {"title":"PPB\_TextInputController Struct Reference"} ---
+---json {"title":"PPB_TextInputController Struct Reference"} ---
 
-Data Fields
------------
+## Data Fields
 
 <table><tbody><tr class="odd"><td style="text-align: right;">void(* </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___text_input_controller__1__0#a4cb36e7536a78dc5893c288c2885cb97" class="el">SetTextInputType</a> )(<a href="/docs/native-client/pepper_beta/c/group___typedefs#ga89b662403e6a687bb914b80114c0d19d" class="el">PP_Instance</a> instance, <a href="/docs/native-client/pepper_beta/c/group___enums#ga5fef49ee4c2cc6dcead825340da0f116" class="el">PP_TextInput_Type</a> type)</td></tr><tr class="even"><td style="text-align: right;">void(* </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___text_input_controller__1__0#ab34cfc4db88d4387845317042ceb63af" class="el">UpdateCaretPosition</a> )(<a href="/docs/native-client/pepper_beta/c/group___typedefs#ga89b662403e6a687bb914b80114c0d19d" class="el">PP_Instance</a> instance, const struct <a href="/docs/native-client/pepper_beta/c/struct_p_p___rect/" class="el">PP_Rect</a> *caret)</td></tr><tr class="odd"><td style="text-align: right;">void(* </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___text_input_controller__1__0#a4b05a8a76a6daadab941fb24ce5d23ce" class="el">CancelCompositionText</a> )(<a href="/docs/native-client/pepper_beta/c/group___typedefs#ga89b662403e6a687bb914b80114c0d19d" class="el">PP_Instance</a> instance)</td></tr><tr class="even"><td style="text-align: right;">void(* </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___text_input_controller__1__0#aca1b52ba11e4384255eeecd90fc45ba5" class="el">UpdateSurroundingText</a> )(<a href="/docs/native-client/pepper_beta/c/group___typedefs#ga89b662403e6a687bb914b80114c0d19d" class="el">PP_Instance</a> instance, struct <a href="/docs/native-client/pepper_beta/c/struct_p_p___var/" class="el">PP_Var</a> text, uint32_t caret, uint32_t anchor)</td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
 <span id="details" class="anchor" style="margin: 0;"></span>
 
-Detailed Description
---------------------
+## Detailed Description
 
 `PPB_TextInputController` provides a set of functions for giving hints to the browser about the text input status of plugins, and functions for controlling input method editors (IMEs).
 
-------------------------------------------------------------------------
+---
 
-Field Documentation
--------------------
+## Field Documentation
 
 <span id="a4b05a8a76a6daadab941fb24ce5d23ce" class="anchor" style="margin: 0;"></span>
 
@@ -53,8 +50,8 @@ Typical use of this information in the browser is to enable "reconversion" featu
 
 When the focus is not on text, call this function setting `text` to an empty string and `caret` and `anchor` to zero. Also, the plugin should send the empty text when it does not want to reveal the selection to IME (e.g., when the surrounding text is containing password text).
 
-------------------------------------------------------------------------
+---
 
 The documentation for this struct was generated from the following file:
 
--   <a href="/docs/native-client/pepper_beta/c/ppb__text__input__controller_8h/" class="el">ppb_text_input_controller.h</a>
+- <a href="/docs/native-client/pepper_beta/c/ppb__text__input__controller_8h/" class="el">ppb_text_input_controller.h</a>

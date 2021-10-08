@@ -8,22 +8,19 @@ Inheritance diagram for pp::AudioConfig:
 
 [List of all members.](/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_config-members/)
 
-Public Member Functions
------------------------
+## Public Member Functions
 
 <table><tbody><tr class="odd"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_config#ad7a5caaa08c531acf7e2975a790db98e" class="el">AudioConfig</a> ()</td></tr><tr class="even"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_config#aa6dcb1ed3086502f03d9e1d73124421a" class="el">AudioConfig</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance_handle/" class="el">InstanceHandle</a> &amp;instance, PP_AudioSampleRate <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_config#a988b8489ec9335be25605561d0293813" class="el">sample_rate</a>, uint32_t <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_config#ad7cb79f7f92993257643574457ee8d0c" class="el">sample_frame_count</a>)</td></tr><tr class="odd"><td style="text-align: right;">PP_AudioSampleRate </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_config#a988b8489ec9335be25605561d0293813" class="el">sample_rate</a> () const</td></tr><tr class="even"><td style="text-align: right;">uint32_t </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_config#ad7cb79f7f92993257643574457ee8d0c" class="el">sample_frame_count</a> () const</td></tr></tbody></table>
 
-Static Public Member Functions
-------------------------------
+## Static Public Member Functions
 
 <table><tbody><tr class="odd"><td style="text-align: right;">static PP_AudioSampleRate </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_config#abf073122a1b9ef65f149fda9be57246f" class="el">RecommendSampleRate</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance_handle/" class="el">InstanceHandle</a> &amp;instance)</td></tr><tr class="even"><td style="text-align: right;">static uint32_t </td><td><a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_config#a53611e94bca5d4a5f7acdd3e5285adb9" class="el">RecommendSampleFrameCount</a> (const <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_instance_handle/" class="el">InstanceHandle</a> &amp;instance, PP_AudioSampleRate <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_config#a988b8489ec9335be25605561d0293813" class="el">sample_rate</a>, uint32_t requested_sample_frame_count)</td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
 <span id="details" class="anchor" style="margin: 0;"></span>
 
-Detailed Description
---------------------
+## Detailed Description
 
 A 16 bit stereo <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_config/" class="el" title="A 16 bit stereo AudioConfig resource.">AudioConfig</a> resource.
 
@@ -49,10 +46,9 @@ Buffer layout for a stereo int16 configuration:
        if (audio.is_null())
          return false;  // Couldn't create audio.
 
-------------------------------------------------------------------------
+---
 
-Constructor & Destructor Documentation
---------------------------------------
+## Constructor & Destructor Documentation
 
 <span id="ad7a5caaa08c531acf7e2975a790db98e" class="anchor" style="margin: 0;"></span>
 
@@ -68,13 +64,13 @@ A constructor that creates an audio config based on the given sample rate and fr
 
 If the rate and frame count aren't supported, the resulting resource will be <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_resource#a859068e34cdc2dc0b78754c255323aa9" class="el" title="This functions determines if this resource is invalid or uninitialized.">is_null()</a>. You can pass the result of <a href="/docs/native-client/pepper_beta/cpp/classpp_1_1_audio_config#a53611e94bca5d4a5f7acdd3e5285adb9" class="el" title="RecommendSampleFrameCount() returns a supported frame count closest to the requested count...">RecommendSampleFrameCount()</a> as the sample frame count.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance associated with this resource.</td></tr><tr class="even"><td>[in]</td><td>sample_rate</td><td>A <code>PP_AudioSampleRate</code> which is either <code>PP_AUDIOSAMPLERATE_44100</code> or <code>PP_AUDIOSAMPLERATE_48000</code>.</td></tr><tr class="odd"><td>[in]</td><td>sample_frame_count</td><td>A uint32_t frame count returned from the <code>RecommendSampleFrameCount</code> function.</td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
-Member Function Documentation
------------------------------
+## Member Function Documentation
 
 <span id="a53611e94bca5d4a5f7acdd3e5285adb9" class="anchor" style="margin: 0;"></span>
 
@@ -84,13 +80,14 @@ Member Function Documentation
 
 The sample frame count determines the overall latency of audio. Smaller frame counts will yield lower latency, but higher CPU utilization. Supported sample frame counts will vary by hardware and system (consider that the local system might be anywhere from a cell phone or a high-end audio workstation). Sample counts less than `PP_AUDIOMINSAMPLEFRAMECOUNT` and greater than `PP_AUDIOMAXSAMPLEFRAMECOUNT` are never supported on any system, but values in between aren't necessarily valid. This function will return a supported count closest to the requested value for use in the constructor.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance associated with this resource.</td></tr><tr class="even"><td>[in]</td><td>sample_rate</td><td>A <code>PP_AudioSampleRate</code> which is either <code>PP_AUDIOSAMPLERATE_44100</code> or <code>PP_AUDIOSAMPLERATE_48000</code>.</td></tr><tr class="odd"><td>[in]</td><td>requested_sample_frame_count</td><td>A uint32_t requested frame count.</td></tr></tbody></table>
 
 <!-- -->
 
 **Returns:**  
-A uint32\_t containing the recommended sample frame count if successful. If the sample frame count or bit rate is not supported, this function will fail and return 0.
+A uint32_t containing the recommended sample frame count if successful. If the sample frame count or bit rate is not supported, this function will fail and return 0.
 
 <span id="abf073122a1b9ef65f149fda9be57246f" class="anchor" style="margin: 0;"></span>
 
@@ -100,7 +97,8 @@ A uint32\_t containing the recommended sample frame count if successful. If the 
 
 Applications that use the recommended sample rate might obtain lower latency and higher fidelity output.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The instance associated with this resource.</td></tr></tbody></table>
 
 <span id="ad7cb79f7f92993257643574457ee8d0c" class="anchor" style="margin: 0;"></span>
@@ -110,7 +108,7 @@ Applications that use the recommended sample rate might obtain lower latency and
 Getter function for returning the internal sample frame count.
 
 **Returns:**  
-A uint32\_t containing the sample frame count.
+A uint32_t containing the sample frame count.
 
 <span id="a988b8489ec9335be25605561d0293813" class="anchor" style="margin: 0;"></span>
 
@@ -121,8 +119,8 @@ Getter function for returning the internal `PP_AudioSampleRate` enum.
 **Returns:**  
 The `PP_AudioSampleRate` enum.
 
-------------------------------------------------------------------------
+---
 
 The documentation for this class was generated from the following file:
 
--   <a href="/docs/native-client/pepper_beta/cpp/audio__config_8h/" class="el">audio_config.h</a>
+- <a href="/docs/native-client/pepper_beta/cpp/audio__config_8h/" class="el">audio_config.h</a>
