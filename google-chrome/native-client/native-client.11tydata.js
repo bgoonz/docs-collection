@@ -1,6 +1,6 @@
 module.exports = {
   eleventyComputed: {
-    layout: data => {
+    layout: (data) => {
       // If the page has specified its own layout, use it.
       if (data.layout) {
         return data.layout;
@@ -10,9 +10,9 @@ module.exports = {
       // Set API Reference to use the native-client-reference layout.
       const regex = new RegExp(/\/pepper_.*\/(c|cpp)\//);
       if (regex.test(data.page.url)) {
-        return 'layouts/native-client-reference.njk';
+        return "layouts/native-client-reference.njk";
       } else {
-        return 'layouts/doc-post.njk';
+        return "layouts/doc-post.njk";
       }
     },
   },

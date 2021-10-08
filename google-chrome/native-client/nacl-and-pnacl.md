@@ -2,17 +2,16 @@
 
 {% include 'partials/nacl-warning.njk' %}
 
-------------------------------------------------------------------------
+---
 
 This document describes the differences between **Native Client** and **Portable Native Client**, and provides recommendations for when to use each.
 
--   <a href="#native-client-nacl" id="id6" class="reference internal">Native Client (NaCl)</a>
--   <a href="#portable-native-client-pnacl" id="id7" class="reference internal">Portable Native Client (PNaCl)</a>
--   <a href="#when-to-use-pnacl" id="id8" class="reference internal">When to use PNaCl</a>
--   <a href="#when-to-use-nacl" id="id9" class="reference internal">When to use NaCl</a>
+- <a href="#native-client-nacl" id="id6" class="reference internal">Native Client (NaCl)</a>
+- <a href="#portable-native-client-pnacl" id="id7" class="reference internal">Portable Native Client (PNaCl)</a>
+- <a href="#when-to-use-pnacl" id="id8" class="reference internal">When to use PNaCl</a>
+- <a href="#when-to-use-nacl" id="id9" class="reference internal">When to use NaCl</a>
 
-<span id="id2"></span>Native Client (NaCl)
-------------------------------------------
+## <span id="id2"></span>Native Client (NaCl)
 
 Native Client enables the execution of native code securely inside web applications through the use of advanced <a href="http://research.google.com/pubs/pub35649.html" class="reference external">Software Fault Isolation (SFI) techniques</a>. Native Client allows you to harness a client machine’s computational power to a fuller extent than traditional web technologies. It does this by running compiled C and C++ code at near-native speeds, and exposing a CPU’s full capabilities, including SIMD vectors and multiple-core processing with shared memory.
 
@@ -20,8 +19,7 @@ While Native Client provides operating system independence, it requires you to g
 
 The traditional method of application distribution on the web is through self- contained bundles of HTML, CSS, JavaScript, and other resources (images, etc.) that can be hosted on a server and run inside a web browser. With this type of distribution, a website created today should still work years later, on all platforms. Architecture-specific executables are clearly not a good fit for distribution on the web. Consequently, Native Client has been until recently restricted to applications and browser extensions that are installed through the Chrome Web Store.
 
-<span id="id3"></span>Portable Native Client (PNaCl)
-----------------------------------------------------
+## <span id="id3"></span>Portable Native Client (PNaCl)
 
 PNaCl solves the portability problem by splitting the compilation process into two parts:
 
@@ -34,8 +32,7 @@ With PNaCl, you’ll generate a single pexe, rather than multiple platform- spec
 
 PNaCl is a new technology, and as such it still has a few limitations as compared to NaCl. These limitations are described below.
 
-<span id="id4"></span>When to use PNaCl
----------------------------------------
+## <span id="id4"></span>When to use PNaCl
 
 PNaCl is the preferred toolchain for Native Client, and the only way to deploy Native Client modules without the Google Web Store. Unless your project is subject to one of the narrow limitations described under “<a href="#when-to-use-nacl" class="reference internal"><em>When to use NaCl</em></a>”, you should use PNaCl.
 
@@ -43,11 +40,10 @@ Chrome supports translation of pexe modules and their use in web applications wi
 
 If controlled distribution through the Chrome Web Store is an important part of your product plan, the benefits of PNaCl are less critical for you. But you can still use the PNaCl toolchain and distribute your application through the Chrome Web Store, and thereby take advantage of the conveniences of PNaCl, such as not having to explicitly compile your application for all supported architectures.
 
-<span id="id5"></span>When to use NaCl
---------------------------------------
+## <span id="id5"></span>When to use NaCl
 
 Use NaCl if any of the following apply to your application:
 
--   Your application requires architecture-specific instructions such as, for example, inline assembly. PNaCl tries to offer high-performance portable equivalents. One such example is PNaCl’s <a href="/docs/native-client/reference/pnacl-c-cpp-language-support#portable-simd-vectors" class="reference internal"><em>Portable SIMD Vectors</em></a>.
--   Your application uses dynamic linking. PNaCl only supports static linking with a PNaCl port of the `newlib` C standard library. Dynamic linking and `glibc` are not yet supported in PNaCl. Work is under way to enable dynamic linking in future versions of PNaCl.
--   Your application uses certain GNU extensions not supported by PNaCl’s LLVM toolchain, like taking the address of a label for computed `goto`, or nested functions.
+- Your application requires architecture-specific instructions such as, for example, inline assembly. PNaCl tries to offer high-performance portable equivalents. One such example is PNaCl’s <a href="/docs/native-client/reference/pnacl-c-cpp-language-support#portable-simd-vectors" class="reference internal"><em>Portable SIMD Vectors</em></a>.
+- Your application uses dynamic linking. PNaCl only supports static linking with a PNaCl port of the `newlib` C standard library. Dynamic linking and `glibc` are not yet supported in PNaCl. Work is under way to enable dynamic linking in future versions of PNaCl.
+- Your application uses certain GNU extensions not supported by PNaCl’s LLVM toolchain, like taking the address of a label for computed `goto`, or nested functions.
