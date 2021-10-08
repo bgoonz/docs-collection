@@ -38,7 +38,7 @@ Next, add a file called `manifest.json` and include the following code:
 ```json
 {
   "name": "Hello Extensions",
-  "description" : "Base Level Extension",
+  "description": "Base Level Extension",
   "version": "1.0",
   "manifest_version": 2
 }

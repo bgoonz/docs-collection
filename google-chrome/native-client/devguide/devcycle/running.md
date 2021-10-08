@@ -60,13 +60,9 @@ This technique requires the NaCl flag.
 
 ![CHK](/docs/native-client/images/check-red.png)
 
-
-
 **2. Packaged application loaded as an unpacked extension**
 
 Load your packaged application into Chrome as an unpacked extension and run it without a server. An unpacked extension is an application whose source and metadata files are located in an unzipped folder on your development machine. The CWS manifest file (explained below) must specify a local_path field.
-
-
 
 ![CHK](/docs/native-client/images/check-red.png)
 
@@ -81,8 +77,6 @@ Load your hosted application into Chrome as an unpacked extension and run it fro
 **4. CWS application with untrusted testers**
 
 The standard technique for distributing a packaged or hosted application in the CWS. You can limit the application to trusted testers. This technique requires a server if your application is a hosted application.
-
-
 
 ![CHK](/docs/native-client/images/check-red.png)
 

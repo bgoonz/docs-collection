@@ -17,16 +17,14 @@ The following defines a rule to display a page action if the current page has a 
 javascript:
 
 ```js
-chrome.declarativeContent.onPageChanged.addRules([{
-  actions: [
-    new chrome.declarativeContent.ShowPageAction()
-  ],
-  conditions: [
-    new chrome.declarativeContent.PageStateMatcher(
-        {css: ["video"]}
-    )
-  ]
-}]);
+chrome.declarativeContent.onPageChanged.addRules([
+  {
+    actions: [new chrome.declarativeContent.ShowPageAction()],
+    conditions: [
+      new chrome.declarativeContent.PageStateMatcher({ css: ["video"] }),
+    ],
+  },
+]);
 ```
 
 This is the same definition in the manifest:

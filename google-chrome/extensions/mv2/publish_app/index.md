@@ -22,4 +22,3 @@ the size of the user download package][5].
 [3]: /docs/webstore/publish/
 [4]: /docs/native-client/
 [5]: /docs/native-client/devguide/distributing/#chrome-apps
-

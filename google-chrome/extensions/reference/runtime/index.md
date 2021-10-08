@@ -1,49 +1,49 @@
 ---
 api: runtime
 ---
+
 The runtime API provides methods to support a number of areas of functionality that your extensions
 can use:
 
 Message passing
 
 : These methods support message passing so that you can communicate with different parts of your extension (such as an extension popup and background scripts), other extensions, or native applications on the user's device. See [Message
-  Passing][message-passing] for an overview of the subject. Methods in this category include
-  [connect](/docs/extensions/reference/runtime/#method-connect),
-  [connectNative](/docs/extensions/reference/runtime/#method-connectNative),
-  [sendMessage](/docs/extensions/reference/runtime/#method-sendMessage), and
-  [sendNativeMessage](/docs/extensions/reference/runtime/#method-sendNativeMessage).
+Passing][message-passing] for an overview of the subject. Methods in this category include
+[connect](/docs/extensions/reference/runtime/#method-connect),
+[connectNative](/docs/extensions/reference/runtime/#method-connectNative),
+[sendMessage](/docs/extensions/reference/runtime/#method-sendMessage), and
+[sendNativeMessage](/docs/extensions/reference/runtime/#method-sendNativeMessage).
 
 Accessing extension and platform metadata
 
 : These methods let you retrieve several specific pieces of metadata about the extension and the
-  platform. Methods in this category include
-  [getBackgroundPage](/docs/extensions/reference/runtime/#method-getBackgroundPage),
-  [getManifest](/docs/extensions/reference/runtime/#method-getManifest),
-  [getPackageDirectoryEntry](/docs/extensions/reference/runtime/#method-getPackageDirectoryEntry), and
-  [getPlatformInfo](/docs/extensions/reference/runtime/#method-getPlatformInfo).
+platform. Methods in this category include
+[getBackgroundPage](/docs/extensions/reference/runtime/#method-getBackgroundPage),
+[getManifest](/docs/extensions/reference/runtime/#method-getManifest),
+[getPackageDirectoryEntry](/docs/extensions/reference/runtime/#method-getPackageDirectoryEntry), and
+[getPlatformInfo](/docs/extensions/reference/runtime/#method-getPlatformInfo).
 
 Managing extension lifecycle and options
 
 : These methods let you perform some meta-operations on the extension, and display the options page
-  to the extension user. Methods in this category include
-  [reload](/docs/extensions/reference/runtime/#method-reload),
-  [requestUpdateCheck](/docs/extensions/reference/runtime/#method-requestUpdateCheck),
-  [setUninstallURL](/docs/extensions/reference/runtime/#method-setUninstallURL), and
-  [openOptionsPage](/docs/extensions/reference/runtime/#method-openOptionsPage).
+to the extension user. Methods in this category include
+[reload](/docs/extensions/reference/runtime/#method-reload),
+[requestUpdateCheck](/docs/extensions/reference/runtime/#method-requestUpdateCheck),
+[setUninstallURL](/docs/extensions/reference/runtime/#method-setUninstallURL), and
+[openOptionsPage](/docs/extensions/reference/runtime/#method-openOptionsPage).
 
 Device restart support
 
 : These methods are available only on Chrome OS, and exist mainly to support kiosk implementations.
-  Methods in this category include
-  [restart](/docs/extensions/reference/runtime/#method-restart) and
-  [restartAfterDelay](/docs/extensions/reference/runtime/#method-restartAfterDelay).
+Methods in this category include
+[restart](/docs/extensions/reference/runtime/#method-restart) and
+[restartAfterDelay](/docs/extensions/reference/runtime/#method-restartAfterDelay).
 
 Helper utilities
 
 : These methods provide utility such as the conversion of internal resource representations to
-  external formats. Methods in this category include
-  [getURL](/docs/extensions/reference/runtime/#method-getURL).
-
+external formats. Methods in this category include
+[getURL](/docs/extensions/reference/runtime/#method-getURL).
 
 ## Manifest
 
@@ -51,8 +51,6 @@ Most methods on the runtime API do not require any permission to use. However,
 [sendNativeMessage](/docs/extensions/reference/runtime/#method-sendNativeMessage) and
 [connectNative](/docs/extensions/reference/runtime/#method-connectNative) require the
 `nativeMessaging` permission to be declared in your manifest.
-
-
 
 ## Examples
 
@@ -70,9 +68,10 @@ the page that the content script has been [injected][content-inject] into.
 ```js
 //// content.js ////
 
-{ // Block used to avoid setting global variables
-  const img = document.createElement('img');
-  img.src = chrome.runtime.getURL('logo.png');
+{
+  // Block used to avoid setting global variables
+  const img = document.createElement("img");
+  img.src = chrome.runtime.getURL("logo.png");
   document.body.append(img);
 }
 ```
@@ -92,9 +91,9 @@ the background responds with a copy of the user's information.
 //// content.js ////
 
 // 1. Send the background a message requesting the user's data
-chrome.runtime.sendMessage('get-user-data', (response) => {
+chrome.runtime.sendMessage("get-user-data", (response) => {
   // 3. Got an asynchronous response with the data from the background
-  console.log('received user data', response);
+  console.log("received user data", response);
   initializeUI(response);
 });
 ```
@@ -104,12 +103,12 @@ chrome.runtime.sendMessage('get-user-data', (response) => {
 
 // Example of a simple user data object
 const user = {
-  username: 'demo-user'
+  username: "demo-user",
 };
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   // 2. A page requested user data, respond with a copy of `user`
-  if (message === 'get-user-data') {
+  if (message === "get-user-data") {
     sendResponse(user);
   }
 });
@@ -121,15 +120,13 @@ Many extensions use post-uninstall surveys to understand how the extension could
 users and improve retention. The below example shows how one can add this functionality to their
 extension.
 
-
 ```js
-chrome.runtime.onInstalled.addListener(details => {
+chrome.runtime.onInstalled.addListener((details) => {
   if (details.reason === chrome.runtime.OnInstalledReason.INSTALL) {
-    chrome.runtime.setUninstallURL('https://example.com/extension-survey');
+    chrome.runtime.setUninstallURL("https://example.com/extension-survey");
   }
 });
 ```
-
 
 [content-inject]: https://developer.chrome.com/docs/extensions/mv3/content_scripts/#functionality
 [content]: /docs/extensions/mv3/content_scripts/

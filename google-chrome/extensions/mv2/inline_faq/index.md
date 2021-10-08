@@ -91,7 +91,7 @@ your background page:
 ```js
 chrome.runtime.onInstalled.addListener(function listener(details) {
   if (details.reason === chrome.runtime.OnInstalledReason.INSTALL) {
-    chrome.tabs.create({url: "https://www.example.com/"});
+    chrome.tabs.create({ url: "https://www.example.com/" });
     chrome.runtime.onInstalled.removeListener(listener);
   }
 });

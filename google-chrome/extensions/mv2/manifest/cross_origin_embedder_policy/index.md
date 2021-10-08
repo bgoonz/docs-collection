@@ -8,7 +8,7 @@ description: Reference documentation for the cross_origin_embedder_policy proper
 
 The `cross_origin_embedder_policy` manifest key lets the extension to specify a value for the
 [Cross-Origin-Embedder-Policy][mdn-coep] (COEP) response header for requests to the extension's
-origin.  This includes the extension's background context (service worker or background page),
+origin. This includes the extension's background context (service worker or background page),
 popup, options page, tabs that are open to an extension resource, etc.
 
 Together with [cross_origin_opener_policy][doc-coop], this key allows the extension to opt into

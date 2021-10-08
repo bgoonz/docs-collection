@@ -33,11 +33,11 @@ current value and your extension's level of control. For example, to determine i
 feature is enabled, you'd write:
 
 ```js
-chrome.privacy.services.autofillEnabled.get({}, function(details) {
+chrome.privacy.services.autofillEnabled.get({}, function (details) {
   if (details.value) {
-    console.log('Autofill is on!');
+    console.log("Autofill is on!");
   } else {
-    console.log('Autofill is off!');
+    console.log("Autofill is off!");
   }
 });
 ```
@@ -63,9 +63,9 @@ control the setting it's probably a good idea to visually disable the functional
 confusion):
 
 ```js
-chrome.privacy.services.autofillEnabled.get({}, function(details) {
-  if (details.levelOfControl === 'controllable_by_this_extension') {
-    chrome.privacy.services.autofillEnabled.set({ value: true }, function() {
+chrome.privacy.services.autofillEnabled.get({}, function (details) {
+  if (details.levelOfControl === "controllable_by_this_extension") {
+    chrome.privacy.services.autofillEnabled.set({ value: true }, function () {
       if (chrome.runtime.lastError === undefined) {
         console.log("Hooray, it worked!");
       } else {
@@ -82,13 +82,13 @@ control of a setting, or if enterprise policy overrides your control. To listen 
 Autofill's status, for example, the following code would suffice:
 
 ```js
-chrome.privacy.services.autofillEnabled.onChange.addListener(
-  function (details) {
-    // The new value is stored in `details.value`, the new level of control
-    // in `details.levelOfControl`, and `details.incognitoSpecific` will be
-    // `true` if the value is specific to Incognito mode.
-  }
-);
+chrome.privacy.services.autofillEnabled.onChange.addListener(function (
+  details
+) {
+  // The new value is stored in `details.value`, the new level of control
+  // in `details.levelOfControl`, and `details.incognitoSpecific` will be
+  // `true` if the value is specific to Incognito mode.
+});
 ```
 
 ## Examples

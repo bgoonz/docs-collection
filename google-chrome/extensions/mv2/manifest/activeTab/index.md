@@ -36,9 +36,7 @@ See the [Page Redder][2] sample extension:
 {
   "name": "Page Redder",
   "version": "2.0",
-  "permissions": [
-    "activeTab"
-  ],
+  "permissions": ["activeTab"],
   "background": {
     "scripts": ["background.js"],
     "persistent": false
@@ -52,11 +50,11 @@ See the [Page Redder][2] sample extension:
 
 ```js
 // Called when the user clicks on the browser action.
-chrome.browserAction.onClicked.addListener(function(tab) {
+chrome.browserAction.onClicked.addListener(function (tab) {
   // No tabs or host permissions needed!
-  console.log('Turning ' + tab.url + ' red!');
+  console.log("Turning " + tab.url + " red!");
   chrome.tabs.executeScript({
-    code: 'document.body.style.backgroundColor="red"'
+    code: 'document.body.style.backgroundColor="red"',
   });
 });
 ```

@@ -101,8 +101,8 @@ var opt = {
   type: "basic",
   title: "Primary Title",
   message: "Primary message to display",
-  iconUrl: "url_to_small_icon"
-}
+  iconUrl: "url_to_small_icon",
+};
 ```
 
 ### Create image notification {: #image }
@@ -118,8 +118,8 @@ var opt = {
   title: "Primary Title",
   message: "Primary message to display",
   iconUrl: "url_to_small_icon",
-  imageUrl: "url_to_preview_image"
-}
+  imageUrl: "url_to_preview_image",
+};
 ```
 
 In Chrome Apps, due to a strict [Content Security Policy][8] these URLs must point to a local
@@ -138,10 +138,12 @@ var opt = {
   title: "Primary Title",
   message: "Primary message to display",
   iconUrl: "url_to_small_icon",
-  items: [{ title: "Item1", message: "This is item 1."},
-          { title: "Item2", message: "This is item 2."},
-          { title: "Item3", message: "This is item 3."}]
-}
+  items: [
+    { title: "Item1", message: "This is item 1." },
+    { title: "Item2", message: "This is item 2." },
+    { title: "Item3", message: "This is item 3." },
+  ],
+};
 ```
 
 ### Create progress notification {: #progress }
@@ -156,8 +158,8 @@ var opt = {
   title: "Primary Title",
   message: "Primary message to display",
   iconUrl: "url_to_small_icon",
-  progress: 42
-}
+  progress: 42,
+};
 ```
 
 ## Listening for and responding to events {: #events }

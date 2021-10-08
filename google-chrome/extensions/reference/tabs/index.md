@@ -1,7 +1,6 @@
 ---
 api: tabs
-extra_permissions_html:
-  The majority of the <code>chrome.tabs</code> API can be used without declaring any permission. However, the <code>"tabs"</code> permission is required in order to populate the <code>url</code>, <code>pendingUrl</code>, <code>title</code>, and <code>favIconUrl</code> properties of <code><a href="#type-Tab">Tab</a></code>.
+extra_permissions_html: The majority of the <code>chrome.tabs</code> API can be used without declaring any permission. However, the <code>"tabs"</code> permission is required in order to populate the <code>url</code>, <code>pendingUrl</code>, <code>title</code>, and <code>favIconUrl</code> properties of <code><a href="#type-Tab">Tab</a></code>.
 ---
 
 ## Manifest
@@ -43,7 +42,7 @@ Content scripts cannot use `chrome.tabs.create()`.
 chrome.runtime.onInstalled.addListener((reason) => {
   if (reason === chrome.runtime.OnInstalledReason.INSTALL) {
     chrome.tabs.create({
-      url: 'onboarding.html'
+      url: "onboarding.html",
     });
   }
 });
@@ -88,7 +87,7 @@ function toggleMuteState(tabId) {
   chrome.tabs.get(tabId, async (tab) => {
     let muted = !tab.mutedInfo.muted;
     await chrome.tabs.update(tabId, { muted });
-    console.log(`Tab ${tab.id} is ${ muted ? 'muted' : 'unmuted' }`);
+    console.log(`Tab ${tab.id} is ${muted ? "muted" : "unmuted"}`);
   });
 }
 ```
@@ -110,14 +109,17 @@ while a drag may be in progress.
 ```js
 //// background.js
 
-chrome.tabs.onActivated.addListener(activeInfo => move(activeInfo));
+chrome.tabs.onActivated.addListener((activeInfo) => move(activeInfo));
 
 async function move(activeInfo) {
   try {
-    await chrome.tabs.move(activeInfo.tabId, {index: 0});
-    console.log('Success.');
+    await chrome.tabs.move(activeInfo.tabId, { index: 0 });
+    console.log("Success.");
   } catch (error) {
-    if (error == 'Error: Tabs cannot be edited right now (user may be dragging a tab).') {
+    if (
+      error ==
+      "Error: Tabs cannot be edited right now (user may be dragging a tab)."
+    ) {
       setTimeout(() => move(activeInfo), 50);
     }
   }
