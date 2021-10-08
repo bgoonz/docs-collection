@@ -4,7 +4,7 @@ title: "Tutorial: Google analytics"
 date: 2012-09-18
 updated: 2016-10-11
 description: >
-    Step-by-step instructions on how to track usage of your Extension with Google Analytics.
+  Step-by-step instructions on how to track usage of your Extension with Google Analytics.
 ---
 
 {% include 'partials/extensions/mv2-legacy-page.md' %}
@@ -38,10 +38,13 @@ instead of the default location.
 Below is a modified snippet for the [asynchronous tracking API][5] (the modified line is bolded):
 
 ```js
-(function() {
-  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-  ga.src = 'https://ssl.google-analytics.com/ga.js';
-  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+(function () {
+  var ga = document.createElement("script");
+  ga.type = "text/javascript";
+  ga.async = true;
+  ga.src = "https://ssl.google-analytics.com/ga.js";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(ga, s);
 })();
 ```
 
@@ -62,25 +65,28 @@ JavaScript file (`popup.js`) and tracks a single page view:
 ```html
 <!DOCTYPE html>
 <html>
- <head>
-   ...
-  <script src="popup.js"></script>
- </head>
- <body>
-   ...
- </body>
+  <head>
+    ...
+    <script src="popup.js"></script>
+  </head>
+  <body>
+    ...
+  </body>
 </html>
 ```
 
 ```js
 var _gaq = _gaq || [];
-_gaq.push(['_setAccount', 'UA-XXXXXXXX-X']);
-_gaq.push(['_trackPageview']);
+_gaq.push(["_setAccount", "UA-XXXXXXXX-X"]);
+_gaq.push(["_trackPageview"]);
 
-(function() {
-  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-  ga.src = 'https://ssl.google-analytics.com/ga.js';
-  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+(function () {
+  var ga = document.createElement("script");
+  ga.type = "text/javascript";
+  ga.async = true;
+  ga.src = "https://ssl.google-analytics.com/ga.js";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(ga, s);
 })();
 ```
 
@@ -116,25 +122,25 @@ By configuring event tracking, you can determine which parts of your extension y
 with the most. For example, if you have three buttons users may click:
 
 ```html
-<button id='button1'>Button 1</button>
-<button id='button2'>Button 2</button>
-<button id='button3'>Button 3</button>
+<button id="button1">Button 1</button>
+<button id="button2">Button 2</button>
+<button id="button3">Button 3</button>
 ```
 
 Write a function that sends click events to Google Analytics:
 
 ```js
 function trackButton(e) {
-  _gaq.push(['_trackEvent', e.target.id, 'clicked']);
-};
+  _gaq.push(["_trackEvent", e.target.id, "clicked"]);
+}
 ```
 
 And use it as an event handler for each button's click:
 
 ```js
-var buttons = document.querySelectorAll('button');
+var buttons = document.querySelectorAll("button");
 for (var i = 0; i < buttons.length; i++) {
-  buttons[i].addEventListener('click', trackButtonClick);
+  buttons[i].addEventListener("click", trackButtonClick);
 }
 ```
 

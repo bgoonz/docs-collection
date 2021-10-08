@@ -40,9 +40,7 @@ download the file [here][5].
     "default_title": "FriendBlock, friends face's in a block."
   },
   "background": {
-    "scripts": [
-      "background.js"
-    ],
+    "scripts": ["background.js"],
     "persistent": false
   }
 }
@@ -54,8 +52,8 @@ Add the background script by creating a file called `background.js` and include 
 Or download the file [here][6].
 
 ```js
-chrome.browserAction.onClicked.addListener(function() {
-  chrome.tabs.create({url: 'index.html'});
+chrome.browserAction.onClicked.addListener(function () {
+  chrome.tabs.create({ url: "index.html" });
 });
 ```
 
@@ -70,7 +68,7 @@ Add an HTML file called `index.html` and include the following code. Or download
     <style>
       button {
         padding: 10px;
-        background-color: #3C79F8;
+        background-color: #3c79f8;
         display: inline-block;
       }
     </style>
@@ -166,9 +164,9 @@ Create a file to manage the OAuth flow called `oauth.js` and include the followi
 it [here][12].
 
 ```js
-window.onload = function() {
-  document.querySelector('button').addEventListener('click', function() {
-    chrome.identity.getAuthToken({interactive: true}, function(token) {
+window.onload = function () {
+  document.querySelector("button").addEventListener("click", function () {
+    chrome.identity.getAuthToken({ interactive: true }, function (token) {
       console.log(token);
     });
   });
@@ -179,11 +177,11 @@ Place a script tag for `oauth.js` in the head of `index.html`.
 
 ```html
 ...
-  <head>
-    <title>FriendBlock</title>
-    ...
-    <script type="text/javascript" src="oauth.js"></script>
-  </head>
+<head>
+  <title>FriendBlock</title>
+  ...
+  <script type="text/javascript" src="oauth.js"></script>
+</head>
 ...
 ```
 
@@ -231,25 +229,26 @@ Now that the extension has proper permissions, credentials, and can authorize a 
 request data through the People API. Update the code in `oauth.js` to match below.
 
 ```js
-window.onload = function() {
-  document.querySelector('button').addEventListener('click', function() {
-    chrome.identity.getAuthToken({interactive: true}, function(token) {
+window.onload = function () {
+  document.querySelector("button").addEventListener("click", function () {
+    chrome.identity.getAuthToken({ interactive: true }, function (token) {
       let init = {
-        method: 'GET',
+        method: "GET",
         async: true,
         headers: {
-          Authorization: 'Bearer ' + token,
-          'Content-Type': 'application/json'
+          Authorization: "Bearer " + token,
+          "Content-Type": "application/json",
         },
-        'contentType': 'json'
+        contentType: "json",
       };
       fetch(
-          'https://people.googleapis.com/v1/contactGroups/all?maxMembers=20&key=<API_Key_Here>',
-          init)
-          .then((response) => response.json())
-          .then(function(data) {
-            console.log(data)
-          });
+        "https://people.googleapis.com/v1/contactGroups/all?maxMembers=20&key=<API_Key_Here>",
+        init
+      )
+        .then((response) => response.json())
+        .then(function (data) {
+          console.log(data);
+        });
     });
   });
 };
@@ -307,7 +306,7 @@ window.onload = function() {
 Reload and return to the extension. Click the FriendBlock button and ta-da! Enjoy contact's faces in
 a block.
 
-{% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/EQkrpv2o5kKIWPYHVhXn.png", 
+{% Img src="image/BrQidfK9jaQyIHwdw91aVpkPiib2/EQkrpv2o5kKIWPYHVhXn.png",
        alt="Contact faces in a block", height="359", width="397" %}
 
 [1]: https://oauth.net/2/

@@ -101,11 +101,11 @@ To generate speech at the request of clients, your extension must register liste
 
 ```js
 const speakListener = (utterance, options, sendTtsEvent) => {
-  sendTtsEvent({type: 'start', charIndex: 0})
+  sendTtsEvent({ type: "start", charIndex: 0 });
 
   // (start speaking)
 
-  sendTtsEvent({type: 'end', charIndex: utterance.length})
+  sendTtsEvent({ type: "end", charIndex: utterance.length });
 };
 
 const stopListener = () => {
