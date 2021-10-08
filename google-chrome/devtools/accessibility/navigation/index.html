@@ -1,249 +1,175 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-    * { padding: 0; margin: 0; }
-    body {
-        font-family: sans-serif;
-        text-rendering: optimizespeed;
-        background-color: #ffffff;
-    }
-    a {
-        color: #006ed3;
-        text-decoration: none;
-    }
-    a:hover,
-    h1 a:hover {
-        color: #319cff;
-    }
-    header,
-    #summary {
-        padding-left: 5%;
-        padding-right: 5%;
-    }
-    th:first-child,
-    td:first-child {
-        width: 5%;
-    }
-    th:last-child,
-    td:last-child {
-        width: 5%;
-    }
-    header {
-        padding-top: 25px;
-        padding-bottom: 15px;
-        background-color: #f2f2f2;
-    }
-    h1 {
-        font-size: 20px;
-        font-weight: normal;
-        white-space: nowrap;
-        overflow-x: hidden;
-        text-overflow: ellipsis;
-        color: #999;
-    }
-    h1 a {
-        color: #000;
-        margin: 0 4px;
-    }
-    h1 a:hover {
-        text-decoration: underline;
-    }
-    h1 a:first-child {
-        margin: 0;
-    }
-    main {
-        display: block;
-    }
-    .meta {
-        font-size: 12px;
-        font-family: Verdana, sans-serif;
-        border-bottom: 1px solid #9C9C9C;
-        padding-top: 10px;
-        padding-bottom: 10px;
-    }
-    .meta-item {
-        margin-right: 1em;
-    }
-    #filter {
-        padding: 4px;
-        border: 1px solid #CCC;
-    }
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    tr {
-        border-bottom: 1px dashed #dadada;
-    }
-    tbody tr:hover {
-        background-color: #ffffec;
-    }
-    th,
-    td {
-        text-align: left;
-        padding: 10px 0;
-    }
-    th {
-        padding-top: 15px;
-        padding-bottom: 15px;
-        font-size: 16px;
-        white-space: nowrap;
-    }
-    th a {
-        color: black;
-    }
-    th svg {
-        vertical-align: middle;
-    }
-    td {
-        white-space: nowrap;
-        font-size: 14px;
-    }
-    td:nth-child(2) {
-        width: 80%;
-    }
-    td:nth-child(3) {
-        padding: 0 20px 0 20px;
-    }
-    th:nth-child(4),
-    td:nth-child(4) {
-        text-align: right;
-    }
-    td:nth-child(2) svg {
-        position: absolute;
-    }
-    td .name {
-        margin-left: 1.75em;
-        word-break: break-all;
-        overflow-wrap: break-word;
-        white-space: pre-wrap;
-    }
-    td .goup {
-        margin-left: 1.75em;
-        padding: 0;
-        word-break: break-all;
-        overflow-wrap: break-word;
-        white-space: pre-wrap;
-    }
-    .icon {
-        margin-right: 5px;
-    }
-    tr.clickable { 
-        cursor: pointer; 
-    } 
-    tr.clickable a { 
-        display: block; 
-    } 
-    @media (max-width: 600px) {
-        * {
-            font-size: 1.06rem;
-        }
-        .hideable {
-            display: none;
-        }
-        td:nth-child(2) {
-            width: auto;
-        }
-        th:nth-child(3),
-        td:nth-child(3) {
-            padding-right: 5%;
-            text-align: right;
-        }
-        h1 {
-            color: #000;
-        }
-        h1 a {
-            margin: 0;
-        }
-        #filter {
-            max-width: 100px;
-        }
-    }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="dcterms.date" content="2019-03-08" />
+  <title>Navigate Chrome DevTools with assistive technology</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
 </head>
 <body>
-    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="0" width="0" style="position: absolute;">
-    <defs>
-        <!-- Go-up -->
-        <g id="go-up">
-            <path d="M10,9V5L3,12L10,19V14.9C15,14.9 18.5,16.5 21,20C20,15 17,10 10,9Z" fill="#696969"/>
-        </g>
-        <!-- Folder -->
-        <g id="folder" fill-rule="nonzero" fill="none">
-            <path d="M285.22 37.55h-142.6L110.9 0H31.7C14.25 0 0 16.9 0 37.55v75.1h316.92V75.1c0-20.65-14.26-37.55-31.7-37.55z" fill="#FFA000"/>
-            <path d="M285.22 36H31.7C14.25 36 0 50.28 0 67.74v158.7c0 17.47 14.26 31.75 31.7 31.75H285.2c17.44 0 31.7-14.3 31.7-31.75V67.75c0-17.47-14.26-31.75-31.7-31.75z" fill="#FFCA28"/>
-        </g>
-        <g id="folder-shortcut" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-            <g id="folder-shortcut-group" fill-rule="nonzero">
-                <g id="folder-shortcut-shape">
-                    <path d="M285.224876,37.5486902 L142.612438,37.5486902 L110.920785,0 L31.6916529,0 C14.2612438,0 0,16.8969106 0,37.5486902 L0,112.646071 L316.916529,112.646071 L316.916529,75.0973805 C316.916529,54.4456008 302.655285,37.5486902 285.224876,37.5486902 Z" id="Shape" fill="#FFA000"></path>
-                    <path d="M285.224876,36 L31.6916529,36 C14.2612438,36 0,50.2838568 0,67.7419039 L0,226.451424 C0,243.909471 14.2612438,258.193328 31.6916529,258.193328 L285.224876,258.193328 C302.655285,258.193328 316.916529,243.909471 316.916529,226.451424 L316.916529,67.7419039 C316.916529,50.2838568 302.655285,36 285.224876,36 Z" id="Shape" fill="#FFCA28"></path>
-                </g>
-                <path d="M126.154134,250.559184 C126.850974,251.883673 127.300549,253.006122 127.772602,254.106122 C128.469442,255.206122 128.919016,256.104082 129.638335,257.002041 C130.559962,258.326531 131.728855,259 133.100057,259 C134.493737,259 135.415364,258.55102 136.112204,257.67551 C136.809044,257.002041 137.258619,255.902041 137.258619,254.577551 C137.258619,253.904082 137.258619,252.804082 137.033832,251.457143 C136.786566,249.908163 136.561779,249.032653 136.561779,248.583673 C136.089726,242.814286 135.864939,237.920408 135.864939,233.273469 C135.864939,225.057143 136.786566,217.514286 138.180246,210.846939 C139.798713,204.202041 141.889234,198.634694 144.429328,193.763265 C147.216689,188.869388 150.678411,184.873469 154.836973,181.326531 C158.995535,177.779592 163.626149,174.883673 168.481552,172.661224 C173.336954,170.438776 179.113983,168.665306 185.587852,167.340816 C192.061722,166.218367 198.760378,165.342857 205.481514,164.669388 C212.18017,164.220408 219.598146,163.995918 228.162535,163.995918 L246.055591,163.995918 L246.055591,195.514286 C246.055591,197.736735 246.752431,199.510204 248.370899,201.059184 C250.214153,202.608163 252.079886,203.506122 254.372715,203.506122 C256.463236,203.506122 258.531277,202.608163 260.172223,201.059184 L326.102289,137.797959 C327.720757,136.24898 328.642384,134.47551 328.642384,132.253061 C328.642384,130.030612 327.720757,128.257143 326.102289,126.708163 L260.172223,63.4469388 C258.553756,61.8979592 256.463236,61 254.395194,61 C252.079886,61 250.236632,61.8979592 248.393377,63.4469388 C246.77491,64.9959184 246.07807,66.7693878 246.07807,68.9918367 L246.07807,100.510204 L228.162535,100.510204 C166.863084,100.510204 129.166282,117.167347 115.274437,150.459184 C110.666301,161.54898 108.350993,175.310204 108.350993,191.742857 C108.350993,205.279592 113.903236,223.912245 124.760454,247.438776 C125.00772,248.112245 125.457294,249.010204 126.154134,250.559184 Z" id="Shape" fill="#FFFFFF" transform="translate(218.496689, 160.000000) scale(-1, 1) translate(-218.496689, -160.000000) "></path>
-            </g>
-        </g>
-        <!-- File -->
-        <g id="file" stroke="#000" stroke-width="25" fill="#FFF" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M13 24.12v274.76c0 6.16 5.87 11.12 13.17 11.12H239c7.3 0 13.17-4.96 13.17-11.12V136.15S132.6 13 128.37 13H26.17C18.87 13 13 17.96 13 24.12z"/>
-            <path d="M129.37 13L129 113.9c0 10.58 7.26 19.1 16.27 19.1H249L129.37 13z"/>
-        </g>
-        <g id="file-shortcut" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-            <g id="file-shortcut-group" transform="translate(13.000000, 13.000000)">
-                <g id="file-shortcut-shape" stroke="#000000" stroke-width="25" fill="#FFFFFF" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M0,11.1214886 L0,285.878477 C0,292.039924 5.87498876,296.999983 13.1728373,296.999983 L225.997983,296.999983 C233.295974,296.999983 239.17082,292.039942 239.17082,285.878477 L239.17082,123.145388 C239.17082,123.145388 119.58541,2.84217094e-14 115.369423,2.84217094e-14 L13.1728576,2.84217094e-14 C5.87500907,-1.71479982e-05 0,4.96022995 0,11.1214886 Z" id="rect1171"></path>
-                    <path d="M116.37005,0 L116,100.904964 C116,111.483663 123.258008,120 132.273377,120 L236,120 L116.37005,0 L116.37005,0 Z" id="rect1794"></path>
-                </g>
-                <path d="M47.803141,294.093878 C48.4999811,295.177551 48.9495553,296.095918 49.4216083,296.995918 C50.1184484,297.895918 50.5680227,298.630612 51.2873415,299.365306 C52.2089688,300.44898 53.3778619,301 54.7490634,301 C56.1427436,301 57.0643709,300.632653 57.761211,299.916327 C58.4580511,299.365306 58.9076254,298.465306 58.9076254,297.381633 C58.9076254,296.830612 58.9076254,295.930612 58.6828382,294.828571 C58.4355724,293.561224 58.2107852,292.844898 58.2107852,292.477551 C57.7387323,287.757143 57.5139451,283.753061 57.5139451,279.95102 C57.5139451,273.228571 58.4355724,267.057143 59.8292526,261.602041 C61.44772,256.165306 63.5382403,251.610204 66.0783349,247.62449 C68.8656954,243.620408 72.3274172,240.35102 76.4859792,237.44898 C80.6445412,234.546939 85.2751561,232.177551 90.1305582,230.359184 C94.9859603,228.540816 100.76299,227.089796 107.236859,226.006122 C113.710728,225.087755 120.409385,224.371429 127.13052,223.820408 C133.829177,223.453061 141.247152,223.269388 149.811542,223.269388 L167.704598,223.269388 L167.704598,249.057143 C167.704598,250.87551 168.401438,252.326531 170.019905,253.593878 C171.86316,254.861224 173.728893,255.595918 176.021722,255.595918 C178.112242,255.595918 180.180284,254.861224 181.82123,253.593878 L247.751296,201.834694 C249.369763,200.567347 250.291391,199.116327 250.291391,197.297959 C250.291391,195.479592 249.369763,194.028571 247.751296,192.761224 L181.82123,141.002041 C180.202763,139.734694 178.112242,139 176.044201,139 C173.728893,139 171.885639,139.734694 170.042384,141.002041 C168.423917,142.269388 167.727077,143.720408 167.727077,145.538776 L167.727077,171.326531 L149.811542,171.326531 C88.5120908,171.326531 50.8152886,184.955102 36.9234437,212.193878 C32.3153075,221.267347 30,232.526531 30,245.971429 C30,257.046939 35.5522422,272.291837 46.4094607,291.540816 C46.6567266,292.091837 47.1063009,292.826531 47.803141,294.093878 Z" id="Shape-Copy" fill="#000000" fill-rule="nonzero" transform="translate(140.145695, 220.000000) scale(-1, 1) translate(-140.145695, -220.000000) "></path>
-            </g>
-        </g>
-    </defs>
-    </svg>
-<header>
-    <h1>navigation</h1>
-                 </header>
-                 <main>
-                 <div class="listing">
-                     <table aria-describedby="summary">
-                         <thead>
-                         <tr>
-                             <th></th>
-                             <th>Name</th>
-                             <th>Size</th>
-                             <th class="hideable">
-                                 Modified
-                             </th>
-                             <th class="hideable"></th>
-                         </tr>
-                         </thead>
-                         <tbody>
-                         <tr class="clickable">
-                             <td></td>
-                             <td><a href=".."><svg width="1.5em" height="1em" version="1.1" viewBox="0 0 24 24"><use xlink:href="#go-up"></use></svg>
-                 <span class="goup">..</span></a></td>
-                             <td>&mdash;</td>
-                             <td class="hideable">&mdash;</td>
-                             <td class="hideable"></td>
-                         </tr>
-                 
-        <tr class="file">
-            <td></td>
-            <td>
-                <a href="index.md">
-                    <svg width="1.5em" height="1em" version="1.1" viewBox="0 0 265 323"><use xlink:href="#file"></use></svg>
-                    <span class="name">index.md</span>
-                </a>
-            </td>
-            <td data-order="16644">16 KB</td>
-            <td class="hideable"><time datetime="2021-10-08T12:13:00">Fri Oct  8 12:13:00 2021</time></td>
-            <td class="hideable"></td>
-        </tr>
-
-            </tbody>
-        </table>
-    </div>
-</main>
+<header id="title-block-header">
+<h1 class="title">Navigate Chrome DevTools with assistive technology</h1>
+<p class="date">2019-03-08</p>
+</header>
+<p>This guide aims to help users who primarily rely on assistive technology like screen readers access and use <a href="/docs/devtools">Chrome DevTools</a>. Chrome DevTools is a suite of web developer tools built into the Google Chrome browser. See <a href="/docs/devtools/accessibility/reference">Accessibility Reference</a> if you’re looking for DevTools features related to improving the accessibility of a web page.</p>
+<p>The accessibility of DevTools is a work-in-progress. Some panels and tabs work better with assistive technology than others. This guide walks you through the panels which are the most accessible and highlights specific issues you may encounter along the way.</p>
+<h2 id="overview-overview">Overview {: #overview }</h2>
+<p>Before starting, it helps to have a mental model of how the DevTools UI is structured. DevTools is divided into a series of <em>panels</em> which are organized into an <a href="https://www.w3.org/TR/wai-aria-1.1/#tablist">ARIA <code>tablist</code></a>. For example:</p>
+<ul>
+<li>The <strong>Elements</strong> panel lets you view and change <a href="/docs/devtools/dom">DOM nodes</a> or <a href="/docs/devtools/css">CSS</a>.</li>
+<li>The <a href="/docs/devtools/console"><strong>Console</strong> panel</a> lets you read JavaScript logs and live edit objects.</li>
+</ul>
+<p>Within the content area of each panel, there are a number of different tools, often referred to as <em>tabs</em> or <em>panes</em> in the documentation. For instance, the <strong>Elements</strong> panel contains additional tabs to inspect event listeners, the accessibility tree, and much more. The distinction between tabs and panes is somewhat arbitrary. The only reason you’ll see one term or the other is to maintain consistency with the rest of the official DevTools documentation.</p>
+<h2 id="keyboard-shortcuts-shortcuts">Keyboard shortcuts {: #shortcuts }</h2>
+<p>The <a href="/docs/devtools/shortcuts">DevTools Keyboard Shortcuts reference</a> is a helpful cheatsheet. Be sure to bookmark it and refer back to it as you explore the different panels.</p>
+<h2 id="open-devtools-open">Open DevTools {: #open }</h2>
+<p>To get started, read through <a href="/docs/devtools/open">Open Chrome DevTools</a>. There are a number of ways to open DevTools, either through keyboard shortcuts or menu items.</p>
+<h2 id="navigate-between-panels-panelnav">Navigate between panels {: #panelnav }</h2>
+<h3 id="navigate-by-keyboard-keynav">Navigate by keyboard {: #keynav }</h3>
+<ul>
+<li>With DevTools open, press <kbd>Control</kbd>+<kbd>]</kbd> or <kbd>Command</kbd>+<kbd>]</kbd> (Mac) to focus the next panel.</li>
+<li>Press <kbd>Control</kbd>+<kbd>[</kbd> or <kbd>Command</kbd>+<kbd>[</kbd> (Mac) to focus the previous panel.</li>
+<li>It’s also possible to use <kbd>Shift</kbd>+<kbd>Tab</kbd> to move focus into a panel’s <code>tablist</code> and use the arrow keys to change panels, though it may be faster to use the previously mentioned shortcuts.</li>
+</ul>
+<h4 id="known-issues-keynavissues">Known issues {: #keynavissues }</h4>
+<ul>
+<li>Some panels, such as the <strong>Console</strong> and <strong>Performance</strong> panels, may move focus into their content area as soon as they are activated. This can make navigating by arrow keys difficult.</li>
+<li>The selected panel’s name is announced, but only after it has read the focused content in the panel. This can make it very easy to miss.</li>
+</ul>
+<h3 id="navigate-by-command-menu-commandmenunav">Navigate by Command Menu {: #commandmenunav }</h3>
+<p>To focus a specific panel, use the <a href="/docs/devtools/command-menu/"><strong>Command Menu</strong></a>:</p>
+<ol type="1">
+<li>With DevTools open, press <kbd>Control</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> or <kbd>Command</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> (Mac) to open the <strong>Command Menu</strong>. The <strong>Command Menu</strong> is a fuzzy search autocomplete combobox.</li>
+<li>Type the name of the panel you’d like to open, then use the <kbd>Down Arrow</kbd> keyboard to navigate to the correct option.</li>
+<li>Press <kbd>Enter</kbd> to run a command.</li>
+</ol>
+<p>For example, to open the <strong>Elements</strong> panel:</p>
+<ol type="1">
+<li>Open the <strong>Command Menu</strong>.</li>
+<li>Type <kbd>E</kbd> then <kbd>L</kbd>. The <strong>Panel &gt; Show Elements</strong> option is selected.</li>
+<li>Press <kbd>Enter</kbd> to run the command that opens the panel.</li>
+</ol>
+<p>Opening a panel this way directs focus to the contents of the panel itself. In the case of the <strong>Elements</strong> panel, focus moves into the <strong>DOM Tree</strong>.</p>
+<h2 id="elements-panel-elements">Elements panel {: #elements }</h2>
+<h3 id="inspect-an-element-on-the-page-inspect">Inspect an element on the page {: #inspect }</h3>
+<ol type="1">
+<li>Navigate to the element you want to inspect using the screen reader’s cursor.</li>
+<li>Simulate a right-mouse click on the element to open the context menu.</li>
+<li>Choose the <strong>Inspect</strong> option. This opens the <a href="/docs/devtools/dom"><strong>Elements</strong> panel</a> and focuses the element in the <strong>DOM Tree</strong>.</li>
+</ol>
+<p>The <strong>DOM Tree</strong> is laid out as an <a href="https://www.w3.org/TR/wai-aria-1.1/#tree">ARIA <code>tree</code></a>. See <a href="/docs/devtools/dom#keynav">Navigate the <strong>DOM Tree</strong> with a keyboard</a> for an example.</p>
+<h3 id="copy-the-code-for-an-element-in-the-dom-tree-outerhtml">Copy the code for an element in the DOM Tree {: #outerhtml }</h3>
+<ol type="1">
+<li>With focus on a node in the <strong>DOM Tree</strong>, bring up the right-click context menu.</li>
+<li>Expand the <strong>Copy</strong> option.</li>
+<li>Select <strong>Copy outerHTML</strong>.</li>
+</ol>
+<h4 id="known-issues-outerhtmlissues">Known issues {: #outerhtmlissues }</h4>
+<ul>
+<li><strong>Copy outerHTML</strong> often doesn’t select the current node but instead selects its parent node. However, the contents of the element should still be in the copied outerHTML.</li>
+</ul>
+<h3 id="modify-the-attributes-of-an-element-in-the-dom-tree-attributes">Modify the attributes of an element in the DOM Tree {: #attributes }</h3>
+<ul>
+<li>With focus on a node in the <strong>DOM Tree</strong>, press <kbd>Enter</kbd> to make it editable.</li>
+<li>Press <kbd>Tab</kbd> to move between attribute values. When you hear “space” you are inside of an empty text input and can type a new attribute value.</li>
+<li>Press <kbd>Control</kbd>+<kbd>Enter</kbd> or <kbd>Command</kbd>+<kbd>Enter</kbd> (Mac) to accept the change and hear the entire contents of the element.</li>
+</ul>
+<h4 id="known-issues-attributesissues">Known issues {: #attributesissues }</h4>
+<ul>
+<li>When you type into the text input you get no feedback. If you make a typo and use the arrow keys to explore your input you also get no feedback. The easiest way to check your work is to accept the change, then listen for the entire element to be announced.</li>
+</ul>
+<h3 id="edit-the-html-of-an-element-in-the-dom-tree-nodetype">Edit the HTML of an element in the DOM Tree {: #nodetype }</h3>
+<ul>
+<li>With focus on a node in the <strong>DOM Tree</strong>, press <kbd>Enter</kbd> to make it editable.</li>
+<li>Press <kbd>Tab</kbd> to move between attribute values. When you hear the element’s name, for instance, “h2”, you are inside of a text input and may change the element’s type.</li>
+<li>Press <kbd>Control</kbd>+<kbd>Enter</kbd> or <kbd>Command</kbd>+<kbd>Enter</kbd> (Mac) to accept the change.</li>
+</ul>
+<p>For example, typing <code>h3</code> and pressing <kbd>Control</kbd>+<kbd>Enter</kbd> or <kbd>Command</kbd>+<kbd>Enter</kbd> (Mac) changes the element’s start and end tags to <code>h3</code>.</p>
+<h2 id="elements-panel-tabs-elementstabs">Elements panel tabs {: #elementstabs }</h2>
+<p>The <strong>Elements</strong> panel contains additional tabs for inspecting things like the CSS applied to an element or its place in the accessibility tree.</p>
+<ul>
+<li>With focus on a node in the <strong>DOM Tree</strong>, press <kbd>Tab</kbd> until you hear that the <strong>Styles</strong> pane is selected.</li>
+<li>Use the <kbd>Right Arrow</kbd> to explore other available tabs.</li>
+</ul>
+<p>The <strong>DOM Tree</strong> turns elements with <code>href</code> attributes into focusable links, so you may need to press <kbd>Tab</kbd> more than once to reach the Styles pane.</p>
+<h3 id="known-issues-elementstabsissues">Known issues {: #elementstabsissues }</h3>
+<p>The <strong>DOM Breakpoints</strong> and <strong>Properties</strong> tabs are not keyboard accessible.</p>
+<h3 id="styles-pane-styles">Styles pane {: #styles }</h3>
+<p>In the <strong>Styles</strong> pane you’ll find controls for filtering styles, toggling element states (such as <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/:active"><code>:active</code></a> and <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/:focus"><code>:focus</code></a>), toggling classes, and adding new classes. There is also a powerful style inspection tool to explore and modify styles currently applied to the element that’s in focus in the <strong>DOM Tree</strong>.</p>
+<p>The key concept to understand about the <strong>Styles</strong> pane is that it only shows styles for the currently-selected node in the <strong>DOM Tree</strong>. For example, suppose you’re done inspecting the styles of a <code>&lt;header&gt;</code> node, and now you want to look at the styles for a <code>&lt;footer&gt;</code> node. To do that, you first need to select the <code>&lt;footer&gt;</code> node in the <strong>DOM Tree</strong>. You might find it faster to use the <a href="#inspect">Inspect</a> workflow to inspect a node that’s in the general vicinity of the <code>footer</code> node (such as a link within the footer), which focuses the <strong>DOM Tree</strong>, and then use your keyboard to navigate to the exact node that you’re interested in.</p>
+<h4 id="navigate-the-styles-pane-stylesnav">Navigate the Styles pane {: #stylesnav }</h4>
+<p>Because all of the style tools connect in one way or another back to the <strong>Styles</strong> pane, it makes sense to become an expert in this tool first.</p>
+<ul>
+<li>With focus on the <strong>Styles</strong> pane, press <kbd>Tab</kbd> to move focus inside and explore its contents.</li>
+<li>Press <kbd>Tab</kbd> until the first style becomes active. If you’re using a screen reader this first style will be announced as “element.style {}”.</li>
+<li>Press <kbd>Down Arrow</kbd> to navigate the list of styles in order of specificity. A screen reader announces each style starting with the name of the CSS file, the line number that the style appears on, and the style name itself. For example: “main.css:233 .card__img {}”</li>
+<li>Press <kbd>Enter</kbd> to inspect a style in more detail. Focus begins on an editable version of the style name.</li>
+<li>Press <kbd>Tab</kbd> to move between editable versions of each CSS property and their corresponding values. At the end of each style block is a blank editable text field which you may use to add additional CSS properties.</li>
+<li>You may continue to press <kbd>Tab</kbd> to move through the list of styles, or press <kbd>Escape</kbd> to exit this mode and go back to navigating by arrow keys.</li>
+</ul>
+<p>Be sure to read through <a href="/docs/devtools/shortcuts#styles">the Styles pane keyboard reference</a> for additional shortcuts.</p>
+<h5 id="known-issues-stylesnavissues">Known Issues {: #stylesnavissues }</h5>
+<ul>
+<li>If you use the <strong>Filter</strong> editable text field you will no longer be able to navigate the list of styles.</li>
+</ul>
+<h4 id="toggle-element-state-togglestate">Toggle element state {: #togglestate }</h4>
+<p>To toggle an element’s state, such as <code>:active</code> or <code>:focus</code>:</p>
+<ol type="1">
+<li>Navigate to the <strong>Styles</strong> pane and press <kbd>Tab</kbd> until the <strong>Toggle Element State</strong> button has focus.</li>
+<li>Press <kbd>Enter</kbd> to expand the collection of element states. The element states are presented as a group of checkboxes.</li>
+<li>Press <kbd>Tab</kbd> until the first state, <code>:active</code>, has focus.</li>
+<li>Press <kbd>Space</kbd> to enable it. If the currently-selected element in the DOM Tree has an <code>:active</code> style, it’s now applied.</li>
+<li>Continue pressing <kbd>Tab</kbd> to explore all of the available states.</li>
+</ol>
+<h4 id="add-an-exiting-class-addclass">Add an exiting class {: #addclass }</h4>
+<p>Adjacent to the <strong>Toggle Element State</strong> button is the <strong>Element Classes</strong> button. Move focus to it by pressing <kbd>Tab</kbd> then <kbd>Enter</kbd>. Focus moves into an edit text field labeled <strong>Add New Class</strong>.</p>
+<p>The <strong>Element Classes</strong> button is primarily used for adding existing classes to an element. For example, if your stylesheet contained a helper class named <code>.clearfix</code> you could press <code>.</code> inside of the edit text field to see a suggestion list of classes and use the <kbd>Down Arrow</kbd> to find the <code>.clearfix</code> suggestion. Or type the class name out yourself and press <kbd>Enter</kbd> to apply it.</p>
+<h4 id="add-a-new-style-rule-addrule">Add a new style rule {: #addrule }</h4>
+<p>Adjacent to the <strong>Element Classes</strong> button is the <strong>New Style Rule</strong> button. Move focus to it by pressing <kbd>Tab</kbd> and press <kbd>Enter</kbd>. Focus moves into an editable text field inside of the style inspector. The initial text content of the field is the tag name of the element that is selected in the <strong>DOM Tree</strong>. You may type any class name you want into this field and then press <kbd>Tab</kbd> to assign CSS properties to it.</p>
+<h3 id="computed-tab-computed">Computed tab {: #computed }</h3>
+<p>With focus on the <a href="/docs/devtools/css/reference#computed"><strong>Computed</strong> tab</a>, press <kbd>Tab</kbd> to move focus inside and explore its contents. Within the <strong>Computed</strong> tab there are controls for exploring which CSS properties are actually applied to an element in order of specificity.</p>
+<h4 id="explore-all-computed-styles-explorecomputed">Explore all computed styles {: #explorecomputed }</h4>
+<p>Press <kbd>Tab</kbd> until you reach the collection of computed styles. These are presented as an ARIA <code>tree</code>. Expanding a listbox reveals which CSS selectors are applying the computed style. These selectors are organized by specificity. A screen reader announces the computed value, which CSS selector is currently matching, the filename of the stylesheet that contains the selector, and the line number for the selector.</p>
+<h4 id="known-issues-explorecomputedissues">Known issues {: #explorecomputedissues }</h4>
+<ul>
+<li>If you use the <strong>Filter</strong> text field you will no longer be able to inspect styles.</li>
+</ul>
+<h3 id="event-listeners-tab-listeners">Event listeners tab {: #listeners }</h3>
+<p>From within the <strong>Elements</strong> panel you may inspect the event listeners applied to an element using the <strong>Event Listeners</strong> tab. With focus on the <strong>Styles</strong> pane, press the <kbd>Right Arrow</kbd> to navigate to the <strong>Event Listeners</strong> tab.</p>
+<h4 id="explore-event-listeners-explorelisteners">Explore event listeners {: #explorelisteners }</h4>
+<p>Event listeners are presented as an ARIA <code>tree</code>. You may use the arrow keys to navigate them. A screen reader announces the name of the DOM object that the event listener is attached to, as well as the file name where the event listener is defined and its line number.</p>
+<h3 id="accessibility-pane-accessibility">Accessibility pane {: #accessibility }</h3>
+<p>With focus on the <a href="/docs/devtools/accessibility/reference#pane"><strong>Accessibility</strong> pane</a>, press <kbd>Tab</kbd> to move focus inside and explore its contents. Within the <strong>Accessibility</strong> pane there are controls for exploring the accessibility tree, the ARIA attributes applied to an element, and its computed accessibility properties.</p>
+<h4 id="accessibility-tree-accessibilitytree">Accessibility Tree {: #accessibilitytree }</h4>
+<p>The <strong>Accessibility Tree</strong> is presented as an ARIA <code>tree</code> where each <code>treeitem</code> corresponds to an element in the DOM. The tree announces the computed role for the selected node. Generic elements like <code>div</code> and <code>span</code> are announced as “GenericContainer” in the tree. Use the arrow keys to traverse the tree and explore parent-child relationships.</p>
+<h4 id="known-issues-accessibilitytreeissues">Known issues {: #accessibilitytreeissues }</h4>
+<ul>
+<li>The type of ARIA tree used by the <strong>Accessibility</strong> pane may not be properly exposed in Chrome for macOS screen readers like VoiceOver. Subscribe to <a href="https://bugs.chromium.org/p/chromium/issues/detail?id=868480">Chromium issue #868480</a> to be informed about progress on this issue.</li>
+<li>The <strong>ARIA Attributes</strong> and <strong>Computed Properties</strong> sections are marked up as ARIA trees, but they do not currently have focus management so they are not keyboard operable.</li>
+</ul>
+<h2 id="audits-panel-audits">Audits panel {: #audits }</h2>
+<p>The <strong>Audits</strong> panel let’s you run a series of tests against a site to check for common issues related to performance, accessibility, SEO, and a number of other categories.</p>
+<h3 id="configure-and-run-an-audit-configureaudits">Configure and run an audit {: #configureaudits }</h3>
+<ol type="1">
+<li>When the <strong>Audits</strong> panel is first opened, focus is placed on the <strong>Run Audit</strong> button at the end of the form. By default the form is configured to run audits for every category using mobile emulation on a simulated 3G connection.</li>
+<li>Use <kbd>Shift</kbd>+<kbd>Tab</kbd> or navigate back in Browse mode to change the audit settings.</li>
+<li>When you’re ready to run the audit, navigate back to the <strong>Run Audit</strong> button and press <kbd>Enter</kbd>.</li>
+<li>Focus moves into a modal window with a <strong>Cancel</strong> button which allows you to exit the audit. You may hear a series of earcons as the audit runs and refreshes the page multiple times.</li>
+</ol>
+<h4 id="known-issues-configureauditsissues">Known issues {: #configureauditsissues }</h4>
+<ul>
+<li>The different sections of the configuration form are not currently marked up with a <code>fieldset</code> element. It may be easier to navigate them in Browse mode to figure out which controls are associated with each section.</li>
+<li>There is no earcon or live region announcement when the audit is finished running. Generally it takes about 30 seconds, after which you should be able to navigate to the results. Using Browse mode may be the easiest way to reach the results.</li>
+</ul>
+<h3 id="navigate-the-audit-report-auditsnav">Navigate the audit report {: #auditsnav }</h3>
+<p>The audit report is organized into sections that correspond with each of the audit categories. The report opens with a list of scores for each category. These scores are also links which can be used to skip to the relevant sections. Within each section are expandable <code>details</code> elements, which contain information relating to passed or failed audits. By default, only failing audits are shown. Each section ends with a final <code>details</code> element which contains all of the passed audits.</p>
+<p>To run a new audit, use <kbd>Shift</kbd>+<kbd>Tab</kbd> to exit the report and look for the <strong>Perform An Audit</strong> button.</p>
 </body>
 </html>
