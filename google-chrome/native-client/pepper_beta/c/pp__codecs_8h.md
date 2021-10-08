@@ -1,11 +1,10 @@
----json {"title":"pp\_codecs.h File Reference"} ---
+---json {"title":"pp_codecs.h File Reference"} ---
 
-Include dependency graph for pp\_codecs.h:
+Include dependency graph for pp_codecs.h:
 
 ![](/docs/native-client/pepper_beta/c/pp__codecs_8h__incl.png)
 
-Data Structures
----------------
+## Data Structures
 
 <table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___video_picture/" class="el">PP_VideoPicture</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>Struct describing a decoded video picture. <a href="/docs/native-client/pepper_beta/c/struct_p_p___video_picture#details">More...</a><br />
 </td></tr><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___video_picture__0__1/" class="el">PP_VideoPicture</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>Struct describing a decoded video picture. <a href="/docs/native-client/pepper_beta/c/struct_p_p___video_picture__0__1#details">More...</a><br />
@@ -16,8 +15,7 @@ Data Structures
 </td></tr><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___audio_bitstream_buffer/" class="el">PP_AudioBitstreamBuffer</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>Struct describing an audio bitstream buffer. <a href="/docs/native-client/pepper_beta/c/struct_p_p___audio_bitstream_buffer#details">More...</a><br />
 </td></tr></tbody></table>
 
-Enumerations
-------------
+## Enumerations
 
 <table><tbody><tr class="odd"><td style="text-align: right;">enum  </td><td><a href="/docs/native-client/pepper_beta/c/group___enums#ga4d50d27186f68b2de578e82162206fea" class="el">PP_VideoProfile</a> {<br />
   <a href="/docs/native-client/pepper_beta/c/group___enums#gga4d50d27186f68b2de578e82162206feaa65c543f4e17057ba76e3e2828fb4a5ae" class="el">PP_VIDEOPROFILE_H264BASELINE</a> = 0, <a href="/docs/native-client/pepper_beta/c/group___enums#gga4d50d27186f68b2de578e82162206feaa6f9ded5bf74362fb7e6df40392fd90c7" class="el">PP_VIDEOPROFILE_H264MAIN</a> = 1, <a href="/docs/native-client/pepper_beta/c/group___enums#gga4d50d27186f68b2de578e82162206feaaa74e0356fd0b9dcaf2865990d2ee8207" class="el">PP_VIDEOPROFILE_H264EXTENDED</a> = 2, <a href="/docs/native-client/pepper_beta/c/group___enums#gga4d50d27186f68b2de578e82162206feaa7d5e540d7216fc360f3b4f99c14fd837" class="el">PP_VIDEOPROFILE_H264HIGH</a> = 3,<br />
@@ -26,11 +24,10 @@ Enumerations
   <a href="/docs/native-client/pepper_beta/c/group___enums#gga4d50d27186f68b2de578e82162206feaa90dfe01871139e3b26afd117e1da18b4" class="el">PP_VIDEOPROFILE_VP9_ANY</a> = 12, <a href="/docs/native-client/pepper_beta/c/group___enums#gga4d50d27186f68b2de578e82162206feaa884e0f18fee1bae2472a15f6fb1d7e79" class="el">PP_VIDEOPROFILE_MAX</a> = PP_VIDEOPROFILE_VP9_ANY<br />
 }</td></tr><tr class="even"><td style="text-align: right;">enum  </td><td><a href="/docs/native-client/pepper_beta/c/group___enums#gadadb1eaddb4ea71cb8620db1f4ce301e" class="el">PP_AudioProfile</a> { <a href="/docs/native-client/pepper_beta/c/group___enums#ggadadb1eaddb4ea71cb8620db1f4ce301ea7148c3f24ae9baffeae215261460a191" class="el">PP_AUDIOPROFILE_OPUS</a> = 0, <a href="/docs/native-client/pepper_beta/c/group___enums#ggadadb1eaddb4ea71cb8620db1f4ce301ea2d878bc8ba09116d5f62bb4965460e77" class="el">PP_AUDIOPROFILE_MAX</a> = PP_AUDIOPROFILE_OPUS }</td></tr><tr class="odd"><td style="text-align: right;">enum  </td><td><a href="/docs/native-client/pepper_beta/c/group___enums#ga6a3fd7e22be02521243b52481afadae5" class="el">PP_HardwareAcceleration</a> { <a href="/docs/native-client/pepper_beta/c/group___enums#gga6a3fd7e22be02521243b52481afadae5a6208cea63b7e6c1c8c9c67616df4ba85" class="el">PP_HARDWAREACCELERATION_ONLY</a> = 0, <a href="/docs/native-client/pepper_beta/c/group___enums#gga6a3fd7e22be02521243b52481afadae5ad29490655cc25165817de26c5caff7ea" class="el">PP_HARDWAREACCELERATION_WITHFALLBACK</a> = 1, <a href="/docs/native-client/pepper_beta/c/group___enums#gga6a3fd7e22be02521243b52481afadae5acf901685e6e14afe89e7d22ad35af4e1" class="el">PP_HARDWAREACCELERATION_NONE</a> = 2, <a href="/docs/native-client/pepper_beta/c/group___enums#gga6a3fd7e22be02521243b52481afadae5a373fa262ccbcc9e83ca00018c4e3bc01" class="el">PP_HARDWAREACCELERATION_LAST</a> = PP_HARDWAREACCELERATION_NONE }</td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
 <span id="details" class="anchor" style="margin: 0;"></span>
 
-Detailed Description
---------------------
+## Detailed Description
 
 Video profiles.

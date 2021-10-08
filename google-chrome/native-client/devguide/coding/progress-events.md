@@ -13,7 +13,7 @@
 
 There are five types of events that developers can respond to in Native Client: progress, message, view change, focus, and input events (each described in the glossary below). This section describes how to monitor progress events (events that occur during the loading and execution of a Native Client module). This section assumes you are familiar with the material presented in the <a href="/docs/native-client/overview" class="reference internal"><em>Technical Overview</em></a>.
 
-The load_progress example illustrates progress event handling. You can find this code in the `/pepper_<version>/examples/tutorial/load_progress/` directory in the Native Client SDK download.
+The load*progress example illustrates progress event handling. You can find this code in the `/pepper*<version>/examples/tutorial/load_progress/` directory in the Native Client SDK download.
 
 ## Module loading and progress events
 

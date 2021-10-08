@@ -1,23 +1,20 @@
----json {"title":"PP\_TouchPoint Struct Reference"} ---
+---json {"title":"PP_TouchPoint Struct Reference"} ---
 
-Data Fields
------------
+## Data Fields
 
 <table><tbody><tr class="odd"><td style="text-align: right;">uint32_t </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___touch_point#a27542ca67fc89c4fe41050750b80fc3b" class="el">id</a></td></tr><tr class="even"><td style="text-align: right;">struct <a href="/docs/native-client/pepper_beta/c/struct_p_p___float_point/" class="el">PP_FloatPoint</a> </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___touch_point#a5c2dfab481eaafbd40c9b837fc6f9106" class="el">position</a></td></tr><tr class="odd"><td style="text-align: right;">struct <a href="/docs/native-client/pepper_beta/c/struct_p_p___float_point/" class="el">PP_FloatPoint</a> </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___touch_point#abcf813398210aaeaa587858f90139292" class="el">radius</a></td></tr><tr class="even"><td style="text-align: right;">float </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___touch_point#a8861a485f64399c787093d7fbf609b89" class="el">rotation_angle</a></td></tr><tr class="odd"><td style="text-align: right;">float </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___touch_point#a3af90cd7d4415434a1f18a23eb28b2d9" class="el">pressure</a></td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
 <span id="details" class="anchor" style="margin: 0;"></span>
 
-Detailed Description
---------------------
+## Detailed Description
 
 The `PP_TouchPoint` struct represents all information about a single touch point, such as position, id, rotation angle, and pressure.
 
-------------------------------------------------------------------------
+---
 
-Field Documentation
--------------------
+## Field Documentation
 
 <span id="a27542ca67fc89c4fe41050750b80fc3b" class="anchor" style="margin: 0;"></span>
 
@@ -53,8 +50,8 @@ This value represents the elliptical radii, in screen pixels, in the x and y dir
 
 This value represents the angle of rotation in degrees of the elliptical model of this TouchPoint clockwise from "up.".
 
-------------------------------------------------------------------------
+---
 
 The documentation for this struct was generated from the following file:
 
--   <a href="/docs/native-client/pepper_beta/c/pp__touch__point_8h/" class="el">pp_touch_point.h</a>
+- <a href="/docs/native-client/pepper_beta/c/pp__touch__point_8h/" class="el">pp_touch_point.h</a>

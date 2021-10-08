@@ -1,11 +1,10 @@
----json {"title":"pp\_graphics\_3d.h File Reference"} ---
+---json {"title":"pp_graphics_3d.h File Reference"} ---
 
-Include dependency graph for pp\_graphics\_3d.h:
+Include dependency graph for pp_graphics_3d.h:
 
 ![](/docs/native-client/pepper_beta/c/pp__graphics__3d_8h__incl.png)
 
-Enumerations
-------------
+## Enumerations
 
 <table><tbody><tr class="odd"><td style="text-align: right;">enum  </td><td><a href="/docs/native-client/pepper_beta/c/group___enums#ga7df48e1c55f6401beea2a1b9c07967e8" class="el">PP_Graphics3DAttrib</a> {<br />
   <a href="/docs/native-client/pepper_beta/c/group___enums#gga7df48e1c55f6401beea2a1b9c07967e8aac0fc60be37c86f193fb535bedb09458" class="el">PP_GRAPHICS3DATTRIB_ALPHA_SIZE</a> = 0x3021, <a href="/docs/native-client/pepper_beta/c/group___enums#gga7df48e1c55f6401beea2a1b9c07967e8a519cd199423721033780ee13ecb0e60b" class="el">PP_GRAPHICS3DATTRIB_BLUE_SIZE</a> = 0x3022, <a href="/docs/native-client/pepper_beta/c/group___enums#gga7df48e1c55f6401beea2a1b9c07967e8ade95a6e685ca23522da80c1703d294a7" class="el">PP_GRAPHICS3DATTRIB_GREEN_SIZE</a> = 0x3023, <a href="/docs/native-client/pepper_beta/c/group___enums#gga7df48e1c55f6401beea2a1b9c07967e8a7caad99c8c857fdb804c6755551398f5" class="el">PP_GRAPHICS3DATTRIB_RED_SIZE</a> = 0x3024,<br />
@@ -15,16 +14,14 @@ Enumerations
   <a href="/docs/native-client/pepper_beta/c/group___enums#gga7df48e1c55f6401beea2a1b9c07967e8a1a7563ae755ca52d429302a35930201a" class="el">PP_GRAPHICS3DATTRIB_GPU_PREFERENCE_PERFORMANCE</a> = 0x11002<br />
 }</td></tr></tbody></table>
 
-Variables
----------
+## Variables
 
 <table><tbody><tr class="odd"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/c/group___enums#ga7df48e1c55f6401beea2a1b9c07967e8" class="el">PP_Graphics3DAttrib</a></td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
 <span id="details" class="anchor" style="margin: 0;"></span>
 
-Detailed Description
---------------------
+## Detailed Description
 
 This file defines the `PP_Graphics3DAttrib` enumeration for use in PPAPI C headers.

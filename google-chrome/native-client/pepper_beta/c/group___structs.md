@@ -1,7 +1,6 @@
 ---json {"title":"Structs"} ---
 
-Data Structures
----------------
+## Data Structures
 
 <table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___array_output/" class="el">PP_ArrayOutput</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>A structure that defines a way for the browser to return arrays of data to the plugin. <a href="/docs/native-client/pepper_beta/c/struct_p_p___array_output#details">More...</a><br />
 </td></tr><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___video_picture/" class="el">PP_VideoPicture</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>Struct describing a decoded video picture. <a href="/docs/native-client/pepper_beta/c/struct_p_p___video_picture#details">More...</a><br />
@@ -34,15 +33,13 @@ Data Structures
 </td></tr><tr class="even"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___net_address___i_pv6/" class="el">PP_NetAddress_IPv6</a></td></tr><tr class="odd"><td style="text-align: right;"> </td><td>All members are expressed in network byte order. <a href="/docs/native-client/pepper_beta/c/struct_p_p___net_address___i_pv6#details">More...</a><br />
 </td></tr></tbody></table>
 
-Variables
----------
+## Variables
 
 <table><tbody><tr class="odd"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/c/group___structs#gad0a3a59c8cb2fb74717c8d23a5d56295" class="el">PP_DirectoryEntry</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/c/group___structs#gad224cb61c5859f6655b274eff7328664" class="el">PP_FileInfo</a></td></tr><tr class="odd"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/c/group___structs#ga91c5483306ded19bced2063169de99f8" class="el">PP_InputEvent_Key</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/c/group___structs#ga6d1b875e2ae53ba8ee90e10505df6b7e" class="el">PP_InputEvent_Character</a></td></tr><tr class="odd"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/c/group___structs#ga26c37abe55715f606e0a2c91867d051c" class="el">PP_InputEvent_Mouse</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/c/group___structs#ga3fe74ccc6894bb133b39df77f96322cf" class="el">PP_InputEvent_Wheel</a></td></tr><tr class="odd"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/c/group___structs#ga501da0561777e3fef2c08aa9b7400cc0" class="el">PP_Point</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/c/group___structs#ga2bfb71399c8dac2aba417b75459100bd" class="el">PP_FloatPoint</a></td></tr><tr class="odd"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/c/group___structs#gaa91d0179e9f1f1bd3b6f3415f75c9ff1" class="el">PP_Rect</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/c/group___structs#gafd4a54f9a36c0825eef612e150b50421" class="el">PP_Size</a></td></tr><tr class="odd"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/c/group___structs#gafa28da9c7da0da3d7c5cdd57b4485436" class="el">PP_TouchPoint</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/c/group___structs#ga7c0f59e0d0c137b8390435582dc8e54d" class="el">PP_Var</a></td></tr><tr class="odd"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/c/group___structs#ga525d88c6ef789fe645908c30bae38e7c" class="el">PP_GamepadSampleData</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/c/group___structs#gacc3e9ccca109cc93c2fbeea317b7b004" class="el">PP_GamepadsSampleData</a></td></tr><tr class="odd"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/c/group___structs#ga6e27cf6541423cdee5fc2cf5b2d67853" class="el">PP_HostResolver_Hint</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/c/group___structs#gae0f2df62c9fe8b622336fa44ad897470" class="el">PP_ImageDataDesc</a></td></tr><tr class="odd"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/c/group___structs#ga34eaf167d3bf1a00281de167719ca604" class="el">PP_NetAddress_IPv4</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/c/group___structs#ga1301bb0d95a4b2e8907002b3bdc8f6d9" class="el">PP_NetAddress_IPv6</a></td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
-Variable Documentation
-----------------------
+## Variable Documentation
 
 <span id="gad0a3a59c8cb2fb74717c8d23a5d56295" class="anchor" style="margin: 0;"></span>
 

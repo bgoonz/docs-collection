@@ -1,19 +1,17 @@
----json {"title":"pp\_instance.h File Reference"} ---
+---json {"title":"pp_instance.h File Reference"} ---
 
-Include dependency graph for pp\_instance.h:
+Include dependency graph for pp_instance.h:
 
 ![](/docs/native-client/pepper_beta/c/pp__instance_8h__incl.png)
 
-Typedefs
---------
+## Typedefs
 
 <table><tbody><tr class="odd"><td style="text-align: right;">typedef int32_t </td><td><a href="/docs/native-client/pepper_beta/c/group___typedefs#ga89b662403e6a687bb914b80114c0d19d" class="el">PP_Instance</a></td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
 <span id="details" class="anchor" style="margin: 0;"></span>
 
-Detailed Description
---------------------
+## Detailed Description
 
-This file defines the PP\_Instance type which uniquely identifies one module instance.
+This file defines the PP_Instance type which uniquely identifies one module instance.

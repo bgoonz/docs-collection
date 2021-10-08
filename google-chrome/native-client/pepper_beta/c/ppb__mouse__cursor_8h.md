@@ -1,27 +1,23 @@
----json {"title":"ppb\_mouse\_cursor.h File Reference"} ---
+---json {"title":"ppb_mouse_cursor.h File Reference"} ---
 
-Include dependency graph for ppb\_mouse\_cursor.h:
+Include dependency graph for ppb_mouse_cursor.h:
 
 ![](/docs/native-client/pepper_beta/c/ppb__mouse__cursor_8h__incl.png)
 
-Data Structures
----------------
+## Data Structures
 
 <table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___mouse_cursor__1__0/" class="el">PPB_MouseCursor</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_MouseCursor</code> allows setting the mouse cursor. <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___mouse_cursor__1__0#details">More...</a><br />
 </td></tr></tbody></table>
 
-Defines
--------
+## Defines
 
 <table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__mouse__cursor_8h#a5108cd274942fbb6aa1726d32b7b82eb" class="el">PPB_MOUSECURSOR_INTERFACE</a>   "PPB_MouseCursor;1.0"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__mouse__cursor_8h#a9f058eab16725eb940b802f90acb11a9" class="el">PPB_MOUSECURSOR_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__mouse__cursor_8h#a5108cd274942fbb6aa1726d32b7b82eb" class="el">PPB_MOUSECURSOR_INTERFACE</a></td></tr></tbody></table>
 
-Typedefs
---------
+## Typedefs
 
 <table><tbody><tr class="odd"><td style="text-align: right;">typedef struct <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___mouse_cursor__1__0/" class="el">PPB_MouseCursor</a> </td><td><a href="/docs/native-client/pepper_beta/c/group___interfaces#gae583d9ea6381e1e4cb7b462c35c5d1de" class="el">PPB_MouseCursor</a></td></tr></tbody></table>
 
-Enumerations
-------------
+## Enumerations
 
 <table><tbody><tr class="odd"><td style="text-align: right;">enum  </td><td><a href="/docs/native-client/pepper_beta/c/group___enums#gac53273018386c1db9542d2a06bbe118b" class="el">PP_MouseCursor_Type</a> {<br />
   <a href="/docs/native-client/pepper_beta/c/group___enums#ggac53273018386c1db9542d2a06bbe118ba1360614abe2d2c3838a42238f75e9ec1" class="el">PP_MOUSECURSOR_TYPE_CUSTOM</a> = -1, <a href="/docs/native-client/pepper_beta/c/group___enums#ggac53273018386c1db9542d2a06bbe118ba7c0a8b04f51fbf8e12abd4240fb24a9f" class="el">PP_MOUSECURSOR_TYPE_POINTER</a> = 0, <a href="/docs/native-client/pepper_beta/c/group___enums#ggac53273018386c1db9542d2a06bbe118ba7ee7ede873ec3158179a1ea648bfe677" class="el">PP_MOUSECURSOR_TYPE_CROSS</a> = 1, <a href="/docs/native-client/pepper_beta/c/group___enums#ggac53273018386c1db9542d2a06bbe118ba5cf81326a94c1150ce98cc15924dee69" class="el">PP_MOUSECURSOR_TYPE_HAND</a> = 2,<br />
@@ -37,24 +33,21 @@ Enumerations
   <a href="/docs/native-client/pepper_beta/c/group___enums#ggac53273018386c1db9542d2a06bbe118ba203b038de96b903e253e29aea5a66460" class="el">PP_MOUSECURSOR_TYPE_ZOOMIN</a> = 39, <a href="/docs/native-client/pepper_beta/c/group___enums#ggac53273018386c1db9542d2a06bbe118ba797321d4cad9a863a5338318912f3a98" class="el">PP_MOUSECURSOR_TYPE_ZOOMOUT</a> = 40, <a href="/docs/native-client/pepper_beta/c/group___enums#ggac53273018386c1db9542d2a06bbe118bafc45b71a6185639e12ac2827a641bdaa" class="el">PP_MOUSECURSOR_TYPE_GRAB</a> = 41, <a href="/docs/native-client/pepper_beta/c/group___enums#ggac53273018386c1db9542d2a06bbe118baa242aeb17b35d8e44e449786a2cbcd1c" class="el">PP_MOUSECURSOR_TYPE_GRABBING</a> = 42<br />
 }</td></tr></tbody></table>
 
-Functions
----------
+## Functions
 
 <table><tbody><tr class="odd"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/c/group___enums#ga9b1b55c2ccaa49d084206619c9034dde" class="el">PP_COMPILE_ASSERT_ENUM_SIZE_IN_BYTES</a> (<a href="/docs/native-client/pepper_beta/c/group___enums#gac53273018386c1db9542d2a06bbe118b" class="el">PP_MouseCursor_Type</a>, 4)</td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
 <span id="details" class="anchor" style="margin: 0;"></span>
 
-Detailed Description
---------------------
+## Detailed Description
 
 This file defines the `PPB_MouseCursor` interface for setting the mouse cursor.
 
-------------------------------------------------------------------------
+---
 
-Define Documentation
---------------------
+## Define Documentation
 
 <span id="a9f058eab16725eb940b802f90acb11a9" class="anchor" style="margin: 0;"></span>
 

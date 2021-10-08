@@ -1,23 +1,20 @@
----json {"title":"PP\_AudioBitstreamBuffer Struct Reference"} ---
+---json {"title":"PP_AudioBitstreamBuffer Struct Reference"} ---
 
-Data Fields
------------
+## Data Fields
 
 <table><tbody><tr class="odd"><td style="text-align: right;">uint32_t </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___audio_bitstream_buffer#ab76b8c0357d850c84ff417aa1282f3da" class="el">size</a></td></tr><tr class="even"><td style="text-align: right;">void * </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___audio_bitstream_buffer#a888a0bc135ab6e5e434927309eb5fe9a" class="el">buffer</a></td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
 <span id="details" class="anchor" style="margin: 0;"></span>
 
-Detailed Description
---------------------
+## Detailed Description
 
 Struct describing an audio bitstream buffer.
 
-------------------------------------------------------------------------
+---
 
-Field Documentation
--------------------
+## Field Documentation
 
 <span id="a888a0bc135ab6e5e434927309eb5fe9a" class="anchor" style="margin: 0;"></span>
 
@@ -31,8 +28,8 @@ The base address of the bitstream data.
 
 The size, in bytes, of the bitstream data.
 
-------------------------------------------------------------------------
+---
 
 The documentation for this struct was generated from the following file:
 
--   <a href="/docs/native-client/pepper_beta/c/pp__codecs_8h/" class="el">pp_codecs.h</a>
+- <a href="/docs/native-client/pepper_beta/c/pp__codecs_8h/" class="el">pp_codecs.h</a>

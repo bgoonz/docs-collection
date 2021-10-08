@@ -1,11 +1,10 @@
----json {"title":"pp\_errors.h File Reference"} ---
+---json {"title":"pp_errors.h File Reference"} ---
 
-Include dependency graph for pp\_errors.h:
+Include dependency graph for pp_errors.h:
 
 ![](/docs/native-client/pepper_beta/c/pp__errors_8h__incl.png)
 
-Enumerations
-------------
+## Enumerations
 
 <table><tbody><tr class="odd"><td style="text-align: right;">enum  </td><td>{<br />
   <a href="/docs/native-client/pepper_beta/c/group___enums#gga06fc87d81c62e9abb8790b6e5713c55ba5c394615cfa8eaceba77ecedb65dc9cb" class="el">PP_OK</a> = 0, <a href="/docs/native-client/pepper_beta/c/group___enums#gga06fc87d81c62e9abb8790b6e5713c55baa5f7aa5667dc3eb61dd4f822d1163b29" class="el">PP_OK_COMPLETIONPENDING</a> = -1, <a href="/docs/native-client/pepper_beta/c/group___enums#gga06fc87d81c62e9abb8790b6e5713c55ba06a8964482e41bf50c45c0d9dd281830" class="el">PP_ERROR_FAILED</a> = -2, <a href="/docs/native-client/pepper_beta/c/group___enums#gga06fc87d81c62e9abb8790b6e5713c55ba8389cb348aeba81a94b058622f5914af" class="el">PP_ERROR_ABORTED</a> = -3,<br />
@@ -20,11 +19,10 @@ Enumerations
   <a href="/docs/native-client/pepper_beta/c/group___enums#gga06fc87d81c62e9abb8790b6e5713c55bafb9e232a63a5787ec0445ee9cc7fc7c2" class="el">PP_ERROR_ADDRESS_IN_USE</a> = -108, <a href="/docs/native-client/pepper_beta/c/group___enums#gga06fc87d81c62e9abb8790b6e5713c55ba679d405ff44d259db51dfc6f312b465f" class="el">PP_ERROR_MESSAGE_TOO_BIG</a> = -109, <a href="/docs/native-client/pepper_beta/c/group___enums#gga06fc87d81c62e9abb8790b6e5713c55ba74c1a24f06288fc63221631ba6a2a7b6" class="el">PP_ERROR_NAME_NOT_RESOLVED</a> = -110<br />
 }</td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
 <span id="details" class="anchor" style="margin: 0;"></span>
 
-Detailed Description
---------------------
+## Detailed Description
 
 This file defines an enumeration of all PPAPI error codes.

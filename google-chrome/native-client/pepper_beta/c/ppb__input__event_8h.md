@@ -1,11 +1,10 @@
----json {"title":"ppb\_input\_event.h File Reference"} ---
+---json {"title":"ppb_input_event.h File Reference"} ---
 
-Include dependency graph for ppb\_input\_event.h:
+Include dependency graph for ppb_input_event.h:
 
 ![](/docs/native-client/pepper_beta/c/ppb__input__event_8h__incl.png)
 
-Data Structures
----------------
+## Data Structures
 
 <table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___input_event__1__0/" class="el">PPB_InputEvent</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_InputEvent</code> interface contains pointers to several functions related to generic input events on the browser. <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___input_event__1__0#details">More...</a><br />
 </td></tr><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___mouse_input_event__1__1/" class="el">PPB_MouseInputEvent</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_MouseInputEvent</code> interface contains pointers to several functions related to mouse input events. <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___mouse_input_event__1__1#details">More...</a><br />
@@ -14,13 +13,11 @@ Data Structures
 </td></tr><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___touch_input_event__1__0/" class="el">PPB_TouchInputEvent</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_TouchInputEvent</code> interface contains pointers to several functions related to touch events. <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___touch_input_event__1__0#details">More...</a><br />
 </td></tr><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___i_m_e_input_event__1__0/" class="el">PPB_IMEInputEvent</a></td></tr></tbody></table>
 
-Defines
--------
+## Defines
 
 <table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__input__event_8h#af4e5b597aea9864e7d9aa81c71e781d2" class="el">PPB_INPUT_EVENT_INTERFACE</a>   "PPB_InputEvent;1.0"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__input__event_8h#a40fd5bca277483a37c2713b8961b5117" class="el">PPB_INPUT_EVENT_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__input__event_8h#af4e5b597aea9864e7d9aa81c71e781d2" class="el">PPB_INPUT_EVENT_INTERFACE</a></td></tr><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__input__event_8h#a9887382b4700999b639a2f2de497e104" class="el">PPB_MOUSE_INPUT_EVENT_INTERFACE</a>   "PPB_MouseInputEvent;1.1"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__input__event_8h#a761fcf6df555946b6c2e1a0b6cd01c5e" class="el">PPB_MOUSE_INPUT_EVENT_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__input__event_8h#a9887382b4700999b639a2f2de497e104" class="el">PPB_MOUSE_INPUT_EVENT_INTERFACE</a></td></tr><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__input__event_8h#a0a7bcd124b8e7677b629b236eabfb563" class="el">PPB_WHEEL_INPUT_EVENT_INTERFACE</a>   "PPB_WheelInputEvent;1.0"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__input__event_8h#a2e592782e919e590dd393d421af8850f" class="el">PPB_WHEEL_INPUT_EVENT_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__input__event_8h#a0a7bcd124b8e7677b629b236eabfb563" class="el">PPB_WHEEL_INPUT_EVENT_INTERFACE</a></td></tr><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__input__event_8h#a48b7f516c37c910e75178f1b6bd65f48" class="el">PPB_KEYBOARD_INPUT_EVENT_INTERFACE</a>   "PPB_KeyboardInputEvent;1.2"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__input__event_8h#a969f9e171a3202249e8dfabaef33c288" class="el">PPB_KEYBOARD_INPUT_EVENT_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__input__event_8h#a48b7f516c37c910e75178f1b6bd65f48" class="el">PPB_KEYBOARD_INPUT_EVENT_INTERFACE</a></td></tr><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__input__event_8h#a36b8536215a705ecc3fd4cd366b0f975" class="el">PPB_TOUCH_INPUT_EVENT_INTERFACE</a>   "PPB_TouchInputEvent;1.0"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__input__event_8h#a9ef6ad6634a1d1912b83006862a0e57b" class="el">PPB_TOUCH_INPUT_EVENT_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__input__event_8h#a36b8536215a705ecc3fd4cd366b0f975" class="el">PPB_TOUCH_INPUT_EVENT_INTERFACE</a></td></tr><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__input__event_8h#ad911c1aed763c2f362037995ffca801a" class="el">PPB_IME_INPUT_EVENT_INTERFACE</a>   "PPB_IMEInputEvent;1.0"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__input__event_8h#ac7e4bf41f38afcb87e0a75c8f27ca33f" class="el">PPB_IME_INPUT_EVENT_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__input__event_8h#ad911c1aed763c2f362037995ffca801a" class="el">PPB_IME_INPUT_EVENT_INTERFACE</a></td></tr></tbody></table>
 
-Typedefs
---------
+## Typedefs
 
 <table><tbody><tr class="odd"><td style="text-align: right;">typedef struct <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___input_event__1__0/" class="el">PPB_InputEvent</a> </td><td><a href="/docs/native-client/pepper_beta/c/group___interfaces#gac221fa16a0d0daa0bf171a477b465396" class="el">PPB_InputEvent</a></td></tr><tr class="even"><td style="text-align: right;">typedef struct<br />
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___mouse_input_event__1__1/" class="el">PPB_MouseInputEvent</a> </td><td><a href="/docs/native-client/pepper_beta/c/group___interfaces#ga3fcedb0e992eebaf7d9b1b60aacceafc" class="el">PPB_MouseInputEvent</a></td></tr><tr class="odd"><td style="text-align: right;">typedef struct<br />
@@ -29,8 +26,7 @@ Typedefs
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___touch_input_event__1__0/" class="el">PPB_TouchInputEvent</a> </td><td><a href="/docs/native-client/pepper_beta/c/group___interfaces#ga3d25b1582fc1e6b94f53ecfb21422d6c" class="el">PPB_TouchInputEvent</a></td></tr><tr class="even"><td style="text-align: right;">typedef struct<br />
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___i_m_e_input_event__1__0/" class="el">PPB_IMEInputEvent</a> </td><td><a href="/docs/native-client/pepper_beta/c/group___interfaces#gaaa0c327650de77066ea8e2ec8f5589c5" class="el">PPB_IMEInputEvent</a></td></tr></tbody></table>
 
-Enumerations
-------------
+## Enumerations
 
 <table><tbody><tr class="odd"><td style="text-align: right;">enum  </td><td><a href="/docs/native-client/pepper_beta/c/group___enums#gaca7296cfec99fcb6646b7144d1d6a0c5" class="el">PP_InputEvent_Type</a> {<br />
   <a href="/docs/native-client/pepper_beta/c/group___enums#ggaca7296cfec99fcb6646b7144d1d6a0c5a9b6d5489f328f0b902da4a1f5836b4cb" class="el">PP_INPUTEVENT_TYPE_UNDEFINED</a> = -1, <a href="/docs/native-client/pepper_beta/c/group___enums#ggaca7296cfec99fcb6646b7144d1d6a0c5a4309eee5fb8284b6be7c258090b21e77" class="el">PP_INPUTEVENT_TYPE_MOUSEDOWN</a> = 0, <a href="/docs/native-client/pepper_beta/c/group___enums#ggaca7296cfec99fcb6646b7144d1d6a0c5a9f0a8196670b1da0e9c3cf081329c3ca" class="el">PP_INPUTEVENT_TYPE_MOUSEUP</a> = 1, <a href="/docs/native-client/pepper_beta/c/group___enums#ggaca7296cfec99fcb6646b7144d1d6a0c5a9d3a09d7fb33663f3a7d920fd2e3208d" class="el">PP_INPUTEVENT_TYPE_MOUSEMOVE</a> = 2,<br />
@@ -48,24 +44,21 @@ Enumerations
   <a href="/docs/native-client/pepper_beta/c/group___enums#ggafe68e3c1031daa4a6496845ff47649cda1280fe9a85edf74e20e4d503a345ab7d" class="el">PP_INPUTEVENT_CLASS_IME</a> = 1 &lt;&lt; 4, <a href="/docs/native-client/pepper_beta/c/group___enums#ggafe68e3c1031daa4a6496845ff47649cda627e6717b0241595c6abe8464abe89f3" class="el">PP_INPUTEVENT_CLASS_COALESCED_TOUCH</a> = 1 &lt;&lt; 5<br />
 }</td></tr><tr class="odd"><td style="text-align: right;">enum  </td><td><a href="/docs/native-client/pepper_beta/c/group___enums#gad5885a239d04166c8777432c81e39d0a" class="el">PP_TouchListType</a> { <a href="/docs/native-client/pepper_beta/c/group___enums#ggad5885a239d04166c8777432c81e39d0aa739dfd65f4cd719996f20bdd2e7db4ca" class="el">PP_TOUCHLIST_TYPE_TOUCHES</a> = 0, <a href="/docs/native-client/pepper_beta/c/group___enums#ggad5885a239d04166c8777432c81e39d0aa89d31d55d67fa0746d1f3bf4050eafff" class="el">PP_TOUCHLIST_TYPE_CHANGEDTOUCHES</a> = 1, <a href="/docs/native-client/pepper_beta/c/group___enums#ggad5885a239d04166c8777432c81e39d0aa0682e6c428fed9b900e3d9e56aaa8fca" class="el">PP_TOUCHLIST_TYPE_TARGETTOUCHES</a> = 2 }</td></tr></tbody></table>
 
-Variables
----------
+## Variables
 
 <table><tbody><tr class="odd"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/c/group___enums#gaca7296cfec99fcb6646b7144d1d6a0c5" class="el">PP_InputEvent_Type</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/c/group___enums#ga21b811ac0484a214a8751aa3e1c959d9" class="el">PP_InputEvent_Modifier</a></td></tr><tr class="odd"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/c/group___enums#ga25113f3c8d33e863fd38b3f70f8a5e6e" class="el">PP_InputEvent_MouseButton</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/c/group___enums#gafe68e3c1031daa4a6496845ff47649cd" class="el">PP_InputEvent_Class</a></td></tr><tr class="odd"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/c/group___enums#gad5885a239d04166c8777432c81e39d0a" class="el">PP_TouchListType</a></td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
 <span id="details" class="anchor" style="margin: 0;"></span>
 
-Detailed Description
---------------------
+## Detailed Description
 
 This file defines the Input Event interfaces.
 
-------------------------------------------------------------------------
+---
 
-Define Documentation
---------------------
+## Define Documentation
 
 <span id="ac7e4bf41f38afcb87e0a75c8f27ca33f" class="anchor" style="margin: 0;"></span>
 

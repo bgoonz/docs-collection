@@ -1,16 +1,14 @@
----json {"title":"PP\_ArrayOutput Struct Reference"} ---
+---json {"title":"PP_ArrayOutput Struct Reference"} ---
 
-Data Fields
------------
+## Data Fields
 
 <table><tbody><tr class="odd"><td style="text-align: right;"><a href="/docs/native-client/pepper_beta/c/group___typedefs#gaa363de651fad7342a37ec58375276af7" class="el">PP_ArrayOutput_GetDataBuffer</a> </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___array_output#acfd88c0475e6518cc9ed058c85744c58" class="el">GetDataBuffer</a></td></tr><tr class="even"><td style="text-align: right;">void * </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___array_output#a6323083ee2b06f902c9c334c6b10a6d0" class="el">user_data</a></td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
 <span id="details" class="anchor" style="margin: 0;"></span>
 
-Detailed Description
---------------------
+## Detailed Description
 
 A structure that defines a way for the browser to return arrays of data to the plugin.
 
@@ -42,10 +40,9 @@ In C, you would typically implement this as follows:
        ppb_foo->GetData(&output);
      }
 
-------------------------------------------------------------------------
+---
 
-Field Documentation
--------------------
+## Field Documentation
 
 <span id="acfd88c0475e6518cc9ed058c85744c58" class="anchor" style="margin: 0;"></span>
 
@@ -61,8 +58,8 @@ Data that is passed to the allocation function.
 
 Typically, this is used to communicate how the data should be stored.
 
-------------------------------------------------------------------------
+---
 
 The documentation for this struct was generated from the following file:
 
--   <a href="/docs/native-client/pepper_beta/c/pp__array__output_8h/" class="el">pp_array_output.h</a>
+- <a href="/docs/native-client/pepper_beta/c/pp__array__output_8h/" class="el">pp_array_output.h</a>

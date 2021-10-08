@@ -1,16 +1,14 @@
----json {"title":"PPB\_Graphics3D Struct Reference"} ---
+---json {"title":"PPB_Graphics3D Struct Reference"} ---
 
-Data Fields
------------
+## Data Fields
 
 <table><tbody><tr class="odd"><td style="text-align: right;">int32_t(* </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___graphics3_d__1__0#a80698c6d8c8b04e07d08c4595e0e977b" class="el">GetAttribMaxValue</a> )(<a href="/docs/native-client/pepper_beta/c/group___typedefs#gafdc3895ee80f4750d0d95ae1b677e9b7" class="el">PP_Resource</a> instance, int32_t attribute, int32_t *value)</td></tr><tr class="even"><td style="text-align: right;"><a href="/docs/native-client/pepper_beta/c/group___typedefs#gafdc3895ee80f4750d0d95ae1b677e9b7" class="el">PP_Resource</a>(* </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___graphics3_d__1__0#a818bc5829aac77215321b30f85e26e01" class="el">Create</a> )(<a href="/docs/native-client/pepper_beta/c/group___typedefs#ga89b662403e6a687bb914b80114c0d19d" class="el">PP_Instance</a> instance, <a href="/docs/native-client/pepper_beta/c/group___typedefs#gafdc3895ee80f4750d0d95ae1b677e9b7" class="el">PP_Resource</a> share_context, const int32_t attrib_list[])</td></tr><tr class="odd"><td style="text-align: right;"><a href="/docs/native-client/pepper_beta/c/group___enums#ga4f272d99be14aacafe08dfd4ef830918" class="el">PP_Bool</a>(* </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___graphics3_d__1__0#af59ffbcc71e08386f66594a138ab4ea5" class="el">IsGraphics3D</a> )(<a href="/docs/native-client/pepper_beta/c/group___typedefs#gafdc3895ee80f4750d0d95ae1b677e9b7" class="el">PP_Resource</a> resource)</td></tr><tr class="even"><td style="text-align: right;">int32_t(* </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___graphics3_d__1__0#aae3be34b7308c4510a3952b06fb7d6d9" class="el">GetAttribs</a> )(<a href="/docs/native-client/pepper_beta/c/group___typedefs#gafdc3895ee80f4750d0d95ae1b677e9b7" class="el">PP_Resource</a> context, int32_t attrib_list[])</td></tr><tr class="odd"><td style="text-align: right;">int32_t(* </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___graphics3_d__1__0#a093c4674cef82a08f5726bed8361d49d" class="el">SetAttribs</a> )(<a href="/docs/native-client/pepper_beta/c/group___typedefs#gafdc3895ee80f4750d0d95ae1b677e9b7" class="el">PP_Resource</a> context, const int32_t attrib_list[])</td></tr><tr class="even"><td style="text-align: right;">int32_t(* </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___graphics3_d__1__0#ae6e9764a94663000dcb2aa610fac724c" class="el">GetError</a> )(<a href="/docs/native-client/pepper_beta/c/group___typedefs#gafdc3895ee80f4750d0d95ae1b677e9b7" class="el">PP_Resource</a> context)</td></tr><tr class="odd"><td style="text-align: right;">int32_t(* </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___graphics3_d__1__0#a3bea5a6f3fc77df73c1cf4f02d32b4ec" class="el">ResizeBuffers</a> )(<a href="/docs/native-client/pepper_beta/c/group___typedefs#gafdc3895ee80f4750d0d95ae1b677e9b7" class="el">PP_Resource</a> context, int32_t width, int32_t height)</td></tr><tr class="even"><td style="text-align: right;">int32_t(* </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___graphics3_d__1__0#a293c6941c0da084267ffba3954793497" class="el">SwapBuffers</a> )(<a href="/docs/native-client/pepper_beta/c/group___typedefs#gafdc3895ee80f4750d0d95ae1b677e9b7" class="el">PP_Resource</a> context, struct <a href="/docs/native-client/pepper_beta/c/struct_p_p___completion_callback/" class="el">PP_CompletionCallback</a> callback)</td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
 <span id="details" class="anchor" style="margin: 0;"></span>
 
-Detailed Description
---------------------
+## Detailed Description
 
 `PPB_Graphics3D` defines the interface for a 3D graphics context.
 
@@ -37,10 +35,9 @@ Detailed Description
 
      core->ReleaseResource(context);
 
-------------------------------------------------------------------------
+---
 
-Field Documentation
--------------------
+## Field Documentation
 
 <span id="a818bc5829aac77215321b30f85e26e01" class="anchor" style="margin: 0;"></span>
 
@@ -50,22 +47,23 @@ Field Documentation
 
 The returned context is off-screen to start with. It must be attached to a plugin instance using `PPB_Instance::BindGraphics` to draw on the web page.
 
-**Parameters:**  
+**Parameters:**
+
 <table><colgroup><col style="width: 33%" /><col style="width: 33%" /><col style="width: 33%" /></colgroup><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The module instance.</td></tr><tr class="even"><td>[in]</td><td>share_context</td><td>The 3D context with which the created context would share resources. If <code>share_context</code> is not 0, then all shareable data, as defined by the client API (note that for OpenGL and OpenGL ES, shareable data excludes texture objects named 0) will be shared by <code>share_context</code><code>, all other contexts </code><code>share_context</code> already shares with, and the newly created context. An arbitrary number of <code>PPB_Graphics3D</code> can share data in this fashion.</td></tr><tr class="odd"><td>[in]</td><td>attrib_list</td><td><code></code><code>specifies a list of attributes for the context. It is a list of attribute name-value pairs in which each attribute is immediately followed by the corresponding desired value. The list is terminated with </code><code>PP_GRAPHICS3DATTRIB_NONE</code>. The <code>attrib_list</code><code> may be 0 or empty (first attribute is </code><code>PP_GRAPHICS3DATTRIB_NONE</code>). If an attribute is not specified in <code>attrib_list</code>, then the default value is used (it is said to be specified implicitly). Attributes for the context are chosen according to an attribute-specific criteria. Attributes can be classified into two categories:<ul><li>AtLeast: The attribute value in the returned context meets or exceeds the value specified in <code>attrib_list</code>.</li><li>Exact: The attribute value in the returned context is equal to the value specified in <code>attrib_list</code>.</li></ul></td></tr></tbody></table>
 
 Attributes that can be specified in `attrib_list` include:
 
--   `````````PP_GRAPHICS3DATTRIB_ALPHA_SIZE`: Category: AtLeast Default: 0.
--   `````````PP_GRAPHICS3DATTRIB_BLUE_SIZE`: Category: AtLeast Default: 0.
--   `````````PP_GRAPHICS3DATTRIB_GREEN_SIZE`: Category: AtLeast Default: 0.
--   `````````PP_GRAPHICS3DATTRIB_RED_SIZE`: Category: AtLeast Default: 0.
--   `````````PP_GRAPHICS3DATTRIB_DEPTH_SIZE`: Category: AtLeast Default: 0.
--   `````````PP_GRAPHICS3DATTRIB_STENCIL_SIZE`: Category: AtLeast Default: 0.
--   `````````PP_GRAPHICS3DATTRIB_SAMPLES`: Category: AtLeast Default: 0.
--   `````````PP_GRAPHICS3DATTRIB_SAMPLE_BUFFERS`: Category: AtLeast Default: 0.
--   `````````PP_GRAPHICS3DATTRIB_WIDTH`: Category: Exact Default: 0.
--   `````````PP_GRAPHICS3DATTRIB_HEIGHT`: Category: Exact Default: 0.
--   `````````PP_GRAPHICS3DATTRIB_SWAP_BEHAVIOR`: Category: Exact Default: Implementation defined.
+- `````````PP_GRAPHICS3DATTRIB_ALPHA_SIZE`: Category: AtLeast Default: 0.
+- `````````PP_GRAPHICS3DATTRIB_BLUE_SIZE`: Category: AtLeast Default: 0.
+- `````````PP_GRAPHICS3DATTRIB_GREEN_SIZE`: Category: AtLeast Default: 0.
+- `````````PP_GRAPHICS3DATTRIB_RED_SIZE`: Category: AtLeast Default: 0.
+- `````````PP_GRAPHICS3DATTRIB_DEPTH_SIZE`: Category: AtLeast Default: 0.
+- `````````PP_GRAPHICS3DATTRIB_STENCIL_SIZE`: Category: AtLeast Default: 0.
+- `````````PP_GRAPHICS3DATTRIB_SAMPLES`: Category: AtLeast Default: 0.
+- `````````PP_GRAPHICS3DATTRIB_SAMPLE_BUFFERS`: Category: AtLeast Default: 0.
+- `````````PP_GRAPHICS3DATTRIB_WIDTH`: Category: Exact Default: 0.
+- `````````PP_GRAPHICS3DATTRIB_HEIGHT`: Category: Exact Default: 0.
+- `````````PP_GRAPHICS3DATTRIB_SWAP_BEHAVIOR`: Category: Exact Default: Implementation defined.
 
 ``````` `
 
@@ -80,7 +78,8 @@ A `PP_Resource` containing the 3D graphics context if successful or 0 if unsucce
 
 This function may be used to check if a particular attribute value is supported before attempting to create a context.
 
-**Parameters:**  
+**Parameters:**
+
 <table><colgroup><col style="width: 33%" /><col style="width: 33%" /><col style="width: 33%" /></colgroup><tbody><tr class="odd"><td>[in]</td><td>instance</td><td>The module instance.</td></tr><tr class="even"><td>[in]</td><td>attribute</td><td>The attribute for which maximum value is queried. Attributes that can be queried for include:<ul><li><code>PP_GRAPHICS3DATTRIB_ALPHA_SIZE</code></li><li><code>PP_GRAPHICS3DATTRIB_BLUE_SIZE</code></li><li><code>PP_GRAPHICS3DATTRIB_GREEN_SIZE</code></li><li><code>PP_GRAPHICS3DATTRIB_RED_SIZE</code></li><li><code>PP_GRAPHICS3DATTRIB_DEPTH_SIZE</code></li><li><code>PP_GRAPHICS3DATTRIB_STENCIL_SIZE</code></li><li><code>PP_GRAPHICS3DATTRIB_SAMPLES</code></li><li><code>PP_GRAPHICS3DATTRIB_SAMPLE_BUFFERS</code></li><li><code>PP_GRAPHICS3DATTRIB_WIDTH</code></li><li><code>PP_GRAPHICS3DATTRIB_HEIGHT</code></li></ul></td></tr><tr class="odd"><td>[out]</td><td>value</td><td>The maximum supported value for <code>attribute</code></td></tr></tbody></table>
 
 <!-- -->
@@ -88,8 +87,8 @@ This function may be used to check if a particular attribute value is supported 
 **Returns:**  
 Returns `PP_TRUE` on success or the following on error:
 
--   `PP_ERROR_BADRESOURCE` if `instance` is invalid
--   `PP_ERROR_BADARGUMENT` if `attribute` is invalid or `value` is 0
+- `PP_ERROR_BADRESOURCE` if `instance` is invalid
+- `PP_ERROR_BADARGUMENT` if `attribute` is invalid or `value` is 0
 
 <span id="aae3be34b7308c4510a3952b06fb7d6d9" class="anchor" style="margin: 0;"></span>
 
@@ -97,7 +96,8 @@ Returns `PP_TRUE` on success or the following on error:
 
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___graphics3_d__1__0#aae3be34b7308c4510a3952b06fb7d6d9" class="el" title="GetAttribs() retrieves the value for each attribute in attrib_list.">GetAttribs()</a> retrieves the value for each attribute in `attrib_list`.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>context</td><td>The 3D graphics context.</td></tr><tr class="even"><td>[in,out]</td><td>attrib_list</td><td>The list of attributes that are queried. <code>attrib_list</code> has the same structure as described for <code>PPB_Graphics3D::Create</code>. It is both input and output structure for this function. All attributes specified in <code>PPB_Graphics3D::Create</code> can be queried for.</td></tr></tbody></table>
 
 <!-- -->
@@ -105,8 +105,8 @@ Returns `PP_TRUE` on success or the following on error:
 **Returns:**  
 Returns `PP_OK` on success or:
 
--   `PP_ERROR_BADRESOURCE` if context is invalid
--   `PP_ERROR_BADARGUMENT` if attrib\_list is 0 or any attribute in the `attrib_list` is not a valid attribute.
+- `PP_ERROR_BADRESOURCE` if context is invalid
+- `PP_ERROR_BADARGUMENT` if attrib_list is 0 or any attribute in the `attrib_list` is not a valid attribute.
 
 **Example usage:** To get the values for rgb bits in the color buffer, this function must be called as following:
 
@@ -129,7 +129,8 @@ The recoverable error conditions that have no side effect are detected and retur
 
 Note that the same error code is also returned in the SwapBuffers callback. It is recommended to handle error in the SwapBuffers callback because GetError is synchronous. This function may be useful in rare cases where drawing a frame is expensive and you want to verify the result of ResizeBuffers before attempting to draw a frame.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>The</td><td>3D graphics context.</td></tr></tbody></table>
 
 <!-- -->
@@ -137,9 +138,9 @@ Note that the same error code is also returned in the SwapBuffers callback. It i
 **Returns:**  
 Returns:
 
--   `PP_OK` if no error
--   `PP_ERROR_NOMEMORY`
--   `PP_ERROR_CONTEXT_LOST`
+- `PP_OK` if no error
+- `PP_ERROR_NOMEMORY`
+- `PP_ERROR_CONTEXT_LOST`
 
 <span id="af59ffbcc71e08386f66594a138ab4ea5" class="anchor" style="margin: 0;"></span>
 
@@ -147,13 +148,14 @@ Returns:
 
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___graphics3_d__1__0#af59ffbcc71e08386f66594a138ab4ea5" class="el" title="IsGraphics3D() determines if the given resource is a valid Graphics3D context.">IsGraphics3D()</a> determines if the given resource is a valid `Graphics3D` context.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>resource</td><td>A <code>Graphics3D</code> context resource.</td></tr></tbody></table>
 
 <!-- -->
 
 **Returns:**  
-PP\_TRUE if the given resource is a valid `Graphics3D`, `PP_FALSE` if it is an invalid resource or is a resource of another type.
+PP_TRUE if the given resource is a valid `Graphics3D`, `PP_FALSE` if it is an invalid resource or is a resource of another type.
 
 <span id="a3bea5a6f3fc77df73c1cf4f02d32b4ec" class="anchor" style="margin: 0;"></span>
 
@@ -163,7 +165,8 @@ PP\_TRUE if the given resource is a valid `Graphics3D`, `PP_FALSE` if it is an i
 
 If the surface could not be resized due to insufficient resources, `PP_ERROR_NOMEMORY` error is returned on the next `SwapBuffers` callback.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>context</td><td>The 3D graphics context.</td></tr><tr class="even"><td>[in]</td><td>width</td><td>The width of the backing surface.</td></tr><tr class="odd"><td>[in]</td><td>height</td><td>The height of the backing surface.</td></tr></tbody></table>
 
 <!-- -->
@@ -171,8 +174,8 @@ If the surface could not be resized due to insufficient resources, `PP_ERROR_NOM
 **Returns:**  
 Returns `PP_OK` on success or:
 
--   `PP_ERROR_BADRESOURCE` if context is invalid.
--   `PP_ERROR_BADARGUMENT` if the value specified for `width` or `height` is less than zero.
+- `PP_ERROR_BADRESOURCE` if context is invalid.
+- `PP_ERROR_BADARGUMENT` if the value specified for `width` or `height` is less than zero.
 
 <span id="a093c4674cef82a08f5726bed8361d49d" class="anchor" style="margin: 0;"></span>
 
@@ -180,7 +183,8 @@ Returns `PP_OK` on success or:
 
 <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___graphics3_d__1__0#a093c4674cef82a08f5726bed8361d49d" class="el" title="SetAttribs() sets the values for each attribute in attrib_list.">SetAttribs()</a> sets the values for each attribute in `attrib_list`.
 
-**Parameters:**  
+**Parameters:**
+
 <table><colgroup><col style="width: 33%" /><col style="width: 33%" /><col style="width: 33%" /></colgroup><tbody><tr class="odd"><td>[in]</td><td>context</td><td>The 3D graphics context.</td></tr><tr class="even"><td>[in]</td><td>attrib_list</td><td>The list of attributes whose values need to be set. <code>attrib_list</code> has the same structure as described for <code>PPB_Graphics3D::Create</code>. Attributes that can be specified are:<ul><li><code>PP_GRAPHICS3DATTRIB_SWAP_BEHAVIOR</code></li></ul></td></tr></tbody></table>
 
 <!-- -->
@@ -188,8 +192,8 @@ Returns `PP_OK` on success or:
 **Returns:**  
 Returns `PP_OK` on success or:
 
--   `PP_ERROR_BADRESOURCE` if `context` is invalid.
--   `PP_ERROR_BADARGUMENT` if `attrib_list` is 0 or any attribute in the `attrib_list` is not a valid attribute.
+- `PP_ERROR_BADRESOURCE` if `context` is invalid.
+- `PP_ERROR_BADARGUMENT` if `attrib_list` is 0 or any attribute in the `attrib_list` is not a valid attribute.
 
 <span id="a293c6941c0da084267ffba3954793497" class="anchor" style="margin: 0;"></span>
 
@@ -205,22 +209,23 @@ Because the callback is executed (or thread unblocked) only when the plugin's cu
 
 SwapBuffers performs an implicit flush operation on context. If the context gets into an unrecoverable error condition while processing a command, the error code will be returned as the argument for the callback. The callback may return the following error codes:
 
--   `PP_ERROR_NOMEMORY`
--   `PP_ERROR_CONTEXT_LOST` Note that the same error code may also be obtained by calling GetError.
+- `PP_ERROR_NOMEMORY`
+- `PP_ERROR_CONTEXT_LOST` Note that the same error code may also be obtained by calling GetError.
 
-**Parameters:**  
+**Parameters:**
+
 <table><tbody><tr class="odd"><td>[in]</td><td>context</td><td>The 3D graphics context.</td></tr><tr class="even"><td>[in]</td><td>callback</td><td>The callback that will executed when <code>SwapBuffers</code> completes.</td></tr></tbody></table>
 
 <!-- -->
 
 **Returns:**  
-Returns PP\_OK on success or:
+Returns PP_OK on success or:
 
--   `PP_ERROR_BADRESOURCE` if context is invalid.
--   `PP_ERROR_BADARGUMENT` if callback is invalid.
+- `PP_ERROR_BADRESOURCE` if context is invalid.
+- `PP_ERROR_BADARGUMENT` if callback is invalid.
 
-------------------------------------------------------------------------
+---
 
 The documentation for this struct was generated from the following file:
 
--   <a href="/docs/native-client/pepper_beta/c/ppb__graphics__3d_8h/" class="el">ppb_graphics_3d.h</a>
+- <a href="/docs/native-client/pepper_beta/c/ppb__graphics__3d_8h/" class="el">ppb_graphics_3d.h</a>

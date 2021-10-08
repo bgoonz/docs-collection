@@ -1,27 +1,23 @@
----json {"title":"ppb\_websocket.h File Reference"} ---
+---json {"title":"ppb_websocket.h File Reference"} ---
 
-Include dependency graph for ppb\_websocket.h:
+Include dependency graph for ppb_websocket.h:
 
 ![](/docs/native-client/pepper_beta/c/ppb__websocket_8h__incl.png)
 
-Data Structures
----------------
+## Data Structures
 
 <table><tbody><tr class="odd"><td style="text-align: right;">struct  </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p_b___web_socket__1__0/" class="el">PPB_WebSocket</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td>The <code>PPB_WebSocket</code> interface provides bi-directional, full-duplex, communications over a single TCP socket. <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___web_socket__1__0#details">More...</a><br />
 </td></tr></tbody></table>
 
-Defines
--------
+## Defines
 
 <table><tbody><tr class="odd"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__websocket_8h#ad613dc4aff545f9e9885c415f1673107" class="el">PPB_WEBSOCKET_INTERFACE</a>   "PPB_WebSocket;1.0"</td></tr><tr class="even"><td style="text-align: right;">#define </td><td><a href="/docs/native-client/pepper_beta/c/ppb__websocket_8h#a6d56a012c9350b4cc4e55b668d3fbe75" class="el">PPB_WEBSOCKET_INTERFACE</a>   <a href="/docs/native-client/pepper_beta/c/ppb__websocket_8h#ad613dc4aff545f9e9885c415f1673107" class="el">PPB_WEBSOCKET_INTERFACE</a></td></tr></tbody></table>
 
-Typedefs
---------
+## Typedefs
 
 <table><tbody><tr class="odd"><td style="text-align: right;">typedef struct <a href="/docs/native-client/pepper_beta/c/struct_p_p_b___web_socket__1__0/" class="el">PPB_WebSocket</a> </td><td><a href="/docs/native-client/pepper_beta/c/group___interfaces#gad0e152d14cefb0b480228f3fc7070faf" class="el">PPB_WebSocket</a></td></tr></tbody></table>
 
-Enumerations
-------------
+## Enumerations
 
 <table><tbody><tr class="odd"><td style="text-align: right;">enum  </td><td><a href="/docs/native-client/pepper_beta/c/group___enums#gade61cdf6a7470769b571925694d91a89" class="el">PP_WebSocketReadyState</a> {<br />
   <a href="/docs/native-client/pepper_beta/c/group___enums#ggade61cdf6a7470769b571925694d91a89a6c603b9df214e22d8b8202431866b26b" class="el">PP_WEBSOCKETREADYSTATE_INVALID</a> = -1, <a href="/docs/native-client/pepper_beta/c/group___enums#ggade61cdf6a7470769b571925694d91a89a9ad491ea639e22b598d4e8cab463acd9" class="el">PP_WEBSOCKETREADYSTATE_CONNECTING</a> = 0, <a href="/docs/native-client/pepper_beta/c/group___enums#ggade61cdf6a7470769b571925694d91a89a60f99e31f237d57df167d70e7c1ada7d" class="el">PP_WEBSOCKETREADYSTATE_OPEN</a> = 1, <a href="/docs/native-client/pepper_beta/c/group___enums#ggade61cdf6a7470769b571925694d91a89a45ce2585ba8b200c6c02112098df6447" class="el">PP_WEBSOCKETREADYSTATE_CLOSING</a> = 2,<br />
@@ -34,24 +30,21 @@ Enumerations
   <a href="/docs/native-client/pepper_beta/c/group___enums#gga8458f33f09ecc56fcf486c60b844678da242327b17ab568d625627236de721e5b" class="el">PP_WEBSOCKETSTATUSCODE_USER_PRIVATE_MAX</a> = 4999<br />
 }</td></tr></tbody></table>
 
-Variables
----------
+## Variables
 
 <table><tbody><tr class="odd"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/c/group___enums#gade61cdf6a7470769b571925694d91a89" class="el">PP_WebSocketReadyState</a></td></tr><tr class="even"><td style="text-align: right;"> </td><td><a href="/docs/native-client/pepper_beta/c/group___enums#ga8458f33f09ecc56fcf486c60b844678d" class="el">PP_WebSocketCloseCode</a></td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
 <span id="details" class="anchor" style="margin: 0;"></span>
 
-Detailed Description
---------------------
+## Detailed Description
 
 This file defines the `PPB_WebSocket` interface providing bi-directional, full-duplex, communications over a single TCP socket.
 
-------------------------------------------------------------------------
+---
 
-Define Documentation
---------------------
+## Define Documentation
 
 <span id="a6d56a012c9350b4cc4e55b668d3fbe75" class="anchor" style="margin: 0;"></span>
 

@@ -1,16 +1,11 @@
----
-layout: "layouts/doc-post.njk"
-title: VersionHistory API reference
-date: 2021-03-04
-description: Technical reference information about the VersionHistory web service API.
----
+2021-03-04
 
-This page contains technical reference information about the VersionHistory web
-service API.
+This page contains technical reference information about the VersionHistory web service API.
 
 All API access is over HTTPS, and accessed from `https://versionhistory.googleapis.com/v1`.
 
-## Version
+Version
+-------
 
 A version is a particular instance of Chrome that users are running.
 
@@ -18,365 +13,108 @@ A version is a particular instance of Chrome that users are running.
 
 Lists all Chrome versions for the given platform and channel.
 
-```http
-GET /{product}/platforms/{platform}/channels/{channel}/versions
-```
+    GET /{product}/platforms/{platform}/channels/{channel}/versions
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>product</code></td>
-      <td>A <a href="#product-identifiers">product identifier</a>.</td>
-    </tr>
-    <tr>
-      <td><code>platform</code></td>
-      <td>A <a href="#platform-identifiers">platform identifier</a>.</td>
-    </tr>
-    <tr>
-      <td><code>channel</code></td>
-      <td>A <a href="#channel-identifiers">channel identifier</a>.</td>
-    </tr>
-  </tbody>
-</table>
+<table><thead><tr class="header"><th>Name</th><th>Description</th></tr></thead><tbody><tr class="odd"><td><code>product</code></td><td>A <a href="#product-identifiers">product identifier</a>.</td></tr><tr class="even"><td><code>platform</code></td><td>A <a href="#platform-identifiers">platform identifier</a>.</td></tr><tr class="odd"><td><code>channel</code></td><td>A <a href="#channel-identifiers">channel identifier</a>.</td></tr></tbody></table>
 
-## Release
+Release
+-------
 
-A release is the interval in which users were running a particular
-version of Chrome. The release endpoints also provide information
-around what fraction of users were running that version of Chrome
-during that interval.
+A release is the interval in which users were running a particular version of Chrome. The release endpoints also provide information around what fraction of users were running that version of Chrome during that interval.
 
 ### Get all releases
 
 Lists all releases for the given platform, channel, and version.
 
-```http
-GET /{product}/platforms/{platform}/channels/{channel}/versions/{version}/releases
-```
+    GET /{product}/platforms/{platform}/channels/{channel}/versions/{version}/releases
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>product</code></td>
-      <td>A <a href="#product-identifiers">product identifier</a>.</td>
-    </tr>
-    <tr>
-      <td><code>platform</code></td>
-      <td>A <a href="#platform-identifiers">platform identifier</a>.</td>
-    </tr>
-    <tr>
-      <td><code>channel</code></td>
-      <td>A <a href="#channel-identifiers">channel identifier</a>.</td>
-    </tr>
-    <tr>
-      <td><code>version</code></td>
-      <td>A version identifier.</td>
-    </tr>
-  </tbody>
-</table>
+<table><thead><tr class="header"><th>Name</th><th>Description</th></tr></thead><tbody><tr class="odd"><td><code>product</code></td><td>A <a href="#product-identifiers">product identifier</a>.</td></tr><tr class="even"><td><code>platform</code></td><td>A <a href="#platform-identifiers">platform identifier</a>.</td></tr><tr class="odd"><td><code>channel</code></td><td>A <a href="#channel-identifiers">channel identifier</a>.</td></tr><tr class="even"><td><code>version</code></td><td>A version identifier.</td></tr></tbody></table>
 
-## Product
+Product
+-------
 
 A product is piece of software such as Chrome or Fuchsia Web Engine.
 
-### Product identifiers {: #product-identifiers }
+### Product identifiers {: \#product-identifiers }
 
-<table>
-  <thead>
-    <tr>
-      <th>Description</th>
-      <th>Value</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Chrome</td>
-      <td><code>chrome</code></td>
-    </tr>
-    <tr>
-      <td>Fuchsia Web Engine</td>
-      <td><code>fuchsiawebengine</code></td>
-    </tr>
-  </tbody>
-</table>
+<table><thead><tr class="header"><th>Description</th><th>Value</th></tr></thead><tbody><tr class="odd"><td>Chrome</td><td><code>chrome</code></td></tr><tr class="even"><td>Fuchsia Web Engine</td><td><code>fuchsiawebengine</code></td></tr></tbody></table>
 
-## Platform
+Platform
+--------
 
-A platform is one of the computing platforms that a product runs on, such
-as Windows, Android, etc.
+A platform is one of the computing platforms that a product runs on, such as Windows, Android, etc.
 
 ### Get all platforms
 
-```http
-GET /{product}/platforms
-```
+    GET /{product}/platforms
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>product</code></td>
-      <td>A <a href="#product-identifiers">product identifier</a>.</td>
-    </tr>
-  </tbody>
-</table>
+<table><thead><tr class="header"><th>Name</th><th>Description</th></tr></thead><tbody><tr class="odd"><td><code>product</code></td><td>A <a href="#product-identifiers">product identifier</a>.</td></tr></tbody></table>
 
 ### Get all platform and channel combinations
 
-```http
-GET /{product}/platforms/all/channels
-```
+    GET /{product}/platforms/all/channels
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>product</code></td>
-      <td>A <a href="#product-identifiers">product identifier</a>.</td>
-    </tr>
-  </tbody>
-</table>
+<table><thead><tr class="header"><th>Name</th><th>Description</th></tr></thead><tbody><tr class="odd"><td><code>product</code></td><td>A <a href="#product-identifiers">product identifier</a>.</td></tr></tbody></table>
 
-### Platform identifiers {: #platform-identifiers }
+### Platform identifiers {: \#platform-identifiers }
 
-<table>
-  <thead>
-    <tr>
-      <th>Description</th>
-      <th>Value</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>All platforms</td>
-      <td><code>all</code></td>
-    </tr>
-    <tr>
-      <td>Windows</td>
-      <td><code>win</code></td>
-    </tr>
-    <tr>
-      <td>Windows (64-bit)</td>
-      <td><code>win64</code></td>
-    </tr>
-    <tr>
-      <td>Mac</td>
-      <td><code>mac</code></td>
-    </tr>
-    <tr>
-      <td>Mac (ARM64)</td>
-      <td><code>mac_arm64</code></td>
-    </tr>
-    <tr>
-      <td>Linux</td>
-      <td><code>linux</code></td>
-    </tr>
-    <tr>
-      <td>Android</td>
-      <td><code>android</code></td>
-    </tr>
-    <tr>
-      <td>WebView</td>
-      <td><code>webview</code></td>
-    </tr>
-    <tr>
-      <td>iOS</td>
-      <td><code>ios</code></td>
-    </tr>
-    <tr>
-      <td>Lacros</td>
-      <td><code>lacros</code></td>
-    </tr>
-  </tbody>
-</table>
+<table><thead><tr class="header"><th>Description</th><th>Value</th></tr></thead><tbody><tr class="odd"><td>All platforms</td><td><code>all</code></td></tr><tr class="even"><td>Windows</td><td><code>win</code></td></tr><tr class="odd"><td>Windows (64-bit)</td><td><code>win64</code></td></tr><tr class="even"><td>Mac</td><td><code>mac</code></td></tr><tr class="odd"><td>Mac (ARM64)</td><td><code>mac_arm64</code></td></tr><tr class="even"><td>Linux</td><td><code>linux</code></td></tr><tr class="odd"><td>Android</td><td><code>android</code></td></tr><tr class="even"><td>WebView</td><td><code>webview</code></td></tr><tr class="odd"><td>iOS</td><td><code>ios</code></td></tr><tr class="even"><td>Lacros</td><td><code>lacros</code></td></tr></tbody></table>
 
-## Channel
+Channel
+-------
 
-See [How do I choose which channel to use?][channels] for an explanation
-of Chrome's channels.
+See [How do I choose which channel to use?](https://www.chromium.org/getting-involved/dev-channel#TOC-How-do-I-choose-which-channel-to-use-) for an explanation of Chrome’s channels.
 
-### Get a platform's valid channels
+### Get a platform’s valid channels
 
 Lists the valid channels for a given platform:
 
-```http
-GET /{product}/platforms/{platform}/channels
-```
+    GET /{product}/platforms/{platform}/channels
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>product</code></td>
-      <td>A <a href="#product-identifiers">product identifier</a>.</td>
-    </tr>
-    <tr>
-      <td><code>platform</code></td>
-      <td>A <a href="#platform-identifiers">platform identifier</a>.</td>
-    </tr>
-  </tbody>
-</table>
+<table><thead><tr class="header"><th>Name</th><th>Description</th></tr></thead><tbody><tr class="odd"><td><code>product</code></td><td>A <a href="#product-identifiers">product identifier</a>.</td></tr><tr class="even"><td><code>platform</code></td><td>A <a href="#platform-identifiers">platform identifier</a>.</td></tr></tbody></table>
 
-### Channel identifiers {: #channel-identifiers }
+### Channel identifiers {: \#channel-identifiers }
 
 The VersionHistory API supports the following channel identifiers:
 
-<table>
-  <thead>
-    <tr>
-      <th>Description</th>
-      <th>Value</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Extended Stable</td>
-      <td><code>extended</code></td>
-    </tr>
-    <tr>
-      <td>Stable</td>
-      <td><code>stable</code></td>
-    </tr>
-    <tr>
-      <td>Beta</td>
-      <td><code>beta</code></td>
-    </tr>
-    <tr>
-      <td>Dev</td>
-      <td><code>dev</code></td>
-    </tr>
-    <tr>
-      <td>Canary</td>
-      <td><code>canary</code></td>
-    </tr>
-    <tr>
-      <td>Canary (variant build)</td>
-      <td><code>canary_asan</code></td>
-    </tr>
-  </tbody>
-</table>
+<table><thead><tr class="header"><th>Description</th><th>Value</th></tr></thead><tbody><tr class="odd"><td>Extended Stable</td><td><code>extended</code></td></tr><tr class="even"><td>Stable</td><td><code>stable</code></td></tr><tr class="odd"><td>Beta</td><td><code>beta</code></td></tr><tr class="even"><td>Dev</td><td><code>dev</code></td></tr><tr class="odd"><td>Canary</td><td><code>canary</code></td></tr><tr class="even"><td>Canary (variant build)</td><td><code>canary_asan</code></td></tr></tbody></table>
 
-{% Aside %}
-  `canary_asan` is a fraction of the Canary population that
-  receives a variant build of Chrome. This variant build has
-  more diagnostics capabilities enabled which makes it better
-  at uncovering bugs.
-{% endAside %}
+{% Aside %} `canary_asan` is a fraction of the Canary population that receives a variant build of Chrome. This variant build has more diagnostics capabilities enabled which makes it better at uncovering bugs. {% endAside %}
 
-## Filter results {: #filter }
+Filter results {: \#filter }
+----------------------------
 
-Add a `filter` query parameter to filter results. Only the
-[version](#version) and [release](#release) endpoints support filtering.
-Example:
+Add a `filter` query parameter to filter results. Only the [version](#version) and [release](#release) endpoints support filtering. Example:
 
-```http
-GET /chrome/platforms/win/channels/stable/versions/all/releases?filter=fraction=1
-```
+    GET /chrome/platforms/win/channels/stable/versions/all/releases?filter=fraction=1
 
-The value of `filter` should be a comma-separated list of expressions. Each
-expression should take the form of `field operator value`.
+The value of `filter` should be a comma-separated list of expressions. Each expression should take the form of `field operator value`.
 
-<table>
-  <thead>
-    <tr>
-      <th>Item</th>
-      <th>Valid values</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Field</td>
-      <td>
-        <code>version</code>, <code>name</code>, <code>platform</code>,
-        <code>starttime</code>*, <code>endtime</code>*, <code>fraction</code>*
-      </td>
-    </tr>
-    <tr>
-      <td>Operator</td>
-      <td>
-        <code>&lt;</code>, <code>&lt;=</code>, <code>=</code>,
-        <code>&gt;</code>, <code>&gt;=</code>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<table><thead><tr class="header"><th>Item</th><th>Valid values</th></tr></thead><tbody><tr class="odd"><td>Field</td><td><code>version</code>, <code>name</code>, <code>platform</code>, <code>starttime</code><em>, <code>endtime</code></em>, <code>fraction</code>*</td></tr><tr class="even"><td>Operator</td><td><code>&lt;</code>, <code>&lt;=</code>, <code>=</code>, <code>&gt;</code>, <code>&gt;=</code></td></tr></tbody></table>
 
-{% Aside %}
-  An item with an asterisk (`*`) to the right of it is only valid
-  for [release](#release) endpoints.
-{% endAside %} 
+{% Aside %} An item with an asterisk (`*`) to the right of it is only valid for [release](#release) endpoints. {% endAside %}
 
-* Channel filtering is done by distance from Stable, in other words `stable` < `beta`
-  < `dev` < `canary` < `canary_asan`. For example, `channel<=dev` returns
-  information for `stable`, `beta`, and `dev`.
-* Version filtering is done numerically, for example `1.0.0.8` < `1.0.0.10`.
-  If a version is not entirely written, VersionHistory appends `0` for the missing
-  fields. For example, `version>80` becomes `version>80.0.0.0`.
-* `endtime=none` filters for releases that are currently live and do not
-  have an end time yet.
-* When filtering by `starttime` or `endtime`, the value must be in [RFC 3339][rfc3339]
-  date string format.
-* `name` and `platform` are filtered by string comparison.
-* For releases that Chrome is still serving, `serving.endtime` will not be populated.
-  During ordering or filtering, `serving.endtime` will be treated as
-  `1970-01-01T00:00:00Z` if the field is not populated.
-* `fraction` is used to specify how many users were involved in the rollout.
-  For example, `fraction=1` means 100% of users.
+-   Channel filtering is done by distance from Stable, in other words `stable` &lt; `beta` &lt; `dev` &lt; `canary` &lt; `canary_asan`. For example, `channel<=dev` returns information for `stable`, `beta`, and `dev`.
+-   Version filtering is done numerically, for example `1.0.0.8` &lt; `1.0.0.10`. If a version is not entirely written, VersionHistory appends `0` for the missing fields. For example, `version>80` becomes `version>80.0.0.0`.
+-   `endtime=none` filters for releases that are currently live and do not have an end time yet.
+-   When filtering by `starttime` or `endtime`, the value must be in [RFC 3339](https://medium.com/easyread/understanding-about-rfc-3339-for-datetime-formatting-in-software-engineering-940aa5d5f68a) date string format.
+-   `name` and `platform` are filtered by string comparison.
+-   For releases that Chrome is still serving, `serving.endtime` will not be populated. During ordering or filtering, `serving.endtime` will be treated as `1970-01-01T00:00:00Z` if the field is not populated.
+-   `fraction` is used to specify how many users were involved in the rollout. For example, `fraction=1` means 100% of users.
 
-## Order results {: #order }
+Order results {: \#order }
+--------------------------
 
-Add a `order_by` query parameter to order results. Only the
-[version](#version) and [release](#release) endpoints support ordering.
-Example:
+Add a `order_by` query parameter to order results. Only the [version](#version) and [release](#release) endpoints support ordering. Example:
 
-```http
-GET /chrome/platforms/win/channels/stable/versions/all/releases?order_by=starttime
-```
+    GET /chrome/platforms/win/channels/stable/versions/all/releases?order_by=starttime
 
-`order_by` accepts a comma-separated list of the following
-values: `version`, `name`, `platform`, `channel`, `starttime`,
-`endtime`, `fraction`.
+`order_by` accepts a comma-separated list of the following values: `version`, `name`, `platform`, `channel`, `starttime`, `endtime`, `fraction`.
 
-Add a space character (`%20`) followed by `asc` or `desc` after the `order_by` value to specify ascending
-or descending ordering. Example:
+Add a space character (`%20`) followed by `asc` or `desc` after the `order_by` value to specify ascending or descending ordering. Example:
 
-```http
-GET /chrome/platforms/win/channels/stable/versions/all/releases?order_by=starttime%20asc
-```
+    GET /chrome/platforms/win/channels/stable/versions/all/releases?order_by=starttime%20asc
 
-* Channel ordering is done in the following order: `stable`, `beta`,
-  `dev`, `canary`, `canary_asan`. 
-* Ordering by `name` may cause unexpected behaviour as it is a naive string sort. For
-  example, `1.0.0.8` will be before 1.0.0.10 in descending order.
-* When `order_by` is not specified the default ordering is by `platform`, `channel`,
-  `version`, and then `serving.starttime`.
-
-[channels]: https://www.chromium.org/getting-involved/dev-channel#TOC-How-do-I-choose-which-channel-to-use-
-[rfc3339]: https://medium.com/easyread/understanding-about-rfc-3339-for-datetime-formatting-in-software-engineering-940aa5d5f68a
+-   Channel ordering is done in the following order: `stable`, `beta`, `dev`, `canary`, `canary_asan`.
+-   Ordering by `name` may cause unexpected behaviour as it is a naive string sort. For example, `1.0.0.8` will be before 1.0.0.10 in descending order.
+-   When `order_by` is not specified the default ordering is by `platform`, `channel`, `version`, and then `serving.starttime`.

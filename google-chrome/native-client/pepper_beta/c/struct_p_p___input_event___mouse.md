@@ -1,23 +1,20 @@
----json {"title":"PP\_InputEvent\_Mouse Struct Reference"} ---
+---json {"title":"PP_InputEvent_Mouse Struct Reference"} ---
 
-Data Fields
------------
+## Data Fields
 
 <table><tbody><tr class="odd"><td style="text-align: right;">uint32_t </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___input_event___mouse#ade5934096b842e08d4a2b5361efde0ba" class="el">modifier</a></td></tr><tr class="even"><td style="text-align: right;"><a href="/docs/native-client/pepper_beta/c/group___enums#ga25113f3c8d33e863fd38b3f70f8a5e6e" class="el">PP_InputEvent_MouseButton</a> </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___input_event___mouse#a09969e4a48363691517970cd8b374e84" class="el">button</a></td></tr><tr class="odd"><td style="text-align: right;">float </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___input_event___mouse#a12569a7a8bff2107c2a2d67376d26c07" class="el">x</a></td></tr><tr class="even"><td style="text-align: right;">float </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___input_event___mouse#a19be12e2e7b9007209594ce85912b398" class="el">y</a></td></tr><tr class="odd"><td style="text-align: right;">int32_t </td><td><a href="/docs/native-client/pepper_beta/c/struct_p_p___input_event___mouse#ad608b42b29ff4f93f63e7dee287ad1d9" class="el">click_count</a></td></tr></tbody></table>
 
-------------------------------------------------------------------------
+---
 
 <span id="details" class="anchor" style="margin: 0;"></span>
 
-Detailed Description
---------------------
+## Detailed Description
 
 The `PP_InputEvent_Mouse` struct represents all mouse events except mouse wheel events.
 
-------------------------------------------------------------------------
+---
 
-Field Documentation
--------------------
+## Field Documentation
 
 <span id="a09969e4a48363691517970cd8b374e84" class="anchor" style="margin: 0;"></span>
 
@@ -53,8 +50,8 @@ This values represents the y coordinate of the mouse when the event occurred.
 
 In most, but not all, cases these coordinates will just be integers. For example, the plugin element might be arbitrarily scaled or transformed in the DOM, and translating a mouse event into the coordinate space of the plugin will give non-integer values.
 
-------------------------------------------------------------------------
+---
 
 The documentation for this struct was generated from the following file:
 
--   <a href="/docs/native-client/pepper_beta/c/pp__input__event_8h/" class="el">pp_input_event.h</a>
+- <a href="/docs/native-client/pepper_beta/c/pp__input__event_8h/" class="el">pp_input_event.h</a>
