@@ -15,29 +15,29 @@ matures and we learn from developers' experiences, these recommendations will be
 We encourage you to develop extensions that are of high quality. High-quality extensions conform to
 standards of performance, security, and user experience, as summarized by the following guidelines:
 
-* **Compliance:** Does the extension comply with our [program policies]? Extensions must not violate
+- **Compliance:** Does the extension comply with our [program policies]? Extensions must not violate
   any of these policies.
 
-* **Manifest V3:** Is the extension built on Manifest V3? Manifest V3 is the current version of the
+- **Manifest V3:** Is the extension built on Manifest V3? Manifest V3 is the current version of the
   Chrome extension platform and all High Quality extensions should use it. (See the [Manifest V3
   overview][mv3-overview].)
 
-* **Security:** Is the extension safe for users? Make sure your extension does not pose security
+- **Security:** Is the extension safe for users? Make sure your extension does not pose security
   threats and does not use deceptive installation tactics (see [Stay secure][stay-secure] for a more
   in-depth discussion.)
 
-* **User privacy:** Make sure that your extension handles user data appropriately and conforms to
+- **User privacy:** Make sure that your extension handles user data appropriately and conforms to
   Chrome Web Store's data privacy requirements. (See this [FAQ][user-data-faq] for further details.)
 
-* **Performance:** Does the extension function at an outstanding level? High-quality extensions
+- **Performance:** Does the extension function at an outstanding level? High-quality extensions
   don't just perform their intended action, they do so while using as few system resources as
   possible.
 
-* **User experience:** Is the extension a joy to use? The extension itself should provide a
+- **User experience:** Is the extension a joy to use? The extension itself should provide a
   good-looking, intuitive, and seamless user experience while also respecting the end user's
   privacy.
 
-* **Store listing:** The extension's [Chrome Web Store listing][completing-listing] should set the
+- **Store listing:** The extension's [Chrome Web Store listing][completing-listing] should set the
   user's expectations and clearly communicate what the extension does. All image assets (icon, tile,
   marquee, and screenshots) [should be provided][supplying-images]. Images should not be blurry or
   too busy. [Privacy information][dashboard-privacy] (permissions justifications, the extension's
@@ -87,17 +87,17 @@ See [Supplying Images][cws-images] for guidelines on the images you should suppl
 The developer console lets you specify a category for each extension. Choose the category
 that is most appropriate:
 
-* Accessibility
-* Blogging
-* Developer Tools
-* Fun
-* News & Weather
-* Photos
-* Productivity
-* Search Tools
-* Shopping
-* Social & Communication
-* Sports
+- Accessibility
+- Blogging
+- Developer Tools
+- Fun
+- News & Weather
+- Photos
+- Productivity
+- Search Tools
+- Shopping
+- Social & Communication
+- Sports
 
 [completing-listing]: /docs/webstore/cws-dashboard-listing/
 [cws-branding]: /docs/webstore/branding

@@ -65,8 +65,8 @@ that it does not and select "No, I am not using remote code."
 
 You must disclose how your extension collects and uses user data. These disclosures include:
 
-* The nature of the data that the extensions collects from users
-* Your certification that the extension complies with the policy on limited use
+- The nature of the data that the extensions collects from users
+- Your certification that the extension complies with the policy on limited use
 
 {% Aside 'note' %}
 
@@ -86,8 +86,9 @@ group of checkboxes to certify that you comply with each of the disclosure state
 ## You are almost ready to publish this item!
 
 If you haven't done so yet, complete your listing by
--  Providing your [distribution preferences][distribution]
--  Filling out your [store listing][listing]
+
+- Providing your [distribution preferences][distribution]
+- Filling out your [store listing][listing]
 
 [distribution]: /docs/webstore/cws-dashboard-distribution/
 [extension-policies]: /docs/webstore/program_policies/#extensions

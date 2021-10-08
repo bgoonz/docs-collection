@@ -24,5 +24,5 @@
 module.exports = {
   noindex: true,
   // This is the default hero image for all Workbox pages.
-  hero: 'image/QMjXarRXcMarxQddwrEdPvHVM242/ZUBXF0hK0jo9q4RvELUs.png',
+  hero: "image/QMjXarRXcMarxQddwrEdPvHVM242/ZUBXF0hK0jo9q4RvELUs.png",
 };

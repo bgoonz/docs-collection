@@ -41,11 +41,11 @@ As the following images show, the badge has an optional border.
 Right-click any of the following links to download an image file for the badge.
 
 | Badge for white backgrounds | Badge (with border) for colored backgrounds |
-| -------------------------------- | ------------------------------------------------ |
-| [small PNG][10] | [small PNG (with border)][14] |
-| [medium PNG][11] | [medium PNG (with border)][15] |
-| [large PNG][12] | [large PNG (with border)][16] |
-| [Adobe Illustrator][13] | [Adobe Illustrator (with border)][17] |
+| --------------------------- | ------------------------------------------- |
+| [small PNG][10]             | [small PNG (with border)][14]               |
+| [medium PNG][11]            | [medium PNG (with border)][15]              |
+| [large PNG][12]             | [large PNG (with border)][16]               |
+| [Adobe Illustrator][13]     | [Adobe Illustrator (with border)][17]       |
 
 If you resize the badge, preserve the ratio of dimensions, and make sure the badge is legible and
 fully visible.

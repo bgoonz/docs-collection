@@ -1,6 +1,6 @@
 ---
-layout: 'layouts/doc-post.njk'
-title: 'Attribution Reporting'
+layout: "layouts/doc-post.njk"
+title: "Attribution Reporting"
 subhead: >
   Measure when user action (such as an ad click or view) leads to a conversion, without using cross-site identifiers.
 description: >
@@ -16,7 +16,7 @@ authors:
 Measurement API. {% endAside %}
 
 {% YouTube
-  id='UGA74CIcom8' 
+  id='UGA74CIcom8'
 %}
 
 ## Implementation status
@@ -25,9 +25,9 @@ See [Status](/docs/privacy-sandbox/attribution-reporting-introduction/#status).
 
 ## Glossary
 
-{% Aside %} 
+{% Aside %}
 
-You may also want to consult the complete [Privacy Sandbox glossary](/docs/privacy-sandbox/glossary/). 
+You may also want to consult the complete [Privacy Sandbox glossary](/docs/privacy-sandbox/glossary/).
 
 {% endAside %}
 
@@ -51,8 +51,8 @@ You may also want to consult the complete [Privacy Sandbox glossary](/docs/priva
   need to use the API directly, but may be interested in understanding it if they're
   working with adtech platforms that may integrate the API.
 
-{% Aside %} 
-There may be use cases that are non-ads-related. [Engage](#engage) to share your use case! 
+{% Aside %}
+There may be use cases that are non-ads-related. [Engage](#engage) to share your use case!
 {% endAside %}
 
 ## Why is this API needed? {: #why-is-this-api-needed }
@@ -65,9 +65,9 @@ privacy-preserving way, without third-party cookies.
 
 ## How does the Attribution Reporting API work and what are its features?
 
-{% Aside %} 
+{% Aside %}
 This API is being incubated and developed in the open. It is subject to
-change. Your feedback is welcome. See [how to engage](#engage). 
+change. Your feedback is welcome. See [how to engage](#engage).
 {% endAside %}
 
 The Attribution Reporting API enables the measurement of two events that are linked

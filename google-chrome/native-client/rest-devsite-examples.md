@@ -1,16 +1,14 @@
 ---json {"title":"Examples of ReST markup for chromesite (Document title)"} ---
 
-Document structure
-------------------
+## Document structure
 
 A document starts with a Sphinx target which serves as the document name throughout the tree. It can serve as a link target in other documents that want to link to this one (see the Links section below).
 
-Basic markup
-------------
+## Basic markup
 
 In general, follow the rules from <a href="http://sphinx-doc.org/rest.html" class="reference external">http://sphinx-doc.org/rest.html</a>
 
-Some **bold text** and *italic text* and `fixed-font text`. Non marked-up text can follow these immediately by using a backslash: **pexe**s.
+Some **bold text** and _italic text_ and `fixed-font text`. Non marked-up text can follow these immediately by using a backslash: **pexe**s.
 
 For pleasant collaborative editing, please use the accepted coding guidelines: wrap at 80 columns, no tabs, etc.
 
@@ -24,15 +22,13 @@ Here’s an en-dash – and an m-dash — too.
 
 Copyright sign ©, and uacute Ú.
 
-Images
-------
+## Images
 
 Please use absolute paths (starting with `/`) for images:
 
 ![/native-client/images/NaclBlock.png](/docs/native-client/images/NaclBlock.png)
 
-Links
------
+## Links
 
 ### To other documents within the tree
 
@@ -50,8 +46,7 @@ It’s also possible to give such cross-references custom names: <a href="#link-
 
 Plain links can be placed like this: <a href="http://google.com" class="reference external">http://google.com</a> and also <a href="http://google.com" class="reference external">like this</a>.
 
-Definition lists
-----------------
+## Definition lists
 
 Can be used to define a group of related terms. Internal formatting is supported within the definition. No special formatting needs to be done for the definition name/title - it’s handled by the chromesite documentation server.
 
@@ -64,8 +59,7 @@ The common fig (**Ficus carica**) is a species of flowering plant in the genus F
 Pear  
 The pear is any of several tree and shrub species of genus Pyrus, in the family Rosaceae.
 
-Notes and Admonitions
----------------------
+## Notes and Admonitions
 
 The documentation server supports special “notes” that are indented and have a background color. We’ll generate them with the `Note` directive, providing the class explicitly. The class is one of `note`, `caution`, `warning`, `special`.
 
@@ -77,8 +71,7 @@ Also:
 
 Caution – you have been warned.
 
-Source code
------------
+## Source code
 
 Here’s source code that will be pretty-printed. It’s just a plain `<pre>` that presents pre-formatted code with coloring:
 
@@ -99,8 +92,7 @@ By default `:prettyprint:` is `1`.
 
 For short inline code, use fixed-formatting like `int x = 2;`. Note that this won’t get syntax-highlighted and may be line-wrapped, so keep it very short.
 
-<span id="link-for-section-heading"></span>Section heading
-----------------------------------------------------------
+## <span id="link-for-section-heading"></span>Section heading
 
 Here’s a demonstration of heading nesting levels. This is a top-level section in the document. The document title is the first header and it’s delimited by hash signes (`#`) from above and below.
 
@@ -116,8 +108,7 @@ That’s pretty deep...
 
 It’s probably not the best idea to go this far (renders to `<h5>`).
 
-Lists
------
+## Lists
 
 Auto-numbered ordered lists:
 
@@ -133,21 +124,20 @@ Manually numbered ordered lists:
 
 Unordered (bullet) lists:
 
--   One
--   Two
--   Three
+- One
+- Two
+- Three
 
 Lists can be nested and mixed too:
 
--   Toplevel
+- Toplevel
 
-    1.  One
-    2.  Two
+  1.  One
+  2.  Two
 
--   Back to top level
+- Back to top level
 
-Tables
-------
+## Tables
 
 The full scoop on tables is <a href="http://sphinx-doc.org/rest.html#tables" class="reference external">http://sphinx-doc.org/rest.html#tables</a> and the Docutils pages linked from it.
 

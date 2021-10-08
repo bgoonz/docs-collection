@@ -1,6 +1,6 @@
 ---
-layout: 'layouts/doc-post.njk'
-title: 'Introduction to Attribution Reporting (Conversion Measurement)'
+layout: "layouts/doc-post.njk"
+title: "Introduction to Attribution Reporting (Conversion Measurement)"
 subhead: >
   Introduction and key concepts to understand the Attribution Reporting API.
 date: 2021-08-09

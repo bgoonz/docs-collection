@@ -284,10 +284,10 @@ The VersionHistory API supports the following channel identifiers:
 </table>
 
 {% Aside %}
-  `canary_asan` is a fraction of the Canary population that
-  receives a variant build of Chrome. This variant build has
-  more diagnostics capabilities enabled which makes it better
-  at uncovering bugs.
+`canary_asan` is a fraction of the Canary population that
+receives a variant build of Chrome. This variant build has
+more diagnostics capabilities enabled which makes it better
+at uncovering bugs.
 {% endAside %}
 
 ## Filter results {: #filter }
@@ -329,25 +329,25 @@ expression should take the form of `field operator value`.
 </table>
 
 {% Aside %}
-  An item with an asterisk (`*`) to the right of it is only valid
-  for [release](#release) endpoints.
-{% endAside %} 
+An item with an asterisk (`*`) to the right of it is only valid
+for [release](#release) endpoints.
+{% endAside %}
 
-* Channel filtering is done by distance from Stable, in other words `stable` < `beta`
+- Channel filtering is done by distance from Stable, in other words `stable` < `beta`
   < `dev` < `canary` < `canary_asan`. For example, `channel<=dev` returns
   information for `stable`, `beta`, and `dev`.
-* Version filtering is done numerically, for example `1.0.0.8` < `1.0.0.10`.
+- Version filtering is done numerically, for example `1.0.0.8` < `1.0.0.10`.
   If a version is not entirely written, VersionHistory appends `0` for the missing
   fields. For example, `version>80` becomes `version>80.0.0.0`.
-* `endtime=none` filters for releases that are currently live and do not
+- `endtime=none` filters for releases that are currently live and do not
   have an end time yet.
-* When filtering by `starttime` or `endtime`, the value must be in [RFC 3339][rfc3339]
+- When filtering by `starttime` or `endtime`, the value must be in [RFC 3339][rfc3339]
   date string format.
-* `name` and `platform` are filtered by string comparison.
-* For releases that Chrome is still serving, `serving.endtime` will not be populated.
+- `name` and `platform` are filtered by string comparison.
+- For releases that Chrome is still serving, `serving.endtime` will not be populated.
   During ordering or filtering, `serving.endtime` will be treated as
   `1970-01-01T00:00:00Z` if the field is not populated.
-* `fraction` is used to specify how many users were involved in the rollout.
+- `fraction` is used to specify how many users were involved in the rollout.
   For example, `fraction=1` means 100% of users.
 
 ## Order results {: #order }
@@ -371,11 +371,11 @@ or descending ordering. Example:
 GET /chrome/platforms/win/channels/stable/versions/all/releases?order_by=starttime%20asc
 ```
 
-* Channel ordering is done in the following order: `stable`, `beta`,
-  `dev`, `canary`, `canary_asan`. 
-* Ordering by `name` may cause unexpected behaviour as it is a naive string sort. For
+- Channel ordering is done in the following order: `stable`, `beta`,
+  `dev`, `canary`, `canary_asan`.
+- Ordering by `name` may cause unexpected behaviour as it is a naive string sort. For
   example, `1.0.0.8` will be before 1.0.0.10 in descending order.
-* When `order_by` is not specified the default ordering is by `platform`, `channel`,
+- When `order_by` is not specified the default ordering is by `platform`, `channel`,
   `version`, and then `serving.starttime`.
 
 [channels]: https://www.chromium.org/getting-involved/dev-channel#TOC-How-do-I-choose-which-channel-to-use-

@@ -44,4 +44,3 @@ Click on **Delete group publisher account** to permanently delete the group publ
 [dev-dashboard]: https://chrome.google.com/webstore/devconsole
 [group-publisher]: /docs/webstore/group-publishers/
 [unpublish]: /docs/webstore/faq/#faq-listing-03
-

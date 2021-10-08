@@ -1,6 +1,6 @@
 ---
-layout: 'layouts/doc-post.njk'
-title: 'Migration guide (Chrome 92): Conversion Measurement API to Attribution Reporting API'
+layout: "layouts/doc-post.njk"
+title: "Migration guide (Chrome 92): Conversion Measurement API to Attribution Reporting API"
 subhead: >
   The Conversion Measurement API is changing in Chrome 92.
 date: 2021-06-22
@@ -133,9 +133,9 @@ renaming](#update-the-html-attributes)):
 
 ```javascript
 window.open(
-  'https://dest.example',
-  '_blank',
-  'attributionsourceeventid=1234,attributiondestination=https://dest.example,attributionreportto=https://reporter.example,attributionexpiry=604800000'
+  "https://dest.example",
+  "_blank",
+  "attributionsourceeventid=1234,attributiondestination=https://dest.example,attributionreportto=https://reporter.example,attributionexpiry=604800000"
 );
 ```
 

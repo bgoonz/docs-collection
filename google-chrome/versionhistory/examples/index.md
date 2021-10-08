@@ -2,7 +2,7 @@
 layout: "layouts/doc-post.njk"
 title: VersionHistory API examples
 date: 2021-03-04
-description: > 
+description: >
   Example usage of the VersionHistory web service API.
 ---
 

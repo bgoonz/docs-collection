@@ -94,14 +94,14 @@ and it'll be visible in the store's search results.
 
 You can publish a "BETA" or "TESTING" version to the Chrome Web Store in parallel with a
 production version. It can be listed private, unlisted or public. After addressing issues and bugs based on user
-feedback, you can publish a revised version of your extension to the rest of your users. 
+feedback, you can publish a revised version of your extension to the rest of your users.
 
 Before you submit a testing
-  version to the Chrome Web Store, follow these steps:
+version to the Chrome Web Store, follow these steps:
 
-  1.  Add the label "DEVELOPMENT BUILD" or “BETA” at the end of the name of your extension. 
-  2.  Declare the
-  purpose of your extension in the description: "THIS EXTENSION IS FOR BETA TESTING".
+1.  Add the label "DEVELOPMENT BUILD" or “BETA” at the end of the name of your extension.
+2.  Declare the
+    purpose of your extension in the description: "THIS EXTENSION IS FOR BETA TESTING".
 
 {% Aside 'warning' %}
 
@@ -110,11 +110,9 @@ see [Repetitive Content Spam Policy][repetitive-content].
 
 {% endAside %}
 
-
-## You are ready to submit this item! 
+## You are ready to submit this item!
 
 After filling out the [Listing][listing] tab and the [Privacy][privacy] tab, you can now [publish your item][publish].
-
 
 [private-google-groups]: #private-visibility-google-groups
 [enterprise]: /docs/webstore/cws-enterprise/

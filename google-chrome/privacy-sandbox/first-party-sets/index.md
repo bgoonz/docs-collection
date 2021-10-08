@@ -1,6 +1,6 @@
 ---
-layout: 'layouts/doc-post.njk'
-title: 'First-Party Sets'
+layout: "layouts/doc-post.njk"
+title: "First-Party Sets"
 subhead: >
   Allow related domain names owned and operated by the same entity to declare themselves as belonging to the same first party.
 description: >
@@ -15,16 +15,15 @@ authors:
 
 ## Implementation status
 
-* [In origin trial](https://web.dev/origin-trials/) Chrome 89 to 93.
-* [Register for origin trial](https://developer.chrome.com/origintrials/#/view_trial/988540118207823873).
-* [Chrome Platform Status](https://chromestatus.com/feature/5640066519007232).
-* [Chromium Projects](https://www.chromium.org/updates/first-party-sets).
-
+- [In origin trial](https://web.dev/origin-trials/) Chrome 89 to 93.
+- [Register for origin trial](https://developer.chrome.com/origintrials/#/view_trial/988540118207823873).
+- [Chrome Platform Status](https://chromestatus.com/feature/5640066519007232).
+- [Chromium Projects](https://www.chromium.org/updates/first-party-sets).
 
 ## Why do we need First-Party Sets?
 
 {% YouTube
-  id='cNJ8mZ-J3F8' 
+  id='cNJ8mZ-J3F8'
 %}
 
 Web pages are composed of content from multiple [origins](/docs/privacy-sandbox/glossary#origin).
@@ -90,25 +89,23 @@ part of the same First-Party Set as the top-level context.
 
 For example, for the First-Party Set described above, a.example can set the following cookie:
 
-```Set-Cookie: session=123; Secure; SameSite=Lax; SameParty```
+`Set-Cookie: session=123; Secure; SameSite=Lax; SameParty`
 
 This means that when a visitor on b.example or c.example makes a request to a.example, the `session`
 cookie is included on that request.
-
 
 ---
 
 ## Engage and share feedback
 
-* **Origin trial**: Register and take part in the [Chrome origin trial](https://developer.chrome.com/origintrials/#/view_trial/988540118207823873).
-* **GitHub**: Read the [proposal](https://github.com/privacycg/first-party-sets), [raise questions and
-follow discussion](https://github.com/privacycg/first-party-sets/issues).
-* **Developer support**: Ask questions and join discussions on the
-[Privacy Sandbox Developer Support repo](https://github.com/GoogleChromeLabs/privacy-sandbox-dev-support).
-
+- **Origin trial**: Register and take part in the [Chrome origin trial](https://developer.chrome.com/origintrials/#/view_trial/988540118207823873).
+- **GitHub**: Read the [proposal](https://github.com/privacycg/first-party-sets), [raise questions and
+  follow discussion](https://github.com/privacycg/first-party-sets/issues).
+- **Developer support**: Ask questions and join discussions on the
+  [Privacy Sandbox Developer Support repo](https://github.com/GoogleChromeLabs/privacy-sandbox-dev-support).
 
 ## Find out more
 
-* [First-Party Sets technical explainer](https://github.com/privacycg/first-party-sets)
-* [Chrome Platform Status](https://chromestatus.com/feature/5640066519007232).
-* [Chromium Projects](https://www.chromium.org/updates/first-party-sets).
+- [First-Party Sets technical explainer](https://github.com/privacycg/first-party-sets)
+- [Chrome Platform Status](https://chromestatus.com/feature/5640066519007232).
+- [Chromium Projects](https://www.chromium.org/updates/first-party-sets).

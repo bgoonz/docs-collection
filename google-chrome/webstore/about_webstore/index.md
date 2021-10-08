@@ -8,7 +8,7 @@ description: >
 ---
 
 The [Chrome Web Store][webstore] lets you publish extensions&mdash;either free or paid&mdash;where Google Chrome
-users can easily find them. 
+users can easily find them.
 
 Your published item can be free, or you can charge for it using any payment system you like.
 
@@ -30,4 +30,3 @@ build Chrome-specific features into it.
 [dashboard]: https://chrome.google.com/webstore/developer/dashboard
 [extensions]: /docs/extensions/mv3/overview/
 [webstore]: http://chrome.google.com/webstore
-

@@ -2,7 +2,7 @@
 
 {% include 'partials/nacl-warning.njk' %}
 
-------------------------------------------------------------------------
+---
 
 To get started with Native Client:
 

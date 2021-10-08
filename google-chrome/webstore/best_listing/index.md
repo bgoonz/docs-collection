@@ -13,15 +13,14 @@ user base.
 
 Our focus on surfacing quality items to users encompases the entire user experience&mdash;this
 includes the store listing page. Build trust with users by making a strong first impression, with a
-compelling and accurate store listing page.  A quality listing page clearly communicates what your
-item will offer, using the item description, images, and other listing metadata.  You can build and
+compelling and accurate store listing page. A quality listing page clearly communicates what your
+item will offer, using the item description, images, and other listing metadata. You can build and
 maintain your store listing page using the [developer dashboard][devconsole].
-
 
 ## Text
 
-There are two main text resources that you can use to make your listing compelling: The *item
-summary* and the *item description*. The following sections explain how to make best use of these
+There are two main text resources that you can use to make your listing compelling: The _item
+summary_ and the _item description_. The following sections explain how to make best use of these
 text fields.
 
 ### Item summary
@@ -29,7 +28,7 @@ text fields.
 Your summary is used to give an overview of your item in a concise phrase (132 characters or less).
 This is the main description of your item users see from the homepage, category pages and in search
 results. Ensure the most important text is included in your summary to help users understand what
-they can expect from your item in a quick glance. 
+they can expect from your item in a quick glance.
 
 {% Compare 'better' %}
 Highlight features of your item that resonate with your audience's main use cases.
@@ -45,7 +44,6 @@ The description should be suitable for both the browser's extension management U
 Web Store. You can specify locale-specific strings for this
 field; see [Internationalization][i18n] for details.
 {% endAside %}
-
 
 ### Item description
 
@@ -65,11 +63,10 @@ Repetitive or irrelevant use of keywords can create an unpleasant user experienc
 item being suspended from the Chrome Web Store.
 {% endCompare %}
 
-
 ## Images
 
-The graphical assets that appear in your listing are the *store icon*, *screenshots*, and your
-*promotional images*. The following sections provide guidance for how you can best use these assets
+The graphical assets that appear in your listing are the _store icon_, _screenshots_, and your
+_promotional images_. The following sections provide guidance for how you can best use these assets
 to provide a high-quality, compelling store listing.
 
 ### Store icon
@@ -81,7 +78,7 @@ practices].
 
 {% Compare 'better' %}
 Keep it simple, and use colors and design elements that are consistent with the branding of
-your other assets. 
+your other assets.
 {% endCompare %}
 
 {% Compare 'worse' %}
@@ -91,7 +88,6 @@ Include screenshots or UI elements. These details can be very hard to see in sma
 See more examples of icons that follow the correct guidelines on the [extension icon best practices]
 page.
 
-
 ### Screenshots
 
 Use screenshots (or videos) to convey the capabilities, look and feel, and experience of your item
@@ -99,15 +95,15 @@ to users. You must provide at least one&mdash;and preferably the maximum allowed
 to be displayed in the store. Screenshots should demonstrate the actual user experience, focusing on
 the core features and content so users can anticipate what the extension's experience will be like.
 Screenshots should reflect the most up-to-date functionality corresponding to the latest version of
-the extension. 
+the extension.
 
-*   Do not include screenshots that are blurry, distorted, or pixelated in a way that is not an intentional aspect of your brand or user experience
-*   Rotate screenshots appropriately. Do not upload images upside down, sideways, or otherwise skewed
-*   Branding on screenshots/videos should be consistent with other branding elements on the store listing page (icon, promotional images, etc), so users can immediately associate them with your extension and brand
-*   Include visual aids like infographics, images and videos to explain the onboarding flow, user experience, and/or main functionalities of the item
-*   Images should not use too much text to avoid overwhelming the user
-*   Use square corners, no padding (full bleed)
-*   1280x800 or 640x400 pixels
+- Do not include screenshots that are blurry, distorted, or pixelated in a way that is not an intentional aspect of your brand or user experience
+- Rotate screenshots appropriately. Do not upload images upside down, sideways, or otherwise skewed
+- Branding on screenshots/videos should be consistent with other branding elements on the store listing page (icon, promotional images, etc), so users can immediately associate them with your extension and brand
+- Include visual aids like infographics, images and videos to explain the onboarding flow, user experience, and/or main functionalities of the item
+- Images should not use too much text to avoid overwhelming the user
+- Use square corners, no padding (full bleed)
+- 1280x800 or 640x400 pixels
 
 {% Aside %}
 Screenshots at full 1280x800 resolution may look better on high-resolution displays. You can use
@@ -133,7 +129,6 @@ Tip: If your extension supports multiple locales, you can provide locale-specifi
 described in [Internationalizing your app][i18n-your-app].
 {% endAside %}
 
-
 ### Promotional images: promo tiles and marquee image
 
 Promotional images are your chance to capture users' attention and entice them to learn more. Don't
@@ -154,15 +149,15 @@ extension and brand.
 
 Here are some rules of thumb for designing your promotional images:
 
-* Avoid too much text
-* Avoid an image that is too "busy"
-* Make sure your image works even when shrunk to half size
-* Use saturated colors if possible; they tend to work well
-* Avoid using a lot of white and light gray
-* Fill the entire region
-* Make sure the edges are well defined
-* Avoid claims that misrepresents the extension's or developer's current status or performance on the Chrome Web Store (e.g. "Editor's Choice" or "Number One")
-* Branding on promotional images should be consistent with other branding elements on the store listing page (icon, screenshots, etc)
+- Avoid too much text
+- Avoid an image that is too "busy"
+- Make sure your image works even when shrunk to half size
+- Use saturated colors if possible; they tend to work well
+- Avoid using a lot of white and light gray
+- Fill the entire region
+- Make sure the edges are well defined
+- Avoid claims that misrepresents the extension's or developer's current status or performance on the Chrome Web Store (e.g. "Editor's Choice" or "Number One")
+- Branding on promotional images should be consistent with other branding elements on the store listing page (icon, screenshots, etc)
 
 {% Compare 'better' %}
 Keep the image simple and clean, using colors and branding that matches your other assets.
@@ -189,7 +184,6 @@ image that includes a misleading badge", width="800", height="467" %}
 Including a website for your item and URLs for support pages can help build trust with users. Ensure
 these fields are filled out in the developer dashboard so users know where they can find more
 information about your item.
-
 
 [devconsole]: https://chrome.google.com/webstore/devconsole
 [extension icon best practices]: /docs/webstore/images/#extension-icon

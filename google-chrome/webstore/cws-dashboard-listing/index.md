@@ -13,7 +13,7 @@ make your listing more compelling, be sure to read [Creating a great listing pag
        alt="Screenshot of the Chrome Web Store developer dashboard item listing tab", height="472", width="800" %}
 
 Add the store listing information for your item that isn't in the ZIP file, such as a long
-description, screenshots, videos and links to related sites. 
+description, screenshots, videos and links to related sites.
 
 ## Product details
 
@@ -23,7 +23,7 @@ You'll need to fill out the following details about your item:
   item. Make sure to start your description with a concise statement of what your item does, so
   users can understand the main idea and features at a glance. Your description can then go on to
   provide more detail, promotional copy, update logs, and so forth.
-  
+
 {% Aside 'caution' %}
 Be detailed but make sure your description complies with the [Keyword Spam][keyword-spam] policy.
 {% endAside %}
@@ -47,7 +47,7 @@ At a minimum, you should provide the following promotional images:
 ### Learning more about images and branding
 
 See [Supplying Images][cws-images] for help on designing the images for your item, and [Branding
-Guidelines][cws-branding] for information on how you can use Google brands. 
+Guidelines][cws-branding] for information on how you can use Google brands.
 
 {% Aside %}
 The quality of the images you supply can affect your item's prominence on the Chrome Web Store. Be
@@ -56,7 +56,7 @@ sure and read [Creating a great listing page][best-listing] for more details.
 
 ## Additional fields {: #additional-fields }
 
-You can include any of these optional links related to your item. 
+You can include any of these optional links related to your item.
 
 ### Displaying your verified publisher status
 
@@ -92,13 +92,14 @@ To explain how your extension works in more detail, you can provide a direct lin
 ### Providing a support URL {: #support-url }
 
 The Chrome Web Store provides a [built in user support][support-tab] experience under your items' **Support tab**, but you can use
-a [dedicated support site][support-site] by including a link in the **Support URL**. 
+a [dedicated support site][support-site] by including a link in the **Support URL**.
 
-## You are almost ready to publish this item! 
+## You are almost ready to publish this item!
 
-If you haven't done so yet, complete your listing by 
--  Filling out your [privacy practices][privacy] 
--  Providing your [distribution preferences][distribution].
+If you haven't done so yet, complete your listing by
+
+- Filling out your [privacy practices][privacy]
+- Providing your [distribution preferences][distribution].
 
 [best-listing]: /docs/webstore/best_listing
 [categories]: /docs/webstore/best_practices/#choose-your-apps-category-well

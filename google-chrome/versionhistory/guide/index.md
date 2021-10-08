@@ -2,7 +2,7 @@
 layout: "layouts/doc-post.njk"
 title: VersionHistory API guide
 date: 2021-03-04
-description: > 
+description: >
   A how-to guide on using the VersionHistory web service API to programmatically access Google
   Chrome version history information.
 ---
@@ -12,7 +12,7 @@ This guide shows you how to use the VersionHistory web service API.
 ## Overview
 
 The VersionHistory API provides programmatic access to Google Chrome and Fuchsia
-Web Engine version history information. It is a [REST][rest] API that returns 
+Web Engine version history information. It is a [REST][rest] API that returns
 information as JSON.
 
 All API access is over HTTPS, and accessed from `https://versionhistory.googleapis.com/v1`.
