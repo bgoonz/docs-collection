@@ -147,7 +147,6 @@ sections:
     image_position: right
     content: |-
     <iframe height="300" style="width: 100%;" scrolling="no" title="searchblog2.0" src="https://codepen.io/bgoonz/embed/LYyBwEp?default-tab=result&theme-id=dark" frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true"></iframe>
-    
     actions: []
     type: section_content
     image: images/thoughtful-zucchini.gif
@@ -204,9 +203,7 @@ sections:
         image_alt: angolia
         content: |
           ## Full Text Search
-
                 [Full Text Search](https://www.algolia.com/)
-
                 ## &#xA;
             actions: []
             type: grid_item
@@ -218,7 +215,6 @@ sections:
                 Artificial neural networks, usually simply called neural networks, are
                 computing systems vaguely inspired by the biological [neural
                 networks](https://github.com/tensorflow/tensorflow)![](/\_static/app-assets/neural.PNG)
-
             actions: []
             type: grid_item
             image: images/neural.PNG
@@ -227,8 +223,6 @@ sections:
             image_alt: jamstack
             content: >
                 ## Why Jamstack
-
-
                 *Jamstack is the new standard architecture for the web. Using Git
                 workflows and modern build tools, pre-rendered content is served to a
                 CDN and made dynamic through APIs and serverless functions.
