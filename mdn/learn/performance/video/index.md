@@ -8,13 +8,11 @@ As we learned in the previous section, media, namely images and video, account f
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, <a href="/en-US/docs/Learn/Getting_started_with_the_web/Installing_basic_software">basic software installed</a>, and basic knowledge of <a href="/en-US/docs/Learn/Getting_started_with_the_web">client-side web technologies</a>.</td></tr><tr class="even"><td>Objective:</td><td>To learn about the various video formats, their impact on performance, and how to reduce video impact on overall page load time while serving the smallest video file size based on each browsers file type support.</td></tr></tbody></table>
 
-Why optimize your multimedia?
------------------------------
+## Why optimize your multimedia?
 
 For the average website, [25% of bandwidth comes from video](https://discuss.httparchive.org/t/state-of-the-web-top-image-optimization-strategies/1367). Optimizing video has the potential for very large bandwidth savings that translate into better website performance.
 
-Optimizing video delivery
--------------------------
+## Optimizing video delivery
 
 It's best to[ compress all video](#compress), [optimize `<source>` order](#omptimize), set [autoplay](/en-US/docs/Learn/Performance/Multimedia#video_autoplay), [remove audio from muted video](#muted), [optimize video preload](/en-US/docs/Learn/Performance/Multimedia#video_preload), and [consider streaming](/en-US/docs/Learn/Performance/Multimedia#consider_streaming) the video. The sections below describe each of these optimization techniques.
 
@@ -39,7 +37,7 @@ Order video source from smallest to largest.  For example, given video compres
 
 The browser downloads the first format it understands. The goal is to offer smaller versions ahead of larger versions. With the smallest version, make sure that the most compressed video still looks good. There are some compression algorithms that can make video look (bad) like an animated GIF. While a 128 Kb video may seem like it could provide a better user experience than a 10 MB download, a grainy GIF-like video may reflect poorly on the brand or project.
 
-See [CanIUse.com](https://caniuse.com/#search=video) for current browser support of video and other media types.  
+See [CanIUse.com](https://caniuse.com/#search=video) for current browser support of video and other media types.
 
 ### Video autoplay
 
@@ -75,32 +73,29 @@ Setting `preload="none"` results in none of the video being downloaded until pl
 
 Offering more modest bandwidth savings, setting `preload="metadata"` may download up to 3% of the video on page load. This is a useful option for some small or moderately sized files.
 
-Changing the setting to `auto` tells the browser to automatically download the entire video. Do this only when playback is very likely. Otherwise, it wastes a lot of bandwidth.  
- 
+Changing the setting to `auto` tells the browser to automatically download the entire video. Do this only when playback is very likely. Otherwise, it wastes a lot of bandwidth.
 
 ### Consider streaming
 
 [Video streaming allows the proper video size and bandwidth](https://www.smashingmagazine.com/2018/10/video-playback-on-the-web-part-2/) (based on network speed) to be delivered to the end user.  Similar to responsive images, the correct size video is delivered to the browser, ensuring fast video startup, low buffering, and optimized playback.
 
-Conclusion
-----------
+## Conclusion
 
 Optimizing video has the potential to significantly improve website performance. Video files are relatively large compared to other website files, and always worthy of attention. This article explains how to optimize website video through reducing file size, with (HTML) download settings, and with streaming.
 
 {{PreviousMenuNext("Learn/Performance/Multimedia", "Learn/Performance/javascript\_performance", "Learn/Performance")}}
 
-In this module
---------------
+## In this module
 
--   [The "why" of web performance](/en-US/docs/Learn/Performance/why_web_performance)
--   [What is web performance?](/en-US/docs/Learn/Performance/What_is_web_performance)
--   [How do users perceive performance?](/en-US/docs/Learn/Performance/Perceived_performance)
--   [Measuring performance](/en-US/docs/Learn/Performance/Measuring_performance)
--   [Multimedia: images](/en-US/docs/Learn/Performance/Multimedia)
--   [Multimedia: video](/en-US/docs/Learn/Performance/video)
--   [JavaScript performance best practices](/en-US/docs/Learn/Performance/JavaScript).
--   [HTML performance features](/en-US/docs/Learn/Performance/HTML)
--   [CSS performance features](/en-US/docs/Learn/Performance/CSS)
--   [Fonts and performance](/en-US/docs/Learn/Performance/Fonts)
--   [Mobile performance](/en-US/docs/Learn/Performance/Mobile)
--   [Focusing on performance](/en-US/docs/Learn/Performance/business_case_for_performance)
+- [The "why" of web performance](/en-US/docs/Learn/Performance/why_web_performance)
+- [What is web performance?](/en-US/docs/Learn/Performance/What_is_web_performance)
+- [How do users perceive performance?](/en-US/docs/Learn/Performance/Perceived_performance)
+- [Measuring performance](/en-US/docs/Learn/Performance/Measuring_performance)
+- [Multimedia: images](/en-US/docs/Learn/Performance/Multimedia)
+- [Multimedia: video](/en-US/docs/Learn/Performance/video)
+- [JavaScript performance best practices](/en-US/docs/Learn/Performance/JavaScript).
+- [HTML performance features](/en-US/docs/Learn/Performance/HTML)
+- [CSS performance features](/en-US/docs/Learn/Performance/CSS)
+- [Fonts and performance](/en-US/docs/Learn/Performance/Fonts)
+- [Mobile performance](/en-US/docs/Learn/Performance/Mobile)
+- [Focusing on performance](/en-US/docs/Learn/Performance/business_case_for_performance)

@@ -1,4 +1,4 @@
---- title: "Cooperative asynchronous JavaScript: Timeouts and intervals" slug: Learn/JavaScript/Asynchronous/Timeouts\_and\_intervals tags: - Animation - Beginner - CodingScripting - Guide - Intervals - JavaScript - Loops - asynchronous - requestAnimationFrame - setInterval - setTimeout - timeouts ---
+--- title: "Cooperative asynchronous JavaScript: Timeouts and intervals" slug: Learn/JavaScript/Asynchronous/Timeouts_and_intervals tags: - Animation - Beginner - CodingScripting - Guide - Intervals - JavaScript - Loops - asynchronous - requestAnimationFrame - setInterval - setTimeout - timeouts ---
 
 {{LearnSidebar}}
 
@@ -8,38 +8,36 @@ This tutorial looks at the traditional methods JavaScript has available for runn
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, a reasonable understanding of JavaScript fundamentals.</td></tr><tr class="even"><td>Objective:</td><td>To understand asynchronous loops and intervals and what they are useful for.</td></tr></tbody></table>
 
-Introduction
-------------
+## Introduction
 
 For a long time, the web platform has offered JavaScript programmers a number of functions that allow them to asynchronously execute code after a certain time interval has elapsed, and to repeatedly execute a block of code asynchronously until you tell it to stop.
 
 These functions are:
 
- `setTimeout()`   
+`setTimeout()`  
 Execute a specified block of code once after a specified time has elapsed.
 
- `setInterval()`   
+`setInterval()`  
 Execute a specified block of code repeatedly with a fixed time delay between each call.
 
- `requestAnimationFrame()`   
+`requestAnimationFrame()`  
 The modern version of `setInterval()`. Executes a specified block of code before the browser next repaints the display, allowing an animation to be run at a suitable framerate regardless of the environment it is being run in.
 
 The asynchronous code set up by these functions runs on the main thread (after their specified timer has elapsed).
 
-It's important to know that you can (and often will) run other code before a `setTimeout()` call executes, or between iterations of `setInterval()`. Depending on how processor-intensive these operations are, they can delay your async code even further, as any async code will execute only *after* the main thread is available. (In other words, when the stack is empty.)  You will learn more on this matter as you progress through this article.
+It's important to know that you can (and often will) run other code before a `setTimeout()` call executes, or between iterations of `setInterval()`. Depending on how processor-intensive these operations are, they can delay your async code even further, as any async code will execute only _after_ the main thread is available. (In other words, when the stack is empty.)  You will learn more on this matter as you progress through this article.
 
 In any case, these functions are used for running constant animations and other background processing on a web site or application. In the following sections we will show you how they can be used.
 
-setTimeout()
-------------
+## setTimeout()
 
 As we said before, `setTimeout()` executes a particular block of code once after a specified time has elapsed. It takes the following parameters:
 
--   A function to run, or a reference to a function defined elsewhere.
--   A number representing the time interval in milliseconds (1000 milliseconds equals 1 second) to wait before executing the code. If you specify a value of `0` (or omit the value), the function will run as soon as possible. (See the note below on why it runs "as soon as possible" and not "immediately".) More on why you might want to do this later.
--   Zero or more values that represent any parameters you want to pass to the function when it is run.
+- A function to run, or a reference to a function defined elsewhere.
+- A number representing the time interval in milliseconds (1000 milliseconds equals 1 second) to wait before executing the code. If you specify a value of `0` (or omit the value), the function will run as soon as possible. (See the note below on why it runs "as soon as possible" and not "immediately".) More on why you might want to do this later.
+- Zero or more values that represent any parameters you want to pass to the function when it is run.
 
-**NOTE:** The specified amount of time (or the delay) is **not** the *guaranteed time* to execution, but rather the *minimum time* to execution. The callbacks you pass to these functions cannot run until the stack on the main thread is empty.
+**NOTE:** The specified amount of time (or the delay) is **not** the _guaranteed time_ to execution, but rather the _minimum time_ to execution. The callbacks you pass to these functions cannot run until the stack on the main thread is empty.
 
 As a consequence, code like `setTimeout(fn, 0)` will execute as soon as the stack is empty, **not** immediately. If you execute code like `setTimeout(fn, 0)` but then immediately after run a loop that counts from 1 to 10 billion, your callback will be executed after a few seconds.
 
@@ -89,8 +87,7 @@ Finally, if a timeout has been created, you can cancel it before the specified 
 
 **Note**: See `greeter-app.html` for a slightly more involved demo that allows you to set the name of the person to say hello to in a form, and cancel the greeting using a separate button ([see the source code also](https://github.com/mdn/learning-area/blob/master/javascript/asynchronous/loops-and-intervals/greeter-app.html)).
 
-setInterval()
--------------
+## setInterval()
 
 `setTimeout()` works perfectly when you need to run code once after a set period of time. But what happens when you need to run the code over and over again—for example, in the case of an animation?
 
@@ -122,29 +119,28 @@ With this all said, we've got a challenge for you. Take a copy of our `setInterv
 
 You need to display a time as before, but in this example, you need:
 
--   A "Start" button to start the stopwatch running.
--   A "Stop" button to pause/stop it.
--   A "Reset" button to reset the time back to `0`.
--   The time display to show the number of seconds elapsed, rather than the actual time.
+- A "Start" button to start the stopwatch running.
+- A "Stop" button to pause/stop it.
+- A "Reset" button to reset the time back to `0`.
+- The time display to show the number of seconds elapsed, rather than the actual time.
 
 Here's a few hints for you:
 
--   You can structure and style the button markup however you like; just make sure you use semantic HTML, with hooks to allow you to grab the button references using JavaScript.
--   You probably want to create a variable that starts at `0`, then increments by one every second using a constant loop.
--   It is easier to create this example without using a `Date()` object, like we've done in our version, but less accurate — you can't guarantee that the callback will fire after exactly `1000`ms. A more accurate way would be to run `startTime = Date.now()` to get a timestamp of exactly when the user clicked the start button, and then do `Date.now() - startTime` to get the number of milliseconds after the start button was clicked.
--   You also want to calculate the number of hours, minutes, and seconds as separate values, and then show them together in a string after each loop iteration. From the second counter, you can work out each of these.
--   How would you calculate them? Have a think about it:
-    -   The number of seconds in an hour is `3600`.
-    -   The number of minutes will be the amount of seconds left over when all of the hours have been removed, divided by `60`.
-    -   The number of seconds will be the amount of seconds left over when all of the minutes have been removed.
--   You'll want to include a leading zero on your display values if the amount is less than `10`, so it looks more like a traditional clock/watch.
--   To pause the stopwatch, you'll want to clear the interval. To reset it, you'll want to set the counter back to `0`, clear the interval, and then immediately update the display.
--   You probably ought to disable the start button after pressing it once, and enable it again after you've stopped/reset it. Otherwise multiple presses of the start button will apply multiple `setInterval()`s to the clock, leading to wrong behavior.
+- You can structure and style the button markup however you like; just make sure you use semantic HTML, with hooks to allow you to grab the button references using JavaScript.
+- You probably want to create a variable that starts at `0`, then increments by one every second using a constant loop.
+- It is easier to create this example without using a `Date()` object, like we've done in our version, but less accurate — you can't guarantee that the callback will fire after exactly `1000`ms. A more accurate way would be to run `startTime = Date.now()` to get a timestamp of exactly when the user clicked the start button, and then do `Date.now() - startTime` to get the number of milliseconds after the start button was clicked.
+- You also want to calculate the number of hours, minutes, and seconds as separate values, and then show them together in a string after each loop iteration. From the second counter, you can work out each of these.
+- How would you calculate them? Have a think about it:
+  - The number of seconds in an hour is `3600`.
+  - The number of minutes will be the amount of seconds left over when all of the hours have been removed, divided by `60`.
+  - The number of seconds will be the amount of seconds left over when all of the minutes have been removed.
+- You'll want to include a leading zero on your display values if the amount is less than `10`, so it looks more like a traditional clock/watch.
+- To pause the stopwatch, you'll want to clear the interval. To reset it, you'll want to set the counter back to `0`, clear the interval, and then immediately update the display.
+- You probably ought to disable the start button after pressing it once, and enable it again after you've stopped/reset it. Otherwise multiple presses of the start button will apply multiple `setInterval()`s to the clock, leading to wrong behavior.
 
 **Note**: If you get stuck, you can [find our version here](https://mdn.github.io/learning-area/javascript/asynchronous/loops-and-intervals/setinterval-stopwatch.html) (see the [source code](https://github.com/mdn/learning-area/blob/master/javascript/asynchronous/loops-and-intervals/setinterval-stopwatch.html) also).
 
-Things to keep in mind about setTimeout() and setInterval()
------------------------------------------------------------
+## Things to keep in mind about setTimeout() and setInterval()
 
 There are a few things to keep in mind when working with `setTimeout()` and `setInterval()`. Let's review these now.
 
@@ -175,9 +171,9 @@ Compare the above example to the following one — this uses `setInterval()` to 
 
 The difference between the two versions of the above code is a subtle one.
 
--   Recursive `setTimeout()` guarantees the given delay between the code execution completion and the next call. The delay for the next execution will start counting only after the code has finished running, therefore *excluding* the time taken to run the code. In this example, the `100` milliseconds will be the delay between the `run` code finishing, and the next `run` call.
--   The example using `setInterval()` does things somewhat differently. The interval you chose *includes* the time taken to execute the code you want to run in. Let's say that the code takes `40` milliseconds to run — the interval then ends up being only `60` milliseconds.
--   When using `setTimeout()` recursively, each iteration can calculate a different delay before running the next iteration. In other words, the value of the second parameter can specify a different time in milliseconds to wait before running the code again.
+- Recursive `setTimeout()` guarantees the given delay between the code execution completion and the next call. The delay for the next execution will start counting only after the code has finished running, therefore _excluding_ the time taken to run the code. In this example, the `100` milliseconds will be the delay between the `run` code finishing, and the next `run` call.
+- The example using `setInterval()` does things somewhat differently. The interval you chose _includes_ the time taken to execute the code you want to run in. Let's say that the code takes `40` milliseconds to run — the interval then ends up being only `60` milliseconds.
+- When using `setTimeout()` recursively, each iteration can calculate a different delay before running the next iteration. In other words, the value of the second parameter can specify a different time in milliseconds to wait before running the code again.
 
 When your code has the potential to take longer to run than the time interval you’ve assigned, it’s better to use recursive `setTimeout()` — this will keep the time interval constant between executions regardless of how long the code takes to execute, and you won't get errors.
 
@@ -201,8 +197,7 @@ This can be useful in cases where you want to set a block of code to run as soon
 
 For consistency, you should use `clearTimeout()` to clear `setTimeout()` entries and `clearInterval()` to clear `setInterval()` entries. This will help to avoid confusion.
 
-requestAnimationFrame()
------------------------
+## requestAnimationFrame()
 
 `requestAnimationFrame()` is a specialized enqueueing function created for running animations efficiently in the browser. It runs a specified block of code before the browser next repaints the display, allowing the execution to be paired with the device's display frame rate.
 
@@ -231,7 +226,7 @@ If, however, you are doing something more complex and involving objects that are
 
 The smoothness of your animation is directly dependent on your animation's frame rate and it is measured in frames per second (fps). The higher this number is, the smoother your animation will look, to a point.
 
-Since most screens have a refresh rate of 60Hz, the fastest frame rate you can aim for is 60 frames per second (FPS) when working with web browsers. However, more frames means more processing, which can often cause stuttering and skipping — also known as *dropping frames*, or *jank*.
+Since most screens have a refresh rate of 60Hz, the fastest frame rate you can aim for is 60 frames per second (FPS) when working with web browsers. However, more frames means more processing, which can often cause stuttering and skipping — also known as _dropping frames_, or _jank_.
 
 If you have a monitor with a 60Hz refresh rate and you want to achieve 60 FPS you have about 16.7 milliseconds (`1000 / 60`) to execute your animation code to render each frame. This is a reminder that you'll need to be mindful of the amount of code that you try to run during each pass through the animation loop.
 
@@ -258,11 +253,11 @@ Let's now see how to do the same thing using `setInterval()`:
 
 As we covered earlier, you don't specify a time interval for `requestAnimationFrame()`. It just runs it as quickly and smoothly as possible in the current conditions. The browser also doesn't waste time running it if the animation is offscreen for some reason, etc.
 
-`setInterval()`, on the other hand *requires* an interval to be specified. We arrived at our final value of 17 via the formula *1000 milliseconds / 60Hz*, and then rounded it up. Rounding up is a good idea; if you rounded down, the browser might try to run the animation faster than 60 FPS, and it wouldn't make any difference to the animation's smoothness, anyway. As we said before, 60Hz is the standard refresh rate.
+`setInterval()`, on the other hand _requires_ an interval to be specified. We arrived at our final value of 17 via the formula _1000 milliseconds / 60Hz_, and then rounded it up. Rounding up is a good idea; if you rounded down, the browser might try to run the animation faster than 60 FPS, and it wouldn't make any difference to the animation's smoothness, anyway. As we said before, 60Hz is the standard refresh rate.
 
 ### Including a timestamp
 
-The actual callback passed to the `requestAnimationFrame()` function can be given a parameter, too: a *timestamp* value, that represents the time since the `requestAnimationFrame()` started running.
+The actual callback passed to the `requestAnimationFrame()` function can be given a parameter, too: a _timestamp_ value, that represents the time since the `requestAnimationFrame()` started running.
 
 This is useful as it allows you to run things at specific times and at a constant pace, regardless of how fast or slow your device might be. The general pattern you'd use looks something like this:
 
@@ -344,7 +339,7 @@ Enough with the theory! Let's build your own personal `requestAnimationFrame()`
 
 8.  Below the previous line inside `draw()`, add the following block — this ensures that the value of `rotateCount` is between `0` and `359`, by setting the value to its modulo of `360` (i.e. the remainder left over when the value is divided by `360`) — so the circle animation can continue uninterrupted, at a sensible, low value. Note that this isn't strictly necessary, but it is easier to work with values of `0`–`359` degrees than values like `"128000 degrees"`.
 
-          rotateCount %= 360; 
+          rotateCount %= 360;
 
 9.  Next, below the previous block add the following line to actually rotate the spinner:
 
@@ -362,7 +357,7 @@ Enough with the theory! Let's build your own personal `requestAnimationFrame()`
 
 ### Clearing a requestAnimationFrame() call
 
-Clearing a `requestAnimationFrame()` call can be done by calling the corresponding `cancelAnimationFrame()` method. (Note that the function name starts with "cancel", not "clear" as with the "set..." methods.) 
+Clearing a `requestAnimationFrame()` call can be done by calling the corresponding `cancelAnimationFrame()` method. (Note that the function name starts with "cancel", not "clear" as with the "set..." methods.)
 
 Just pass it the value returned by the `requestAnimationFrame()` call to cancel, which you stored in the variable `rAF`:
 
@@ -374,8 +369,8 @@ In this exercise, we'd like you to test out the `cancelAnimationFrame()` method 
 
 Some hints:
 
--   A `click` event handler can be added to most elements, including the document `<body>`. It makes more sense to put it on the `<body>` element if you want to maximize the clickable area — the event bubbles up to its child elements.
--   You'll want to add a tracking variable to check whether the spinner is spinning or not, clearing the animation frame if it is, and calling it again if it isn't.
+- A `click` event handler can be added to most elements, including the document `<body>`. It makes more sense to put it on the `<body>` element if you want to maximize the clickable area — the event bubbles up to its child elements.
+- You'll want to add a tracking variable to check whether the spinner is spinning or not, clearing the animation frame if it is, and calling it again if it isn't.
 
 **Note**: Try this yourself first; if you get really stuck, check out of our [live example](https://mdn.github.io/learning-area/javascript/asynchronous/loops-and-intervals/start-and-stop-spinner.html) and [source code](https://github.com/mdn/learning-area/blob/master/javascript/asynchronous/loops-and-intervals/start-and-stop-spinner.html).
 
@@ -413,12 +408,11 @@ This is the code that calculates how to update the position in each animation fr
 
 The method you use to throttle your animation will depend on your particular code. For instance, in the earlier spinner example, you could make it appear to move slower by only increasing `rotateCount` by one on each frame, instead of two.
 
-Active learning: a reaction game
---------------------------------
+## Active learning: a reaction game
 
 For the final section of this article, you'll create a 2-player reaction game. The game will have two players, one of whom controls the game using the A key, and the other with the L key.
 
-When the *Start* button is pressed, a spinner like the one we saw earlier is displayed for a random amount of time between 5 and 10 seconds. After that time, a message will appear saying `"PLAYERS GO!!"` — once this happens, the first player to press their control button will win the game.
+When the _Start_ button is pressed, a spinner like the one we saw earlier is displayed for a random amount of time between 5 and 10 seconds. After that time, a message will appear saying `"PLAYERS GO!!"` — once this happens, the first player to press their control button will win the game.
 
 {{EmbedGHLiveSample("learning-area/javascript/asynchronous/loops-and-intervals/reaction-game.html", '100%', 500)}}
 
@@ -463,7 +457,7 @@ Let's work through this:
           rotateCount = (timestamp - startTime) / 3;
 
           rotateCount %= 360;
-          
+
           spinner.style.transform = 'rotate(' + rotateCount + 'deg)';
           rAF = requestAnimationFrame(draw);
         }
@@ -481,7 +475,7 @@ Let's work through this:
           result.style.display = 'none';
         }
 
-7.  Okay, enough preparation!  It's time to make the game playable! Add the following block to your code. The `start()` function calls `draw()` to start the spinner spinning and display it in the UI, hides the *Start* button so you can't mess up the game by starting it multiple times concurrently, and runs a `setTimeout()` call that runs a `setEndgame()` function after a random interval between 5 and 10 seconds has passed. The following block also adds an event listener to your button to run the `start()` function when it is clicked.
+7.  Okay, enough preparation!  It's time to make the game playable! Add the following block to your code. The `start()` function calls `draw()` to start the spinner spinning and display it in the UI, hides the _Start_ button so you can't mess up the game by starting it multiple times concurrently, and runs a `setTimeout()` call that runs a `setEndgame()` function after a random interval between 5 and 10 seconds has passed. The following block also adds an event listener to your button to run the `start()` function when it is clicked.
 
         btn.addEventListener('click', start);
 
@@ -492,11 +486,11 @@ Let's work through this:
           setTimeout(setEndgame, random(5000,10000));
         }
 
-    **Note**: You'll see this example is calling `setTimeout()` without storing the return value. (So, not `let myTimeout = setTimeout(functionName, interval)`.) 
+    **Note**: You'll see this example is calling `setTimeout()` without storing the return value. (So, not `let myTimeout = setTimeout(functionName, interval)`.)
 
     This works just fine, as long as you don't need to clear your interval/timeout at any point. If you do, you'll need to save the returned identifier!
 
-    The net result of the previous code is that when the *Start* button is pressed, the spinner is shown and the players are made to wait a random amount of time before they are asked to press their button. This last part is handled by the `setEndgame()` function, which you'll define next.
+    The net result of the previous code is that when the _Start_ button is pressed, the spinner is shown and the players are made to wait a random amount of time before they are asked to press their button. This last part is handled by the `setEndgame()` function, which you'll define next.
 
 8.  Add the following function to your code next:
 
@@ -542,19 +536,17 @@ That's it—you're all done!
 
 **Note**: If you get stuck, check out [our version of the reaction game](https://mdn.github.io/learning-area/javascript/asynchronous/loops-and-intervals/reaction-game.html) (see the [source code](https://github.com/mdn/learning-area/blob/master/javascript/asynchronous/loops-and-intervals/reaction-game.html) also).
 
-Conclusion
-----------
+## Conclusion
 
 So that's it — all the essentials of async loops and intervals covered in one article. You'll find these methods useful in a lot of situations, but take care not to overuse them! Because they still run on the main thread, heavy and intensive callbacks (especially those that manipulate the DOM) can really slow down a page if you're not careful.
 
 {{PreviousMenuNext("Learn/JavaScript/Asynchronous/Introducing", "Learn/JavaScript/Asynchronous/Promises", "Learn/JavaScript/Asynchronous")}}
 
-In this module
---------------
+## In this module
 
--   [General asynchronous programming concepts](/en-US/docs/Learn/JavaScript/Asynchronous/Concepts)
--   [Introducing asynchronous JavaScript](/en-US/docs/Learn/JavaScript/Asynchronous/Introducing)
--   [Cooperative asynchronous JavaScript: Timeouts and intervals](/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals)
--   [Graceful asynchronous programming with Promises](/en-US/docs/Learn/JavaScript/Asynchronous/Promises)
--   [Making asynchronous programming easier with async and await](/en-US/docs/Learn/JavaScript/Asynchronous/Async_await)
--   [Choosing the right approach](/en-US/docs/Learn/JavaScript/Asynchronous/Choosing_the_right_approach)
+- [General asynchronous programming concepts](/en-US/docs/Learn/JavaScript/Asynchronous/Concepts)
+- [Introducing asynchronous JavaScript](/en-US/docs/Learn/JavaScript/Asynchronous/Introducing)
+- [Cooperative asynchronous JavaScript: Timeouts and intervals](/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals)
+- [Graceful asynchronous programming with Promises](/en-US/docs/Learn/JavaScript/Asynchronous/Promises)
+- [Making asynchronous programming easier with async and await](/en-US/docs/Learn/JavaScript/Asynchronous/Async_await)
+- [Choosing the right approach](/en-US/docs/Learn/JavaScript/Asynchronous/Choosing_the_right_approach)

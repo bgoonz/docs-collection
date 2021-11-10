@@ -1,9 +1,8 @@
---- title: Book detail page slug: Learn/Server-side/Express\_Nodejs/Displaying\_data/Book\_detail\_page tags: - Express - Node - displaying data - part 5 - server-side ---
+--- title: Book detail page slug: Learn/Server-side/Express_Nodejs/Displaying_data/Book_detail_page tags: - Express - Node - displaying data - part 5 - server-side ---
 
-The *Book detail page* needs to display the information for a specific `Book` (identified using its automatically generated `_id` field value), along with information about each associated copy in the library (`BookInstance`). Wherever we display an author, genre, or book instance, these should be linked to the associated detail page for that item.
+The _Book detail page_ needs to display the information for a specific `Book` (identified using its automatically generated `_id` field value), along with information about each associated copy in the library (`BookInstance`). Wherever we display an author, genre, or book instance, these should be linked to the associated detail page for that item.
 
-Controller
-----------
+## Controller
 
 Open **/controllers/bookController.js**. Find the exported `book_detail()` controller method and replace it with the following code.
 
@@ -36,14 +35,13 @@ Open **/controllers/bookController.js**. Find the exported `book_detail()` contr
 
     };
 
-**Note:** We don't need to require *async* and *BookInstance* in this step, as we already imported those modules when we implemented the home page controller.
+**Note:** We don't need to require _async_ and *BookInstance* in this step, as we already imported those modules when we implemented the home page controller.
 
 The method uses `async.parallel()` to find the `Book` and its associated copies (`BookInstances`) in parallel. The approach is exactly the same as described for the [Genre detail page](/en-US/docs/Learn/Server-side/Express_Nodejs/Displaying_data/Genre_detail_page). Since the key 'title' is used to give name to the webpage (as defined in the header in 'layout.pug'), this time we are passing `results.book.title` while rendering the webpage.
 
-View
-----
+## View
 
-Create **/views/book\_detail.pug** and add the text below.
+Create **/views/book_detail.pug** and add the text below.
 
     extends layout
 
@@ -88,17 +86,15 @@ Almost everything in this template has been demonstrated in previous sections.
         each val, index in book.genre
           a(href=val.url) #{val.name}
           if index < book.genre.length - 1
-            |, 
+            |,
 
-What does it look like?
------------------------
+## What does it look like?
 
-Run the application and open your browser to <http://localhost:3000/>. Select the *All books* link, then select one of the books. If everything is set up correctly, your page should look something like the following screenshot.
+Run the application and open your browser to <http://localhost:3000/>. Select the _All books_ link, then select one of the books. If everything is set up correctly, your page should look something like the following screenshot.
 
 ![Book Detail Page - Express Local Library site](locallibary_express_book_detail.png)
 
-Next steps
-----------
+## Next steps
 
--   Return to [Express Tutorial Part 5: Displaying library data](/en-US/docs/Learn/Server-side/Express_Nodejs/Displaying_data).
--   Proceed to the next subarticle of part 5: [Author detail page](/en-US/docs/Learn/Server-side/Express_Nodejs/Displaying_data/Author_detail_page).
+- Return to [Express Tutorial Part 5: Displaying library data](/en-US/docs/Learn/Server-side/Express_Nodejs/Displaying_data).
+- Proceed to the next subarticle of part 5: [Author detail page](/en-US/docs/Learn/Server-side/Express_Nodejs/Displaying_data/Author_detail_page).

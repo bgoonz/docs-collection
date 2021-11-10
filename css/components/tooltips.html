@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Tooltips</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Tooltips</h1>
+    </header>
+    <p>Add tooltips built entirely in CSS to nearly any element.</p>
+    <h2 id="implementation-and-accessibility">
+      Implementation and accessibility
+    </h2>
+    <p>
+      Tooltips as a UI pattern should be our last resort for conveying
+      information because it is hidden by default and often with zero or little
+      visual indicator of its existence.
+    </p>
+    <p>
+      Before adding a tooltip, please consider: Is this information essential
+      and necessary* Can the UI be made clearer? Can the information be shown on
+      the page by default?
+    </p>
+    <p>
+      <strong>Attention</strong>: we use <code>aria-label</code> for tooltip
+      contents, because it is crucial that they are accessible to screen reader
+      users. However, <code>aria-label</code> <strong>replaces</strong> the text
+      content of an element in screen readers, so only use
+      <code>.tooltipped</code> on elements with no existing text content, or
+      consider using <code>title</code> for supplemental information.
+    </p>
+    <p>
+      <strong>Note:</strong> Tooltip classes will conflict with Octicon styles,
+      and as such, must be applied to the parent element instead of the icon.
+    </p>
+    <h2 id="tooltip-direction">Tooltip direction</h2>
+    <p>
+      Specify the direction of a tooltip with north, south, east, and west
+      directions:
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="d-flex flex-justify-center pt-4"&gt; &lt;span
+        class="tooltipped tooltipped-nw m-2 p-2 border" aria-label="This is the
+        tooltip on the North West side." &gt; .tooltipped-nw &lt;/span&gt;
+        &lt;span class="tooltipped tooltipped-n m-2 p-2 border" aria-label="This
+        is the tooltip on the North side." &gt; .tooltipped-n &lt;/span&gt;
+        &lt;span class="tooltipped tooltipped-ne m-2 p-2 border"
+        aria-label="This is the tooltip on the North East side." &gt;
+        .tooltipped-ne &lt;/span&gt; &lt;/div&gt; &lt;div class="d-flex
+        flex-justify-center"&gt; &lt;span class="tooltipped tooltipped-w m-2 p-2
+        border" aria-label="This is the tooltip on the West side." &gt;
+        .tooltipped-w &lt;/span&gt; &lt;span class="tooltipped tooltipped-e m-2
+        p-2 border" aria-label="This is the tooltip on the East side." &gt;
+        .tooltipped-e &lt;/span&gt; &lt;/div&gt; &lt;div class="d-flex
+        flex-justify-center pb-4"&gt; &lt;span class="tooltipped tooltipped-sw
+        m-2 p-2 border" aria-label="This is the tooltip on the South West side."
+        &gt; .tooltipped-sw &lt;/span&gt; &lt;span class="tooltipped
+        tooltipped-s m-2 p-2 border" aria-label="This is the tooltip on the
+        South side." &gt; .tooltipped-s &lt;/span&gt; &lt;span class="tooltipped
+        tooltipped-se m-2 p-2 border" aria-label="This is the tooltip on the
+        South East side." &gt; .tooltipped-se &lt;/span&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <h2 id="tooltip-alignment">Tooltip alignment</h2>
+    <p>
+      Align tooltips to the left or right of an element, combined with a
+      directional class to specify north or south. Use a modifier of
+      <code>1</code> or <code>2</code> to choose how much the tooltip’s arrow is
+      indented.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="d-flex flex-justify-center pt-4"&gt; &lt;span
+        class="tooltipped tooltipped-nw tooltipped-align-right-1 m-2 p-2 border"
+        aria-label="Tooltipped NW and aligned right." &gt; .tooltipped-nw
+        .tooltipped-align-right-1 &lt;/span&gt; &lt;span class="tooltipped
+        tooltipped-ne tooltipped-align-left-1 m-2 p-2 border"
+        aria-label="Tooltipped NE and aligned left." &gt; .tooltipped-ne
+        .tooltipped-align-left-1 &lt;/span&gt; &lt;/div&gt; &lt;div
+        class="d-flex flex-justify-center"&gt; &lt;span class="tooltipped
+        tooltipped-nw tooltipped-align-right-2 m-2 p-2 border"
+        aria-label="Tooltipped NW and aligned right." &gt; .tooltipped-nw
+        .tooltipped-align-right-2 &lt;/span&gt; &lt;span class="tooltipped
+        tooltipped-ne tooltipped-align-left-2 m-2 p-2 border"
+        aria-label="Tooltipped NE and aligned left." &gt; .tooltipped-ne
+        .tooltipped-align-left-2 &lt;/span&gt; &lt;/div&gt; &lt;div
+        class="d-flex flex-justify-center"&gt; &lt;span class="tooltipped
+        tooltipped-sw tooltipped-align-right-1 m-2 p-2 border"
+        aria-label="Tooltipped SE and aligned right." &gt; .tooltipped-sw
+        .tooltipped-align-right-1 &lt;/span&gt; &lt;span class="tooltipped
+        tooltipped-se tooltipped-align-left-1 m-2 p-2 border"
+        aria-label="Tooltipped SW and aligned left." &gt; .tooltipped-se
+        .tooltipped-align-left-1 &lt;/span&gt; &lt;/div&gt; &lt;div
+        class="d-flex flex-justify-center pb-4"&gt; &lt;span class="tooltipped
+        tooltipped-sw tooltipped-align-right-2 m-2 p-2 border"
+        aria-label="Tooltipped SE and aligned right." &gt; .tooltipped-sw
+        .tooltipped-align-right-2 &lt;/span&gt; &lt;span class="tooltipped
+        tooltipped-se tooltipped-align-left-2 m-2 p-2 border"
+        aria-label="Tooltipped SW and aligned left." &gt; .tooltipped-se
+        .tooltipped-align-left-2 &lt;/span&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <h2 id="tooltips-with-multiple-lines">Tooltips with multiple lines</h2>
+    <p>
+      Use <code>.tooltipped-multiline</code> when you have long content. This
+      style has some limitations: you cannot pre-format the text with newlines,
+      and tooltips are limited to a max-width of <code>250px</code>.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="d-flex flex-justify-center pt-6"&gt; &lt;span
+        class="tooltipped tooltipped-n tooltipped-multiline m-2 p-2 border"
+        aria-label="This is the tooltip with multiple lines. This is the tooltip
+        with multiple lines." &gt; .tooltipped-multiline &lt;/span&gt;
+        &lt;/div&gt;</code
+      >
+    </p>
+    <h2 id="tooltips-with-no-delay">Tooltips with no delay</h2>
+    <p>
+      By default the tooltips have a slight delay before appearing. This is to
+      keep multiple tooltips in the UI from being distracting. There is a
+      <code>.tooltipped-no-delay</code> modifier class you can use to override
+      this.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="d-flex flex-justify-center pt-4"&gt; &lt;span
+        class="tooltipped tooltipped-n tooltipped-no-delay m-2 p-2 border"
+        aria-label="This is the tooltip on the no delay side." &gt;
+        .tooltipped-no-delay &lt;/span&gt; &lt;/div&gt;</code
+      >
+    </p>
+  </body>
+</html>

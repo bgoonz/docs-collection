@@ -1,4 +1,4 @@
---- title: Styling links slug: Learn/CSS/Styling\_text/Styling\_links tags: - Article - Beginner - CSS - Focus - Guide - Learn - Links - Pseudo-class - hover - hyperlinks - menus - tabs ---
+--- title: Styling links slug: Learn/CSS/Styling_text/Styling_links tags: - Article - Beginner - CSS - Focus - Guide - Learn - Links - Pseudo-class - hover - hyperlinks - menus - tabs ---
 
 {{LearnSidebar}}
 
@@ -8,8 +8,7 @@ When styling [links](/en-US/docs/Learn/HTML/Introduction_to_HTML/Creating_hyperl
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, HTML basics (study <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML">Introduction to HTML</a>), CSS basics (study <a href="/en-US/docs/Learn/CSS/First_steps">Introduction to CSS</a>), <a href="/en-US/docs/Learn/CSS/Styling_text/Fundamentals">CSS text and font fundamentals</a>.</td></tr><tr class="even"><td>Objective:</td><td>To learn how to style link states, and how to use links effectively in common UI features like navigation menus.</td></tr></tbody></table>
 
-Let's look at some links
-------------------------
+## Let's look at some links
 
 We looked at how links are implemented in your HTML according to best practices in [Creating hyperlinks](/en-US/docs/Learn/HTML/Introduction_to_HTML/Creating_hyperlinks). In this article we'll build on this knowledge, showing you the best practices for styling them.
 
@@ -17,11 +16,11 @@ We looked at how links are implemented in your HTML according to best practices 
 
 The first thing to understand is the concept of link states — different states that links can exist in. These can be styled using different [pseudo-classes](/en-US/docs/Learn/CSS/Building_blocks/Selectors#pseudo-classes):
 
--   **Link**: A link that has a destination (i.e., not just a named anchor), styled using the {{cssxref(":link")}} pseudo class.
--   **Visited**: A link that has already been visited (exists in the browser's history), styled using the {{cssxref(":visited")}} pseudo class.
--   **Hover**: A link that is hovered over by a user's mouse pointer, styled using the {{cssxref(":hover")}} pseudo class.
--   **Focus**: A link that is focused (e.g., moved to by a keyboard user using the Tab key or something similar, or programmatically focused using {{domxref("HTMLElement.focus()")}}) — this is styled using the {{cssxref(":focus")}} pseudo class.
--   **Active**: A link that is activated (e.g., clicked on), styled using the {{cssxref(":active")}} pseudo class.
+- **Link**: A link that has a destination (i.e., not just a named anchor), styled using the {{cssxref(":link")}} pseudo class.
+- **Visited**: A link that has already been visited (exists in the browser's history), styled using the {{cssxref(":visited")}} pseudo class.
+- **Hover**: A link that is hovered over by a user's mouse pointer, styled using the {{cssxref(":hover")}} pseudo class.
+- **Focus**: A link that is focused (e.g., moved to by a keyboard user using the Tab key or something similar, or programmatically focused using {{domxref("HTMLElement.focus()")}}) — this is styled using the {{cssxref(":focus")}} pseudo class.
+- **Active**: A link that is activated (e.g., clicked on), styled using the {{cssxref(":active")}} pseudo class.
 
 ### Default styles
 
@@ -42,23 +41,23 @@ All the links in the examples on this page are fake links — a `#` (hash/pound 
 
 You'll notice a few things as you explore the default styles:
 
--   Links are underlined.
--   Unvisited links are blue.
--   Visited links are purple.
--   Hovering a link makes the mouse pointer change to a little hand icon.
--   Focused links have an outline around them — you should be able to focus on the links on this page with the keyboard by pressing the tab key (On Mac, you'll need to use option + tab, or enable the [Full Keyboard Access: All controls](https://support.apple.com/guide/mac-help/use-your-keyboard-like-a-mouse-mchlp1399/) option by pressing Ctrl + F7.)
--   Active links are red. Try holding down the mouse button on the link as you click it.
+- Links are underlined.
+- Unvisited links are blue.
+- Visited links are purple.
+- Hovering a link makes the mouse pointer change to a little hand icon.
+- Focused links have an outline around them — you should be able to focus on the links on this page with the keyboard by pressing the tab key (On Mac, you'll need to use option + tab, or enable the [Full Keyboard Access: All controls](https://support.apple.com/guide/mac-help/use-your-keyboard-like-a-mouse-mchlp1399/) option by pressing Ctrl + F7.)
+- Active links are red. Try holding down the mouse button on the link as you click it.
 
 Interestingly enough, these default styles are nearly the same as they were back in the early days of browsers in the mid-1990s. This is because users know and have come to expect this behavior — if links were styled differently, it would confuse a lot of people. This doesn't mean that you shouldn't style links at all. It just means that you shouldn't stray too far from the expected behavior. You should at least:
 
--   Use underlining for links, but not for other things. If you don't want to underline links, at least highlight them in some other way.
--   Make them react in some way when hovered/focused, and in a slightly different way when activated.
+- Use underlining for links, but not for other things. If you don't want to underline links, at least highlight them in some other way.
+- Make them react in some way when hovered/focused, and in a slightly different way when activated.
 
 The default styles can be turned off/changed using the following CSS properties:
 
--   {{cssxref("color")}} for the text color.
--   {{cssxref("cursor")}} for the mouse pointer style — you shouldn't turn this off unless you've got a very good reason.
--   {{cssxref("outline")}} for the text outline. An outline is similar to a border. The only difference is that a border takes up space in the box and an outline doesn't; it just sits over the top of the background. The outline is a useful accessibility aid, so should not be removed without adding another method of indicating the focused link.
+- {{cssxref("color")}} for the text color.
+- {{cssxref("cursor")}} for the mouse pointer style — you shouldn't turn this off unless you've got a very good reason.
+- {{cssxref("outline")}} for the text outline. An outline is similar to a border. The only difference is that a border takes up space in the box and an outline doesn't; it just sits over the top of the background. The outline is a useful accessibility aid, so should not be removed without adding another method of indicating the focused link.
 
 #### Note
 
@@ -150,19 +149,19 @@ Putting the two together gives us this result:
 
 So what did we do here? This certainly looks different to the default styling, but it still provides a familiar enough experience for users to know what's going on:
 
--   The first two rules are not that interesting to this discussion.
--   The third rule uses the `a` selector to get rid of the default text underline and focus outline (which varies across browsers anyway), and adds a tiny amount of padding to each link — all of this will become clear later on.
--   Next, we use the `a:link` and `a:visited` selectors to set a couple of color variations on unvisited and visited links, so they are distinct.
--   The next two rules use `a:focus` and `a:hover` to set focused and hovered links to have different background colors, plus an underline to make the link stand out even more. Two points to note here are:
-    -   The underline has been created using {{cssxref("border-bottom")}}, not {{cssxref("text-decoration")}} — some people prefer this because the former has better styling options than the latter. It's also drawn a bit lower so it doesn't cut across the descenders of the word being underlined (e.g., the tails on g and y).
-    -   The {{cssxref("border-bottom")}} value has been set as `1px solid`, with no color specified. Doing this makes the border adopt the same color as the element's text, which is useful in cases like this where the text is a different color in each case.
--   Finally, `a:active` is used to give the links an inverted color scheme while they are being activated, to make it clear something important is happening!
+- The first two rules are not that interesting to this discussion.
+- The third rule uses the `a` selector to get rid of the default text underline and focus outline (which varies across browsers anyway), and adds a tiny amount of padding to each link — all of this will become clear later on.
+- Next, we use the `a:link` and `a:visited` selectors to set a couple of color variations on unvisited and visited links, so they are distinct.
+- The next two rules use `a:focus` and `a:hover` to set focused and hovered links to have different background colors, plus an underline to make the link stand out even more. Two points to note here are:
+  - The underline has been created using {{cssxref("border-bottom")}}, not {{cssxref("text-decoration")}} — some people prefer this because the former has better styling options than the latter. It's also drawn a bit lower so it doesn't cut across the descenders of the word being underlined (e.g., the tails on g and y).
+  - The {{cssxref("border-bottom")}} value has been set as `1px solid`, with no color specified. Doing this makes the border adopt the same color as the element's text, which is useful in cases like this where the text is a different color in each case.
+- Finally, `a:active` is used to give the links an inverted color scheme while they are being activated, to make it clear something important is happening!
 
 ### Active learning: Style your own links
 
 In this active learning session, we'd like you to take our empty set of rules and add your own declarations to make the links look really cool. Use your imagination, go wild. We are sure you can come up with something cooler and just as functional as our example above.
 
-If you make a mistake, you can always reset it using the *Reset* button. If you get really stuck, press the *Show solution* button to insert the example we showed above.
+If you make a mistake, you can always reset it using the _Reset_ button. If you get really stuck, press the _Show solution_ button to insert the example we showed above.
 
 ###### Playable code
 
@@ -240,8 +239,7 @@ If you make a mistake, you can always reset it using the *Reset* button. If you 
 
 {{ EmbedLiveSample('Playable\_code', 700, 800) }}
 
-Including icons on links
-------------------------
+## Including icons on links
 
 A common practice is to include icons on links to provide more of an indicator as to what kind of content the link points to. Let's look at a really simple example that adds an icon to external links (links that lead to other sites.) Such an icon usually looks like a little arrow pointing out of a box. For this example, we'll use [this great example from icons8.com](https://icons8.com/web-app/741/external-link).
 
@@ -311,8 +309,7 @@ The `href` values look strange — we've used dummy links here that don't really
 
 Don't worry if you are not familiar with [backgrounds](/en-US/docs/Learn/CSS/Building_blocks) and [responsive web design](/en-US/docs/Web/Progressive_web_apps/Responsive/responsive_design_building_blocks) yet; these are explained in other places.
 
-Styling links as buttons
-------------------------
+## Styling links as buttons
 
 The tools you've explored so far in this article can also be used in other ways. For example, states like hover can be used to style many different elements, not just links — you might want to style the hover state of paragraphs, list items, or other things.
 
@@ -374,37 +371,34 @@ This gives us the following result:
 
 Let's explain what's going on here, focusing on the most interesting parts:
 
--   Our second rule removes the default {{cssxref("padding")}} from the {{htmlelement("ul")}} element, and sets its width to span 100% of the outer container (the {{htmlelement("body")}}, in this case).
--   {{htmlelement("li")}} elements are normally block by default (see [types of CSS boxes](/en-US/docs/Learn/CSS/Building_blocks/The_box_model#types_of_css_boxes) for a refresher), meaning that they will sit on their own lines. In this case, we are creating a horizontal list of links, so in the third rule we set the {{cssxref("display")}} property to inline, which causes the list items to sit on the same line as one another. They now behave like inline elements.
--   The fourth rule — which styles the {{htmlelement("a")}} element — is the most complicated here. Let's go through it step by step:
-    -   As in previous examples, we start by turning off the default {{cssxref("text-decoration")}} and {{cssxref("outline")}} — we don't want those spoiling our look.
-    -   Next, we set the {{cssxref("display")}} to `inline-block`. {{htmlelement("a")}} elements are inline by default and, while we don't want them to spill onto their own lines like a value of `block` would achieve, we do want to be able to size them. `inline-block` allows us to do this.
-    -   Now onto the sizing! We want to fill up the whole width of the {{htmlelement("ul")}} and leave a little margin between each button (but not a gap at the right hand edge). We also have 5 buttons whose sizes should all be the same. To do this, we set the {{cssxref("width")}} to 19.5% and the {{cssxref("margin-right")}} to 0.625%. You'll notice that all this width adds up to 100.625%, which would make the last button overflow the `<ul>` and fall down to the next line. However, we take it back down to 100% using the next rule, which selects only the last `<a>` in the list and removes the margin from it. Done!
-    -   The last three declarations are pretty simple and are mainly just for cosmetic purposes. We center the text inside each link, set the {{cssxref("line-height")}} to 3 to give the buttons some height (which also has the advantage of centering the text vertically), and set the text color to black.
+- Our second rule removes the default {{cssxref("padding")}} from the {{htmlelement("ul")}} element, and sets its width to span 100% of the outer container (the {{htmlelement("body")}}, in this case).
+- {{htmlelement("li")}} elements are normally block by default (see [types of CSS boxes](/en-US/docs/Learn/CSS/Building_blocks/The_box_model#types_of_css_boxes) for a refresher), meaning that they will sit on their own lines. In this case, we are creating a horizontal list of links, so in the third rule we set the {{cssxref("display")}} property to inline, which causes the list items to sit on the same line as one another. They now behave like inline elements.
+- The fourth rule — which styles the {{htmlelement("a")}} element — is the most complicated here. Let's go through it step by step:
+  - As in previous examples, we start by turning off the default {{cssxref("text-decoration")}} and {{cssxref("outline")}} — we don't want those spoiling our look.
+  - Next, we set the {{cssxref("display")}} to `inline-block`. {{htmlelement("a")}} elements are inline by default and, while we don't want them to spill onto their own lines like a value of `block` would achieve, we do want to be able to size them. `inline-block` allows us to do this.
+  - Now onto the sizing! We want to fill up the whole width of the {{htmlelement("ul")}} and leave a little margin between each button (but not a gap at the right hand edge). We also have 5 buttons whose sizes should all be the same. To do this, we set the {{cssxref("width")}} to 19.5% and the {{cssxref("margin-right")}} to 0.625%. You'll notice that all this width adds up to 100.625%, which would make the last button overflow the `<ul>` and fall down to the next line. However, we take it back down to 100% using the next rule, which selects only the last `<a>` in the list and removes the margin from it. Done!
+  - The last three declarations are pretty simple and are mainly just for cosmetic purposes. We center the text inside each link, set the {{cssxref("line-height")}} to 3 to give the buttons some height (which also has the advantage of centering the text vertically), and set the text color to black.
 
 #### Note:
 
 You may have noticed that the list items in the HTML are all put on the same line as each other. This is done because spaces/line breaks in between inline block elements create spaces on the page, just like the spaces in between words; however, such spaces would break our horizontal navigation menu layout. So we've removed them. You can find more information about this problem (and solutions) at [Fighting the space between inline block elements](https://css-tricks.com/fighting-the-space-between-inline-block-elements/).
 
-Test your skills!
------------------
+## Test your skills!
 
 You've reached the end of this article, and already did some skill testing in our Active Learning sections, but can you remember the most important information going forward? You can find an assessment to verify that you've retained this information at the end of the module — see [Typesetting a community school homepage](/en-US/docs/Learn/CSS/Styling_text/Typesetting_a_homepage).
 
 This assessment tests all the knowledge discussed in this module, so you might want to read the next article before moving on to it.
 
-Summary
--------
+## Summary
 
 We hope this article has provided you with all you'll need to know about links — for now! The final article in our Styling text module details how to use custom fonts on your websites (or web fonts, as they are better known).
 
 {{PreviousMenuNext("Learn/CSS/Styling\_text/Styling\_lists", "Learn/CSS/Styling\_text/Web\_fonts", "Learn/CSS/Styling\_text")}}
 
-In this module
---------------
+## In this module
 
--   [Fundamental text and font styling](/en-US/docs/Learn/CSS/Styling_text/Fundamentals)
--   [Styling lists](/en-US/docs/Learn/CSS/Styling_text/Styling_lists)
--   **Styling links**
--   [Web fonts](/en-US/docs/Learn/CSS/Styling_text/Web_fonts)
--   [Typesetting a community school homepage](/en-US/docs/Learn/CSS/Styling_text/Typesetting_a_homepage)
+- [Fundamental text and font styling](/en-US/docs/Learn/CSS/Styling_text/Fundamentals)
+- [Styling lists](/en-US/docs/Learn/CSS/Styling_text/Styling_lists)
+- **Styling links**
+- [Web fonts](/en-US/docs/Learn/CSS/Styling_text/Web_fonts)
+- [Typesetting a community school homepage](/en-US/docs/Learn/CSS/Styling_text/Typesetting_a_homepage)

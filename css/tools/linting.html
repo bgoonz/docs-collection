@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Linting</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Linting</h1>
+    </header>
+    <p>
+      We use linters to enforce
+      <a href="/principles">coding principles and standards</a>. On every pull
+      request we run the linters on the code to make sure any changes meet our
+      standards. When a commit contains code that doesn’t meet the standards,
+      the build fails which blocks merging into main and deploying to
+      production.
+    </p>
+    <p>
+      For teams working on <code>github/github</code> this configuration is all
+      setup for you. While we do recommend you also
+      <a href="#plugins">setup a plugin</a> in your editor, this is not
+      required.
+    </p>
+    <p>
+      For everyone else we encourage you to adopt all or some of these tools in
+      your workflow.
+    </p>
+    <h2 id="css">CSS</h2>
+    <p>
+      We use <a href="http://stylelint.io/">stylelint</a> to lint our CSS. If
+      you are working on <code>github/github</code> you don’t need to do any
+      setup because stylelint comes bundled within the repository. If you are
+      working on other properties, you may need to setup stylelint. You can
+      install stylelint via npm:
+    </p>
+    <pre><code>npm install -g stylelint</code></pre>
+    <p>
+      Whether you work on <code>github/github</code> or not, it’s useful to see
+      lint errors locally. The easiest way to lint your code is to install a
+      <a href="#plugins">plugin</a> in your workflow. If you prefer to run
+      stylelint manually, pass it a glob pattern of the files you want to lint.
+      If you work on <code>github/github</code>, you can run stylelint from the
+      command line:
+    </p>
+    <pre><code>bin/stylelint &quot;app/assets/stylesheets/**/*.scss&quot; --syntax scss</code></pre>
+    <p>
+      For more advanced usage, we recommend reading the
+      <a href="http://stylelint.io/user-guide/">stylelint user guide</a> and
+      checking out our
+      <a href="https://github.com/primer/stylelint-config-primer"
+        >primer stylelint configuration</a
+      >.
+    </p>
+    <h3 id="configuration">Configuration</h3>
+    <p>
+      Stylelint is
+      <a href="http://stylelint.io/user-guide/configuration/"
+        >configured by a JSON file</a
+      >
+      that specifies which linter rules we enforce. If you are working on
+      <code>github/github</code>, you don’t need to do any setup because the
+      configuration is included within the repository bundle.
+    </p>
+    <p>
+      We have extracted out our configuration file into a separate repository
+      <a href="https://github.com/primer/stylelint-config-primer"
+        >primer/stylelint-config-primer</a
+      >. This gives us a central source where we can keep the configuration
+      up-to-date and distribute easily across all our projects.
+    </p>
+    <p>
+      To
+      <a href="https://github.com/primer/stylelint-config-primer#usage"
+        >use the configuration</a
+      >
+      in your project, install the config
+      <code>npm install --save stylelint-config-primer</code> via npm, and
+      extend the config in your <code>.stylelintrc</code> file. Put the file in
+      the root directory of your project.
+    </p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb3-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="dt">&quot;extends&quot;</span><span class="fu">:</span> <span class="st">&quot;stylelint-config-primer&quot;</span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="fu">}</span></a></code></pre>
+    </div>
+    <p>
+      A list of all the specific rules we have enabled are documented in
+      <a href="https://github.com/primer/stylelint-config-primer#documentation"
+        >the package README</a
+      >.
+    </p>
+    <h3 id="disabling">Disabling</h3>
+    <p>
+      We use linters to help ensure our CSS is written according to our
+      principles. On occasion it’s necessary to break those principles and
+      disable a linter. This is usually because of one of the following
+      scenarios:
+    </p>
+    <ul>
+      <li>
+        There is no other way to achieve the desired style due to other code
+        limitations, such as the way the views are rendered or the way the
+        content is output (such as rendered markdown).
+      </li>
+      <li>
+        There is no other way to achieve the desired style due to conflicts with
+        existing styles that would require considerable effort to fix.
+      </li>
+      <li>
+        Breaking a lint rule offers an improvement to code readability and/or
+        maintainability (this is often the case when writing components and
+        supporting SCSS, such as mixins and functions).
+      </li>
+    </ul>
+    <p>
+      To disable a linter, place a <code>// stylelint-disable</code> comment
+      around the specific block of CSS that you need to override. For example:
+    </p>
+    <pre class="scss"><code>// When a branch name is a link
+// stylelint-disable selector-no-qualifying-type
+a.branch-name {
+  color: $brand-blue;
+}
+// stylelint-enable selector-no-qualifying-type</code></pre>
+    <p><strong>If you choose to disable a linting rule…</strong></p>
+    <ol type="1">
+      <li>You’ll need to specify a reason for disabling the lint.</li>
+      <li>
+        Say what lint you’re disabling, this example has
+        <code>selector-no-qualifying-type</code>.
+      </li>
+      <li>
+        Make sure to <code>disable</code> then <code>enable</code> the lint
+        again after your code block. This ensures that the rule is re-enabled
+        for any code after the block in question.
+      </li>
+    </ol>
+    <p>
+      When you disable a linter on GitHub,
+      <a href="https://github.com/github/sentinel">Sentinel</a> will post a
+      comment on your pull request notifying the Design Systems team of this
+      override. This is because disabled lints act as a signal that there may be
+      issues with Primer and/or the CSS in question.
+    </p>
+    <p>
+      While linters shouldn’t be disabled without consideration, essentially
+      they act as a guide to how we write CSS rather than steadfast rules. For
+      more info on disabling configuration, visit the
+      <a
+        href="http://stylelint.io/user-guide/configuration/#turning-rules-off-from-within-your-css"
+        >stylelint docs</a
+      >.
+    </p>
+    <h3 id="plugins">Plugins</h3>
+    <p>
+      Our linter runs on every commit, but finding you have a lint error after a
+      push can be frustrating and waste time. To avoid this, a
+      <a href="http://stylelint.io/user-guide/complementary-tools/"
+        >collection of editor plugins</a
+      >
+      are available to help you lint while you code..
+    </p>
+    <p>
+      The Design Systems team recommends using
+      <a href="https://atom.io/">Atom</a> with the
+      <a href="https://github.com/AtomLinter/linter-stylelint"
+        >linter-stylelint</a
+      >
+      package installed.
+    </p>
+    <figure>
+      <img
+        src="https://cloud.githubusercontent.com/assets/54012/21456489/6a10b370-c8f6-11e6-9199-bb3709e79794.png"
+        alt="image"
+      />
+      <figcaption>image</figcaption>
+    </figure>
+    <p>
+      We also have a
+      <a href="/tools/atom-packages">list of Atom packages</a> that we find
+      useful for development.
+    </p>
+    <h2 id="html">HTML</h2>
+    <p>
+      A custom Rails test called <code>styles_match_markup_test.rb</code> runs
+      for our <code>.html.erb</code> files and checks for unused selectors. The
+      test collects a list of all the class names used in our markup, JavaScript
+      and documentation, then compares that with a list of all our class names
+      in our <code>.scss</code> files.
+    </p>
+    <p>
+      This test isn’t smart enough to know about CSS inheritance, but will help
+      you catch any dead CSS in your markup or styles. Run the test locally with
+      this command.
+    </p>
+    <pre><code>bin/testrb test/fast/linting/styles_match_markup_test.rb</code></pre>
+    <p>
+      Sometimes you will have generated class names that the test misses. Adding
+      these class names to the regular expression enabled
+      <code>selectors_match_markup_whitelist.yml</code> file will quiet the
+      tests.
+    </p>
+    <h2 id="files">Files</h2>
+    <p>
+      We enforce <code>.scss</code> file naming to be lowercase, only use
+      <code>-</code> hyphens and no leading <code>_</code> underscores. Removing
+      underscores from the files is an anti-pattern for Sass, but we’re doing
+      this because we’re proactively moving away from Sass to match CSS web
+      standards.
+    </p>
+    <h2 id="octicons">Octicons</h2>
+    <p>
+      We test for the proper use of the
+      <a
+        href="https://github.com/primer/octicons/tree/master/lib/octicons_helper#readme"
+        >Octicons helper</a
+      >
+      in our templates and make sure that the symbols used are valid octicons.
+    </p>
+    <h2 id="ie-rule-limit">IE rule limit</h2>
+    <p>
+      We check that our compiled CSS assets don’t contain more selectors than
+      the
+      <a
+        href="https://blogs.msdn.microsoft.com/ieinternals/2011/05/14/stylesheet-limits-in-internet-explorer/"
+        >IE CSS selector limits</a
+      >.
+    </p>
+    <h2 id="linting-dotcom">Linting dotcom</h2>
+    <p>
+      There are a few handy scripts to make your life easier when working with
+      CSS on dotcom, especially when doing bigger refactors. Checkout the
+      <a
+        href="https://github.com/github/design-systems/blob/main/tools/stylelint.md"
+        >Stylelint guide</a
+      >.
+    </p>
+  </body>
+</html>

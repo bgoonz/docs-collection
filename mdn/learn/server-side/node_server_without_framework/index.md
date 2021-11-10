@@ -1,4 +1,4 @@
---- title: Node.js server without a framework slug: Learn/Server-side/Node\_server\_without\_framework tags: - JavaScript - NeedsContent - Node - Server - no framework ---
+--- title: Node.js server without a framework slug: Learn/Server-side/Node_server_without_framework tags: - JavaScript - NeedsContent - Node - Server - no framework ---
 
 {{LearnSidebar}}
 
@@ -8,14 +8,13 @@ This article provides a simple static file server built with pure Node.js withou
 
 The most popular are:
 
--   [Express](/en-US/docs/Learn/Server-side/Express_Nodejs): A widely used framework.
--   [Hapi.js](https://hapijs.com/): A rich framework for building applications and services
--   [Total](https://www.totaljs.com/): The all-in-one Node.js framework, which does not depend on any other framework, or module.
+- [Express](/en-US/docs/Learn/Server-side/Express_Nodejs): A widely used framework.
+- [Hapi.js](https://hapijs.com/): A rich framework for building applications and services
+- [Total](https://www.totaljs.com/): The all-in-one Node.js framework, which does not depend on any other framework, or module.
 
 These will not suit every situation. A developer may need to build their own server without other dependencies.
 
-Example
--------
+## Example
 
 A simple static file server built with Node.js:
 
@@ -143,7 +142,6 @@ Finally, if there are no errors, we send over the requested file.
     response.writeHead(200, { 'Content-Type': contentType });
     response.end(content, 'utf-8');
 
-To do
------
+## To do
 
 Perhaps an extended version serving static files and handling dynamic requests.

@@ -1,4 +1,4 @@
---- title: Publishing your website slug: Learn/Getting\_started\_with\_the\_web/Publishing\_your\_website tags: - Beginner - CodingScripting - FTP - GitHub - Google App Engine - Learn - Web - l10n:priority - publishing - web server ---
+--- title: Publishing your website slug: Learn/Getting_started_with_the_web/Publishing_your_website tags: - Beginner - CodingScripting - FTP - GitHub - Google App Engine - Learn - Web - l10n:priority - publishing - web server ---
 
 {{LearnSidebar}}
 
@@ -6,8 +6,7 @@
 
 Once you finish writing the code and organizing the files that make up your website, you need to put it all online so people can find it. This article explains how to get your simple sample code online with little effort.
 
-What are the options?
----------------------
+## What are the options?
 
 Publishing a website is a complex topic because there are many ways to go about it. This article doesn't attempt to document all the possible methods. Instead, it explains the advantages and disadvantages of three approaches that are practical for beginners. Then it steps through one method that can work right away for many readers.
 
@@ -15,8 +14,8 @@ Publishing a website is a complex topic because there are many ways to go about 
 
 To have more control over content and website appearance, most people choose to buy web hosting and a domain name:
 
--   Web hosting is rented file space on a hosting company's [web server](/en-US/docs/Learn/Common_questions/What_is_a_web_server). You put website files on the web server. The web server provides website content to website visitors.
--   A [domain name](/en-US/docs/Learn/Common_questions/What_is_a_domain_name) is the unique address where people find your website, such as `http://www.mozilla.org` or `http://www.bbc.co.uk`. You can rent your domain name for as many years as you want from a **domain registrar**.
+- Web hosting is rented file space on a hosting company's [web server](/en-US/docs/Learn/Common_questions/What_is_a_web_server). You put website files on the web server. The web server provides website content to website visitors.
+- A [domain name](/en-US/docs/Learn/Common_questions/What_is_a_domain_name) is the unique address where people find your website, such as `http://www.mozilla.org` or `http://www.bbc.co.uk`. You can rent your domain name for as many years as you want from a **domain registrar**.
 
 Many professional websites go online this way.
 
@@ -26,17 +25,17 @@ In addition, you will need a {{Glossary("FTP", "File Transfer Protocol (FTP)")}}
 
 #### Tips for finding hosting and domains
 
--   MDN does not promote specific commercial hosting companies or domain name registrars. To find hosting companies and registrars, just search for "web hosting" and "domain names". All registrars will have a feature to allow you to check if the domain name you want is available.
--   Your home or office {{Glossary("ISP", "internet service provider")}} may provide some limited hosting for a small website. The available feature set will be limited, but it might be perfect for your first experiments.
--   There are also free services available like [Neocities](https://neocities.org/), [Google Sites](https://sites.google.com/), [Blogger](https://www.blogger.com), and [WordPress](https://wordpress.com/). Sometimes you get what you pay for, but sometimes these resources are good enough for your initial experiments.
--   Many companies provide hosting and domains.
+- MDN does not promote specific commercial hosting companies or domain name registrars. To find hosting companies and registrars, just search for "web hosting" and "domain names". All registrars will have a feature to allow you to check if the domain name you want is available.
+- Your home or office {{Glossary("ISP", "internet service provider")}} may provide some limited hosting for a small website. The available feature set will be limited, but it might be perfect for your first experiments.
+- There are also free services available like [Neocities](https://neocities.org/), [Google Sites](https://sites.google.com/), [Blogger](https://www.blogger.com), and [WordPress](https://wordpress.com/). Sometimes you get what you pay for, but sometimes these resources are good enough for your initial experiments.
+- Many companies provide hosting and domains.
 
 ### Using an online tool like GitHub or Google App Engine
 
 Some tools let you publish your website online:
 
--   [GitHub](https://github.com/) is a "social coding" site. It allows you to upload code repositories for storage in the [Git](https://git-scm.com/) **version control system.** You can then collaborate on code projects, and the system is open-source by default, meaning that anyone in the world can find your GitHub code, use it, learn from it, and improve on it. GitHub has a very useful feature called [GitHub Pages](https://pages.github.com/), which allows you to expose website code live on the web.
--   [Google App Engine](https://cloud.google.com/appengine/ "App Engine - Build Scalable Web & Mobile Backends in Any Language  |  Google Cloud Platform") is a powerful platform that lets you build and run applications on Google’s infrastructure — whether you need to build a multi-tiered web application from scratch or host a static website. See [How do you host your website on Google App Engine?](/en-US/docs/Learn/Common_questions/How_do_you_host_your_website_on_Google_App_Engine) for more information.
+- [GitHub](https://github.com/) is a "social coding" site. It allows you to upload code repositories for storage in the [Git](https://git-scm.com/) **version control system.** You can then collaborate on code projects, and the system is open-source by default, meaning that anyone in the world can find your GitHub code, use it, learn from it, and improve on it. GitHub has a very useful feature called [GitHub Pages](https://pages.github.com/), which allows you to expose website code live on the web.
+- [Google App Engine](https://cloud.google.com/appengine/ "App Engine - Build Scalable Web & Mobile Backends in Any Language  |  Google Cloud Platform") is a powerful platform that lets you build and run applications on Google’s infrastructure — whether you need to build a multi-tiered web application from scratch or host a static website. See [How do you host your website on Google App Engine?](/en-US/docs/Learn/Common_questions/How_do_you_host_your_website_on_Google_App_Engine) for more information.
 
 These options are usually free, but you may outgrow the limited feature-set.
 
@@ -46,50 +45,47 @@ There are a number of web apps that emulate a website development environment, a
 
 Try playing with some of these examples to find out which one works best for you:
 
--   [JSFiddle](https://jsfiddle.net/)
--   [Glitch](https://glitch.com/)
--   [JS Bin](https://jsbin.com/)
--   [CodePen](https://codepen.io/)
+- [JSFiddle](https://jsfiddle.net/)
+- [Glitch](https://glitch.com/)
+- [JS Bin](https://jsbin.com/)
+- [CodePen](https://codepen.io/)
 
 ![](jsbin-screen.png)
 
-Publishing via GitHub
----------------------
+## Publishing via GitHub
 
 Now let's examine how to easily publish your site via GitHub Pages.
 
 1.  First of all, [sign up for GitHub](https://github.com/) and verify your email address.
 2.  Next, you need to [create a repository](https://github.com/new) to store files.
-3.  On this page, in the *Repository name* box, enter *username*.github.io, where *username* is your username. For example, our friend Bob Smith would enter *bobsmith.github.io*.  
-    Check the "*Initialize this repository with a README"* box. Then click *Create repository*.![](github-create-repo.png)
-4.  Drag and drop the content of your website folder into your repository. Then click *Commit changes*.  
+3.  On this page, in the _Repository name_ box, enter _username_.github.io, where _username_ is your username. For example, our friend Bob Smith would enter _bobsmith.github.io_.  
+    Check the "_Initialize this repository with a README"_ box. Then click *Create repository*.![](github-create-repo.png)
+4.  Drag and drop the content of your website folder into your repository. Then click _Commit changes_.  
     **Note**: Make sure your folder has an `index.html` file.
 
-5.  Navigate your browser to *username*.github.io to see your website online. For example, for the username *chrisdavidmills*, go to [*chrisdavidmills*.github.io](https://chrisdavidmills.github.io/).
+5.  Navigate your browser to _username_.github.io to see your website online. For example, for the username _chrisdavidmills_, go to [_chrisdavidmills_.github.io](https://chrisdavidmills.github.io/).
 
     **Note**: It may take a few minutes for your website to go live. If your website does not display immediately, wait a few minutes. Try again.
 
 To learn more, see [GitHub Pages Help](https://help.github.com/categories/github-pages-basics/).
 
-Further reading
----------------
+## Further reading
 
--   [What is a web server](/en-US/docs/Learn/Common_questions/What_is_a_web_server)
--   [Understanding domain names](/en-US/docs/Learn/Common_questions/What_is_a_domain_name)
--   [How much does it cost to do something on the web?](/en-US/docs/Learn/Common_questions/How_much_does_it_cost)
--   [Deploy a Website](https://www.codecademy.com/learn/deploy-a-website): A nice tutorial from Codecademy that goes a bit further and shows some additional techniques.
--   [Cheap or Free Static Website Hosting](https://alignedleft.com/resources/cheap-web-hosting) by Scott Murray has some useful ideas on available services.
+- [What is a web server](/en-US/docs/Learn/Common_questions/What_is_a_web_server)
+- [Understanding domain names](/en-US/docs/Learn/Common_questions/What_is_a_domain_name)
+- [How much does it cost to do something on the web?](/en-US/docs/Learn/Common_questions/How_much_does_it_cost)
+- [Deploy a Website](https://www.codecademy.com/learn/deploy-a-website): A nice tutorial from Codecademy that goes a bit further and shows some additional techniques.
+- [Cheap or Free Static Website Hosting](https://alignedleft.com/resources/cheap-web-hosting) by Scott Murray has some useful ideas on available services.
 
 {{PreviousMenuNext("Learn/Getting\_started\_with\_the\_web/JavaScript\_basics", "Learn/Getting\_started\_with\_the\_web/How\_the\_Web\_works", "Learn/Getting\_started\_with\_the\_web")}}
 
-In this module
---------------
+## In this module
 
--   <span id="Installing_basic_software">[Installing basic software](/en-US/docs/Learn/Getting_started_with_the_web/Installing_basic_software)</span>
--   <span id="What_will_your_website_look_like">[What will your website look like?](/en-US/docs/Learn/Getting_started_with_the_web/What_will_your_website_look_like)</span>
--   <span id="Dealing_with_files">[Dealing with files](/en-US/docs/Learn/Getting_started_with_the_web/Dealing_with_files)</span>
--   <span id="HTML_basics">[HTML basics](/en-US/docs/Learn/Getting_started_with_the_web/HTML_basics)</span>
--   <span id="CSS_basics">[CSS basics](/en-US/docs/Learn/Getting_started_with_the_web/CSS_basics)</span>
--   <span id="JavaScript_basics">[JavaScript basics](/en-US/docs/Learn/Getting_started_with_the_web/JavaScript_basics)</span>
--   <span id="Publishing_your_website">[Publishing your website](/en-US/docs/Learn/Getting_started_with_the_web/Publishing_your_website)</span>
--   <span id="How_the_web_works">[How the web works](/en-US/docs/Learn/Getting_started_with_the_web/How_the_Web_works)</span>
+- <span id="Installing_basic_software">[Installing basic software](/en-US/docs/Learn/Getting_started_with_the_web/Installing_basic_software)</span>
+- <span id="What_will_your_website_look_like">[What will your website look like?](/en-US/docs/Learn/Getting_started_with_the_web/What_will_your_website_look_like)</span>
+- <span id="Dealing_with_files">[Dealing with files](/en-US/docs/Learn/Getting_started_with_the_web/Dealing_with_files)</span>
+- <span id="HTML_basics">[HTML basics](/en-US/docs/Learn/Getting_started_with_the_web/HTML_basics)</span>
+- <span id="CSS_basics">[CSS basics](/en-US/docs/Learn/Getting_started_with_the_web/CSS_basics)</span>
+- <span id="JavaScript_basics">[JavaScript basics](/en-US/docs/Learn/Getting_started_with_the_web/JavaScript_basics)</span>
+- <span id="Publishing_your_website">[Publishing your website](/en-US/docs/Learn/Getting_started_with_the_web/Publishing_your_website)</span>
+- <span id="How_the_web_works">[How the web works](/en-US/docs/Learn/Getting_started_with_the_web/How_the_Web_works)</span>

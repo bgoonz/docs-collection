@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Box</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Box</h1>
+    </header>
+    <p>
+      The <code>.Box</code> component can be used for something as simple as a
+      rounded corner box, or more complex lists and forms. It includes optional
+      modifiers for padding density and color themes.
+    </p>
+    <h2 id="box">Box</h2>
+    <p>
+      A <code>.Box</code> is a container with a white background, a light gray
+      border, and rounded corners. By default there are no additional styles
+      such as padding, these can be added as needed with utility classes. Other
+      styles and layouts can be achieved with box elements and modifiers shown
+      in the documentation below.
+    </p>
+    <p>
+      <code>html live &lt;div class="Box"&gt;This is a box.&lt;/div&gt;</code>
+    </p>
+    <h2 id="box-elements">Box elements</h2>
+    <p>
+      Box elements include <code>Box-header</code>, <code>Box-body</code>, and
+      <code>Box-footer</code>. These elements include borders and consistent
+      padding. Optionally, you can include use <code>Box-title</code> which
+      applies a bold font-weight the heading.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="Box"&gt; &lt;div class="Box-header"&gt; &lt;h3
+        class="Box-title"&gt;Box title&lt;/h3&gt; &lt;/div&gt; &lt;div
+        class="Box-body"&gt;Box body&lt;/div&gt; &lt;div
+        class="Box-footer"&gt;Box footer&lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <h3 id="box-row">Box row</h3>
+    <p>
+      Use <code>Box-row</code> to add rows with borders and maintain the same
+      padding. Box rows have a lighter border to give contrast between the
+      header and footer.
+    </p>
+    <p>
+      <strong>Note:</strong> Box rows have some reliance on markup structure in
+      order to target the first and last rows, therefore using an unordered list
+      is recommended. See
+      <a href="#box-row-markup-structure">box row markup structure</a> for more
+      information.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="Box"&gt; &lt;ul&gt; &lt;li
+        class="Box-row"&gt;Box row one&lt;/li&gt; &lt;li class="Box-row"&gt;Box
+        row two&lt;/li&gt; &lt;li class="Box-row"&gt;Box row three&lt;/li&gt;
+        &lt;li class="Box-row"&gt;Box row four&lt;/li&gt; &lt;/ul&gt;
+        &lt;/div&gt;</code
+      >
+    </p>
+    <p>
+      Rows can be used with or without <code>Box-header</code>,
+      <code>Box-footer</code>, or <code>Box-body</code>.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="Box"&gt; &lt;div class="Box-header"&gt;Box
+        header&lt;/div&gt; &lt;div class="Box-body"&gt; &lt;strong&gt;Box
+        body&lt;/strong&gt; &lt;/div&gt; &lt;ul&gt; &lt;li
+        class="Box-row"&gt;Box row one&lt;/li&gt; &lt;li class="Box-row"&gt;Box
+        row two&lt;/li&gt; &lt;li class="Box-row"&gt;Box row three&lt;/li&gt;
+        &lt;li class="Box-row"&gt;Box row four&lt;/li&gt; &lt;/ul&gt; &lt;div
+        class="Box-footer"&gt;Box footer&lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <h3 id="box-row-markup-structure">Box row markup structure</h3>
+    <p>
+      Box rows have some reliance on markup structure in order to target the
+      first and last rows. Box rows are given a top border that is lighter in
+      color than other box elements so the first row is targeted to apply a
+      darker border color. An inner border-radius is applied to the first and
+      last rows that that row corners don’t poke outside the <code>Box</code>,
+      this can be particularly noticeable when using a highlight on box rows.
+    </p>
+    <p>
+      Using an unordered list is recommended in order to target the first and
+      last rows, however, if you need to use a <code>&lt;div&gt;</code> for your
+      rows, you may want to place your rows inside a parent
+      <code>&lt;div&gt;</code> so that the first and last rows are styled
+      appropriately.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="Box"&gt; &lt;div class="Box-header"&gt;Box
+        header&lt;/div&gt; &lt;!-- This wrapping div ensures the first and last
+        rows can be targeted for styling. --&gt; &lt;div&gt; &lt;div
+        class="Box-row"&gt;Box row using a div&lt;/div&gt; &lt;div
+        class="Box-row"&gt;Box row using a div&lt;/div&gt; &lt;/div&gt;
+        &lt;/div&gt;</code
+      >
+    </p>
+    <h2 id="box-padding-density">Box padding density</h2>
+    <p>You can changed the padding density of the box component.</p>
+    <p>
+      Use <code>Box--condensed</code> to apply a more condensed line-height and
+      reduce the padding on the Y axis.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="Box Box--condensed"&gt; &lt;div
+        class="Box-header"&gt; &lt;h3 class="Box-title"&gt;Box title&lt;/h3&gt;
+        &lt;/div&gt; &lt;div class="Box-body"&gt;Box body&lt;/div&gt; &lt;ul&gt;
+        &lt;li class="Box-row"&gt;Box row one&lt;/li&gt; &lt;li
+        class="Box-row"&gt;Box row two&lt;/li&gt; &lt;/ul&gt; &lt;div
+        class="Box-footer"&gt;Box footer&lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <p>
+      Use <code>Box--spacious</code> to increase padding and increase the title
+      font size.
+    </p>
+    <p>
+      You may want to increase the overall font size to work with the larger
+      padding, in this example the default body font size is increased to 16px
+      using the <code>f4</code> typography utility.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="Box Box--spacious f4"&gt; &lt;div
+        class="Box-header"&gt; &lt;h3 class="Box-title"&gt;Box title&lt;/h3&gt;
+        &lt;/div&gt; &lt;div class="Box-body"&gt;Box body&lt;/div&gt; &lt;ul&gt;
+        &lt;li class="Box-row"&gt;Box row one&lt;/li&gt; &lt;li
+        class="Box-row"&gt;Box row two&lt;/li&gt; &lt;/ul&gt; &lt;div
+        class="Box-footer"&gt;Box footer&lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <h2 id="blue-box-theme">Blue box theme</h2>
+    <p>
+      Use <code>Box--blue</code> to style the box borders and box header in
+      blue.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="Box Box--blue"&gt; &lt;div
+        class="Box-header"&gt;Box header&lt;/div&gt; &lt;ul&gt; &lt;li
+        class="Box-row"&gt;Box row one&lt;/li&gt; &lt;li class="Box-row"&gt;Box
+        row two&lt;/li&gt; &lt;/ul&gt; &lt;div class="Box-footer"&gt;Box
+        footer&lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <h2 id="blue-box-header-theme">Blue box header theme</h2>
+    <p>
+      Use <code>Box-header--blue</code> to add to change the header border and
+      background to blue.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="Box"&gt; &lt;div class="Box-header
+        Box-header--blue"&gt; &lt;h3 class="Box-title"&gt;Box with blue
+        header&lt;/h3&gt; &lt;/div&gt; &lt;div class="Box-body"&gt;Box
+        body&lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <h2 id="box-danger-theme">Box danger theme</h2>
+    <p>
+      Use <code>Box--danger</code> to apply a red border to the outside of the
+      box. This theme is helpful for communicating destructive actions.
+    </p>
+    <p>
+      <strong>Note:</strong> <code>Box-danger</code> only works with either
+      <code>Box-row</code>’s or <code>Box-body</code>.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="Box Box--danger"&gt; &lt;div
+        class="Box-row"&gt;Row one&lt;/div&gt; &lt;div class="Box-row"&gt;Row
+        two&lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <p>
+      <code>Box-danger</code> is often paired with a red heading. See the
+      <a href="./subhead">subhead</a> docs for more information.
+    </p>
+    ```html live
+    <div>
+      <div class="Subhead border-bottom-0">
+        <pre><code>&lt;h2 class=&quot;Subhead-heading Subhead-heading--danger&quot;&gt;Danger zone&lt;/h2&gt;</code></pre>
+      </div>
+      <div class="Box Box--danger">
+        <pre><code>&lt;div class=&quot;Box-body&quot;&gt;Box body&lt;/div&gt;</code></pre>
+      </div>
+    </div>
+    <p>```</p>
+    <h2 id="row-themes">Row themes</h2>
+    <p>
+      You can change the background color for individual rows, or change the
+      color on hover or navigation focus.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="Box"&gt; &lt;div class="Box-row
+        Box-row--gray"&gt;.Box-row--gray&lt;/div&gt; &lt;div class="Box-row
+        Box-row--hover-gray"&gt;.Box-row--hover-gray&lt;/div&gt; &lt;div
+        class="Box-row Box-row--yellow"&gt;.Box-row--yellow&lt;/div&gt; &lt;div
+        class="Box-row Box-row--hover-blue"&gt;.Box-row--hover-blue&lt;/div&gt;
+        &lt;div class="Box-row Box-row--blue"&gt;.Box-row--blue&lt;/div&gt;
+        &lt;/div&gt;</code
+      >
+    </p>
+    <p>
+      Use <code>Box-row--focus-gray</code> or
+      <code>Box-row--focus-blue</code> when using along-side
+      <code>navigation-focus</code> if you want to highlight rows when using
+      keyboard commands.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="Box"&gt; &lt;div class="Box-row
+        Box-row--focus-gray navigation-focus"&gt; .Box-row--focus-gray and
+        .navigation-focus &lt;/div&gt; &lt;div class="Box-row
+        Box-row--focus-gray"&gt;.Box-row--focus-gray&lt;/div&gt; &lt;div
+        class="Box-row Box-row--focus-blue navigation-focus"&gt;
+        .Box-row--focus-blue and .navigation-focus &lt;/div&gt; &lt;div
+        class="Box-row Box-row--focus-blue"&gt;.Box-row--focus-blue&lt;/div&gt;
+        &lt;/div&gt;</code
+      >
+    </p>
+    <h3 id="box-row-unread">Box row unread</h3>
+    <p>
+      Use <code>.Box-row--unread</code> to apply a blue vertical line highlight
+      for indicating a row contains unread items.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="Box"&gt; &lt;div class="Box-row"&gt;Box
+        row&lt;/div&gt; &lt;div class="Box-row Box-row--unread"&gt;Box row
+        unread&lt;/div&gt; &lt;div class="Box-row"&gt;Box row&lt;/div&gt;
+        &lt;/div&gt;</code
+      >
+    </p>
+    <h3 id="box-row-link">Box row link</h3>
+    <p>
+      Use .<code>Box-row-link</code> when you want a link to appear dark gray
+      and blue on hover on desktop, and remain a blue link on mobile. This is
+      useful to indicate links on mobile without having hover styles.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="Box"&gt; &lt;div class="Box-row"&gt; &lt;a
+        class="Box-row-link" href="#box-row-link"&gt;Box row link&lt;/a&gt;
+        &lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <h2 id="dashed-border">Dashed border</h2>
+    <p>
+      Use the <code>border-dashed</code> utility to apply a dashed border to a
+      box.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="Box border-dashed p-2"&gt;A box with a dashed
+        border&lt;/div&gt;</code
+      >
+    </p>
+    <h2 id="boxes-with-flash-alerts">Boxes with flash alerts</h2>
+    <p>
+      Use <code>flash-full</code> for flash alert inside a box to remove the
+      rounded corners. Place the flash alert above the <code>Box-body</code> and
+      underneath the <code>Box-header</code>.
+    </p>
+    <p>
+      Flash alerts come in three different colors and can be used with icons and
+      buttons, see the <a href="./alerts">alert documentation</a> for more
+      information.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="Box"&gt; &lt;div class="Box-header"&gt;Box
+        header&lt;/div&gt; &lt;div class="flash flash-full"&gt; &lt;button
+        class="flash-close js-flash-close"&gt; &lt;!-- &lt;%= octicon "x" %&gt;
+        --&gt; &lt;svg class="octicon octicon-x" viewBox="0 0 12 16"
+        version="1.1" width="12" height="16" aria-hidden="true" &gt; &lt;path
+        fill-rule="evenodd" d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75
+        3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48L7.48
+        8z" &gt;&lt;/path&gt; &lt;/svg&gt; &lt;/button&gt; &lt;span&gt;Flash
+        message with close button.&lt;/span&gt; &lt;/div&gt; &lt;div
+        class="flash flash-full flash-success"&gt; &lt;!-- &lt;%=
+        octicon("check") %&gt; --&gt; &lt;svg class="octicon octicon-check"
+        viewBox="0 0 12 16" version="1.1" width="12" height="16"
+        aria-hidden="true" &gt; &lt;path fill-rule="evenodd" d="M12 5l-8 8-4-4
+        1.5-1.5L4 10l6.5-6.5L12 5z" &gt;&lt;/path&gt; &lt;/svg&gt;
+        &lt;span&gt;Flash success with an icon.&lt;/span&gt; &lt;/div&gt;
+        &lt;div class="flash flash-full flash-warn"&gt; &lt;!-- &lt;%=
+        octicon("alert") %&gt; --&gt; &lt;svg class="octicon octicon-alert"
+        viewBox="0 0 16 16" version="1.1" width="16" height="16"
+        aria-hidden="true" &gt; &lt;path fill-rule="evenodd" d="M8.893
+        1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 0 0 0
+        1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 0
+        0 .01-1.002L8.893 1.5zm.133
+        11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z"
+        &gt;&lt;/path&gt; &lt;/svg&gt; &lt;span&gt;Flash warning with an
+        icon.&lt;/span&gt; &lt;/div&gt; &lt;div class="flash flash-full
+        flash-error"&gt;Flash error inside a Box.&lt;/div&gt; &lt;div
+        class="Box-body"&gt;Box body&lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <h2 id="boxes-with-icons">Boxes with icons</h2>
+    <p>
+      Use <code>Box-btn-octicon</code> with <code>btn-octicon</code> when you
+      want the icon to maintain the same padding as other box elements. This
+      selector offsets margin to ensure it lines up on the left and right sides
+      of the box so you may need to add padding neighboring elements.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="Box"&gt; &lt;div class="Box-body"&gt; &lt;span
+        class="pr-2"&gt;Box body&lt;/span&gt; &lt;button href="#"
+        class="Box-btn-octicon btn-octicon"&gt; &lt;!-- &lt;%= octicon "pencil"
+        %&gt; --&gt; &lt;svg class="octicon octicon-pencil" viewBox="0 0 14 16"
+        version="1.1" width="14" height="16" aria-hidden="true" &gt; &lt;path
+        fill-rule="evenodd" d="M0 12v3h3l8-8-3-3-8 8zm3
+        2H1v-2h1v1h1v1zm10.3-9.3L12 6 9 3l1.3-1.3a.996.996 0 0 1 1.41 0l1.59
+        1.59c.39.39.39 1.02 0 1.41z" &gt;&lt;/path&gt; &lt;/svg&gt;
+        &lt;/button&gt; &lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <p>
+      It’s common to want to float icons to the far left or right and stop the
+      <code>Box-title</code>from wrapping underneath. To do this you’ll need to
+      create a media object with utilities. Add <code>clearfix</code> to the
+      surrounding div (this could be the header, body, or rows), add
+      <code>overflow-hidden</code> to the title (or other text element), and
+      float the icons as desired.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="Box"&gt; &lt;div class="Box-header
+        clearfix"&gt; &lt;button href="#" class="Box-btn-octicon btn-octicon
+        float-right"&gt; &lt;!-- &lt;%= octicon "x" %&gt; --&gt; &lt;svg
+        class="octicon octicon-x" viewBox="0 0 12 16" version="1.1" width="12"
+        height="16" aria-hidden="true" &gt; &lt;path fill-rule="evenodd"
+        d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77
+        4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48L7.48 8z" &gt;&lt;/path&gt;
+        &lt;/svg&gt; &lt;/button&gt; &lt;h3 class="Box-title overflow-hidden
+        pr-3"&gt; A very long title that wraps onto multiple lines without
+        overlapping or wrapping underneath the icon to it's right &lt;/h3&gt;
+        &lt;/div&gt; &lt;div class="Box-body"&gt;Box body&lt;/div&gt;
+        &lt;/div&gt;</code
+      >
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="Box"&gt; &lt;div class="Box-row clearfix"&gt;
+        &lt;button href="#" class="Box-btn-octicon btn-octicon float-left"&gt;
+        &lt;!-- &lt;%= octicon "check" %&gt; --&gt; &lt;svg class="octicon
+        octicon-check" viewBox="0 0 12 16" version="1.1" width="12" height="16"
+        aria-hidden="true" &gt; &lt;path fill-rule="evenodd" d="M12 5l-8 8-4-4
+        1.5-1.5L4 10l6.5-6.5L12 5z" &gt;&lt;/path&gt; &lt;/svg&gt;
+        &lt;/button&gt; &lt;p class="overflow-hidden pl-3"&gt; A very long
+        paragraph that wraps onto multiple lines without overlapping or wrapping
+        underneath the icon to it's left &lt;/p&gt; &lt;/div&gt;
+        &lt;/div&gt;</code
+      >
+    </p>
+    <h2 id="box-headers-with-counters">Box headers with counters</h2>
+    <p>
+      Use a counter with a background that works against the contrast of the box
+      header. The default counter colors do not stand out well against the
+      header background so we suggest using one of the following styles:
+    </p>
+    <p>
+      Use <code>Counter--gray</code> for a counter with a gray background and
+      dark gray text.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="Box"&gt; &lt;div class="Box-header"&gt; &lt;h3
+        class="Box-title"&gt; Box title &lt;span class="Counter
+        Counter--gray"&gt;12&lt;/span&gt; &lt;/h3&gt; &lt;/div&gt; &lt;div
+        class="Box-body"&gt;Box body&lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <p>
+      Use <code>Counter--gray-dark</code> for a counter with a dark gray
+      background and white text.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="Box"&gt; &lt;div class="Box-header"&gt; &lt;h3
+        class="Box-title"&gt; Box title &lt;span class="Counter
+        Counter--gray-dark"&gt;12&lt;/span&gt; &lt;/h3&gt; &lt;/div&gt; &lt;div
+        class="Box-body"&gt;Box body&lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <h2 id="form-elements-and-buttons-in-boxes">
+      Form elements and buttons in boxes
+    </h2>
+    <p>
+      To achieve different layouts when adding buttons or form elements to boxes
+      we suggest you use utilities to achieve the layout you want. Here’s some
+      common examples:
+    </p>
+    <p>
+      Use <a href="/utilities/flexbox">flexbox utilities</a> to center align
+      items, and avoid using floats by using <code>flex-auto</code> to have the
+      text fill the remaining space so that the button rests on the far right.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="Box Box--condensed"&gt; &lt;div
+        class="Box-header d-flex flex-items-center"&gt; &lt;h3 class="Box-title
+        overflow-hidden flex-auto"&gt;Box title&lt;/h3&gt; &lt;button class="btn
+        btn-primary btn-sm"&gt;Button&lt;/button&gt; &lt;/div&gt; &lt;div
+        class="Box-body"&gt;Box body&lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <p>
+      A similar approach can be used for buttons with multiple lines of text
+      within a row.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="Box"&gt; &lt;div class="Box-row d-flex
+        flex-items-center"&gt; &lt;div class="flex-auto"&gt; &lt;strong&gt;Row
+        title&lt;/strong&gt; &lt;div class="text-small
+        color-text-tertiary"&gt;Description&lt;/div&gt; &lt;/div&gt; &lt;button
+        type="button" class="btn btn-primary"
+        name="button"&gt;View&lt;/button&gt; &lt;/div&gt; &lt;div class="Box-row
+        d-flex flex-items-center"&gt; &lt;div class="flex-auto"&gt;
+        &lt;strong&gt;Row title&lt;/strong&gt; &lt;div class="text-small
+        color-text-tertiary"&gt;Description&lt;/div&gt; &lt;/div&gt; &lt;button
+        type="button" class="btn btn-primary"
+        name="button"&gt;View&lt;/button&gt; &lt;/div&gt; &lt;div class="Box-row
+        d-flex flex-items-center"&gt; &lt;div class="flex-auto"&gt;
+        &lt;strong&gt;Row title&lt;/strong&gt; &lt;div class="text-small
+        color-text-tertiary"&gt;Description&lt;/div&gt; &lt;/div&gt; &lt;button
+        type="button" class="btn btn-primary"
+        name="button"&gt;View&lt;/button&gt; &lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <p>
+      Using flexbox along with form, button, and link styles, you can create
+      more complex box headers for things like bulk actions and sorting.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="Box"&gt; &lt;div class="Box-header d-flex
+        flex-items-center"&gt; &lt;form class="flex-auto"&gt; &lt;label&gt;
+        &lt;input class="mr-1" type="checkbox" /&gt; Check it &lt;/label&gt;
+        &lt;/form&gt; &lt;button class="btn-link select-menu-button
+        Link--muted"&gt;Select menu&lt;/button&gt; &lt;/div&gt; &lt;div
+        class="Box-body"&gt;Box body&lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <p>
+      You can put forms in boxes. Often form submission buttons are aligned to
+      the bottom right of the form which you can do with
+      <code>text-right</code> instead of using floats.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="Box"&gt; &lt;div class="Box-header"&gt; &lt;h3
+        class="Box-title"&gt;Example form title&lt;/h3&gt; &lt;/div&gt;
+        &lt;form&gt; &lt;div class="Box-body"&gt; &lt;div class="form-group"&gt;
+        &lt;div class="form-group-header"&gt;&lt;label&gt;Example
+        label&lt;/label&gt;&lt;/div&gt; &lt;div class="form-group-body"&gt;
+        &lt;input class="form-control" type="text" /&gt; &lt;/div&gt;
+        &lt;/div&gt; &lt;div class="form-checkbox"&gt; &lt;label&gt; &lt;input
+        type="checkbox" checked="checked" /&gt; Yes please &lt;/label&gt;
+        &lt;/div&gt; &lt;/div&gt; &lt;div class="Box-footer text-right"&gt;
+        &lt;button class="btn btn-secondary mr-1"&gt;Cancel&lt;/button&gt;
+        &lt;button class="btn btn-primary"&gt;Submit&lt;/button&gt; &lt;/div&gt;
+        &lt;/form&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <p>
+      When a box is all by itself centered on a page you can use
+      <a href="/objects/grid">column widths</a> to control the width of the box.
+      If needed, break the mold a little and use
+      <a href="/utilities/typography">typography utilities</a> instead of the
+      built in box title styles.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="Box Box--spacious col-6 mx-auto
+        text-center"&gt; &lt;form&gt; &lt;div class="Box-body"&gt; &lt;h3
+        class="f1-light"&gt;Example form&lt;/h3&gt; &lt;div class="form-group
+        mb-4"&gt; &lt;div class="form-group-header"&gt;&lt;label&gt;Example
+        label&lt;/label&gt;&lt;/div&gt; &lt;div class="form-group-body"&gt;
+        &lt;input class="form-control" type="text" /&gt; &lt;/div&gt;
+        &lt;/div&gt; &lt;button class="btn btn-primary
+        btn-block"&gt;Submit&lt;/button&gt; &lt;/div&gt; &lt;/form&gt;
+        &lt;/div&gt;</code
+      >
+    </p>
+    <p>
+      Box patterns can also be made with, and modified with
+      <a href="/utilities/borders">border utilities</a>.
+    </p>
+  </body>
+</html>

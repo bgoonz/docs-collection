@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Layout</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Layout</h1>
+    </header>
+    <p>Build responsive-friendly page layouts with 2 columns.</p>
+    <p>
+      Use with .container-xx classes to limit the overall layout structure size.
+    </p>
+    <h2 id="elements">Elements</h2>
+    <ul>
+      <li><code>Layout-main</code></li>
+      <li><code>Layout-sidebar</code></li>
+      <li><code>Layout-divider</code></li>
+      <li><code>Layout-main-centered-md</code></li>
+      <li><code>Layout-main-centered-lg</code></li>
+      <li><code>Layout-main-centered-xl</code></li>
+    </ul>
+    <p>
+      Use <code>Layout-main-centered-xx</code> to wrap
+      <code>container-xx</code> elements inside <code>Layout-main</code> so the
+      content remains centered on the screen regardless of the sidebar position.
+    </p>
+    <h2 id="default">Default</h2>
+    ```html live
+    <div class="Layout">
+      <div class="Layout-main border">.Layout-main</div>
+      <div class="Layout-sidebar border">.Layout-sidebar</div>
+    </div>
+    <p>```</p>
+    <h3 id="dividers">Dividers</h3>
+    <p>
+      Use <code>Layout--divided</code> in conjuction with a
+      <code>Layout-divider</code> to show a divider between the main content and
+      the sidebar. Flowing as row:
+    </p>
+    <ul>
+      <li>default: shows a <code>1px</code> line between main and sidebar</li>
+      <li>
+        <code>Layout-divider--flowRow-shallow</code>: shows a filled
+        <code>8px</code> divider.
+      </li>
+      <li><code>Layout-divider--flowRow-hidden</code>: hides the divider</li>
+    </ul>
+    <p>
+      <code
+        >html live &lt;div class="Layout Layout--divided"&gt; &lt;div
+        class="Layout-main border"&gt;main content&lt;/div&gt; &lt;div
+        class="Layout-divider"&gt;&lt;/div&gt; &lt;div class="Layout-sidebar
+        border"&gt;divider shown&lt;/div&gt; &lt;/div&gt; &lt;div
+        class="Layout"&gt; &lt;div class="Layout-main border"&gt;main
+        content&lt;/div&gt; &lt;div class="Layout-divider"&gt;&lt;/div&gt;
+        &lt;div class="Layout-sidebar border"&gt;divider hidden&lt;/div&gt;
+        &lt;/div&gt; &lt;div class="Layout Layout--divided"&gt; &lt;div
+        class="Layout-main border"&gt;main content&lt;/div&gt; &lt;div
+        class="Layout-divider Layout-divider--flowRow-shallow"&gt;&lt;/div&gt;
+        &lt;div class="Layout-sidebar border"&gt;flowRow shallow
+        divider&lt;/div&gt; &lt;/div&gt; &lt;div class="Layout
+        Layout--divided"&gt; &lt;div class="Layout-main border"&gt;main
+        content&lt;/div&gt; &lt;div class="Layout-divider
+        Layout-divider--flowRow-hidden"&gt;&lt;/div&gt; &lt;div
+        class="Layout-sidebar border"&gt;flowRow hidden divider&lt;/div&gt;
+        &lt;/div&gt;</code
+      >
+    </p>
+    <h3 id="centered-content">Centered content</h3>
+    <p>
+      <code
+        >html live &lt;div class="Layout"&gt; &lt;div class="Layout-main
+        border"&gt; &lt;div class="Layout-main-centered-md"&gt; &lt;div
+        class="container-md border color-border-info"&gt;centered md&lt;/div&gt;
+        &lt;/div&gt; &lt;/div&gt; &lt;div class="Layout-sidebar
+        border"&gt;sidebar&lt;/div&gt; &lt;/div&gt; &lt;div class="Layout"&gt;
+        &lt;div class="Layout-main border"&gt; &lt;div
+        class="Layout-main-centered-lg"&gt; &lt;div class="container-lg border
+        color-border-info"&gt;centered lg&lt;/div&gt; &lt;/div&gt; &lt;/div&gt;
+        &lt;div class="Layout-sidebar border"&gt;sidebar&lt;/div&gt;
+        &lt;/div&gt; &lt;div class="Layout"&gt; &lt;div class="Layout-main
+        border"&gt; &lt;div class="Layout-main-centered-xl"&gt; &lt;div
+        class="container-xl border color-border-info"&gt;centered xl&lt;/div&gt;
+        &lt;/div&gt; &lt;/div&gt; &lt;div class="Layout-sidebar
+        border"&gt;sidebar&lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <h2 id="modifiers">Modifiers</h2>
+    <h3 id="sidebar-sizing">Sidebar sizing</h3>
+    <ul>
+      <li>Default: [md: 256px, lg: 296px, xl: 320px]</li>
+      <li>
+        <code>Layout--sidebar-narrow</code> [md: 240px, lg: 256px, xl: 296px]
+      </li>
+      <li>
+        <code>Layout--sidebar-wide</code> [md: 296px, lg: 320px, xl: 344px]
+      </li>
+    </ul>
+    ```html live
+    <div class="Layout Layout--sidebar-narrow">
+      <div class="Layout-main border">Layout–sidebar-narrow</div>
+      <div class="Layout-sidebar border">sidebar</div>
+    </div>
+    <div class="Layout Layout--sidebar-wide">
+      <div class="Layout-main border">Layout–sidebar-wide</div>
+      <div class="Layout-sidebar border">sidebar</div>
+    </div>
+    <p>```</p>
+    <h3 id="column-gutter">Column gutter</h3>
+    <ul>
+      <li>Default: [md: 16px, lg: 24px]</li>
+      <li><code>Layout--gutter-none</code>: 0px</li>
+      <li><code>Layout--gutter-condensed</code> 16px</li>
+      <li>
+        <code>Layout--gutter-spacious</code> [md: 16px, lg: 32px, xl: 40px]
+      </li>
+    </ul>
+    ```html live
+    <div class="Layout Layout--gutter-none">
+      <div class="Layout-main border">Layout–gutter-none</div>
+      <div class="Layout-sidebar border">sidebar</div>
+    </div>
+    <div class="Layout Layout--gutter-condensed">
+      <div class="Layout-main border">Layout–gutter-condensed</div>
+      <div class="Layout-sidebar border">sidebar</div>
+    </div>
+    <div class="Layout">
+      <div class="Layout-main border">Default</div>
+      <div class="Layout-sidebar border">sidebar</div>
+    </div>
+    <div class="Layout Layout--gutter-spacious">
+      <div class="Layout-main border">Layout–gutter-spacious</div>
+      <div class="Layout-sidebar border">sidebar</div>
+    </div>
+    <p>```</p>
+    <h3 id="sidebar-positioning">Sidebar positioning</h3>
+    <ul>
+      <li>
+        <code>Layout--sidebarPosition-start</code> (default): sidebar to the
+        left
+      </li>
+      <li><code>Layout--sidebarPosition-end</code>: sidebar to the right</li>
+    </ul>
+    <p>
+      <code
+        >html live &lt;div class="Layout Layout--sidebarPosition-start"&gt;
+        &lt;div class="Layout-main border"&gt;main&lt;/div&gt; &lt;div
+        class="Layout-sidebar border"&gt;sidebar&lt;/div&gt; &lt;/div&gt;
+        &lt;div class="Layout Layout--sidebarPosition-end"&gt; &lt;div
+        class="Layout-main border"&gt;main&lt;/div&gt; &lt;div
+        class="Layout-sidebar border"&gt;sidebar&lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <h3 id="sidebar-positioning-as-rows">Sidebar positioning as rows</h3>
+    <ul>
+      <li>
+        <code>Layout--sidebarPosition-flowRow-start</code> (default): when
+        stacked, render the sidebar first
+      </li>
+      <li>
+        <code>Layout--sidebarPosition-flowRow-end</code>: when stacked, render
+        the sidebar last
+      </li>
+      <li>
+        <code>Layout--sidebarPosition-flowRow-none</code>: when stacked, hide
+        the sidebar
+      </li>
+    </ul>
+    <p>
+      <code
+        >html live &lt;div class="Layout
+        Layout--sidebarPosition-flowRow-start"&gt; &lt;div class="Layout-main
+        border"&gt;main&lt;/div&gt; &lt;div class="Layout-sidebar
+        border"&gt;sidebar&lt;/div&gt; &lt;/div&gt; &lt;div class="Layout
+        Layout--sidebarPosition-flowRow-end"&gt; &lt;div class="Layout-main
+        border"&gt;main&lt;/div&gt; &lt;div class="Layout-sidebar
+        border"&gt;sidebar&lt;/div&gt; &lt;/div&gt; &lt;div class="Layout
+        Layout--sidebarPosition-flowRow-none"&gt; &lt;div class="Layout-main
+        border"&gt;main&lt;/div&gt; &lt;div class="Layout-sidebar
+        border"&gt;sidebar&lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <h3 id="layout-stacking">Layout stacking</h3>
+    <ul>
+      <li>Default: stacks when container is <code>sm</code>.</li>
+      <li>
+        <code>Layout--flowRow-until-md</code>: stacks when container is
+        <code>md</code>.
+      </li>
+      <li>
+        <code>Layout--flowRow-until-lg</code>: stacks when container is
+        <code>lg</code>.
+      </li>
+    </ul>
+    <p>
+      <code
+        >html live &lt;div class="Layout Layout--flowRow-until-md"&gt; &lt;div
+        class="Layout-main border"&gt;main&lt;/div&gt; &lt;div
+        class="Layout-sidebar border"&gt;sidebar&lt;/div&gt; &lt;/div&gt;
+        &lt;div class="Layout Layout--flowRow-until-lg"&gt; &lt;div
+        class="Layout-main border"&gt;main&lt;/div&gt; &lt;div
+        class="Layout-sidebar border"&gt;sidebar&lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <h3 id="nesting-layouts">Nesting Layouts</h3>
+    <p>
+      It is possible to nest <code>Layout</code> components to generate 3-column
+      layouts.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="Layout"&gt; &lt;div class="Layout-main "&gt;
+        &lt;div class="Layout Layout--sidebarPosition-end
+        Layout--sidebar-narrow"&gt; &lt;div class="Layout-main border"&gt;main
+        content&lt;/div&gt; &lt;div class="Layout-sidebar border"&gt;metadata
+        sidebar&lt;/div&gt; &lt;/div&gt; &lt;/div&gt; &lt;div
+        class="Layout-sidebar border"&gt;default sidebar&lt;/div&gt;
+        &lt;/div&gt; &lt;div class="Layout"&gt; &lt;div class="Layout-main "&gt;
+        &lt;div class="Layout Layout--sidebarPosition-end
+        Layout--flowRow-until-lg Layout--sidebar-narrow" &gt; &lt;div
+        class="Layout-main border"&gt;main content&lt;/div&gt; &lt;div
+        class="Layout-sidebar border"&gt;metadata sidebar&lt;/div&gt;
+        &lt;/div&gt; &lt;/div&gt; &lt;div class="Layout-sidebar
+        border"&gt;default sidebar&lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <h2 id="accessibility-and-keyboard-navigation">
+      Accessibility and keyboard navigation
+    </h2>
+    <p>
+      Keyboard navigation follows the markup order. Decide carefully how the
+      focus order should be be by deciding whether <code>Layout-main</code> or
+      <code>Layout-sidebar</code> comes first in code. The code order won’t
+      affect the visual position.
+    </p>
+  </body>
+</html>

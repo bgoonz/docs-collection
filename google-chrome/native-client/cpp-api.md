@@ -1,0 +1,136 @@
+---json {"title":"Pepper C++ API Reference (Stable)"} ---
+
+<span id="cpp-api" class="target"><span id="pepper-stable-cpp-index"></span></span> {% include 'partials/nacl-warning.njk' %}
+
+---
+
+This page lists the C++ API for Pepper 60. Apps that use this API can run in Chrome 60 or higher.
+
+## <a href="/docs/native-client/pepper_stable/cpp/inherits/" class="reference external">Classes</a>
+
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_audio/" class="reference external">Audio</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_audio_buffer/" class="reference external">AudioBuffer</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_audio_config/" class="reference external">AudioConfig</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_audio_encoder/" class="reference external">AudioEncoder</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_completion_callback/" class="reference external">CompletionCallback</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_completion_callback_factory/" class="reference external">CompletionCallbackFactory</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_completion_callback_with_output/" class="reference external">CompletionCallbackWithOutput</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_compositor/" class="reference external">Compositor</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_compositor_layer/" class="reference external">CompositorLayer</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_core/" class="reference external">Core</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_directory_entry/" class="reference external">DirectoryEntry</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_file_i_o/" class="reference external">FileIO</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_file_ref/" class="reference external">FileRef</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_file_system/" class="reference external">FileSystem</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_float_point/" class="reference external">FloatPoint</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_float_rect/" class="reference external">FloatRect</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_float_size/" class="reference external">FloatSize</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_fullscreen/" class="reference external">Fullscreen</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_graphics2_d/" class="reference external">Graphics2D</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_graphics3_d/" class="reference external">Graphics3D</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_graphics3_d_client/" class="reference external">Graphics3DClient</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_host_resolver/" class="reference external">HostResolver</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_i_m_e_input_event/" class="reference external">IMEInputEvent</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_image_data/" class="reference external">ImageData</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_input_event/" class="reference external">InputEvent</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_instance/" class="reference external">Instance</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_instance_handle/" class="reference external">InstanceHandle</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_keyboard_input_event/" class="reference external">KeyboardInputEvent</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_media_stream_audio_track/" class="reference external">MediaStreamAudioTrack</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_media_stream_video_track/" class="reference external">MediaStreamVideoTrack</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_message_handler/" class="reference external">MessageHandler</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_message_loop/" class="reference external">MessageLoop</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_module/" class="reference external">Module</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_mouse_cursor/" class="reference external">MouseCursor</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_mouse_input_event/" class="reference external">MouseInputEvent</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_mouse_lock/" class="reference external">MouseLock</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_net_address/" class="reference external">NetAddress</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_network_list/" class="reference external">NetworkList</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_network_monitor/" class="reference external">NetworkMonitor</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_network_proxy/" class="reference external">NetworkProxy</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_point/" class="reference external">Point</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_rect/" class="reference external">Rect</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_resource/" class="reference external">Resource</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_size/" class="reference external">Size</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_t_c_p_socket/" class="reference external">TCPSocket</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_text_input_controller/" class="reference external">TextInputController</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_touch_input_event/" class="reference external">TouchInputEvent</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_touch_point/" class="reference external">TouchPoint</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_u_d_p_socket/" class="reference external">UDPSocket</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_u_r_l_loader/" class="reference external">URLLoader</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_u_r_l_request_info/" class="reference external">URLRequestInfo</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_u_r_l_response_info/" class="reference external">URLResponseInfo</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_var/" class="reference external">Var</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_var_1_1_out_exception/" class="reference external">Var11OutException</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_var_array/" class="reference external">VarArray</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_var_array_buffer/" class="reference external">VarArrayBuffer</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_var_dictionary/" class="reference external">VarDictionary</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_video_decoder/" class="reference external">VideoDecoder</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_video_encoder/" class="reference external">VideoEncoder</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_video_frame/" class="reference external">VideoFrame</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_view/" class="reference external">View</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_vpn_provider/" class="reference external">VpnProvider</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_web_socket/" class="reference external">WebSocket</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1_wheel_input_event/" class="reference external">WheelInputEvent</a>
+- <a href="/docs/native-client/pepper_stable/cpp/classpp_1_1internal_1_1_directory_entry_array_output_adapter_with_storage/" class="reference external">Internal::DirectoryEntryArrayOutputAdapterWithStorage</a>
+
+## Files
+
+- <a href="/docs/native-client/pepper_stable/cpp/audio_8h/" class="reference external">audio.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/audio__buffer_8h/" class="reference external">audio_buffer.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/audio__config_8h/" class="reference external">audio_config.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/audio__encoder_8h/" class="reference external">audio_encoder.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/completion__callback_8h/" class="reference external">completion_callback.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/completion__callback__factory_8h/" class="reference external">completion_callback_factory.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/compositor_8h/" class="reference external">compositor.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/compositor__layer_8h/" class="reference external">compositor_layer.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/core_8h/" class="reference external">core.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/directory__entry_8h/" class="reference external">directory_entry.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/file__io_8h/" class="reference external">file_io.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/file__ref_8h/" class="reference external">file_ref.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/file__system_8h/" class="reference external">file_system.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/fullscreen_8h/" class="reference external">fullscreen.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/graphics__2d_8h/" class="reference external">graphics_2d.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/graphics__3d_8h/" class="reference external">graphics_3d.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/graphics__3d__client_8h/" class="reference external">graphics_3d_client.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/host__resolver_8h/" class="reference external">host_resolver.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/image__data_8h/" class="reference external">image_data.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/input__event_8h/" class="reference external">input_event.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/instance_8h/" class="reference external">instance.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/instance__handle_8h/" class="reference external">instance_handle.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/logging_8h/" class="reference external">logging.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/media__stream__audio__track_8h/" class="reference external">media_stream_audio_track.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/media__stream__video__track_8h/" class="reference external">media_stream_video_track.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/message__handler_8h/" class="reference external">message_handler.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/message__loop_8h/" class="reference external">message_loop.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/module_8h/" class="reference external">module.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/module__embedder_8h/" class="reference external">module_embedder.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/module__impl_8h/" class="reference external">module_impl.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/mouse__cursor_8h/" class="reference external">mouse_cursor.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/mouse__lock_8h/" class="reference external">mouse_lock.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/net__address_8h/" class="reference external">net_address.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/network__list_8h/" class="reference external">network_list.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/network__monitor_8h/" class="reference external">network_monitor.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/network__proxy_8h/" class="reference external">network_proxy.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/pass__ref_8h/" class="reference external">pass_ref.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/point_8h/" class="reference external">point.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/rect_8h/" class="reference external">rect.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/resource_8h/" class="reference external">resource.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/size_8h/" class="reference external">size.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/tcp__socket_8h/" class="reference external">tcp_socket.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/text__input__controller_8h/" class="reference external">text_input_controller.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/touch__point_8h/" class="reference external">touch_point.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/udp__socket_8h/" class="reference external">udp_socket.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/url__loader_8h/" class="reference external">url_loader.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/url__request__info_8h/" class="reference external">url_request_info.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/url__response__info_8h/" class="reference external">url_response_info.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/var_8h/" class="reference external">var.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/var__array_8h/" class="reference external">var_array.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/var__array__buffer_8h/" class="reference external">var_array_buffer.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/var__dictionary_8h/" class="reference external">var_dictionary.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/video__decoder_8h/" class="reference external">video_decoder.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/video__encoder_8h/" class="reference external">video_encoder.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/video__frame_8h/" class="reference external">video_frame.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/view_8h/" class="reference external">view.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/vpn__provider_8h/" class="reference external">vpn_provider.h</a>
+- <a href="/docs/native-client/pepper_stable/cpp/websocket_8h/" class="reference external">websocket.h</a>

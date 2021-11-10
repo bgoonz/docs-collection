@@ -1,9 +1,8 @@
---- title: BookInstance detail page and challenge slug: &gt;- Learn/Server-side/Express\_Nodejs/Displaying\_data/BookInstance\_detail\_page\_and\_challenge tags: - Express - Node - displaying data - part 5 - server-side ---
+--- title: BookInstance detail page and challenge slug: &gt;- Learn/Server-side/Express_Nodejs/Displaying_data/BookInstance_detail_page_and_challenge tags: - Express - Node - displaying data - part 5 - server-side ---
 
-BookInstance detail page
-------------------------
+## BookInstance detail page
 
-The `BookInstance` detail page needs to display the information for each `BookInstance`, identified using its (automatically generated) `_id` field value. This will include the `Book` name (as a link to the *Book detail page*) along with other information in the record.
+The `BookInstance` detail page needs to display the information for each `BookInstance`, identified using its (automatically generated) `_id` field value. This will include the `Book` name (as a link to the _Book detail page_) along with other information in the record.
 
 ### Controller
 
@@ -31,7 +30,7 @@ The method calls `BookInstance.findById()` with the ID of a specific book instan
 
 ### View
 
-Create **/views/bookinstance\_detail.pug** and copy in the content below.
+Create **/views/bookinstance_detail.pug** and copy in the content below.
 
     extends layout
 
@@ -58,26 +57,24 @@ Everything in this template has been demonstrated in previous sections.
 
 ### What does it look like?
 
-Run the application and open your browser to <http://localhost:3000/>. Select the *All book-instances* link, then select one of the items. If everything is set up correctly, your site should look something like the following screenshot.
+Run the application and open your browser to <http://localhost:3000/>. Select the _All book-instances_ link, then select one of the items. If everything is set up correctly, your site should look something like the following screenshot.
 
 ![BookInstance Detail Page - Express Local Library site](locallibary_express_bookinstance_detail.png)
 
-Challenge
----------
+## Challenge
 
-Currently most *dates* displayed on the site use the default JavaScript format (e.g. *Tue Oct 06 2020 15:49:58 GMT+1100 (AUS Eastern Daylight Time))*. The challenge for this article is to improve the appearance of the date display for `Author` lifespan information (date of death/birth) and for *BookInstance detail* pages to use the format: Oct 6th, 2016.
+Currently most *dates* displayed on the site use the default JavaScript format (e.g. _Tue Oct 06 2020 15:49:58 GMT+1100 (AUS Eastern Daylight Time))_. The challenge for this article is to improve the appearance of the date display for `Author` lifespan information (date of death/birth) and for _BookInstance detail_ pages to use the format: Oct 6th, 2016.
 
 #### Note
 
-You can use the [same approach](#) as we used for the *Book Instance List* (adding the virtual property for the lifespan to the `Author` model and use [luxon](https://www.npmjs.com/package/luxon) to format the date strings).
+You can use the [same approach](#) as we used for the _Book Instance List_ (adding the virtual property for the lifespan to the `Author` model and use [luxon](https://www.npmjs.com/package/luxon) to format the date strings).
 
 To complete this challenge, you must:
 
-1.  Replace the variable `due_back` with `due_back_formatted` in the *BookInstance detail* page.
-2.  Update the `Author` model to add a lifespan virtual property. The lifespan should look like: *date\_of\_birth - date\_of\_death*, where both values have the same date format as `BookInstance.due_back_formatted`.
+1.  Replace the variable `due_back` with `due_back_formatted` in the _BookInstance detail_ page.
+2.  Update the `Author` model to add a lifespan virtual property. The lifespan should look like: _date_of_birth - date_of_death_, where both values have the same date format as `BookInstance.due_back_formatted`.
 3.  Use `Author.lifespan` in all views where you currently explicitly use `date_of_birth` and `date_of_death`.
 
-Next steps
-----------
+## Next steps
 
--   Return to [Express Tutorial Part 5: Displaying library data](/en-US/docs/Learn/Server-side/Express_Nodejs/Displaying_data#displaying_library_data_tutorial_subarticles).
+- Return to [Express Tutorial Part 5: Displaying library data](/en-US/docs/Learn/Server-side/Express_Nodejs/Displaying_data#displaying_library_data_tutorial_subarticles).

@@ -1,4 +1,4 @@
---- title: WAI-ARIA basics slug: Learn/Accessibility/WAI-ARIA\_basics tags: - ARIA - Accessibility - Article - Beginner - CodingScripting - Guide - HTML - JavaScript - Learn - WAI-ARIA - semantics ---
+--- title: WAI-ARIA basics slug: Learn/Accessibility/WAI-ARIA_basics tags: - ARIA - Accessibility - Article - Beginner - CodingScripting - Guide - HTML - JavaScript - Learn - WAI-ARIA - semantics ---
 
 {{LearnSidebar}}
 
@@ -8,8 +8,7 @@ Following on from the previous article, sometimes making complex UI controls tha
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, a basic understanding of HTML, CSS, and JavaScript, an understanding of the <a href="/en-US/docs/Learn/Accessibility">previous articles in the course</a>.</td></tr><tr class="even"><td>Objective:</td><td>To gain familiarity with WAI-ARIA, and how it can be used to provide useful additional semantics to enhance accessibility where required.</td></tr></tbody></table>
 
-What is WAI-ARIA?
------------------
+## What is WAI-ARIA?
 
 Let's start by looking at what WAI-ARIA is, and what it can do for us.
 
@@ -38,9 +37,9 @@ The problem here is that visually they work, but screenreaders can't make any se
 
 [WAI-ARIA](https://www.w3.org/TR/wai-aria-1.1/) (Web Accessibility Initiative - Accessible Rich Internet Applications) is a specification written by the W3C, defining a set of additional HTML attributes that can be applied to elements to provide additional semantics and improve accessibility wherever it is lacking. There are three main features defined in the spec:
 
--   **Roles** — These define what an element is or does. Many of these are so-called landmark roles, which largely duplicate the semantic value of HTML5 structural elements e.g. `role="navigation"` ({{htmlelement("nav")}}) or `role="complementary"` ({{htmlelement("aside")}}), but there are also others that describe different pages structures, such as `role="banner"`, `role="search"`, `role="tabgroup"`, `role="tab"`, etc., which are commonly found in UIs.
--   **Properties** — These define properties of elements, which can be used to give them extra meaning or semantics. As an example, `aria-required="true"` specifies that a form input needs to be filled in order to be valid, whereas `aria-labelledby="label"` allows you to put an ID on an element, then reference it as being the label for anything else on the page, including multiple elements, which is not possible using `<label for="input">`. As an example, you could use `aria-labelledby` to specify that a key description contained in a {{htmlelement("div")}} is the label for multiple table cells, or you could use it as an alternative to image alt text — specify existing information on the page as an image's alt text, rather than having to repeat it inside the `alt` attribute. You can see an example of this at [Text alternatives](/en-US/docs/Learn/Accessibility/HTML?document_saved=true#Text_alternatives).
--   **States** — Special properties that define the current conditions of elements, such as `aria-disabled="true"`, which specifies to a screenreader that a form input is currently disabled. States differ from properties in that properties don't change throughout the lifecycle of an app, whereas states can change, generally programmatically via JavaScript.
+- **Roles** — These define what an element is or does. Many of these are so-called landmark roles, which largely duplicate the semantic value of HTML5 structural elements e.g. `role="navigation"` ({{htmlelement("nav")}}) or `role="complementary"` ({{htmlelement("aside")}}), but there are also others that describe different pages structures, such as `role="banner"`, `role="search"`, `role="tabgroup"`, `role="tab"`, etc., which are commonly found in UIs.
+- **Properties** — These define properties of elements, which can be used to give them extra meaning or semantics. As an example, `aria-required="true"` specifies that a form input needs to be filled in order to be valid, whereas `aria-labelledby="label"` allows you to put an ID on an element, then reference it as being the label for anything else on the page, including multiple elements, which is not possible using `<label for="input">`. As an example, you could use `aria-labelledby` to specify that a key description contained in a {{htmlelement("div")}} is the label for multiple table cells, or you could use it as an alternative to image alt text — specify existing information on the page as an image's alt text, rather than having to repeat it inside the `alt` attribute. You can see an example of this at [Text alternatives](/en-US/docs/Learn/Accessibility/HTML?document_saved=true#Text_alternatives).
+- **States** — Special properties that define the current conditions of elements, such as `aria-disabled="true"`, which specifies to a screenreader that a form input is currently disabled. States differ from properties in that properties don't change throughout the lifecycle of an app, whereas states can change, generally programmatically via JavaScript.
 
 An important point about WAI-ARIA attributes is that they don't affect anything about the web page, except for the information exposed by the browser's accessibility APIs (where screenreaders get their information from). WAI-ARIA doesn't affect webpage structure, the DOM, etc., although the attributes can be useful for selecting elements by CSS.
 
@@ -75,14 +74,13 @@ We talked about some of the problems that prompted WAI-ARIA to be created earlie
 3.  **Enhancing keyboard accessibility**: There are built-in HTML elements that have native keyboard accessibility; when other elements are used along with JavaScript to simulate similar interactions, keyboard accessibility and screenreader reporting suffers as a result. Where this is unavoidable, WAI-ARIA provides a means to allow other elements to receive focus (using `tabindex`).
 4.  **Accessibility of non-semantic controls**: When a series of nested `<div>`s along with CSS/JavaScript is used to create a complex UI-feature, or a native control is greatly enhanced/changed via JavaScript, accessibility can suffer — screenreader users will find it difficult to work out what the feature does if there are no semantics or other clues. In these situations, ARIA can help to provide what's missing with a combination of roles like `button`, `listbox`, or `tabgroup`, and properties like `aria-required` or `aria-posinset` to provide further clues as to functionality.
 
-One thing to remember though — **you should only use WAI-ARIA when you need to!** Ideally, you should *always* use [native HTML features](/en-US/docs/Learn/Accessibility/HTML) to provide the semantics required by screenreaders to tell their users what is going on. Sometimes this isn't possible, either because you have limited control over the code, or because you are creating something complex that doesn't have an easy HTML element to implement it. In such cases, WAI-ARIA can be a valuable accessibility enhancing tool.
+One thing to remember though — **you should only use WAI-ARIA when you need to!** Ideally, you should _always_ use [native HTML features](/en-US/docs/Learn/Accessibility/HTML) to provide the semantics required by screenreaders to tell their users what is going on. Sometimes this isn't possible, either because you have limited control over the code, or because you are creating something complex that doesn't have an easy HTML element to implement it. In such cases, WAI-ARIA can be a valuable accessibility enhancing tool.
 
 But again, only use it when necessary!
 
-**Note**: Also, try to make sure you test your site with a variety of *real* users — non-disabled people, people using screenreaders, people using keyboard navigation, etc. They will have better insights than you about how well it works.
+**Note**: Also, try to make sure you test your site with a variety of _real_ users — non-disabled people, people using screenreaders, people using keyboard navigation, etc. They will have better insights than you about how well it works.
 
-Practical WAI-ARIA implementations
-----------------------------------
+## Practical WAI-ARIA implementations
 
 In the next section we'll look at the four areas in more detail, along with practical examples. Before you continue, you should get a screenreader testing setup put in place, so you can test some of the examples as you go through.
 
@@ -111,12 +109,12 @@ WAI-ARIA adds the [`role` attribute](https://www.w3.org/TR/wai-aria-1.1/#role_de
 
 If you try testing the example with a screenreader in a modern browser, you'll already get some useful information. For example, VoiceOver gives you the following:
 
--   On the `<header>` element — "banner, 2 items" (it contains a heading and the `<nav>`).
--   On the `<nav>` element — "navigation 2 items" (it contains a list and a form).
--   On the `<main>` element — "main 2 items" (it contains an article and an aside).
--   On the `<aside>` element — "complementary 2 items" (it contains a heading and a list).
--   On the search form input — "Search query, insertion at beginning of text".
--   On the `<footer>` element — "footer 1 item".
+- On the `<header>` element — "banner, 2 items" (it contains a heading and the `<nav>`).
+- On the `<nav>` element — "navigation 2 items" (it contains a list and a form).
+- On the `<main>` element — "main 2 items" (it contains an article and an aside).
+- On the `<aside>` element — "complementary 2 items" (it contains a heading and a list).
+- On the search form input — "Search query, insertion at beginning of text".
+- On the `<footer>` element — "footer 1 item".
 
 If you go to VoiceOver's landmarks menu (accessed using VoiceOver key + U and then using the cursor keys to cycle through the menu choices), you'll see that most of the elements are nicely listed so they can be accessed quickly.
 
@@ -149,8 +147,8 @@ We've also given you a bonus feature in this example — the {{htmlelement("inpu
 
 Now if we use VoiceOver to look at this example, we get some improvements:
 
--   The search form is called out as a separate item, both when browsing through the page, and in the Landmarks menu.
--   The label text contained in the `aria-label` attribute is read out when the form input is highlighted.
+- The search form is called out as a separate item, both when browsing through the page, and in the Landmarks menu.
+- The label text contained in the `aria-label` attribute is read out when the form input is highlighted.
 
 Beyond this, the site is more likely to be accessible to users of older browsers such as IE8; it is worth including ARIA roles for that purpose. And if for some reason your site is built using just `<div>`s, you should definitely include the ARIA roles to provide these much needed semantics!
 
@@ -179,9 +177,9 @@ This works OK, but it is not good for accessibility — the content update is no
 
 WAI-ARIA fortunately provides a useful mechanism to provide these alerts — the `aria-live` property. Applying this to an element causes screenreaders to read out the content that is updated. How urgently the content is read out depends on the attribute value:
 
--   `off:` The default. Updates should not be announced.
--   `polite`: Updates should be announced only if the user is idle.
--   `assertive`: Updates should be announced to the user as soon as possible.
+- `off:` The default. Updates should not be announced.
+- `polite`: Updates should be announced only if the user is idle.
+- `assertive`: Updates should be announced to the user as soon as possible.
 
 We'd like you to take a copy of [aria-no-live.html](https://github.com/mdn/learning-area/blob/master/accessibility/aria/aria-no-live.html) and [quotes.json](https://github.com/mdn/learning-area/blob/master/accessibility/aria/quotes.json), and update your `<section>` tag as follows:
 
@@ -209,8 +207,8 @@ However, sometimes you will end up having to write code that either uses non-sem
 
 In terms of making non-focusable code focusable, WAI-ARIA extends the `tabindex` attribute with some new values:
 
--   `tabindex="0"` — as indicated above, this value allows elements that are not normally tabbable to become tabbable. This is the most useful value of `tabindex`.
--   `tabindex="-1"` — this allows not normally tabbable elements to receive focus programmatically, e.g. via JavaScript, or as the target of links. 
+- `tabindex="0"` — as indicated above, this value allows elements that are not normally tabbable to become tabbable. This is the most useful value of `tabindex`.
+- `tabindex="-1"` — this allows not normally tabbable elements to receive focus programmatically, e.g. via JavaScript, or as the target of links.
 
 We discussed this in more detail and showed a typical implementation back in our HTML accessibility article — see [Building keyboard accessibility back in](/en-US/docs/Learn/Accessibility/HTML#building_keyboard_accessibility_back_in).
 
@@ -227,8 +225,8 @@ First of all, let's revisit the form example we first looked at in our CSS and J
       </ul>
     </div>
 
--   `role="alert"` automatically turns the element it is applied to into a live region, so changes to it are read out; it also semantically identifies it as an alert message (important time/context sensitive information), and represents a better, more accessible way of delivering an alert to a user (modal dialogs like `alert()` calls have a number of accessibility problems; see [Popup Windows](https://webaim.org/techniques/javascript/other#popups) by WebAIM).
--   An `aria-relevant` value of `all` instructs the screenreader to read out the contents of the error list when any changes are made to it — i.e. when errors are added or removed. This is useful because the user will want to know what errors are left, not just what has been added or removed from the list.
+- `role="alert"` automatically turns the element it is applied to into a live region, so changes to it are read out; it also semantically identifies it as an alert message (important time/context sensitive information), and represents a better, more accessible way of delivering an alert to a user (modal dialogs like `alert()` calls have a number of accessibility problems; see [Popup Windows](https://webaim.org/techniques/javascript/other#popups) by WebAIM).
+- An `aria-relevant` value of `all` instructs the screenreader to read out the contents of the error list when any changes are made to it — i.e. when errors are added or removed. This is useful because the user will want to know what errors are left, not just what has been added or removed from the list.
 
 We could go further with our ARIA usage, and provide some more validation help. How about indicating whether fields are required in the first place, and what range the age should be?
 
@@ -322,45 +320,41 @@ To improve things, we've created a new version of the example called [aria-tabbe
 
 The new features are as follows:
 
--   New roles — `tablist`, `tab`, `tabpanel` — these identify the important areas of the tabbed interface — the container for the tabs, the tabs themselves, and the corresponding tabpanels.
--   `aria-selected` — Defines which tab is currently selected. As different tabs are selected by the user, the value of this attribute on the different tabs is updated via JavaScript.
--   `aria-hidden` — Hides an element from being read out by a screenreader. As different tabs are selected by the user, the value of this attribute on the different tabs is updated via JavaScript.
--   `tabindex="0"` — As we've removed the links, we need to give the list items this attribute to provide it with keyboard focus.
--   `aria-setsize` — This property allows you to specify to screenreaders that an element is part of a series, and how many items the series has.
--   `aria-posinset` — This property allows you to specify what position in a series an element is in. Along with `aria-setsize`, it provides a screenreader with enough information to tell you that you are currently on item "1 of 3", etc. In many cases, browsers should be able to infer this information from the element hierarchy, but it certainly helps to provide more clues.
+- New roles — `tablist`, `tab`, `tabpanel` — these identify the important areas of the tabbed interface — the container for the tabs, the tabs themselves, and the corresponding tabpanels.
+- `aria-selected` — Defines which tab is currently selected. As different tabs are selected by the user, the value of this attribute on the different tabs is updated via JavaScript.
+- `aria-hidden` — Hides an element from being read out by a screenreader. As different tabs are selected by the user, the value of this attribute on the different tabs is updated via JavaScript.
+- `tabindex="0"` — As we've removed the links, we need to give the list items this attribute to provide it with keyboard focus.
+- `aria-setsize` — This property allows you to specify to screenreaders that an element is part of a series, and how many items the series has.
+- `aria-posinset` — This property allows you to specify what position in a series an element is in. Along with `aria-setsize`, it provides a screenreader with enough information to tell you that you are currently on item "1 of 3", etc. In many cases, browsers should be able to infer this information from the element hierarchy, but it certainly helps to provide more clues.
 
 In our tests, this new structure did serve to improve things overall. The tabs are now recognized as tabs (e.g. "tab" is spoken by the screenreader), the selected tab is indicated by "selected" being read out with the tab name, and the screenreader also tells you which tab number you are currently on. In addition, because of the `aria-hidden` settings (only the non-hidden tab ever has `aria-hidden="false"` set), the non-hidden content is the only one you can navigate down to, meaning the selected content is easier to find.
 
 **Note**: If there is anything you explicitly don't want screen readers to read out, you can give them the `aria-hidden="true"`  attribute.
 
-Test your skills!
------------------
+## Test your skills!
 
 You've reached the end of this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: WAI-ARIA](/en-US/docs/Learn/Accessibility/WAI-ARIA_basics/Test_your_skills:_WAI-ARIA).
 
-Summary
--------
+## Summary
 
 This article has by no means covered all that's available in WAI-ARIA, but it should have given you enough information to understand how to use it, and know some of the most common patterns you will encounter that require it.
 
-See also
---------
+## See also
 
--   [Definition of Roles](https://www.w3.org/TR/wai-aria-1.1/#role_definitions) — ARIA roles reference.
--   [Definitions of States and Properties (all aria-\* attributes)](https://www.w3.org/TR/wai-aria-1.1/#state_prop_def) — properties and states reference.
--   [Deque university code library](https://dequeuniversity.com/library/) — a library of really useful practical examples showing complex UI controls made accessible using WAI-ARIA features.
--   [WAI-ARIA Authoring Practices](https://w3c.github.io/aria-practices/) — very detailed design patterns from the W3C, explaining how to implement different types of complex UI control whilst making them accessible using WAI-ARIA features.
--   [ARIA in HTML](https://www.w3.org/TR/html-aria/) — A W3C spec that defines, for each HTML feature, what accessibility (ARIA) semantics that feature implicitly has set on it by the browser, and what WAI-ARIA features you may set on it if extra semantics are required.
+- [Definition of Roles](https://www.w3.org/TR/wai-aria-1.1/#role_definitions) — ARIA roles reference.
+- [Definitions of States and Properties (all aria-\* attributes)](https://www.w3.org/TR/wai-aria-1.1/#state_prop_def) — properties and states reference.
+- [Deque university code library](https://dequeuniversity.com/library/) — a library of really useful practical examples showing complex UI controls made accessible using WAI-ARIA features.
+- [WAI-ARIA Authoring Practices](https://w3c.github.io/aria-practices/) — very detailed design patterns from the W3C, explaining how to implement different types of complex UI control whilst making them accessible using WAI-ARIA features.
+- [ARIA in HTML](https://www.w3.org/TR/html-aria/) — A W3C spec that defines, for each HTML feature, what accessibility (ARIA) semantics that feature implicitly has set on it by the browser, and what WAI-ARIA features you may set on it if extra semantics are required.
 
 {{PreviousMenuNext("Learn/Accessibility/CSS\_and\_JavaScript","Learn/Accessibility/Multimedia", "Learn/Accessibility")}}
 
-In this module
---------------
+## In this module
 
--   [What is accessibility?](/en-US/docs/Learn/Accessibility/What_is_accessibility)
--   [HTML: A good basis for accessibility](/en-US/docs/Learn/Accessibility/HTML)
--   [CSS and JavaScript accessibility best practices](/en-US/docs/Learn/Accessibility/CSS_and_JavaScript)
--   [WAI-ARIA basics](/en-US/docs/Learn/Accessibility/WAI-ARIA_basics)
--   [Accessible multimedia](/en-US/docs/Learn/Accessibility/Multimedia)
--   [Mobile accessibility](/en-US/docs/Learn/Accessibility/Mobile)
--   [Accessibility troubleshooting](/en-US/docs/Learn/Accessibility/Accessibility_troubleshooting)
+- [What is accessibility?](/en-US/docs/Learn/Accessibility/What_is_accessibility)
+- [HTML: A good basis for accessibility](/en-US/docs/Learn/Accessibility/HTML)
+- [CSS and JavaScript accessibility best practices](/en-US/docs/Learn/Accessibility/CSS_and_JavaScript)
+- [WAI-ARIA basics](/en-US/docs/Learn/Accessibility/WAI-ARIA_basics)
+- [Accessible multimedia](/en-US/docs/Learn/Accessibility/Multimedia)
+- [Mobile accessibility](/en-US/docs/Learn/Accessibility/Mobile)
+- [Accessibility troubleshooting](/en-US/docs/Learn/Accessibility/Accessibility_troubleshooting)

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>HTML</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">HTML</h1>
+    </header>
+    <h2 id="general-formatting">General formatting</h2>
+    <ul>
+      <li>
+        Use soft-tabs with a two space indent. Spaces are the only way to
+        guarantee code renders the same in any person’s environment.
+      </li>
+      <li>
+        Paragraphs of text should always be placed in a
+        <code>&lt;p&gt;</code> tag. Never use multiple
+        <code>&lt;br&gt;</code> tags.
+      </li>
+      <li>
+        Items in list form should always be in <code>&lt;ul&gt;</code>,
+        <code>&lt;ol&gt;</code>, or <code>&lt;dl&gt;</code>. Never use a set of
+        <code>&lt;div&gt;</code> or <code>&lt;p&gt;</code>.
+      </li>
+      <li>
+        Every form input that has text attached should utilize a
+        <code>&lt;label&gt;</code> tag.
+        <strong>Especially radio or checkbox elements.</strong>
+      </li>
+      <li>
+        Even though quotes around attributes is optional, always put quotes
+        around attributes for readability.
+      </li>
+      <li>
+        Avoid writing closing tag comments, like
+        <code>&lt;!-- /.element --&gt;</code>. This just adds to page load time.
+        Plus, most editors have indentation guides and open-close tag
+        highlighting.
+      </li>
+      <li>
+        Avoid trailing slashes in self-closing elements. For example,
+        <code>&lt;br&gt;</code>, <code>&lt;hr&gt;</code>,
+        <code>&lt;img&gt;</code>, and <code>&lt;input&gt;</code>.
+      </li>
+      <li>
+        Don’t set <code>tabindex</code> manually—rely on the browser to set the
+        order.
+      </li>
+    </ul>
+    <p>
+      <code
+        >html inert=true &lt;p class="line-note m-0" data-attribute="106"&gt;
+        This is my paragraph of special text. &lt;/p&gt;</code
+      >
+    </p>
+    <h2 id="boolean-attributes">Boolean attributes</h2>
+    <p>
+      Many attributes don’t require a value to be set, like
+      <code>checked</code>, so don’t set them.
+    </p>
+    <p>```html inert=true <input type="checkbox" value="1" checked /></p>
+    <p>
+      <select>
+        <option value="1" selected>1</option>
+      </select>
+      ```
+    </p>
+    <p>
+      For more information,
+      <a
+        href="http://www.whatwg.org/specs/web-apps/current-work/multipage/common-microsyntaxes.html#boolean-attributes"
+        >read the WhatWG section</a
+      >.
+    </p>
+    <h2 id="lean-markup">Lean markup</h2>
+    <p>
+      Whenever possible, avoid superfluous parent elements when writing HTML.
+      Many times this requires iteration and refactoring, but produces less
+      HTML. For example:
+    </p>
+    <p>
+      ```html inert=true
+      <!-- Not so great -->
+      <span class="avatar"> <img src="https://github.com/github.png" /> </span>
+    </p>
+    <!-- Better -->
+    <p><img class="avatar" src="https://github.com/github.png" /> ```</p>
+    <h2 id="forms">Forms</h2>
+    <ul>
+      <li>Lean towards radio or checkbox lists instead of select menus.</li>
+      <li>
+        Wrap radio and checkbox inputs and their text in
+        <code>&lt;label&gt;</code>s. No need for <code>for</code> attributes
+        here—the wrapping automatically associates the two.
+      </li>
+      <li>
+        Form buttons should always include an explicit <code>type</code>. Use
+        primary buttons for the <code>type="submit"</code> button and regular
+        buttons for <code>type="button"</code>.
+      </li>
+      <li>
+        The primary form button must come first in the DOM, especially for forms
+        with multiple submit buttons. The visual order should be preserved with
+        <code>float: right;</code> on each button.
+      </li>
+    </ul>
+    <h2 id="tables">Tables</h2>
+    <p>
+      Make use of <code>&lt;thead&gt;</code>, <code>&lt;tfoot&gt;</code>,
+      <code>&lt;tbody&gt;</code>, and <code>&lt;th&gt;</code> tags (and
+      <code>scope</code> attribute) when appropriate. (Note:
+      <code>&lt;tfoot&gt;</code> goes above <code>&lt;tbody&gt;</code> for speed
+      reasons. You want the browser to load the footer before a table full of
+      data.)
+    </p>
+    <p>
+      <code
+        >html inert=true &lt;table summary="This is a chart of invoices for
+        2011."&gt; &lt;thead&gt; &lt;tr&gt; &lt;th scope="col"&gt;Table header
+        1&lt;/th&gt; &lt;th scope="col"&gt;Table header 2&lt;/th&gt; &lt;/tr&gt;
+        &lt;/thead&gt; &lt;tfoot&gt; &lt;tr&gt; &lt;td&gt;Table footer
+        1&lt;/td&gt; &lt;td&gt;Table footer 2&lt;/td&gt; &lt;/tr&gt;
+        &lt;/tfoot&gt; &lt;tbody&gt; &lt;tr&gt; &lt;td&gt;Table data
+        1&lt;/td&gt; &lt;td&gt;Table data 2&lt;/td&gt; &lt;/tr&gt;
+        &lt;/tbody&gt; &lt;/table&gt;</code
+      >
+    </p>
+  </body>
+</html>

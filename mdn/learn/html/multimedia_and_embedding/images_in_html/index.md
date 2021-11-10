@@ -1,4 +1,4 @@
---- title: Images in HTML slug: Learn/HTML/Multimedia\_and\_embedding/Images\_in\_HTML tags: - Article - Beginner - Guide - HTML - Image - JPEG - PNG - alt text - captions - figcaption - figure - img - scr ---
+--- title: Images in HTML slug: Learn/HTML/Multimedia_and_embedding/Images_in_HTML tags: - Article - Beginner - Guide - HTML - Image - JPEG - PNG - alt text - captions - figcaption - figure - img - scr ---
 
 {{LearnSidebar}}
 
@@ -8,10 +8,9 @@ In the beginning, the Web was just text, and it was really quite boring. Fortuna
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, <a href="/en-US/docs/Learn/Getting_started_with_the_web/Installing_basic_software">basic software installed</a>, basic knowledge of <a href="/en-US/docs/Learn/Getting_started_with_the_web/Dealing_with_files">working with files</a>, familiarity with HTML fundamentals (as covered in <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML/Getting_started">Getting started with HTML</a>.)</td></tr><tr class="even"><td>Objective:</td><td>To learn how to embed simple images in HTML, annotate them with captions, and how HTML images relate to CSS background images.</td></tr></tbody></table>
 
-How do we put an image on a webpage?
-------------------------------------
+## How do we put an image on a webpage?
 
-In order to put a simple image on a webpage, we use the {{htmlelement("img")}} element. This is an {{glossary("empty element")}} (meaning that it has no text content or closing tag) that requires a minimum of one attribute to be useful — `src` (sometimes spoken as its full title, *source*). The `src` attribute contains a path pointing to the image you want to embed in the page, which can be a relative or absolute URL, in the same way as `href` attribute values in {{htmlelement("a")}} elements.
+In order to put a simple image on a webpage, we use the {{htmlelement("img")}} element. This is an {{glossary("empty element")}} (meaning that it has no text content or closing tag) that requires a minimum of one attribute to be useful — `src` (sometimes spoken as its full title, _source_). The `src` attribute contains a path pointing to the image you want to embed in the page, which can be a relative or absolute URL, in the same way as `href` attribute values in {{htmlelement("a")}} elements.
 
 **Note**: You should read [A quick primer on URLs and paths](/en-US/docs/Learn/HTML/Introduction_to_HTML/Creating_hyperlinks#a_quick_primer_on_urls_and_paths) to refresh your memory on relative and absolute URLs before continuing.
 
@@ -35,11 +34,10 @@ But this is pointless, as it just makes the browser do more work, looking up the
 
 **Warning:** Most images are copyrighted. Do **not** display an image on your webpage unless:
 
--   You own the image.
--   You have received explicit, written permission from the image owner.
--   You have ample proof that the image is, in fact, in the public domain.
+- You own the image.
+- You have received explicit, written permission from the image owner.
+- You have ample proof that the image is, in fact, in the public domain.
 
-  
 Copyright violations are illegal and unethical. In addition, **never** point your `src` attribute at an image hosted on someone else's website that you don't have permission to link to. This is called "hotlinking". Again, stealing someone's bandwidth is illegal. It also slows down your page, leaving you with no control over whether the image is removed or replaced with something embarrassing.
 
 Our above code would give us the following result:
@@ -64,18 +62,18 @@ The easiest way to test your `alt` text is to purposely misspell your filename. 
 
 So, why would you ever see or need alt text? It can come in handy for a number of reasons:
 
--   The user is visually impaired, and is using a [screen reader](https://en.wikipedia.org/wiki/Screen_reader) to read the web out to them. In fact, having alt text available to describe images is useful to most users.
--   As described above, the spelling of the file or path name might be wrong.
--   The browser doesn't support the image type. Some people still use text-only browsers, such as [Lynx](https://en.wikipedia.org/wiki/Lynx_%28web_browser%29), which displays the alt text of images.
--   You may want to provide text for search engines to utilize; for example, search engines can match alt text with search queries.
--   Users have turned off images to reduce data transfer volume and distractions. This is especially common on mobile phones, and in countries where bandwidth is limited or expensive.
+- The user is visually impaired, and is using a [screen reader](https://en.wikipedia.org/wiki/Screen_reader) to read the web out to them. In fact, having alt text available to describe images is useful to most users.
+- As described above, the spelling of the file or path name might be wrong.
+- The browser doesn't support the image type. Some people still use text-only browsers, such as [Lynx](https://en.wikipedia.org/wiki/Lynx_%28web_browser%29), which displays the alt text of images.
+- You may want to provide text for search engines to utilize; for example, search engines can match alt text with search queries.
+- Users have turned off images to reduce data transfer volume and distractions. This is especially common on mobile phones, and in countries where bandwidth is limited or expensive.
 
-What exactly should you write inside your `alt` attribute? It depends on *why* the image is there in the first place. In other words, what you lose if your image doesn't show up:
+What exactly should you write inside your `alt` attribute? It depends on _why_ the image is there in the first place. In other words, what you lose if your image doesn't show up:
 
--   **Decoration.** You should use {{anch("CSS background images")}} for decorative images, but if you must use HTML, add a blank `alt=""`. If the image isn't part of the content, a screen reader shouldn't waste time reading it.
--   **Content.** If your image provides significant information, provide the same information in a *brief* `alt` text – or even better, in the main text which everybody can see. Don't write redundant `alt` text. How annoying would it be for a sighted user if all paragraphs were written twice in the main content? If the image is described adequately by the main text body, you can just use `alt=""`.
--   **Link.** If you put an image inside {{htmlelement("a")}} tags, to turn an image into a link, you still must provide [accessible link text](/en-US/docs/Learn/HTML/Introduction_to_HTML/Creating_hyperlinks#use_clear_link_wording). In such cases you may, either, write it inside the same `<a>` element, or inside the image's `alt` attribute – whichever works best in your case.
--   **Text.** You should not put your text into images. If your main heading needs a drop shadow, for example, [use CSS](/en-US/docs/Web/CSS/text-shadow) for that rather than putting the text into an image. However, If you *really can't avoid doing this*, you should supply the text inside the `alt` attribute.
+- **Decoration.** You should use {{anch("CSS background images")}} for decorative images, but if you must use HTML, add a blank `alt=""`. If the image isn't part of the content, a screen reader shouldn't waste time reading it.
+- **Content.** If your image provides significant information, provide the same information in a _brief_ `alt` text – or even better, in the main text which everybody can see. Don't write redundant `alt` text. How annoying would it be for a sighted user if all paragraphs were written twice in the main content? If the image is described adequately by the main text body, you can just use `alt=""`.
+- **Link.** If you put an image inside {{htmlelement("a")}} tags, to turn an image into a link, you still must provide [accessible link text](/en-US/docs/Learn/HTML/Introduction_to_HTML/Creating_hyperlinks#use_clear_link_wording). In such cases you may, either, write it inside the same `<a>` element, or inside the image's `alt` attribute – whichever works best in your case.
+- **Text.** You should not put your text into images. If your main heading needs a drop shadow, for example, [use CSS](/en-US/docs/Web/CSS/text-shadow) for that rather than putting the text into an image. However, If you _really can't avoid doing this_, you should supply the text inside the `alt` attribute.
 
 Essentially, the key is to deliver a usable experience, even when the images can't be seen. This ensures all users are not missing any of the content. Try turning off images in your browser and see how things look. You'll soon realize how helpful alt text is if the image cannot be seen.
 
@@ -130,11 +128,11 @@ Earlier we said to never hotlink to images on other servers, but this is just fo
 
 We would also like you to:
 
--   Add some alt text, and check that it works by misspelling the image URL.
--   Set the image's correct `width` and `height` (hint: it is 200px wide and 171px high), then experiment with other values to see what the effect is.
--   Set a `title` on the image.
+- Add some alt text, and check that it works by misspelling the image URL.
+- Set the image's correct `width` and `height` (hint: it is 200px wide and 171px high), then experiment with other values to see what the effect is.
+- Set a `title` on the image.
 
-If you make a mistake, you can always reset it using the *Reset* button. If you get really stuck, press the *Show solution* button to see an answer:
+If you make a mistake, you can always reset it using the _Reset_ button. If you get really stuck, press the _Show solution_ button to see an answer:
 
 ###### Playable code
 
@@ -255,8 +253,7 @@ If you make a mistake, you can always reset it using the *Reset* button. If you 
 
 {{ EmbedLiveSample('Playable\_code', 700, 350, "", "", "hide-codepen-jsfiddle") }}
 
-Annotating images with figures and figure captions
---------------------------------------------------
+## Annotating images with figures and figure captions
 
 Speaking of captions, there are a number of ways that you could add a caption to go with your image. For example, there would be nothing to stop you from doing this:
 
@@ -290,9 +287,9 @@ The {{htmlelement("figcaption")}} element tells browsers, and assistive technolo
 
 A figure doesn't have to be an image. It is an independent unit of content that:
 
--   Expresses your meaning in a compact, easy-to-grasp way.
--   Could go in several places in the page's linear flow.
--   Provides essential information supporting the main text.
+- Expresses your meaning in a compact, easy-to-grasp way.
+- Could go in several places in the page's linear flow.
+- Provides essential information supporting the main text.
 
 A figure could be several images, a code snippet, audio, video, equations, a table, or something else.
 
@@ -303,7 +300,7 @@ In this active learning section, we'd like you to take the finished code from th
 1.  Wrap it in a {{htmlelement("figure")}} element.
 2.  Copy the text out of the `title` attribute, remove the `title` attribute, and put the text inside a {{htmlelement("figcaption")}} element below the image.
 
-If you make a mistake, you can always reset it using the *Reset* button. If you get really stuck, press the *Show solution* button to see an answer:
+If you make a mistake, you can always reset it using the _Reset_ button. If you get really stuck, press the _Show solution_ button to see an answer:
 
 ###### Playable code 2
 
@@ -423,8 +420,7 @@ If you make a mistake, you can always reset it using the *Reset* button. If you 
 
 {{ EmbedLiveSample('Playable\_code\_2', 700, 350, "", "", "hide-codepen-jsfiddle") }}
 
-CSS background images
----------------------
+## CSS background images
 
 You can also use CSS to embed images into webpages (and JavaScript, but that's another story entirely). The CSS {{cssxref("background-image")}} property, and the other `background-*` properties, are used to control background image placement. For example, to place a background image on every paragraph on a page, you could do this:
 
@@ -438,23 +434,20 @@ Summing up: if an image has meaning, in terms of your content, you should use an
 
 **Note**: You'll learn a lot more about [CSS background images](/en-US/docs/Learn/CSS/Building_blocks/Backgrounds_and_borders) in our [CSS](/en-US/docs/Learn/CSS) topic.
 
-Test your skills!
------------------
+## Test your skills!
 
 You've reached the end of this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: HTML images](/en-US/docs/Learn/HTML/Multimedia_and_embedding/Images_in_HTML/Test_your_skills:_HTML_images).
 
-Summary
--------
+## Summary
 
 That's all for now. We have covered images and captions in detail. In the next article we'll move it up a gear, looking at how to use HTML to embed video and audio in web pages.
 
 {{NextMenu("Learn/HTML/Multimedia\_and\_embedding/Video\_and\_audio\_content", "Learn/HTML/Multimedia\_and\_embedding")}}
 
-In this module
---------------
+## In this module
 
--   [Video and audio content](/en-US/docs/Learn/HTML/Multimedia_and_embedding/Video_and_audio_content)
--   [From &lt;object&gt; to &lt;iframe&gt; — other embedding technologies](/en-US/docs/Learn/HTML/Multimedia_and_embedding/Other_embedding_technologies)
--   [Adding vector graphics to the Web](/en-US/docs/Learn/HTML/Multimedia_and_embedding/Adding_vector_graphics_to_the_Web)
--   [Responsive images](/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images)
--   [Mozilla splash page](/en-US/docs/Learn/HTML/Multimedia_and_embedding/Mozilla_splash_page)
+- [Video and audio content](/en-US/docs/Learn/HTML/Multimedia_and_embedding/Video_and_audio_content)
+- [From &lt;object&gt; to &lt;iframe&gt; — other embedding technologies](/en-US/docs/Learn/HTML/Multimedia_and_embedding/Other_embedding_technologies)
+- [Adding vector graphics to the Web](/en-US/docs/Learn/HTML/Multimedia_and_embedding/Adding_vector_graphics_to_the_Web)
+- [Responsive images](/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images)
+- [Mozilla splash page](/en-US/docs/Learn/HTML/Multimedia_and_embedding/Mozilla_splash_page)

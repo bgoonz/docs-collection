@@ -1,17 +1,16 @@
---- title: "Test your skills: Math" slug: "Learn/JavaScript/First\_steps/Test\_your\_skills:\_Math" tags: - Beginner - JavaScript - Learn - Math - test your skills ---
+--- title: "Test your skills: Math" slug: "Learn/JavaScript/First_steps/Test_your_skills:\_Math" tags: - Beginner - JavaScript - Learn - Math - test your skills ---
 
 {{learnsidebar}}
 
 This aim of this skill test is to assess whether you've understood our [Basic math in JavaScript — numbers and operators](/en-US/docs/Learn/JavaScript/First_steps/Math) article.
 
-**Note**: You can try out solutions in the interactive editors below, however it may be helpful to download the code and use an online tool such as [CodePen](https://codepen.io/), [jsFiddle](https://jsfiddle.net/), or [Glitch](https://glitch.com/) to work on the tasks.  
-  
+**Note**: You can try out solutions in the interactive editors below, however it may be helpful to download the code and use an online tool such as [CodePen](https://codepen.io/), [jsFiddle](https://jsfiddle.net/), or [Glitch](https://glitch.com/) to work on the tasks.
+
 If you get stuck, then ask us for help — see the {{anch("Assessment or further help")}} section at the bottom of this page.
 
 **Note**: In the examples below, if there is an error in your code it will be outputted into the results panel on the page, to help you try to figure out the answer (or into the browser's JavaScript console, in the case of the downloadable version).
 
-Math 1
-------
+## Math 1
 
 Let's start out by testing your knowledge of basic math operators. You will have to create four numeric values, then add the first two together, then subtract the fourth from the third, then multiply the two secondary results together to get a result of 48. Finally, we need to write a test that proves that this value is an even number.
 
@@ -27,8 +26,7 @@ So, try updating the live code below to recreate the finished example, following
 
 [Download the starting point for this task](https://github.com/mdn/learning-area/blob/master/javascript/introduction-to-js-1/tasks/math/math1-download.html) to work in your own editor or in an online editor.
 
-Math 2
-------
+## Math 2
 
 In the second task you are already provided with two calculations, with the results stored in the variables `result` and `result2`. But these results aren't what we want; you'll need to take the calculations and change them to give us what we want.
 
@@ -45,8 +43,7 @@ Try updating the live code below to recreate the finished example, following the
 
 [Download the starting point for this task](https://github.com/mdn/learning-area/blob/master/javascript/introduction-to-js-1/tasks/math/math2-download.html) to work in your own editor or in an online editor.
 
-Math 3
-------
+## Math 3
 
 In the final task for this article, we want you to write some tests. You've got three groups, each consisting of a statement and two variables. For each one, write a test that proves or disproves the statement made. Store the results of those tests in variables called `weightComparison`, `heightComparison`, and `pwdMatch`, respectively.
 
@@ -54,8 +51,7 @@ In the final task for this article, we want you to write some tests. You've got 
 
 [Download the starting point for this task](https://github.com/mdn/learning-area/blob/master/javascript/introduction-to-js-1/tasks/math/math3-download.html) to work in your own editor or in an online editor.
 
-Assessment or further help
---------------------------
+## Assessment or further help
 
 You can practice these examples in the Interactive Editors above.
 
@@ -63,7 +59,7 @@ If you would like your work assessed, or are stuck and want to ask for help:
 
 1.  Put your work into an online shareable editor such as [CodePen](https://codepen.io/), [jsFiddle](https://jsfiddle.net/), or [Glitch](https://glitch.com/). You can write the code yourself, or use the starting point files linked to in the above sections.
 2.  Write a post asking for assessment and/or help at the [MDN Discourse forum Learning category](https://discourse.mozilla.org/c/mdn/learn). Your post should include:
-    -   A descriptive title such as "Assessment wanted for Math 1 skill test".
-    -   Details of what you have already tried, and what you would like us to do, e.g. if you are stuck and need help, or want an assessment.
-    -   A link to the example you want assessed or need help with, in an online shareable editor (as mentioned in step 1 above). This is a good practice to get into — it's very hard to help someone with a coding problem if you can't see their code.
-    -   A link to the actual task or assessment page, so we can find the question you want help with.
+    - A descriptive title such as "Assessment wanted for Math 1 skill test".
+    - Details of what you have already tried, and what you would like us to do, e.g. if you are stuck and need help, or want an assessment.
+    - A link to the example you want assessed or need help with, in an online shareable editor (as mentioned in step 1 above). This is a good practice to get into — it's very hard to help someone with a coding problem if you can't see their code.
+    - A link to the actual task or assessment page, so we can find the question you want help with.

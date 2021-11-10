@@ -38,30 +38,27 @@ Applied to the [@font-face](/en-US/docs/Web/CSS/@font-face) rule, the [font-disp
 
 ### The `contain` property
 
-The {{cssxref('contain')}} CSS property allows an author to indicate that an element and its contents are, as much as possible, *independent* of the rest of the document tree. This allows the browser to recalculate layout, style, paint, size, or any combination of them for a limited area of the DOM and not the entire page.
+The {{cssxref('contain')}} CSS property allows an author to indicate that an element and its contents are, as much as possible, _independent_ of the rest of the document tree. This allows the browser to recalculate layout, style, paint, size, or any combination of them for a limited area of the DOM and not the entire page.
 
-Conclusion
-----------
+## Conclusion
 
 {{PreviousMenuNext("Learn/Performance/html", "Learn/Performance/fonts", "Learn/Performance")}}
 
-In this module
---------------
+## In this module
 
--   [The "why" of web performance](/en-US/docs/Learn/Performance/why_web_performance)
--   [What is web performance?](/en-US/docs/Learn/Performance/What_is_web_performance)
--   [How do users perceive performance?](/en-US/docs/Learn/Performance/Perceived_performance)
--   [Measuring performance](/en-US/docs/Learn/Performance/Measuring_performance)
--   [Multimedia: images](/en-US/docs/Learn/Performance/Multimedia)
--   [Multimedia: video](/en-US/docs/Learn/Performance/video)
--   [JavaScript performance best practices](/en-US/docs/Learn/Performance/JavaScript).
--   [HTML performance features](/en-US/docs/Learn/Performance/HTML)
--   [CSS performance features](/en-US/docs/Learn/Performance/CSS)
--   [Fonts and performance](/en-US/docs/Learn/Performance/Fonts)
--   [Mobile performance](/en-US/docs/Learn/Performance/Mobile)
--   [Focusing on performance](/en-US/docs/Learn/Performance/business_case_for_performance)
+- [The "why" of web performance](/en-US/docs/Learn/Performance/why_web_performance)
+- [What is web performance?](/en-US/docs/Learn/Performance/What_is_web_performance)
+- [How do users perceive performance?](/en-US/docs/Learn/Performance/Perceived_performance)
+- [Measuring performance](/en-US/docs/Learn/Performance/Measuring_performance)
+- [Multimedia: images](/en-US/docs/Learn/Performance/Multimedia)
+- [Multimedia: video](/en-US/docs/Learn/Performance/video)
+- [JavaScript performance best practices](/en-US/docs/Learn/Performance/JavaScript).
+- [HTML performance features](/en-US/docs/Learn/Performance/HTML)
+- [CSS performance features](/en-US/docs/Learn/Performance/CSS)
+- [Fonts and performance](/en-US/docs/Learn/Performance/Fonts)
+- [Mobile performance](/en-US/docs/Learn/Performance/Mobile)
+- [Focusing on performance](/en-US/docs/Learn/Performance/business_case_for_performance)
 
-See also
---------
+## See also
 
--   [CSS animation performance](/en-US/docs/Web/Performance/CSS_JavaScript_animation_performance)
+- [CSS animation performance](/en-US/docs/Web/Performance/CSS_JavaScript_animation_performance)

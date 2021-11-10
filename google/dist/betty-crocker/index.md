@@ -263,7 +263,7 @@ The Vue.js component has been deployed on all three sites and delivered great re
 - The bounce rate for users who enabled the wake lock was 50% lower than for those not using the wake lock feature.
 - Indicators of purchase intent were about 300% higher for wake lock users compared to all users.
 
-3.1<sub>×</sub>
+  3.1<sub>×</sub>
 
 Longer session duration
 

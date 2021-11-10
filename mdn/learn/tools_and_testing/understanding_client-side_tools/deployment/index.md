@@ -1,4 +1,4 @@
---- title: Deploying our app slug: Learn/Tools\_and\_testing/Understanding\_client-side\_tools/Deployment tags: - Beginner - Deployment - GitHub - Learn - Netlify - Testing - Toolchain - Tools - case study ---
+--- title: Deploying our app slug: Learn/Tools_and_testing/Understanding_client-side_tools/Deployment tags: - Beginner - Deployment - GitHub - Learn - Netlify - Testing - Toolchain - Tools - case study ---
 
 {{LearnSidebar}}
 
@@ -8,16 +8,15 @@ In the final article in our series, we take the example toolchain we built up in
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Familiarity with the core <a href="/en-US/docs/Learn/HTML">HTML</a>, <a href="/en-US/docs/Learn/CSS">CSS</a>, and <a href="/en-US/docs/Learn/JavaScript">JavaScript</a> languages.</td></tr><tr class="even"><td>Objective:</td><td>To finish working through our complete toolchain case study, focusing on deploying the app.</td></tr></tbody></table>
 
-Post development
-----------------
+## Post development
 
 There's potentially a large range of problems to be solved in this section of the project's lifecycle. As such, it's important to create a toolchain that handles these problems in a way that requires as little manual intervention as possible.
 
 Here's just a few things to consider for this particular project:
 
--   Generating a production build: Ensuring files are minimized, chunked, have tree-shaking applied, and that versions are "cache busted".
--   Running tests: These can range from "is this code formatted properly?" to "does this thing do what I expect?", and ensuring failing tests prevent deployment.
--   Actually deploying the updated code to a live URL: Or potentially a staging URL so it can be reviewed first.
+- Generating a production build: Ensuring files are minimized, chunked, have tree-shaking applied, and that versions are "cache busted".
+- Running tests: These can range from "is this code formatted properly?" to "does this thing do what I expect?", and ensuring failing tests prevent deployment.
+- Actually deploying the updated code to a live URL: Or potentially a staging URL so it can be reviewed first.
 
 **Note**: Cache busting is a new term that we haven't met before in the module. This is the strategy of breaking a browser's own caching mechanism, which forces the browser to download a new copy of your code. Parcel (and indeed many other tools) will generate filenames that are unique to each new build. This unique filename "busts" your browser's cache, thereby making sure the browser downloads the fresh code each time an update is made to the deployed code.
 
@@ -31,16 +30,15 @@ Netlify, amongst other things, also allows you to run pre-deployment tasks, whic
 
 Although Netlify offers a [drag and drop deployment service](https://app.netlify.com/drop), we are intending to trigger a new deployment to Netlify each time we push to a GitHub repo.
 
-It's exactly these kinds of connected services that we would encourage you to look for when deciding on your own build toolchain. We can commit our code and push to GitHub and the updated code will automatically trigger the entire build routine. If all is well, we get a live change deployed automatically. The *only* action we need to perform is that initial "push".
+It's exactly these kinds of connected services that we would encourage you to look for when deciding on your own build toolchain. We can commit our code and push to GitHub and the updated code will automatically trigger the entire build routine. If all is well, we get a live change deployed automatically. The _only_ action we need to perform is that initial "push".
 
 However, we do have to set these steps up, and we'll look at that now.
 
-The build process
------------------
+## The build process
 
 Again, because we're using Parcel for development, the build option is extremely simple to add. Instead of running the server with `npx parcel src/index.html`, we can run it with `npx parcel build src/index.html` and Parcel will build everything ready for production instead of just running it for development and testing purposes. This includes doing minification and tree-shaking of code, and cache-busting on filenames.
 
-The newly-created production code is placed in a new directory called `dist`, which contains *all* the files required to run the website, ready for you to upload to a server.
+The newly-created production code is placed in a new directory called `dist`, which contains _all_ the files required to run the website, ready for you to upload to a server.
 
 However, doing this step manually isn't our final aim — what we want is for the build to happen automatically and the result of the `dist` directory to be deployed live on our website.
 
@@ -79,8 +77,7 @@ We're going to add the build command to our `package.json` file as an npm script
 
 For you to create your own instance of this project you will need to host this project's code in your own git repository. Our next step is to push the project to GitHub.
 
-Committing changes to GitHub
-----------------------------
+## Committing changes to GitHub
 
 This section will get you over the line to storing your code in a git repository, but it is a far cry from a git tutorial. There’s many great tutorials and books available, and our [Git and GitHub](/en-US/docs/Learn/Tools_and_testing/GitHub) page is a good place to start.
 
@@ -92,9 +89,9 @@ You should get a status report of what files are being tracked, what files are s
 
 Now we have three tasks ahead of us:
 
--   Add any changes we’ve made to the stage (a special name for the place that git will commit files from).
--   Commit the changes to the repository.
--   Push the changes to GitHub.
+- Add any changes we’ve made to the stage (a special name for the place that git will commit files from).
+- Commit the changes to the repository.
+- Push the changes to GitHub.
 
 1.  To add changes, run the following command:
 
@@ -106,13 +103,13 @@ Now we have three tasks ahead of us:
 
         git commit -m ’committing initial code’
 
-    **Note**: Although you're free to write whatever you wish in the commit message, there's some useful tips around the web on good commit messages. Keep them short, concise, and descriptive, so they clearly describe what the change does.  
+    **Note**: Although you're free to write whatever you wish in the commit message, there's some useful tips around the web on good commit messages. Keep them short, concise, and descriptive, so they clearly describe what the change does.
 
 3.  Finally the code needs to be pushed to your GitHub hosted repository. Let's do that now.
 
     Over at github, visit <https://github.com/new> and create your own repository to host this code.
 
-4.  Give your repository a short, memorable name, without spaces in it (use hyphens to separate words), and a description, then click *Create repository* at the bottom of the page.
+4.  Give your repository a short, memorable name, without spaces in it (use hyphens to separate words), and a description, then click _Create repository_ at the bottom of the page.
 
     You should now have a "remote" URL that points to your new GitHub repo.
 
@@ -142,8 +139,7 @@ This final command instructs git to push the code (aka publish) to the "remote" 
 
 So with our project committed in git and pushed to our GitHub repository, the next step in the toolchain is to connect GitHub to Netlify so our project can be deployed live on the web!
 
-Using Netlify for deployment
-----------------------------
+## Using Netlify for deployment
 
 Deploying from GitHub to Netlify is surprisingly simple once you know the steps, particularly with "static websites" such as this project.
 
@@ -153,7 +149,7 @@ Let's get this done:
 
 1.  Go to <https://app.netlify.com/start>.
 
-2.  Press the Github button underneath the *Continuous Deployment* heading. "Continuous Deployment" means that whenever the code repository changes, Netlify will (try) to deploy the code, thus it being "continuous".
+2.  Press the Github button underneath the _Continuous Deployment_ heading. "Continuous Deployment" means that whenever the code repository changes, Netlify will (try) to deploy the code, thus it being "continuous".
 
     ![netlify deployment options, as described in the surrounding text](netlify-deploy.png)
 
@@ -161,17 +157,17 @@ Let's get this done:
 
 4.  Netlify will prompt you with a list of the GitHub repositories it can find. Select your project repository and proceed to the next step.
 
-5.  Since we've connected Netlify to our Github account and given it access to deploy the project repository, Netlify will ask *how* to prepare the project for deployment and *what* to deploy.
+5.  Since we've connected Netlify to our Github account and given it access to deploy the project repository, Netlify will ask _how_ to prepare the project for deployment and _what_ to deploy.
 
-    You should enter the command `npm run build` for the *Build command*, and specify the `dist` directory for the *Publish directory* — this contains the code that we want to make public.
+    You should enter the command `npm run build` for the _Build command_, and specify the `dist` directory for the _Publish directory_ — this contains the code that we want to make public.
 
-6.  To finish up, click *Deploy site*.
+6.  To finish up, click _Deploy site_.
 
     ![netlify distribution options, as described in the surrounding text](netlify-dist.png)
 
 7.  After a short wait for the deployment to occur, you should get a URL that you can go to, to see your published site — try it out!
 
-8.  And even better, whenever we make a change and *push* the change to our remote git repository (on GitHub), this will trigger a notification to Netlify which will then run our specified build task and then deploy the resulting `dist` directory to our published site.
+8.  And even better, whenever we make a change and _push_ the change to our remote git repository (on GitHub), this will trigger a notification to Netlify which will then run our specified build task and then deploy the resulting `dist` directory to our published site.
 
     Try it now — make a small change to your app, and then push it to GitHub using these commands:
 
@@ -185,17 +181,16 @@ That's it for Netlify. We can optionally change the name of the Netlify project 
 
 Now for one final link in our tool chain: a test to ensure our code works.
 
-Testing
--------
+## Testing
 
 Testing itself is a vast subject, even within the realm of front end development. I'll show you how to add an initial test to your project and how to use the test to prevent or to allow the project deployment to happen.
 
 When approaching tests there's a good deal of ways to approach the problem:
 
--   End-to-end testing, which involves your visitor clicking a thing and some other thing happening.
--   Integration testing, which basically says "does one block of code still work when connected to another block?"
--   Unit testing, where small and specific bits of functionality are tested to see if they do what they are supposed to do.
--   [And many more types](https://en.m.wikipedia.org/wiki/Functional_testing). Also see our [cross browser testing module](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing) for a bunch of useful testing information
+- End-to-end testing, which involves your visitor clicking a thing and some other thing happening.
+- Integration testing, which basically says "does one block of code still work when connected to another block?"
+- Unit testing, where small and specific bits of functionality are tested to see if they do what they are supposed to do.
+- [And many more types](https://en.m.wikipedia.org/wiki/Functional_testing). Also see our [cross browser testing module](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing) for a bunch of useful testing information
 
 Remember also that tests are not limited to JavaScript; tests can be run against the rendered DOM, user interactions, CSS, and even how a page looks.
 
@@ -226,7 +221,7 @@ Let’s get started.
 4.  Inside the new directory, create a test file:
 
         cd tests
-        touch nasa-feed.test.js  
+        touch nasa-feed.test.js
 
 5.  Open this file, and add the contents of [nasa-feed.test.js](https://raw.githubusercontent.com/remy/mdn-will-it-miss/master/tests/nasa-feed.test.js) to it:
 
@@ -256,33 +251,31 @@ Let’s get started.
 
 Now, finally, a minute or so after pushing, Netlify will deploy the project update. But only if it passes the test that was introduced.
 
-Summary
--------
+## Summary
 
 That's it for our sample case study, and for the module! We hope you found it useful. While there is a long way to go before you can consider yourself a client-side tooling wizard, we are hoping that this module has given you that first important step towards understanding client-side tooling, and the confidence to learn more and try out new things.
 
 Let's summarize all the parts of the toolchain:
 
--   Code quality and maintenance are performed by eslint and prettier. These tools are added as `devDependencies` to the project via `npm install --dev eslint prettier eslint-plugin-react` (the eslint plugin is needed because this particular project uses React).
--   There are two configuration files that the code quality tools read: `.eslintrc` and `.prettierrc`.
--   During development, we use Parcel to handle our dependencies. `parcel src/index.html` is running in the background to watch for changes and to automatically build our source.
--   Deployment is handled by pushing our changes to Github (on the "main" branch), which triggers a build and deployment on Netlify to publish the project. For our instance this URL is [near-misses.netlify.com](https://near-misses.netlify.com); you will have your own unique URL.
--   We also have a simple test that blocks the building and deployment of the site if the NASA API feed isn't giving us the correct data format.
+- Code quality and maintenance are performed by eslint and prettier. These tools are added as `devDependencies` to the project via `npm install --dev eslint prettier eslint-plugin-react` (the eslint plugin is needed because this particular project uses React).
+- There are two configuration files that the code quality tools read: `.eslintrc` and `.prettierrc`.
+- During development, we use Parcel to handle our dependencies. `parcel src/index.html` is running in the background to watch for changes and to automatically build our source.
+- Deployment is handled by pushing our changes to Github (on the "main" branch), which triggers a build and deployment on Netlify to publish the project. For our instance this URL is [near-misses.netlify.com](https://near-misses.netlify.com); you will have your own unique URL.
+- We also have a simple test that blocks the building and deployment of the site if the NASA API feed isn't giving us the correct data format.
 
 For those of you wanting a challenge, consider whether you can optimize some part of this toolchain. Some questions to ask yourself:
 
--   Can [images be compressed](https://github.com/ralscha/parcel-plugin-compress) during the build step?
--   Could React be swapped out for [something smaller](https://preactjs.com/)?
--   Could you add more tests to prevent a bad build from deploying, such as [performance audits](https://web.dev/lighthouse-performance/)?
--   Could you set up a notification to let you know when a new deploy succeeded or failed?
+- Can [images be compressed](https://github.com/ralscha/parcel-plugin-compress) during the build step?
+- Could React be swapped out for [something smaller](https://preactjs.com/)?
+- Could you add more tests to prevent a bad build from deploying, such as [performance audits](https://web.dev/lighthouse-performance/)?
+- Could you set up a notification to let you know when a new deploy succeeded or failed?
 
 {{PreviousMenu("Learn/Tools\_and\_testing/Understanding\_client-side\_tools/Introducing\_complete\_toolchain", "Learn/Tools\_and\_testing/Understanding\_client-side\_tools")}}
 
-In this module
---------------
+## In this module
 
--   [Client-side tooling overview](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Overview)
--   [Command line crash course](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Command_line)
--   [Package management basics](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Package_management)
--   [Introducing a complete toolchain](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Introducing_complete_toolchain)
--   [Deploying our app](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Deployment)
+- [Client-side tooling overview](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Overview)
+- [Command line crash course](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Command_line)
+- [Package management basics](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Package_management)
+- [Introducing a complete toolchain](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Introducing_complete_toolchain)
+- [Deploying our app](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Deployment)

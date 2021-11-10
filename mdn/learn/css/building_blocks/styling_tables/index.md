@@ -1,4 +1,4 @@
---- title: Styling tables slug: Learn/CSS/Building\_blocks/Styling\_tables tags: - Article - Beginner - CSS - CodingScripting - Guide - NeedsUpdate - Styling - Tables ---
+--- title: Styling tables slug: Learn/CSS/Building_blocks/Styling_tables tags: - Article - Beginner - CSS - CodingScripting - Guide - NeedsUpdate - Styling - Tables ---
 
 {{LearnSidebar}}
 
@@ -8,8 +8,7 @@ Styling an HTML table isn't the most glamorous job in the world, but sometimes w
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>HTML basics (study <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML">Introduction to HTML</a>), knowledge of <a href="/en-US/docs/Learn/HTML/Tables">HTML tables</a>, and an idea of how CSS works (study CSS first steps.)</td></tr><tr class="even"><td>Objective:</td><td>To learn how to effectively style HTML tables.</td></tr></tbody></table>
 
-A typical HTML table
---------------------
+## A typical HTML table
 
 Let's start by looking at a typical HTML table. Well, I say typical — most HTML table examples are about shoes, or the weather, or employees; we decided to make things more interesting by making it about famous punk bands from the UK. The markup looks like so:
 
@@ -60,8 +59,7 @@ The table is nicely marked up, easily stylable, and accessible, thanks to featur
 
 With only the default browser styling it looks cramped, hard to read, and boring. We need to use some CSS to fix this up.
 
-Styling our table
------------------
+## Styling our table
 
 Let's work through styling our table example together.
 
@@ -106,12 +104,11 @@ The first thing we need to do is sort out the spacing/layout — default table s
 
 The most important parts to note are as follows:
 
--   A {{cssxref("table-layout")}} value of `fixed` is generally a good idea to set on your table, as it makes the table behave a bit more predictably by default. Normally, table columns tend to be sized according to how much content they contain, which produces some strange results. With `table-layout: fixed`, you can size your columns according to the width of their headings, and then deal with their content as appropriate. This is why we've selected the four different headings with the `thead th:nth-child(n)` ({{cssxref(":nth-child")}}) selector ("Select the *n*th child that is a {{htmlelement("th")}} element in a sequence, inside a {{htmlelement("thead")}} element") and given them set percentage widths. The entire column width follows the width of its heading, making for a nice way to size your table columns. Chris Coyier discusses this technique in more detail in [Fixed Table Layouts](https://css-tricks.com/fixing-tables-long-strings/).  
-      
-    We've coupled this with a {{cssxref("width")}} of 100%, meaning that the table will fill any container it is put in, and be nicely responsive (although it would still need some more work to get it looking good on narrow screen widths).
--   A {{cssxref("border-collapse")}} value of `collapse` is standard best practice for any table styling effort. By default, when you set borders on table elements, they will all have spacing between them, as the below image illustrates: ![](no-border-collapse.png) This doesn't look very nice (although it might be the look you want, who knows?). With `border-collapse: collapse;` set, the borders collapse down into one, which looks much better: ![](border-collapse.png)
--   We've put a {{cssxref("border")}} around the whole table, which is needed because we'll be putting some borders round the table header and footer later on — it looks really odd and disjointed when you don't have a border round the whole outside of the table and end up with gaps.
--   We've set some {{cssxref("padding")}} on the {{htmlelement("th")}} and {{htmlelement("td")}} elements — this gives the data items some space to breathe, making the table look a lot more legible.
+- A {{cssxref("table-layout")}} value of `fixed` is generally a good idea to set on your table, as it makes the table behave a bit more predictably by default. Normally, table columns tend to be sized according to how much content they contain, which produces some strange results. With `table-layout: fixed`, you can size your columns according to the width of their headings, and then deal with their content as appropriate. This is why we've selected the four different headings with the `thead th:nth-child(n)` ({{cssxref(":nth-child")}}) selector ("Select the *n*th child that is a {{htmlelement("th")}} element in a sequence, inside a {{htmlelement("thead")}} element") and given them set percentage widths. The entire column width follows the width of its heading, making for a nice way to size your table columns. Chris Coyier discusses this technique in more detail in [Fixed Table Layouts](https://css-tricks.com/fixing-tables-long-strings/).
+  We've coupled this with a {{cssxref("width")}} of 100%, meaning that the table will fill any container it is put in, and be nicely responsive (although it would still need some more work to get it looking good on narrow screen widths).
+- A {{cssxref("border-collapse")}} value of `collapse` is standard best practice for any table styling effort. By default, when you set borders on table elements, they will all have spacing between them, as the below image illustrates: ![](no-border-collapse.png) This doesn't look very nice (although it might be the look you want, who knows?). With `border-collapse: collapse;` set, the borders collapse down into one, which looks much better: ![](border-collapse.png)
+- We've put a {{cssxref("border")}} around the whole table, which is needed because we'll be putting some borders round the table header and footer later on — it looks really odd and disjointed when you don't have a border round the whole outside of the table and end up with gaps.
+- We've set some {{cssxref("padding")}} on the {{htmlelement("th")}} and {{htmlelement("td")}} elements — this gives the data items some space to breathe, making the table look a lot more legible.
 
 At this point, our table already looks a lot better:
 
@@ -157,10 +154,10 @@ Now add the following CSS into your `style.css` file, below the previous additio
 
 There is nothing really specific to tables here; we are generally tweaking the font styling to make things easier to read:
 
--   We have set a global sans-serif font stack; this is purely a stylistic choice. We've also set our custom font on the headings inside the {{htmlelement("thead")}} and {{htmlelement("tfoot")}} elements, for a nice grungy, punky look.
--   We've set some {{cssxref("letter-spacing")}} on the headings and cells, as we feel it aids readability. Again, mostly a stylistic choice.
--   We've center-aligned the text in the table cells inside the {{htmlelement("tbody")}} so that they line up with the headings. By default, cells are given a {{cssxref("text-align")}} value of `left`, and headings are given a value of `center`, but generally it looks better to have the alignments set the same for both. The default bold weight on the heading fonts is enough to differentiate their look.
--   We've right-aligned the heading inside the {{htmlelement("tfoot")}} so that it is visually associated better with its data point.
+- We have set a global sans-serif font stack; this is purely a stylistic choice. We've also set our custom font on the headings inside the {{htmlelement("thead")}} and {{htmlelement("tfoot")}} elements, for a nice grungy, punky look.
+- We've set some {{cssxref("letter-spacing")}} on the headings and cells, as we feel it aids readability. Again, mostly a stylistic choice.
+- We've center-aligned the text in the table cells inside the {{htmlelement("tbody")}} so that they line up with the headings. By default, cells are given a {{cssxref("text-align")}} value of `left`, and headings are given a value of `center`, but generally it looks better to have the alignments set the same for both. The default bold weight on the heading fonts is enough to differentiate their look.
+- We've right-aligned the heading inside the {{htmlelement("tfoot")}} so that it is visually associated better with its data point.
 
 The result looks a bit neater:
 
@@ -213,9 +210,9 @@ We wanted to dedicate a separate section to showing you how to implement **zebra
       background-color: #ff33cc;
     }
 
--   Earlier on you saw the {{cssxref(":nth-child")}} selector being used to select specific child elements. It can also be given a formula as a parameter, so it will select a sequence of elements. The formula `2n-1` would select all the odd numbered children (1, 3, 5, etc.) and the formula `2n` would select all the even numbered children (2, 4, 6, etc.) We've used the `odd` and `even` keywords in our code, which do exactly the same things as the aforementioned formulae. In this case we are giving the odd and even rows different (lurid) colors.
--   We've also added a repeating background tile to all the body rows, which is just a bit of noise (a semi-transparent `.png` with a bit of visual distortion on it) to provide some texture.
--   Lastly, we've given the entire table a solid background color so that browsers that don't support the `:nth-child` selector still have a background for their body rows.
+- Earlier on you saw the {{cssxref(":nth-child")}} selector being used to select specific child elements. It can also be given a formula as a parameter, so it will select a sequence of elements. The formula `2n-1` would select all the odd numbered children (1, 3, 5, etc.) and the formula `2n` would select all the even numbered children (2, 4, 6, etc.) We've used the `odd` and `even` keywords in our code, which do exactly the same things as the aforementioned formulae. In this case we are giving the odd and even rows different (lurid) colors.
+- We've also added a repeating background tile to all the body rows, which is just a bit of noise (a semi-transparent `.png` with a bit of visual distortion on it) to provide some texture.
+- Lastly, we've given the entire table a solid background color so that browsers that don't support the `:nth-child` selector still have a background for their body rows.
 
 This color explosion results in the following look:
 
@@ -243,39 +240,35 @@ There is nothing remarkable here, except for the {{cssxref("caption-side")}} pro
 
 ![](table-with-caption.png)
 
-Table styling quick tips
-------------------------
+## Table styling quick tips
 
 Before moving on, we thought we'd provide you with a quick list of the most useful points illustrated above:
 
--   Make your table markup as simple as possible, and keep things flexible, e.g. by using percentages, so the design is more responsive.
--   Use {{cssxref("table-layout")}}`: fixed` to create a more predictable table layout that allows you to easily set column widths by setting {{cssxref("width")}} on their headings ({{htmlelement("th")}}).
--   Use {{cssxref("border-collapse")}}`: collapse` to make table elements borders collapse into each other, producing a neater and easier to control look.
--   Use {{htmlelement("thead")}}, {{htmlelement("tbody")}}, and {{htmlelement("tfoot")}} to break up your table into logical chunks and provide extra places to apply CSS to, so it is easier to layer styles on top of one another if required.
--   Use zebra striping to make alternative rows easier to read.
--   Use {{cssxref("text-align")}} to line up your {{htmlelement("th")}} and {{htmlelement("td")}} text, to make things neater and easier to follow.
+- Make your table markup as simple as possible, and keep things flexible, e.g. by using percentages, so the design is more responsive.
+- Use {{cssxref("table-layout")}}`: fixed` to create a more predictable table layout that allows you to easily set column widths by setting {{cssxref("width")}} on their headings ({{htmlelement("th")}}).
+- Use {{cssxref("border-collapse")}}`: collapse` to make table elements borders collapse into each other, producing a neater and easier to control look.
+- Use {{htmlelement("thead")}}, {{htmlelement("tbody")}}, and {{htmlelement("tfoot")}} to break up your table into logical chunks and provide extra places to apply CSS to, so it is easier to layer styles on top of one another if required.
+- Use zebra striping to make alternative rows easier to read.
+- Use {{cssxref("text-align")}} to line up your {{htmlelement("th")}} and {{htmlelement("td")}} text, to make things neater and easier to follow.
 
-Test your skills!
------------------
+## Test your skills!
 
 We have covered a lot in this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: tables](/en-US/docs/Learn/CSS/Building_blocks/Tables_tasks).
 
-Summary
--------
+## Summary
 
 With styling tables now behind us, we need something else to occupy our time. The next article explores debugging CSS — how to solve problems such as layouts not looking like they should, or properties not applying when you think they should. This includes information on using browser DevTools to find solutions to your problems.
 
 {{PreviousMenuNext("Learn/CSS/Building\_blocks/Images\_media\_form\_elements", "Learn/CSS/Building\_blocks/Debugging\_CSS", "Learn/CSS/Building\_blocks")}}
 
-In this module
---------------
+## In this module
 
 1.  [Cascade and inheritance](/en-US/docs/Learn/CSS/Building_blocks/Cascade_and_inheritance)
 2.  [CSS selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors)
-    -   [Type, class, and ID selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Type_Class_and_ID_Selectors)
-    -   [Attribute selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Attribute_selectors)
-    -   [Pseudo-classes and pseudo-elements](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Pseudo-classes_and_pseudo-elements)
-    -   [Combinators](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Combinators)
+    - [Type, class, and ID selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Type_Class_and_ID_Selectors)
+    - [Attribute selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Attribute_selectors)
+    - [Pseudo-classes and pseudo-elements](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Pseudo-classes_and_pseudo-elements)
+    - [Combinators](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Combinators)
 3.  [The box model](/en-US/docs/Learn/CSS/Building_blocks/The_box_model)
 4.  [Backgrounds and borders](/en-US/docs/Learn/CSS/Building_blocks/Backgrounds_and_borders)
 5.  [Handling different text directions](/en-US/docs/Learn/CSS/Building_blocks/Handling_different_text_directions)

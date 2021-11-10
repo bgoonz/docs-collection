@@ -1,4 +1,4 @@
---- title: Other form controls slug: Learn/Forms/Other\_form\_controls tags: - Beginner - Controls - Example - Forms - Guide - HTML - Web - Widgets ---
+--- title: Other form controls slug: Learn/Forms/Other_form_controls tags: - Beginner - Controls - Example - Forms - Guide - HTML - Web - Widgets ---
 
 {{LearnSidebar}}{{PreviousMenuNext("Learn/Forms/HTML5\_input\_types","Learn/Forms/Styling\_web\_forms", "Learn/Forms")}}
 
@@ -6,8 +6,7 @@ We now look at the functionality of non-`<input>` form elements in detail, from 
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, and a basic <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML">understanding of HTML</a>.</td></tr><tr class="even"><td>Objective:</td><td>To understand the non-<code>&lt;input&gt;</code> form features, and how to implement them using HTML.</td></tr></tbody></table>
 
-Multi-line text fields
-----------------------
+## Multi-line text fields
 
 A multi-line text field is specified using a {{HTMLElement("textarea")}} element, rather than using the {{HTMLElement("input")}} element.
 
@@ -27,7 +26,7 @@ Visually, the text entered wraps and the form control is by default resizable. M
 
 The following screenshots show default, focused, and disabled `<textarea>` elements in Firefox 71 and Safari 13 on macOS, and Edge 18, Yandex 14, Firefox 71 and Chrome 79 on Windows 10.
 
-![The default, focused, and disabled &lt;textarea&gt; element in Firefox 71 and Safari 13 on Mac OSX and Edge 18, Yandex 14, Firefox and Chrome on Windows 10.](textarea_basic.png)
+![The default, focused, and disabled <textarea> element in Firefox 71 and Safari 13 on Mac OSX and Edge 18, Yandex 14, Firefox and Chrome on Windows 10.](textarea_basic.png)
 
 **Note**: You can find a slightly more interesting example of text area usage in the [example](https://mdn.github.io/learning-area/html/forms/your-first-HTML-form/first-form-styled.html) we put together in the first article of the series ([see the source code also](https://github.com/mdn/learning-area/blob/master/html/forms/your-first-HTML-form/first-form-styled.html)).
 
@@ -48,16 +47,15 @@ Specifies how the control wraps text. The values are `soft` (the default value
 
 The ability to resize a `<textarea>` is controlled with the CSS `resize` property. Its possible values are:
 
--   `both`: The default — allows resizing horizontally and vertically.
--   `horizontal`: Allows resizing only horizontally.
--   `vertical`: Allows resizing only vertically.
--   `none`: Allows no resizing.
--   `block` and `inline`: Experimental values that allow resizing in the `block` or `inline` direction only (this varies depending on the directionality of your text; read [Handling different text directions](/en-US/docs/Learn/CSS/Building_blocks/Handling_different_text_directions) if you want to find out more.)
+- `both`: The default — allows resizing horizontally and vertically.
+- `horizontal`: Allows resizing only horizontally.
+- `vertical`: Allows resizing only vertically.
+- `none`: Allows no resizing.
+- `block` and `inline`: Experimental values that allow resizing in the `block` or `inline` direction only (this varies depending on the directionality of your text; read [Handling different text directions](/en-US/docs/Learn/CSS/Building_blocks/Handling_different_text_directions) if you want to find out more.)
 
 Play with the interactive example at the top of the {{cssxref("resize")}} reference page for a demonstration of how these work.
 
-Drop-down controls
-------------------
+## Drop-down controls
 
 Drop-down controls are a simple way to let users select from many different options without taking up much space in the user interface. HTML has two forms of drop down content: the **select box**, and the **autocomplete box**. In both cases the interaction is the same — once the control is activated, the browser displays a list of values the user can select between.
 
@@ -197,8 +195,7 @@ And browsers that support {{htmlelement('datalist')}}s and `<input type="color">
 
 In this case, different browsers behave differently from case to case, so consider such uses as progressive enhancement, and ensure they degrade gracefully.
 
-Other form features
--------------------
+## Other form features
 
 There are a few other form features that are not as obvious as the ones we have already mentioned, but still useful in some situations, so we thought it would be worth giving them a brief mention.
 
@@ -224,20 +221,20 @@ The content inside the {{HTMLElement("progress")}} element is a fallback for bro
 
 A meter bar represents a fixed value in a range delimited by {{htmlattrxref("max","meter")}} and {{htmlattrxref("min","meter")}} values. This value is visually rendered as a bar, and to know how this bar looks, we compare the value to some other set values:
 
--   The {{htmlattrxref("low","meter")}} and {{htmlattrxref("high","meter")}} values divide the range in three parts:
-    -   The lower part of the range is between the {{htmlattrxref("min","meter")}} and {{htmlattrxref("low","meter")}} values, inclusive.
-    -   The medium part of the range is between the {{htmlattrxref("low","meter")}} and {{htmlattrxref("high","meter")}} values, exclusive.
-    -   The higher part of the range is between the {{htmlattrxref("high","meter")}} and {{htmlattrxref("max","meter")}} values, inclusive.
--   The {{htmlattrxref("optimum","meter")}} value defines the optimum value for the {{HTMLElement("meter")}} element. In conjunction with the {{htmlattrxref("low","meter")}} and {{htmlattrxref("high","meter")}} value, it defines which part of the range is preferred:
-    -   If the {{htmlattrxref("optimum","meter")}} value is in the lower part of the range, the lower range is considered to be the preferred part, the medium range is considered to be the average part, and the higher range is considered to be the worst part.
-    -   If the {{htmlattrxref("optimum","meter")}} value is in the medium part of the range, the lower range is considered to be an average part, the medium range is considered to be the preferred part, and the higher range is considered to be average as well.
-    -   If the {{htmlattrxref("optimum","meter")}} value is in the higher part of the range, the lower range is considered to be the worst part, the medium range is considered to be the average part and the higher range is considered to be the preferred part.
+- The {{htmlattrxref("low","meter")}} and {{htmlattrxref("high","meter")}} values divide the range in three parts:
+  - The lower part of the range is between the {{htmlattrxref("min","meter")}} and {{htmlattrxref("low","meter")}} values, inclusive.
+  - The medium part of the range is between the {{htmlattrxref("low","meter")}} and {{htmlattrxref("high","meter")}} values, exclusive.
+  - The higher part of the range is between the {{htmlattrxref("high","meter")}} and {{htmlattrxref("max","meter")}} values, inclusive.
+- The {{htmlattrxref("optimum","meter")}} value defines the optimum value for the {{HTMLElement("meter")}} element. In conjunction with the {{htmlattrxref("low","meter")}} and {{htmlattrxref("high","meter")}} value, it defines which part of the range is preferred:
+  - If the {{htmlattrxref("optimum","meter")}} value is in the lower part of the range, the lower range is considered to be the preferred part, the medium range is considered to be the average part, and the higher range is considered to be the worst part.
+  - If the {{htmlattrxref("optimum","meter")}} value is in the medium part of the range, the lower range is considered to be an average part, the medium range is considered to be the preferred part, and the higher range is considered to be average as well.
+  - If the {{htmlattrxref("optimum","meter")}} value is in the higher part of the range, the lower range is considered to be the worst part, the medium range is considered to be the average part and the higher range is considered to be the preferred part.
 
 All browsers that implement the {{HTMLElement("meter")}} element use those values to change the color of the meter bar:
 
--   If the current value is in the preferred part of the range, the bar is green.
--   If the current value is in the average part of the range, the bar is yellow.
--   If the current value is in the worst part of the range, the bar is red.
+- If the current value is in the preferred part of the range, the bar is green.
+- If the current value is in the average part of the range, the bar is yellow.
+- If the current value is in the worst part of the range, the bar is red.
 
 Such a bar is created using a {{HTMLElement("meter")}} element. This is for implementing any kind of meter, for example a bar showing total space used on a disk, which turns red when it starts to get full.
 
@@ -249,13 +246,11 @@ The content inside the {{HTMLElement("meter")}} element is a fallback for browse
 
 Support for {{HTMLElement("progress")}} and {{HTMLElement("meter")}} is fairly good — there is no support in Internet Explorer, but other browsers support it well.
 
-Test your skills!
------------------
+## Test your skills!
 
 You've reached the end of this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: Other controls](/en-US/docs/Learn/Forms/Test_your_skills:_Other_controls).
 
-Summary
--------
+## Summary
 
 As you'll have seen in the last few articles, there are a lot of different types of available form element. You don't need to remember all of these details at once, and can return to these articles as often as you like to check up on details.
 
@@ -263,22 +258,21 @@ Now that you have a grasp of the HTML behind the different available form contro
 
 {{PreviousMenuNext("Learn/Forms/HTML5\_input\_types","Learn/Forms/Styling\_web\_forms", "Learn/Forms")}}
 
-In this module
---------------
+## In this module
 
--   [Your first form](/en-US/docs/Learn/Forms/Your_first_form)
--   [How to structure a web form](/en-US/docs/Learn/Forms/How_to_structure_a_web_form)
--   [Basic native form controls](/en-US/docs/Learn/Forms/Basic_native_form_controls)
--   [The HTML5 input types](/en-US/docs/Learn/Forms/HTML5_input_types)
--   [Other form controls](/en-US/docs/Learn/Forms/Other_form_controls)
--   [Styling web forms](/en-US/docs/Learn/Forms/Styling_web_forms)
--   [Advanced form styling](/en-US/docs/Learn/Forms/Advanced_form_styling)
--   [UI pseudo-classes](/en-US/docs/Learn/Forms/UI_pseudo-classes)
--   [Client-side form validation](/en-US/docs/Learn/Forms/Form_validation)
--   [Sending form data](/en-US/docs/Learn/Forms/Sending_and_retrieving_form_data)
+- [Your first form](/en-US/docs/Learn/Forms/Your_first_form)
+- [How to structure a web form](/en-US/docs/Learn/Forms/How_to_structure_a_web_form)
+- [Basic native form controls](/en-US/docs/Learn/Forms/Basic_native_form_controls)
+- [The HTML5 input types](/en-US/docs/Learn/Forms/HTML5_input_types)
+- [Other form controls](/en-US/docs/Learn/Forms/Other_form_controls)
+- [Styling web forms](/en-US/docs/Learn/Forms/Styling_web_forms)
+- [Advanced form styling](/en-US/docs/Learn/Forms/Advanced_form_styling)
+- [UI pseudo-classes](/en-US/docs/Learn/Forms/UI_pseudo-classes)
+- [Client-side form validation](/en-US/docs/Learn/Forms/Form_validation)
+- [Sending form data](/en-US/docs/Learn/Forms/Sending_and_retrieving_form_data)
 
 ### Advanced Topics
 
--   [How to build custom form controls](/en-US/docs/Learn/Forms/How_to_build_custom_form_controls)
--   [Sending forms through JavaScript](/en-US/docs/Learn/Forms/Sending_forms_through_JavaScript)
--   [Property compatibility table for form widgets](/en-US/docs/Learn/Forms/Property_compatibility_table_for_form_controls)
+- [How to build custom form controls](/en-US/docs/Learn/Forms/How_to_build_custom_form_controls)
+- [Sending forms through JavaScript](/en-US/docs/Learn/Forms/Sending_forms_through_JavaScript)
+- [Property compatibility table for form widgets](/en-US/docs/Learn/Forms/Property_compatibility_table_for_form_controls)

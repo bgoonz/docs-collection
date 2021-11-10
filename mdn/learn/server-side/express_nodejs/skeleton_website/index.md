@@ -1,4 +1,4 @@
---- title: "Express Tutorial Part 2: Creating a skeleton website" slug: Learn/Server-side/Express\_Nodejs/skeleton\_website tags: - Beginner - CodingScripting - Development environment - Express - Intro - Learn - Node - npm - server-side ---
+--- title: "Express Tutorial Part 2: Creating a skeleton website" slug: Learn/Server-side/Express_Nodejs/skeleton_website tags: - Beginner - CodingScripting - Development environment - Express - Intro - Learn - Node - npm - server-side ---
 
 {{LearnSidebar}}
 
@@ -8,19 +8,17 @@ This second article in our [Express Tutorial](/en-US/docs/Learn/Server-side/Expr
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td><a href="/en-US/docs/Learn/Server-side/Express_Nodejs/development_environment">Set up a Node development environment</a>. Review the Express Tutorial.</td></tr><tr class="even"><td>Objective:</td><td>To be able to start your own new website projects using the <em>Express Application Generator</em>.</td></tr></tbody></table>
 
-Overview
---------
+## Overview
 
 This article shows how you can create a "skeleton" website using the [Express Application Generator](https://expressjs.com/en/starter/generator.html) tool, which you can then populate with site-specific routes, views/templates, and database calls. In this case, we'll use the tool to create the framework for our [Local Library website](/en-US/docs/Learn/Server-side/Express_Nodejs/Tutorial_local_library_website), to which we'll later add all the other code needed by the site. The process is extremely simple, requiring only that you invoke the generator on the command line with a new project name, optionally also specifying the site's template engine and CSS generator.
 
 <span style="line-height: 1.5">The following sections show you how to call the application generator, and provides a little explanation about the different view/CSS options. We'll also explain how the skeleton website is structured. At the end, we'll show how you can run the website to verify that it works.</span>
 
-<span style="line-height: 1.5">**Note**: The *Express Application Generator* is not the only generator for Express applications, and the generated project is not the only viable way to structure your files and directories. The generated site does however have a modular structure that is easy to extend and understand. For information about a *minimal* Express application, see [Hello world example](https://expressjs.com/en/starter/hello-world.html) (Express docs).</span>
+<span style="line-height: 1.5">**Note**: The _Express Application Generator_ is not the only generator for Express applications, and the generated project is not the only viable way to structure your files and directories. The generated site does however have a modular structure that is easy to extend and understand. For information about a _minimal_ Express application, see [Hello world example](https://expressjs.com/en/starter/hello-world.html) (Express docs).</span>
 
-<span style="line-height: 1.5">**Note**: This tutorial uses the version of *Express* that is defined in the **package.json** created by the *Express Application Generator.* This is not (necessarily) the latest version!</span>
+<span style="line-height: 1.5">**Note**: This tutorial uses the version of _Express_ that is defined in the **package.json** created by the *Express Application Generator.* This is not (necessarily) the latest version!</span>
 
-Using the application generator
--------------------------------
+## Using the application generator
 
 You should already have installed the generator as part of [setting up a Node development environment](/en-US/docs/Learn/Server-side/Express_Nodejs/development_environment). As a quick reminder, you install the generator tool site-wide using the NPM package manager, as shown:
 
@@ -46,7 +44,7 @@ The generator has a number of options, which you can view on the command line us
         -f, --force          force on non-empty directory
         -h, --help           output usage information
 
-You can specify express to create a project inside the *current* directory using the *Jade* view engine and plain CSS (if you specify a directory name then the project will be created in a sub-folder with that name).
+You can specify express to create a project inside the _current_ directory using the _Jade_ view engine and plain CSS (if you specify a directory name then the project will be created in a sub-folder with that name).
 
     express
 
@@ -58,7 +56,7 @@ The other options for choosing template engines (e.g. `--hogan`, `--ejs`, `--hbs
 
 ### What view engine should I use?
 
-The *Express Application Generator* allows you to configure a number of popular view/templating engines, including [EJS](https://www.npmjs.com/package/ejs), [Hbs](https://github.com/donpark/hbs), [Pug](https://pugjs.org/api/getting-started.html) (Jade), [Twig](https://www.npmjs.com/package/twig), and [Vash](https://www.npmjs.com/package/vash), although it chooses Jade by default if you don't specify a view option. Express itself can also support a large number of other templating languages [out of the box](https://github.com/expressjs/express/wiki#template-engines).
+The _Express Application Generator_ allows you to configure a number of popular view/templating engines, including [EJS](https://www.npmjs.com/package/ejs), [Hbs](https://github.com/donpark/hbs), [Pug](https://pugjs.org/api/getting-started.html) (Jade), [Twig](https://www.npmjs.com/package/twig), and [Vash](https://www.npmjs.com/package/vash), although it chooses Jade by default if you don't specify a view option. Express itself can also support a large number of other templating languages [out of the box](https://github.com/expressjs/express/wiki#template-engines).
 
 #### Note
 
@@ -66,18 +64,18 @@ If you want to use a template engine that isn't supported by the generator then 
 
 Generally speaking, you should select a templating engine that delivers all the functionality you need and allows you to be productive sooner — or in other words, in the same way that you choose any other component! Some of the things to consider when comparing template engines:
 
--   Time to productivity — If your team already has experience with a templating language then it is likely they will be productive faster using that language. If not, then you should consider the relative learning curve for candidate templating engines.
--   Popularity and activity — Review the popularity of the engine and whether it has an active community. It is important to be able to get support when problems arise throughout the lifetime of the website.
--   Style — Some template engines use specific markup to indicate inserted content within "ordinary" HTML, while others construct the HTML using a different syntax (for example, using indentation and block names).
--   Performance/rendering time.
--   Features — you should consider whether the engines you look at have the following features available:
-    -   Layout inheritance: Allows you to define a base template and then "inherit" just the parts of it that you want to be different for a particular page. This is typically a better approach than building templates by including a number of required components or building a template from scratch each time.
-    -   "Include" support: Allows you to build up templates by including other templates.
-    -   Concise variable and loop control syntax.
-    -   Ability to filter variable values at template level (e.g. making variables upper-case, or formatting a date value).
-    -   Ability to generate output formats other than HTML (e.g. JSON or XML).
-    -   Support for asynchronous operations and streaming.
-    -   Client-side features. If a templating engine can be used on the client this allows the possibility of having all or most of the rendering done client-side.
+- Time to productivity — If your team already has experience with a templating language then it is likely they will be productive faster using that language. If not, then you should consider the relative learning curve for candidate templating engines.
+- Popularity and activity — Review the popularity of the engine and whether it has an active community. It is important to be able to get support when problems arise throughout the lifetime of the website.
+- Style — Some template engines use specific markup to indicate inserted content within "ordinary" HTML, while others construct the HTML using a different syntax (for example, using indentation and block names).
+- Performance/rendering time.
+- Features — you should consider whether the engines you look at have the following features available:
+  - Layout inheritance: Allows you to define a base template and then "inherit" just the parts of it that you want to be different for a particular page. This is typically a better approach than building templates by including a number of required components or building a template from scratch each time.
+  - "Include" support: Allows you to build up templates by including other templates.
+  - Concise variable and loop control syntax.
+  - Ability to filter variable values at template level (e.g. making variables upper-case, or formatting a date value).
+  - Ability to generate output formats other than HTML (e.g. JSON or XML).
+  - Support for asynchronous operations and streaming.
+  - Client-side features. If a templating engine can be used on the client this allows the possibility of having all or most of the rendering done client-side.
 
 #### Tip
 
@@ -87,7 +85,7 @@ For this project, we'll use the [Pug](https://pugjs.org/api/getting-started.html
 
 ### What CSS stylesheet engine should I use?
 
-The *Express Application Generator* allows you to create a project that is configured to use the most common CSS stylesheet engines: [LESS](https://lesscss.org/), [SASS](https://sass-lang.com/), [Compass](http://compass-style.org/), [Stylus](https://stylus-lang.com/).
+The _Express Application Generator_ allows you to create a project that is configured to use the most common CSS stylesheet engines: [LESS](https://lesscss.org/), [SASS](https://sass-lang.com/), [Compass](http://compass-style.org/), [Stylus](https://stylus-lang.com/).
 
 #### Note
 
@@ -97,16 +95,15 @@ As with templating engines, you should use the stylesheet engine that will allow
 
 ### What database should I use?
 
-The generated code doesn't use/include any databases. *Express* apps can use any [database mechanism](https://expressjs.com/en/guide/database-integration.html) supported by *Node* (*Express* itself doesn't define any specific additional behavior/requirements for database management).
+The generated code doesn't use/include any databases. _Express_ apps can use any [database mechanism](https://expressjs.com/en/guide/database-integration.html) supported by _Node_ (_Express_ itself doesn't define any specific additional behavior/requirements for database management).
 
 We'll discuss how to integrate with a database in a later article.
 
-Creating the project
---------------------
+## Creating the project
 
-For the sample *Local Library* app we're going to build, we'll create a project named *express-locallibrary-tutorial* using the *Pug* template library and no CSS engine.
+For the sample _Local Library_ app we're going to build, we'll create a project named _express-locallibrary-tutorial_ using the _Pug_ template library and no CSS engine.
 
-First, navigate to where you want to create the project and then run the *Express Application Generator* in the command prompt as shown:
+First, navigate to where you want to create the project and then run the _Express Application Generator_ in the command prompt as shown:
 
     express express-locallibrary-tutorial --view=pug
 
@@ -147,10 +144,9 @@ The generator will create (and list) the project's files.
 
 At the end of the output, the generator provides instructions on how to install the dependencies (as listed in the **package.json** file) and how to run the application.
 
-Running the skeleton website
-----------------------------
+## Running the skeleton website
 
-At this point, we have a complete skeleton project. The website doesn't actually *do* very much yet, but it's worth running it to show that it works.
+At this point, we have a complete skeleton project. The website doesn't actually _do_ very much yet, but it's worth running it to show that it works.
 
 1.  First, install the dependencies (the `install` command will fetch all the dependency packages listed in the project's **package.json** file).
 
@@ -158,21 +154,22 @@ At this point, we have a complete skeleton project. The website doesn't actually
         npm install
 
 2.  Then run the application.
-    -   On the Windows CMD prompt, use this command:
 
-            SET DEBUG=express-locallibrary-tutorial:* & npm start
+    - On the Windows CMD prompt, use this command:
 
-    -   On Windows Powershell, use this command:
+          SET DEBUG=express-locallibrary-tutorial:* & npm start
 
-            $ENV:DEBUG = "express-locallibrary-tutorial:*"; npm start
+    - On Windows Powershell, use this command:
 
-        #### Note
+          $ENV:DEBUG = "express-locallibrary-tutorial:*"; npm start
 
-        Powershell commands are not covered further in this tutorial (The provided "Windows" commands assume you're using the Windows CMD prompt.)
+      #### Note
 
-    -   On macOS or Linux, use this command:
+      Powershell commands are not covered further in this tutorial (The provided "Windows" commands assume you're using the Windows CMD prompt.)
 
-            DEBUG=express-locallibrary-tutorial:* npm start
+    - On macOS or Linux, use this command:
+
+          DEBUG=express-locallibrary-tutorial:* npm start
 
 3.  Then load <http://localhost:3000/> in your browser to access the app.
 
@@ -195,12 +192,11 @@ You could also start the app just using the `npm start` command. Specifying the 
     GET / 304 490.296 ms - -
     GET /stylesheets/style.css 200 4.886 ms - 111
 
-Enable server restart on file changes
--------------------------------------
+## Enable server restart on file changes
 
 Any changes you make to your Express website are currently not visible until you restart the server. It quickly becomes very irritating to have to stop and restart your server every time you make a change, so it is worth taking the time to automate restarting the server when needed.
 
-A convenient tool for this purpose is [nodemon](https://github.com/remy/nodemon). This is usually installed globally (as it is a "tool"), but here we'll install and use it locally as a *developer dependency*, so that any developers working with the project get it automatically when they install the application. Use the following command in the root directory for the skeleton project:
+A convenient tool for this purpose is [nodemon](https://github.com/remy/nodemon). This is usually installed globally (as it is a "tool"), but here we'll install and use it locally as a _developer dependency_, so that any developers working with the project get it automatically when they install the application. Use the following command in the root directory for the skeleton project:
 
     npm install --save-dev nodemon
 
@@ -216,17 +212,17 @@ If you open your project's **package.json** file you'll now see a new section wi
 
 Because the tool isn't installed globally we can't launch it from the command line (unless we add it to the path) but we can call it from an NPM script because NPM knows all about the installed packages. Find the `scripts` section of your package.json. Initially, it will contain one line, which begins with `"start"`. Update it by putting a comma at the end of that line, and adding the `"devstart"` and `"serverstart"` lines:
 
--   On Linux and macOS, the scripts section will look like this:
+- On Linux and macOS, the scripts section will look like this:
 
-          "scripts": {
-              "start": "node ./bin/www",
-              "devstart": "nodemon ./bin/www",
-              "serverstart": "DEBUG=express-locallibrary-tutorial:* npm run devstart"
-            },
+        "scripts": {
+            "start": "node ./bin/www",
+            "devstart": "nodemon ./bin/www",
+            "serverstart": "DEBUG=express-locallibrary-tutorial:* npm run devstart"
+          },
 
--   On Windows, use this command instead:
+- On Windows, use this command instead:
 
-        SET DEBUG=express-locallibrary-tutorial:* & npm run devstart
+      SET DEBUG=express-locallibrary-tutorial:* & npm run devstart
 
 We can now start the server in almost exactly the same way as previously, but using the `devstart` command.
 
@@ -234,12 +230,11 @@ We can now start the server in almost exactly the same way as previously, but us
 
 Now if you edit any file in the project the server will restart (or you can restart it by typing `rs` on the command prompt at any time). You will still need to reload the browser to refresh the page.
 
-We now have to call "`npm run <scriptname>`" rather than just `npm start`, because "start" is actually an NPM command that is mapped to the named script. We could have replaced the command in the *start* script but we only want to use *nodemon* during development, so it makes sense to create a new script command.
+We now have to call "`npm run <scriptname>`" rather than just `npm start`, because "start" is actually an NPM command that is mapped to the named script. We could have replaced the command in the _start_ script but we only want to use _nodemon_ during development, so it makes sense to create a new script command.
 
 The `serverstart` command added to the scripts in the **package.json** above is a very good example. Using this approach means you no longer have to type a long command to start the server. Note that the particular command added to the script works for macOS or Linux only.
 
-The generated project
----------------------
+## The generated project
 
 Let's now take a look at the project we just created.
 
@@ -294,14 +289,14 @@ The **package.json** file defines the application dependencies and other informa
       }
     }
 
-The dependencies include the *express* package and the package for our selected view engine (*pug*). In addition, we have the following packages that are useful in many web applications:
+The dependencies include the _express_ package and the package for our selected view engine (_pug_). In addition, we have the following packages that are useful in many web applications:
 
--   [cookie-parser](https://www.npmjs.com/package/cookie-parser): Used to parse the cookie header and populate `req.cookies` (essentially provides a convenient method for accessing cookie information).
--   [debug](https://www.npmjs.com/package/debug): A tiny node debugging utility modeled after node core's debugging technique.
--   [morgan](https://www.npmjs.com/package/morgan): An HTTP request logger middleware for node.
--   [http-errors](https://www.npmjs.com/package/http-errors): Create HTTP errors where needed (for express error handling).
+- [cookie-parser](https://www.npmjs.com/package/cookie-parser): Used to parse the cookie header and populate `req.cookies` (essentially provides a convenient method for accessing cookie information).
+- [debug](https://www.npmjs.com/package/debug): A tiny node debugging utility modeled after node core's debugging technique.
+- [morgan](https://www.npmjs.com/package/morgan): An HTTP request logger middleware for node.
+- [http-errors](https://www.npmjs.com/package/http-errors): Create HTTP errors where needed (for express error handling).
 
-The scripts section first defines a "*start*" script, which is what we are invoking when we call `npm start` to start the server (this script was added by the *Express Application Generator*). From the script definition, you can see that this actually starts the JavaScript file **./bin/www** with *node*.
+The scripts section first defines a "_start_" script, which is what we are invoking when we call `npm start` to start the server (this script was added by the _Express Application Generator_). From the script definition, you can see that this actually starts the JavaScript file **./bin/www** with _node_.
 
       "scripts": {
         "start": "node ./bin/www",
@@ -309,7 +304,7 @@ The scripts section first defines a "*start*" script, which is what we are invok
         "serverstart": "DEBUG=express-locallibrary-tutorial:* npm run devstart"
       },
 
-The *devstart* and *serverstart* scripts can be used to start the same **./bin/www** file with *nodemon* rather than *node* (this example is for Linux and macOS, as discussed above in [Enable server restart on file changes](#enable_server_restart_on_file_changes)).
+The _devstart_ and _serverstart_ scripts can be used to start the same **./bin/www** file with _nodemon_ rather than *node* (this example is for Linux and macOS, as discussed above in [Enable server restart on file changes](#enable_server_restart_on_file_changes)).
 
 ### www file
 
@@ -340,7 +335,7 @@ This file creates an `express` application object (named `app`, by convention), 
 
 Back in the **www** entry point file above, it is this `module.exports` object that is supplied to the caller when this file is imported.
 
-Let's work through the **app.js** file in detail. First, we import some useful node libraries into the file using `require()`, including *http-errors*, *express*, *morgan* and *cookie-parser* that we previously downloaded for our application using NPM; and *path*, which is a core Node library for parsing file and directory paths.
+Let's work through the **app.js** file in detail. First, we import some useful node libraries into the file using `require()`, including _http-errors_, *express*, *morgan* and _cookie-parser_ that we previously downloaded for our application using NPM; and _path_, which is a core Node library for parsing file and directory paths.
 
     var createError = require('http-errors');
     var express = require('express');
@@ -355,9 +350,9 @@ Then we `require()` modules from our routes directory. These modules/files conta
 
 #### Note
 
-At this point, we have just *imported* the module; we haven't actually used its routes yet (this happens just a little bit further down the file).
+At this point, we have just _imported_ the module; we haven't actually used its routes yet (this happens just a little bit further down the file).
 
-Next, we create the `app` object using our imported *express* module, and then use it to set up the view (template) engine. There are two parts to setting up the engine. First, we set the '`views`' value to specify the folder where the templates will be stored (in this case the subfolder **/views**). Then we set the '`view engine`' value to specify the template library (in this case "pug").
+Next, we create the `app` object using our imported _express_ module, and then use it to set up the view (template) engine. There are two parts to setting up the engine. First, we set the '`views`' value to specify the folder where the templates will be stored (in this case the subfolder **/views**). Then we set the '`view engine`' value to specify the template library (in this case "pug").
 
     var app = express();
 
@@ -365,7 +360,7 @@ Next, we create the `app` object using our imported *express* module, and then u
     app.set('views', path.join(__dirname, 'views'));
     app.set('view engine', 'pug');
 
-The next set of functions call `app.use()` to add the *middleware* libraries into the request handling chain. In addition to the 3rd party libraries we imported previously, we use the `express.static` middleware to get *Express* to serve all the static files in the **/public** directory in the project root.
+The next set of functions call `app.use()` to add the _middleware_ libraries into the request handling chain. In addition to the 3rd party libraries we imported previously, we use the `express.static` middleware to get _Express_ to serve all the static files in the **/public** directory in the project root.
 
     app.use(logger('dev'));
     app.use(express.json());
@@ -373,7 +368,7 @@ The next set of functions call `app.use()` to add the *middleware* libraries int
     app.use(cookieParser());
     app.use(express.static(path.join(__dirname, 'public')));
 
-Now that all the other middleware is set up, we add our (previously imported) route-handling code to the request handling chain. The imported code will define particular routes for the different *parts* of the site:
+Now that all the other middleware is set up, we add our (previously imported) route-handling code to the request handling chain. The imported code will define particular routes for the different _parts_ of the site:
 
     app.use('/', indexRouter);
     app.use('/users', usersRouter);
@@ -406,7 +401,7 @@ The Express application object (app) is now fully configured. The last step is t
 
 ### Routes
 
-The route file **/routes/users.js** is shown below (route files share a similar structure, so we don't need to also show **index.js**). First, it loads the *express* module and uses it to get an `express.Router` object. Then it specifies a route on that object and lastly exports the router from the module (this is what allows the file to be imported into **app.js**).
+The route file **/routes/users.js** is shown below (route files share a similar structure, so we don't need to also show **index.js**). First, it loads the _express_ module and uses it to get an `express.Router` object. Then it specifies a route on that object and lastly exports the router from the module (this is what allows the file to be imported into **app.js**).
 
     var express = require('express');
     var router = express.Router();
@@ -443,35 +438,31 @@ The corresponding template for the above route is given below (**index.pug**). W
       h1= title
       p Welcome to #{title}
 
-Challenge yourself
-------------------
+## Challenge yourself
 
-Create a new route in **/routes/users.js** that will display the text "*You're so cool"* at URL `/users/cool/`. Test it by running the server and visiting <http://localhost:3000/users/cool/> in your browser
+Create a new route in **/routes/users.js** that will display the text "_You're so cool"_ at URL `/users/cool/`. Test it by running the server and visiting <http://localhost:3000/users/cool/> in your browser
 
-Summary
--------
+## Summary
 
-You have now created a skeleton website project for the [Local Library](/en-US/docs/Learn/Server-side/Express_Nodejs/Tutorial_local_library_website) and verified that it runs using *node*. Most importantly, you also understand how the project is structured, so you have a good idea where we need to make changes to add routes and views for our local library.
+You have now created a skeleton website project for the [Local Library](/en-US/docs/Learn/Server-side/Express_Nodejs/Tutorial_local_library_website) and verified that it runs using _node_. Most importantly, you also understand how the project is structured, so you have a good idea where we need to make changes to add routes and views for our local library.
 
 Next, we'll start modifying the skeleton so that it works as a library website.
 
-See also
---------
+## See also
 
--   [Express application generator](https://expressjs.com/en/starter/generator.html) (Express docs)
--   [Using template engines with Express](https://expressjs.com/en/guide/using-template-engines.html) (Express docs)
+- [Express application generator](https://expressjs.com/en/starter/generator.html) (Express docs)
+- [Using template engines with Express](https://expressjs.com/en/guide/using-template-engines.html) (Express docs)
 
 {{PreviousMenuNext("Learn/Server-side/Express\_Nodejs/Tutorial\_local\_library\_website", "Learn/Server-side/Express\_Nodejs/mongoose", "Learn/Server-side/Express\_Nodejs")}}
 
-In this module
---------------
+## In this module
 
--   [Express/Node introduction](/en-US/docs/Learn/Server-side/Express_Nodejs/Introduction)
--   [Setting up a Node (Express) development environment](/en-US/docs/Learn/Server-side/Express_Nodejs/development_environment)
--   [Express Tutorial: The Local Library website](/en-US/docs/Learn/Server-side/Express_Nodejs/Tutorial_local_library_website)
--   **Express Tutorial Part 2: Creating a skeleton website**
--   [Express Tutorial Part 3: Using a Database (with Mongoose)](/en-US/docs/Learn/Server-side/Express_Nodejs/mongoose)
--   [Express Tutorial Part 4: Routes and controllers](/en-US/docs/Learn/Server-side/Express_Nodejs/routes)
--   [Express Tutorial Part 5: Displaying library data](/en-US/docs/Learn/Server-side/Express_Nodejs/Displaying_data)
--   [Express Tutorial Part 6: Working with forms](/en-US/docs/Learn/Server-side/Express_Nodejs/forms)
--   [Express Tutorial Part 7: Deploying to production](/en-US/docs/Learn/Server-side/Express_Nodejs/deployment)
+- [Express/Node introduction](/en-US/docs/Learn/Server-side/Express_Nodejs/Introduction)
+- [Setting up a Node (Express) development environment](/en-US/docs/Learn/Server-side/Express_Nodejs/development_environment)
+- [Express Tutorial: The Local Library website](/en-US/docs/Learn/Server-side/Express_Nodejs/Tutorial_local_library_website)
+- **Express Tutorial Part 2: Creating a skeleton website**
+- [Express Tutorial Part 3: Using a Database (with Mongoose)](/en-US/docs/Learn/Server-side/Express_Nodejs/mongoose)
+- [Express Tutorial Part 4: Routes and controllers](/en-US/docs/Learn/Server-side/Express_Nodejs/routes)
+- [Express Tutorial Part 5: Displaying library data](/en-US/docs/Learn/Server-side/Express_Nodejs/Displaying_data)
+- [Express Tutorial Part 6: Working with forms](/en-US/docs/Learn/Server-side/Express_Nodejs/forms)
+- [Express Tutorial Part 7: Deploying to production](/en-US/docs/Learn/Server-side/Express_Nodejs/deployment)

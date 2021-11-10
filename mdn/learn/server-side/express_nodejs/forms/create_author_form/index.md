@@ -1,28 +1,25 @@
---- title: Create Author form slug: Learn/Server-side/Express\_Nodejs/forms/Create\_author\_form tags: - Express - Forms - Node - part 6 - server-side ---
+--- title: Create Author form slug: Learn/Server-side/Express_Nodejs/forms/Create_author_form tags: - Express - Forms - Node - part 6 - server-side ---
 
 This subarticle shows how to define a page for creating `Author` objects.
 
-<span class="highlight-span">Import validation and sanitization methods</span>
-------------------------------------------------------------------------------
+## <span class="highlight-span">Import validation and sanitization methods</span>
 
-As with the genre form, to use *express-validator* we have to *require* the functions we want to use.
+As with the genre form, to use _express-validator_ we have to *require* the functions we want to use.
 
 Open **/controllers/authorController.js**, and add the following lines at the top of the file:
 
     const { body,validationResult } = require('express-validator');
 
-<span class="highlight-span">Controller—get route</span>
---------------------------------------------------------
+## <span class="highlight-span">Controller—get route</span>
 
-Find the exported `author_create_get()` controller method and replace it with the following code. This renders the **author\_form.pug** view, passing a `title` variable.
+Find the exported `author_create_get()` controller method and replace it with the following code. This renders the **author_form.pug** view, passing a `title` variable.
 
     // Display Author create form on GET.
     exports.author_create_get = function(req, res, next) {
         res.render('author_form', { title: 'Create Author'});
     };
 
-<span class="highlight-span">Controller—post route</span>
----------------------------------------------------------
+## <span class="highlight-span">Controller—post route</span>
 
 Find the exported `author_create_post()` controller method, and replace it with the following code.
 
@@ -74,24 +71,23 @@ The structure and behavior of this code is almost exactly the same as for creati
 
 The validation code demonstrates several new features:
 
--   We can daisy chain validators, using `withMessage()` to specify the error message to display if the previous validation method fails. This makes it very easy to provide specific error messages without lots of code duplication.
+- We can daisy chain validators, using `withMessage()` to specify the error message to display if the previous validation method fails. This makes it very easy to provide specific error messages without lots of code duplication.
 
-        // Validate fields.
-        body('first_name').trim().isLength({ min: 1 }).escape().withMessage('First name must be specified.')
-            .isAlphanumeric().withMessage('First name has non-alphanumeric characters.'),
+      // Validate fields.
+      body('first_name').trim().isLength({ min: 1 }).escape().withMessage('First name must be specified.')
+          .isAlphanumeric().withMessage('First name has non-alphanumeric characters.'),
 
--   We can use the `optional()` function to run a subsequent validation only if a field has been entered (this allows us to validate optional fields). For example, below we check that the optional date of birth is an ISO8601-compliant date (the `checkFalsy` flag means that we'll accept either an empty string or `null` as an empty value).
+- We can use the `optional()` function to run a subsequent validation only if a field has been entered (this allows us to validate optional fields). For example, below we check that the optional date of birth is an ISO8601-compliant date (the `checkFalsy` flag means that we'll accept either an empty string or `null` as an empty value).
 
-        body('date_of_birth', 'Invalid date of birth').optional({ checkFalsy: true }).isISO8601().toDate(),
+      body('date_of_birth', 'Invalid date of birth').optional({ checkFalsy: true }).isISO8601().toDate(),
 
 <!-- -->
 
--   Parameters are received from the request as strings. We can use `toDate()` (or `toBoolean()`) to cast these to the proper JavaScript types (as shown at the end of the validator chain above).
+- Parameters are received from the request as strings. We can use `toDate()` (or `toBoolean()`) to cast these to the proper JavaScript types (as shown at the end of the validator chain above).
 
-<span class="highlight-span">View</span>
-----------------------------------------
+## <span class="highlight-span">View</span>
 
-Create **/views/author\_form.pug** and copy in the text below.
+Create **/views/author_form.pug** and copy in the text below.
 
     extends layout
 
@@ -113,7 +109,7 @@ Create **/views/author\_form.pug** and copy in the text below.
           for error in errors
             li!= error.msg
 
-The structure and behavior for this view is exactly the same as for the **genre\_form.pug** template, so we won't describe it again.
+The structure and behavior for this view is exactly the same as for the **genre_form.pug** template, so we won't describe it again.
 
 **Note:** Some browsers don’t support the input `type=“date”`, so you won’t get the datepicker widget or the default *`dd/mm/yyyy`* placeholder, but will instead get an empty plain text field. One workaround is to explicitly add the attribute `placeholder='dd/mm/yyyy'` so that on less capable browsers you will still get information about the desired text format.
 
@@ -121,17 +117,15 @@ The structure and behavior for this view is exactly the same as for the **genre\
 
 The template above is missing a field for entering the `date_of_death`. Create the field following the same pattern as the date of birth form group!
 
-<span class="highlight-span">What does it look like?</span>
------------------------------------------------------------
+## <span class="highlight-span">What does it look like?</span>
 
-Run the application, open your browser to <a href="http://localhost:3000/" class="external external-icon">http://localhost:3000/</a>, then select the *Create new author* link. If everything is set up correctly, your site should look something like the following screenshot. After you enter a value, it should be saved and you'll be taken to the author detail page.
+Run the application, open your browser to <a href="http://localhost:3000/" class="external external-icon">http://localhost:3000/</a>, then select the _Create new author_ link. If everything is set up correctly, your site should look something like the following screenshot. After you enter a value, it should be saved and you'll be taken to the author detail page.
 
 ![Author Create Page - Express Local Library site](locallibary_express_author_create_empty.png)
 
 **Note:** If you experiment with various input formats for the dates, you may find that the format `yyyy-mm-dd` misbehaves. This is because JavaScript treats date strings as including the time of 0 hours, but additionally treats date strings in that format (the ISO 8601 standard) as including the time 0 hours UTC, rather than the local time. If your time zone is west of UTC, the date display, being local, will be one day before the date you entered. This is one of several complexities (such as multi-word family names and multi-author books) that we are not addressing here.
 
-Next steps
-----------
+## Next steps
 
--   Return to [Express Tutorial Part 6: Working with forms](/en-US/docs/Learn/Server-side/Express_Nodejs/forms).
--   Proceed to the next subarticle of part 6: [Create Book form](/en-US/docs/Learn/Server-side/Express_Nodejs/forms/Create_book_form).
+- Return to [Express Tutorial Part 6: Working with forms](/en-US/docs/Learn/Server-side/Express_Nodejs/forms).
+- Proceed to the next subarticle of part 6: [Create Book form](/en-US/docs/Learn/Server-side/Express_Nodejs/forms/Create_book_form).

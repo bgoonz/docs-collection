@@ -1,4 +1,4 @@
---- title: Setting up a Django development environment slug: Learn/Server-side/Django/development\_environment tags: - Beginner - Development environment - Installing - Intro - Learn - Python - django ---
+--- title: Setting up a Django development environment slug: Learn/Server-side/Django/development_environment tags: - Beginner - Development environment - Installing - Intro - Learn - Python - django ---
 
 {{LearnSidebar}}
 
@@ -8,16 +8,15 @@ Now that you know what Django is for, we'll show you how to set up and test a Dj
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic knowledge of using a terminal/command line and how to install software packages on your development computer's operating system.</td></tr><tr class="even"><td>Objective:</td><td>To have a development environment for Django (3.*) running on your computer.</td></tr></tbody></table>
 
-Django development environment overview
----------------------------------------
+## Django development environment overview
 
-Django makes it very easy to set up your own computer so that you can start developing web applications. This section explains what you get with the development environment, and provides an overview of some of your setup and configuration options. The remainder of the article explains the *recommended* method of installing the Django development environment on Ubuntu, macOS, and Windows, and how you can test it.
+Django makes it very easy to set up your own computer so that you can start developing web applications. This section explains what you get with the development environment, and provides an overview of some of your setup and configuration options. The remainder of the article explains the _recommended_ method of installing the Django development environment on Ubuntu, macOS, and Windows, and how you can test it.
 
 ### What is the Django development environment?
 
 The development environment is an installation of Django on your local computer that you can use for developing and testing Django apps prior to deploying them to a production environment.
 
-The main tools that Django itself provides are a set of Python scripts for creating and working with Django projects, along with a simple *development webserver* that you can use to test local (i.e. on your computer, not on an external web server) Django web applications on your computer's web browser.
+The main tools that Django itself provides are a set of Python scripts for creating and working with Django projects, along with a simple _development webserver_ that you can use to test local (i.e. on your computer, not on an external web server) Django web applications on your computer's web browser.
 
 There are other peripheral tools, which form part of the development environment, that we won't be covering here. These include things like a [text editor](/en-US/docs/Learn/Common_questions/Available_text_editors) or IDE for editing code, and a source control management tool like [Git](https://git-scm.com/) for safely managing different versions of your code. We are assuming that you've already got a text editor installed.
 
@@ -25,10 +24,10 @@ There are other peripheral tools, which form part of the development environment
 
 Django is extremely flexible in terms of how and where it can be installed and configured. Django can be:
 
--   Installed on different operating systems.
--   Installed from source, from the Python Package Index (PyPi) and in many cases from the host computer's package manager application.
--   Configured to use one of several databases, which may also need to be separately installed and configured.
--   Run in the main system Python environment or within separate Python virtual environments.
+- Installed on different operating systems.
+- Installed from source, from the Python Package Index (PyPi) and in many cases from the host computer's package manager application.
+- Configured to use one of several databases, which may also need to be separately installed and configured.
+- Run in the main system Python environment or within separate Python virtual environments.
 
 Each of these options requires a slightly different configuration and setup. The following subsections explain some of your choices. For the rest of the article, we'll show you how to setup Django on a small number of operating systems, and that setup will be assumed throughout the rest of this module.
 
@@ -44,9 +43,9 @@ In this article, we'll provide instructions for Windows, macOS, and Linux/Unix.
 
 #### What version of Python should be used?
 
-You can use any Python version supported by your target Django release. For Django 3.1.2 the allowed versions are Python 3.6 to 3.8 (see [FAQ:Installation](https://docs.djangoproject.com/en/3.1/faq/install/#what-python-version-can-i-use-with-django)).  
-  
-The Django project *recommends* (and "officially supports") using the newest available supported Python release.
+You can use any Python version supported by your target Django release. For Django 3.1.2 the allowed versions are Python 3.6 to 3.8 (see [FAQ:Installation](https://docs.djangoproject.com/en/3.1/faq/install/#what-python-version-can-i-use-with-django)).
+
+The Django project _recommends_ (and "officially supports") using the newest available supported Python release.
 
 #### Note
 
@@ -56,9 +55,9 @@ Python 2.7 cannot be used with the current releases of Django (The Django 1.11.x
 
 There are three places to download Django:
 
--   The Python Package Repository (PyPi), using the *pip* tool. This is the best way to get the latest stable version of Django.
--   Use a version from your computer's package manager. Distributions of Django that are bundled with operating systems offer a familiar installation mechanism. Note however that the packaged version may be quite old, and can only be installed into the system Python environment (which may not be what you want).
--   Install from source. You can get and install the latest bleeding-edge version of Django from the source. This is not recommended for beginners but is needed when you're ready to start contributing back to Django itself.
+- The Python Package Repository (PyPi), using the _pip_ tool. This is the best way to get the latest stable version of Django.
+- Use a version from your computer's package manager. Distributions of Django that are bundled with operating systems offer a familiar installation mechanism. Note however that the packaged version may be quite old, and can only be installed into the system Python environment (which may not be what you want).
+- Install from source. You can get and install the latest bleeding-edge version of Django from the source. This is not recommended for beginners but is needed when you're ready to start contributing back to Django itself.
 
 This article shows how to install Django from PyPi, in order to get the latest stable version.
 
@@ -66,11 +65,11 @@ This article shows how to install Django from PyPi, in order to get the latest s
 
 Django supports four main databases (PostgreSQL, MariaDB, MySQL, Oracle, and SQLite), and there are community libraries that provide varying levels of support for other popular SQL and NoSQL databases. We recommend that you select the same database for both production and development (although Django abstracts many of the database differences using its Object-Relational Mapper (ORM), there are still [potential issues](https://docs.djangoproject.com/en/3.1/ref/databases/) that are better to avoid).
 
-For this article (and most of this module) we will be using the *SQLite* database, which stores its data in a file. SQLite is intended for use as a lightweight database and can’t support a high level of concurrency. It is, however, an excellent choice for applications that are primarily read-only.
+For this article (and most of this module) we will be using the _SQLite_ database, which stores its data in a file. SQLite is intended for use as a lightweight database and can’t support a high level of concurrency. It is, however, an excellent choice for applications that are primarily read-only.
 
 #### Note
 
-Django is configured to use SQLite by default when you start your website project using the standard tools (*django-admin*). It's a great choice when you're getting started because it requires no additional configuration or setup. 
+Django is configured to use SQLite by default when you start your website project using the standard tools (_django-admin_). It's a great choice when you're getting started because it requires no additional configuration or setup.
 
 #### Installing system-wide or in a Python virtual environment?
 
@@ -78,7 +77,7 @@ When you install Python3 you get a single global environment that is shared by�
 
 #### Note
 
-Python applications installed into the global environment can potentially conflict with each other (i.e. if they depend on different versions of the same package). 
+Python applications installed into the global environment can potentially conflict with each other (i.e. if they depend on different versions of the same package).
 
 If you install Django into the default/global environment then you will only be able to target one version of Django on the computer. This can be a problem if you want to create new websites (using the latest version of Django) while still maintaining websites that rely on older versions.
 
@@ -86,10 +85,9 @@ As a result, experienced Python/Django developers typically run Python apps wit
 
 This module assumes that you've installed Django into a virtual environment, and we'll show you how below.
 
-Installing Python 3
--------------------
+## Installing Python 3
 
-In order to use Django you will have to install Python on your operating system. If you're using  *Python 3* then you will also need the [Python Package Index](https://pypi.python.org/pypi) tool — *pip3* — which is used to manage (install, update, and remove) Python packages/libraries used by Django and your other Python apps.
+In order to use Django you will have to install Python on your operating system. If you're using  *Python 3* then you will also need the [Python Package Index](https://pypi.python.org/pypi) tool — _pip3_ — which is used to manage (install, update, and remove) Python packages/libraries used by Django and your other Python apps.
 
 This section briefly explains how you can check what versions of Python are present, and install new versions as needed, for Ubuntu Linux 20.04, macOS, and Windows 10.
 
@@ -104,7 +102,7 @@ Ubuntu Linux 20.04 LTS includes Python 3.8.5 by default. You can confirm this b
     python3 -V
      Python 3.8.5
 
-However, the Python Package Index tool (*pip3*) you'll need to install packages for Python 3 (including Django) is **not** available by default. You can install *pip3* in the bash terminal using:
+However, the Python Package Index tool (_pip3_) you'll need to install packages for Python 3 (including Django) is **not** available by default. You can install _pip3_ in the bash terminal using:
 
     sudo apt install python3-pip
 
@@ -112,38 +110,44 @@ However, the Python Package Index tool (*pip3*) you'll need to install packages 
 
 macOS "El Capitan" and other more recent versions do not include Python 3. You can confirm this by running the following commands in the zsh or bash terminal:
 
-    $ python3 -V 
+    $ python3 -V
       python3: command not found
 
-You can easily install Python 3 (along with the *pip3* tool) from [python.org](https://www.python.org/):
+You can easily install Python 3 (along with the _pip3_ tool) from [python.org](https://www.python.org/):
 
 1.  Download the required installer:
+
     1.  Go to <https://www.python.org/downloads/>
     2.  Select the **Download Python 3.8.6** button (the exact version number may differ).
+
         #### Note
 
         The version offered may be different. Ensure that the version you download is supported by Django (if needed, links for getting older versions can be found on the same page).
-2.  Locate the file using *Finder*, and double-click the package file. Following the installation prompts.
 
-You can now confirm successful installation by checking for the *Python 3* version as shown below:
+2.  Locate the file using _Finder_, and double-click the package file. Following the installation prompts.
+
+You can now confirm successful installation by checking for the _Python 3_ version as shown below:
 
     python3 -V
      Python 3.9.0
 
-You can similarly check that *pip3* is installed by listing the available packages:
+You can similarly check that _pip3_ is installed by listing the available packages:
 
     pip3 list
 
 ### Windows 10
 
-Windows doesn't include Python by default, but you can easily install it (along with the *pip3* tool) from [python.org](https://www.python.org/):
+Windows doesn't include Python by default, but you can easily install it (along with the _pip3_ tool) from [python.org](https://www.python.org/):
 
 1.  Download the required installer:
+
     1.  Go to <https://www.python.org/downloads/>
     2.  Select the **Download Python 3.8.6** button (the exact version number may differ).
+
         #### Note
 
         The version offered may be different. Ensure that the version you download [is supported by Django](https://docs.djangoproject.com/en/3.1/faq/install/#what-python-version-can-i-use-with-django) (if needed, links for getting older versions can be found on the same page).
+
 2.  Install Python by double-clicking on the downloaded file and following the installation prompts
 3.  Be sure to check the box labeled "Add Python to PATH"
 
@@ -152,7 +156,7 @@ You can then verify that Python 3 was installed by entering the following text 
     py -3 -V
      Python 3.8.6
 
-The Windows installer incorporates *pip3* (the Python package manager) by default. You can list installed packages as shown:
+The Windows installer incorporates _pip3_ (the Python package manager) by default. You can list installed packages as shown:
 
     pip3 list
 
@@ -160,8 +164,7 @@ The Windows installer incorporates *pip3* (the Python package manager) by defa
 
 The installer should set up everything you need for the above command to work. If however you get a message that Python cannot be found, you may have forgotten to add it to your system path. You can do this by running the installer again, selecting "Modify", and checking the box labeled "Add Python to environment variables" on the second page.
 
-Using Django inside a Python virtual environment
-------------------------------------------------
+## Using Django inside a Python virtual environment
 
 The libraries we'll use for creating our virtual environments are [virtualenvwrapper](https://virtualenvwrapper.readthedocs.io/en/latest/index.html) (Linux and macOS) and [virtualenvwrapper-win](https://pypi.python.org/pypi/virtualenvwrapper-win) (Windows), which in turn both use the [virtualenv](https://virtualenv.pypa.io/en/latest/) tool. The wrapper tools creates a consistent interface for managing interfaces on all platforms.
 
@@ -185,8 +188,8 @@ Then add the following lines to the end of your shell startup file (this is a hi
 
 #### Note
 
-The `VIRTUALENVWRAPPER_PYTHON` and `VIRTUALENVWRAPPER_VIRTUALENV_ARGS `variables point to the normal installation location for Python3, and `source /usr/local/bin/virtualenvwrapper.sh` points to the normal location of the `virtualenvwrapper.sh` script. If the *virtualenv* doesn't work when you test it, one thing to check is that Python and the script are in the expected location (and then change the startup file appropriately).  
-  
+The `VIRTUALENVWRAPPER_PYTHON` and `VIRTUALENVWRAPPER_VIRTUALENV_ARGS `variables point to the normal installation location for Python3, and `source /usr/local/bin/virtualenvwrapper.sh` points to the normal location of the `virtualenvwrapper.sh` script. If the _virtualenv_ doesn't work when you test it, one thing to check is that Python and the script are in the expected location (and then change the startup file appropriately).
+
 You can find the correct locations for your system using the commands `which virtualenvwrapper.sh` and `which python3`.
 
 Then reload the startup file by running the following command in the terminal:
@@ -206,13 +209,13 @@ Now you can create a new virtual environment with the `mkvirtualenv` command.
 
 #### macOS virtual environment setup
 
-Setting up *virtualenvwrapper* on macOS is almost exactly the same as on Ubuntu (again, you can follow the instructions from either the [official installation guide](https://virtualenvwrapper.readthedocs.io/en/latest/install.html) or below).
+Setting up _virtualenvwrapper_ on macOS is almost exactly the same as on Ubuntu (again, you can follow the instructions from either the [official installation guide](https://virtualenvwrapper.readthedocs.io/en/latest/install.html) or below).
 
 Install *virtualenvwrapper* (and bundling *virtualenv*) using *pip* as shown.
 
     sudo pip3 install virtualenvwrapper
 
-Then add the following lines to the end of your shell startup file (these are the same lines as for Ubuntu). If you're using the *zsh shell* then the startup file will be a hidden file named **.zshrc** in your home directory. If you're using the *bash shell* then it will be a hidden file named **.bash\_profile**. You may need to create the file if it does not yet exist.
+Then add the following lines to the end of your shell startup file (these are the same lines as for Ubuntu). If you're using the _zsh shell_ then the startup file will be a hidden file named **.zshrc** in your home directory. If you're using the _bash shell_ then it will be a hidden file named **.bash_profile**. You may need to create the file if it does not yet exist.
 
     export WORKON_HOME=$HOME/.virtualenvs
     export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
@@ -221,7 +224,7 @@ Then add the following lines to the end of your shell startup file (these are th
 
 #### Note
 
-The `VIRTUALENVWRAPPER_PYTHON` variable points to the normal installation location for Python3, and `source /usr/local/bin/virtualenvwrapper.sh` points to the normal location of the `virtualenvwrapper.sh` script. If the *virtualenv* doesn't work when you test it, one thing to check is that Python and the script are in the expected location (and then change the startup file appropriately).
+The `VIRTUALENVWRAPPER_PYTHON` variable points to the normal installation location for Python3, and `source /usr/local/bin/virtualenvwrapper.sh` points to the normal location of the `virtualenvwrapper.sh` script. If the _virtualenv_ doesn't work when you test it, one thing to check is that Python and the script are in the expected location (and then change the startup file appropriately).
 
 For example, one installation test on macOS ended up with the following lines being necessary in the startup file:
 
@@ -281,15 +284,14 @@ From now on in this article (and indeed the module) please assume that any comma
 
 There are just a few other useful commands that you should know (there are more in the tool documentation, but these are the ones you'll use regularly):
 
--   `deactivate` — Exit out of the current Python virtual environment
--   `workon` — List available virtual environments
--   `workon name_of_environment` — Activate the specified Python virtual environment
--   `rmvirtualenv name_of_environment` — Remove the specified environment.
+- `deactivate` — Exit out of the current Python virtual environment
+- `workon` — List available virtual environments
+- `workon name_of_environment` — Activate the specified Python virtual environment
+- `rmvirtualenv name_of_environment` — Remove the specified environment.
 
-Installing Django
------------------
+## Installing Django
 
-Once you've created a virtual environment, and called `workon` to enter it, you can use *pip3* to install Django. 
+Once you've created a virtual environment, and called `workon` to enter it, you can use *pip3* to install Django.
 
     pip3 install django~=3.1
 
@@ -309,26 +311,25 @@ If the above Windows command does not show a django module present, try:
 
     py -m django --version
 
-In Windows *Python 3* scripts are launched by prefixing the command with `py -3`, although this can vary depending on your specific installation. Try omitting the `-3` modifier if you encounter any problems with commands. In Linux/macOS, the command is `python3.`
+In Windows _Python 3_ scripts are launched by prefixing the command with `py -3`, although this can vary depending on your specific installation. Try omitting the `-3` modifier if you encounter any problems with commands. In Linux/macOS, the command is `python3.`
 
 #### Important
 
-The rest of this **module** uses the *Linux* command for invoking Python 3 (`python3`) . If you're working on *Windows* replace this prefix with: `py -3`
+The rest of this **module** uses the _Linux_ command for invoking Python 3 (`python3`) . If you're working on _Windows_ replace this prefix with: `py -3`
 
-Testing your installation
--------------------------
+## Testing your installation
 
 The above test works, but it isn't very much fun. A more interesting test is to create a skeleton project and see it working. To do this, first navigate in your command prompt/terminal to where you want to store your Django apps. Create a folder for your test site and navigate into it.
 
     mkdir django_test
     cd django_test
 
-You can then create a new skeleton site called "*mytestsite*" using the **django-admin** tool as shown. After creating the site you can navigate into the folder where you will find the main script for managing projects, called **manage.py**.
+You can then create a new skeleton site called "_mytestsite_" using the **django-admin** tool as shown. After creating the site you can navigate into the folder where you will find the main script for managing projects, called **manage.py**.
 
     django-admin startproject mytestsite
     cd mytestsite
 
-We can run the *development web server* from within this folder using **manage.py** and the `runserver` command, as shown.
+We can run the _development web server_ from within this folder using **manage.py** and the `runserver` command, as shown.
 
     $ python3 manage.py runserver
     Watching for file changes with StatReloader
@@ -351,37 +352,34 @@ Once the server is running you can view the site by navigating to the following 
 
 ![The home page of the skeleton Django app.](django_skeleton_app_homepage_-_django_3.1.png)
 
-Summary
--------
+## Summary
 
 You now have a Django development environment up and running on your computer.
 
 In the testing section you also briefly saw how we can create a new Django website using `django-admin startproject`, and run it in your browser using the development web server (`python3 manage.py runserver`). In the next article, we expand on this process, building a simple but complete web application.
 
-See also
---------
+## See also
 
--   [Quick Install Guide](https://docs.djangoproject.com/en/3.1/intro/install/) (Django docs)
--   [How to install Django — Complete guide](https://docs.djangoproject.com/en/3.1/topics/install/) (Django docs) - includes information on how to remove Django
--   [How to install Django on Windows](https://docs.djangoproject.com/en/3.1/howto/windows/) (Django docs)
+- [Quick Install Guide](https://docs.djangoproject.com/en/3.1/intro/install/) (Django docs)
+- [How to install Django — Complete guide](https://docs.djangoproject.com/en/3.1/topics/install/) (Django docs) - includes information on how to remove Django
+- [How to install Django on Windows](https://docs.djangoproject.com/en/3.1/howto/windows/) (Django docs)
 
 {{PreviousMenuNext("Learn/Server-side/Django/Introduction", "Learn/Server-side/Django/Tutorial\_local\_library\_website", "Learn/Server-side/Django")}}
 
-In this module
---------------
+## In this module
 
--   [Django introduction](/en-US/docs/Learn/Server-side/Django/Introduction)
--   **Setting up a Django development environment**
--   [Django Tutorial: The Local Library website](/en-US/docs/Learn/Server-side/Django/Tutorial_local_library_website)
--   [Django Tutorial Part 2: Creating a skeleton website](/en-US/docs/Learn/Server-side/Django/skeleton_website)
--   [Django Tutorial Part 3: Using models](/en-US/docs/Learn/Server-side/Django/Models)
--   [Django Tutorial Part 4: Django admin site](/en-US/docs/Learn/Server-side/Django/Admin_site)
--   [Django Tutorial Part 5: Creating our home page](/en-US/docs/Learn/Server-side/Django/Home_page)
--   [Django Tutorial Part 6: Generic list and detail views](/en-US/docs/Learn/Server-side/Django/Generic_views)
--   [Django Tutorial Part 7: Sessions framework](/en-US/docs/Learn/Server-side/Django/Sessions)
--   [Django Tutorial Part 8: User authentication and permissions](/en-US/docs/Learn/Server-side/Django/Authentication)
--   [Django Tutorial Part 9: Working with forms](/en-US/docs/Learn/Server-side/Django/Forms)
--   [Django Tutorial Part 10: Testing a Django web application](/en-US/docs/Learn/Server-side/Django/Testing)
--   [Django Tutorial Part 11: Deploying Django to production](/en-US/docs/Learn/Server-side/Django/Deployment)
--   [Django web application security](/en-US/docs/Learn/Server-side/Django/web_application_security)
--   [DIY Django mini blog](/en-US/docs/Learn/Server-side/Django/django_assessment_blog)
+- [Django introduction](/en-US/docs/Learn/Server-side/Django/Introduction)
+- **Setting up a Django development environment**
+- [Django Tutorial: The Local Library website](/en-US/docs/Learn/Server-side/Django/Tutorial_local_library_website)
+- [Django Tutorial Part 2: Creating a skeleton website](/en-US/docs/Learn/Server-side/Django/skeleton_website)
+- [Django Tutorial Part 3: Using models](/en-US/docs/Learn/Server-side/Django/Models)
+- [Django Tutorial Part 4: Django admin site](/en-US/docs/Learn/Server-side/Django/Admin_site)
+- [Django Tutorial Part 5: Creating our home page](/en-US/docs/Learn/Server-side/Django/Home_page)
+- [Django Tutorial Part 6: Generic list and detail views](/en-US/docs/Learn/Server-side/Django/Generic_views)
+- [Django Tutorial Part 7: Sessions framework](/en-US/docs/Learn/Server-side/Django/Sessions)
+- [Django Tutorial Part 8: User authentication and permissions](/en-US/docs/Learn/Server-side/Django/Authentication)
+- [Django Tutorial Part 9: Working with forms](/en-US/docs/Learn/Server-side/Django/Forms)
+- [Django Tutorial Part 10: Testing a Django web application](/en-US/docs/Learn/Server-side/Django/Testing)
+- [Django Tutorial Part 11: Deploying Django to production](/en-US/docs/Learn/Server-side/Django/Deployment)
+- [Django web application security](/en-US/docs/Learn/Server-side/Django/web_application_security)
+- [DIY Django mini blog](/en-US/docs/Learn/Server-side/Django/django_assessment_blog)

@@ -1,4 +1,4 @@
---- title: Handling text — strings in JavaScript slug: Learn/JavaScript/First\_steps/Strings tags: - Article - Beginner - CodingScripting - Guide - JavaScript - Join - Quotes - concatenation - l10n:priority - strings ---
+--- title: Handling text — strings in JavaScript slug: Learn/JavaScript/First_steps/Strings tags: - Article - Beginner - CodingScripting - Guide - JavaScript - Join - Quotes - concatenation - l10n:priority - strings ---
 
 {{LearnSidebar}}
 
@@ -8,15 +8,13 @@ Next, we'll turn our attention to strings — this is what pieces of text are ca
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, a basic understanding of HTML and CSS, an understanding of what JavaScript is.</td></tr><tr class="even"><td>Objective:</td><td>To gain familiarity with the basics of strings in JavaScript.</td></tr></tbody></table>
 
-The power of words
-------------------
+## The power of words
 
 Words are very important to humans — they are a large part of how we communicate. Since the Web is a largely text-based medium designed to allow humans to communicate and share information, it is useful for us to have control over the words that appear on it. {{glossary("HTML")}} provides structure and meaning to our text, {{glossary("CSS")}} allows us to precisely style it, and JavaScript contains a number of features for manipulating strings, creating custom welcome messages and prompts, showing the right text labels when needed, sorting terms into the desired order, and much more.
 
 Pretty much all of the programs we've shown you so far in the course have involved some string manipulation.
 
-Strings — the basics
---------------------
+## Strings — the basics
 
 Strings are dealt with similarly to numbers at first glance, but when you dig deeper you'll start to see some notable differences. Let's start by entering some basic lines into the [browser developer console](/en-US/docs/Learn/Common_questions/What_are_browser_developer_tools) to familiarize ourselves.
 
@@ -79,8 +77,7 @@ To fix our previous problem code line, we need to escape the problem quote mark.
 
 This works fine. You can escape other characters in the same way, e.g. `\"`,  and there are some special codes besides. See [Escape notation](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#escape_notation) for more details.
 
-Concatenating strings
----------------------
+## Concatenating strings
 
 1.  Concatenate is a fancy programming word that means "join together". Joining together strings in JavaScript uses the plus (+) operator, the same one we use to add numbers together, but in this context it does something different. Let's try an example in our console.
 
@@ -134,22 +131,22 @@ Here we're using a {{domxref("window.prompt()", "window.prompt()")}} function in
         typeof myDate;
 
 3.  If you have a numeric variable that you want to convert to a string but not change otherwise, or a string variable that you want to convert to a number but not change otherwise, you can use the following two constructs:
-    -   The {{jsxref("Number")}} object converts anything passed to it into a number, if it can. Try the following:
 
-            let myString = '123';
-            let myNum = Number(myString);
-            typeof myNum;
+    - The {{jsxref("Number")}} object converts anything passed to it into a number, if it can. Try the following:
 
-    -   Conversely, every number has a method called `toString()` that converts it to the equivalent string. Try this:
+          let myString = '123';
+          let myNum = Number(myString);
+          typeof myNum;
 
-            let myNum2 = 123;
-            let myString2 = myNum2.toString();
-            typeof myString2;
+    - Conversely, every number has a method called `toString()` that converts it to the equivalent string. Try this:
+
+          let myNum2 = 123;
+          let myString2 = myNum2.toString();
+          typeof myString2;
 
     These constructs can be really useful in some situations. For example, if a user enters a number into a form's text field, it's a string. However, if you want to add this number to something, you'll need it to be a number, so you could pass it through `Number()` to handle this. We did exactly this in our [Number Guessing Game, in line 54](https://github.com/mdn/learning-area/blob/master/javascript/introduction-to-js-1/first-splash/number-guessing-game.html#L54).
 
-Template literals
------------------
+## Template literals
 
 Another type of string syntax that you may come across is **template literals** (sometimes referred to as template strings). This is a newer syntax that provides more flexible, easier to read strings.
 
@@ -173,7 +170,7 @@ Template literals simplify this enormously:
 
     output = `I like the song "${ song }". I gave it a score of ${ score/highestScore * 100 }%.`;
 
-There is no more need to open and close multiple string pieces — the whole lot can just be wrapped in a single pair of backticks. When you want to include a variable or expression inside the string, you include it inside a `${ }` construct, which is called a *placeholder*.
+There is no more need to open and close multiple string pieces — the whole lot can just be wrapped in a single pair of backticks. When you want to include a variable or expression inside the string, you include it inside a `${ }` construct, which is called a _placeholder_.
 
 You can include complex expressions inside template literals, for example:
 
@@ -181,9 +178,9 @@ You can include complex expressions inside template literals, for example:
     let examHighestScore = 70;
     examReport = `You scored ${ examScore }/${ examHighestScore } (${ Math.round(examScore/examHighestScore*100) }%). ${ examScore >= 49 ? 'Well done, you passed!' : 'Bad luck, you didn\'t pass this time.' }`;
 
--   The first two placeholders here are pretty simple, only including a simple value in the string.
--   The third one calculates a percentage result and rounds it to the nearest integer.
--   The fourth one includes a ternary operator to check whether the score is above a certain mark and print a pass or fail message depending on the result.
+- The first two placeholders here are pretty simple, only including a simple value in the string.
+- The third one calculates a percentage result and rounds it to the nearest integer.
+- The fourth one includes a ternary operator to check whether the score is above a certain mark and print a pass or fail message depending on the result.
 
 Another point to note is that if you want to split a traditional string over multiple lines, you need to include a newline character, `\n`:
 
@@ -198,27 +195,24 @@ We would recommend that you get used to using template literals as soon as possi
 
 See our [Template literals](/en-US/docs/Web/JavaScript/Reference/Template_literals) reference page for more examples and details of advanced features.
 
-Test your skills!
------------------
+## Test your skills!
 
 You've reached the end of this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: Strings](/en-US/docs/Learn/JavaScript/First_steps/Test_your_skills:_Strings). Note that this also requires knowledge from the next article, so you might want to read that first.
 
-Conclusion
-----------
+## Conclusion
 
 So that's the very basics of strings covered in JavaScript. In the next article, we'll build on this, looking at some of the built-in methods available to strings in JavaScript and how we can use them to manipulate our strings into just the form we want.
 
 {{PreviousMenuNext("Learn/JavaScript/First\_steps/Math", "Learn/JavaScript/First\_steps/Useful\_string\_methods", "Learn/JavaScript/First\_steps")}}
 
-In this module
---------------
+## In this module
 
--   [What is JavaScript?](/en-US/docs/Learn/JavaScript/First_steps/What_is_JavaScript)
--   [A first splash into JavaScript](/en-US/docs/Learn/JavaScript/First_steps/A_first_splash)
--   [What went wrong? Troubleshooting JavaScript](/en-US/docs/Learn/JavaScript/First_steps/What_went_wrong)
--   [Storing the information you need — Variables](/en-US/docs/Learn/JavaScript/First_steps/Variables)
--   [Basic math in JavaScript — numbers and operators](/en-US/docs/Learn/JavaScript/First_steps/Math)
--   [Handling text — strings in JavaScript](/en-US/docs/Learn/JavaScript/First_steps/Strings)
--   [Useful string methods](/en-US/docs/Learn/JavaScript/First_steps/Useful_string_methods)
--   [Arrays](/en-US/docs/Learn/JavaScript/First_steps/Arrays)
--   [Assessment: Silly story generator](/en-US/docs/Learn/JavaScript/First_steps/Silly_story_generator)
+- [What is JavaScript?](/en-US/docs/Learn/JavaScript/First_steps/What_is_JavaScript)
+- [A first splash into JavaScript](/en-US/docs/Learn/JavaScript/First_steps/A_first_splash)
+- [What went wrong? Troubleshooting JavaScript](/en-US/docs/Learn/JavaScript/First_steps/What_went_wrong)
+- [Storing the information you need — Variables](/en-US/docs/Learn/JavaScript/First_steps/Variables)
+- [Basic math in JavaScript — numbers and operators](/en-US/docs/Learn/JavaScript/First_steps/Math)
+- [Handling text — strings in JavaScript](/en-US/docs/Learn/JavaScript/First_steps/Strings)
+- [Useful string methods](/en-US/docs/Learn/JavaScript/First_steps/Useful_string_methods)
+- [Arrays](/en-US/docs/Learn/JavaScript/First_steps/Arrays)
+- [Assessment: Silly story generator](/en-US/docs/Learn/JavaScript/First_steps/Silly_story_generator)

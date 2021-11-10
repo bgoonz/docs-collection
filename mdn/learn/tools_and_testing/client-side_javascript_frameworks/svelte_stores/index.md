@@ -1,4 +1,4 @@
---- title: Working with Svelte stores slug: Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks/Svelte\_stores tags: - Beginner - Frameworks - JavaScript - Learn - Stores - Svelte - client-side ---
+--- title: Working with Svelte stores slug: Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_stores tags: - Beginner - Frameworks - JavaScript - Learn - Stores - Svelte - client-side ---
 
 {{LearnSidebar}}  
 {{PreviousMenuNext("Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks/Svelte\_reactivity\_lifecycle\_accessibility","Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks/Svelte\_TypeScript", "Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks")}}
@@ -11,8 +11,7 @@ Using stores we will create an `Alert` component that shows notifications on scr
 
 We will also see how to develop our own custom store to persist the todo information to [web storage](/en-US/docs/Web/API/Web_Storage_API), allowing our todos to persist over page reloads.
 
-Code along with us
-------------------
+## Code along with us
 
 ### Git
 
@@ -36,8 +35,7 @@ To code along with us using the REPL, start at
 
 <https://svelte.dev/repl/d1fa84a5a4494366b179c87395940039?version=3.23.2>
 
-Dealing with our app state
---------------------------
+## Dealing with our app state
 
 We have already seen how our components can communicate with each other using props, two-way data binding, and events. In all these cases we were dealing with communication between parent and child components.
 
@@ -53,8 +51,7 @@ Svelte provides functions for creating [readable](https://svelte.dev/docs#readab
 
 Svelte also provides a very intuitive way to integrate stores into its reactivity system using the [reactive `$store` syntax](https://svelte.dev/docs#4_Prefix_stores_with_%24_to_access_their_values). If you create your own stores honoring the store contract, you get this reactivity syntactic sugar for free.
 
-Creating the Alert component
-----------------------------
+## Creating the Alert component
 
 To show how to work with stores, we will create an `Alert` component. These kind of widgets might also be known as popup notifications, toast, or notification bubbles.
 
@@ -134,13 +131,13 @@ Let's now create our `Alert` component and see how we can read values from the s
 
 Let's walk through this piece of code in detail.
 
--   At the beginning we import the `alert` store.
--   Next we import the `onDestroy()` lifecycle function, which lets us execute a callback after the component has been unmounted.
--   We then create a local variable named `alertContent`. Remember that we can access top-level variables from the markup, and whenever they are modified the DOM will update accordingly.
--   Then we call the method `alert.subscribe()`, passing it a callback function as a parameter. Whenever the value of the store changes, the callback function will be called with the new value as its parameter. In the callback function we just assign the value we receive to the local variable, which will trigger the update of the component's DOM.
--   The `subscribe()` method also returns a clean-up function, which takes care of releasing the subscription. So we subscribe when the component is being initialized, and use `onDestroy` to unsubscribe when the component is unmounted.
--   Finally we use the `alertContent` variable in our markup, and if the user clicks on the alert we clean it.
--   At the end we include a few CSS lines to style our `Alert` component.
+- At the beginning we import the `alert` store.
+- Next we import the `onDestroy()` lifecycle function, which lets us execute a callback after the component has been unmounted.
+- We then create a local variable named `alertContent`. Remember that we can access top-level variables from the markup, and whenever they are modified the DOM will update accordingly.
+- Then we call the method `alert.subscribe()`, passing it a callback function as a parameter. Whenever the value of the store changes, the callback function will be called with the new value as its parameter. In the callback function we just assign the value we receive to the local variable, which will trigger the update of the component's DOM.
+- The `subscribe()` method also returns a clean-up function, which takes care of releasing the subscription. So we subscribe when the component is being initialized, and use `onDestroy` to unsubscribe when the component is unmounted.
+- Finally we use the `alertContent` variable in our markup, and if the user clicks on the alert we clean it.
+- At the end we include a few CSS lines to style our `Alert` component.
 
 This setup allows us to work with stores in a reactive way. When the value of the store changes, the callback is executed. There we assign a new value to a local variable, and thanks to Svelte reactivity all our markup and reactive dependencies are updated accordingly.
 
@@ -161,8 +158,7 @@ Let's now use our component.
 
     ![A simple notification in the top right hand corner of an app saying welcome to todo list app](01-alert-message.png)
 
-Making stores reactive with the reactive `$store` syntax
---------------------------------------------------------
+## Making stores reactive with the reactive `$store` syntax
 
 This works, but you'll have to copy and paste all this code every time you want to subscribe to a store:
 
@@ -209,8 +205,7 @@ The end result of this nifty trick is that you can access global stores just as 
 
 This is a perfect example of how Svelte puts the compiler in charge of better developer ergonomics, not only saving us from typing boiler plate, but also generating less error-prone code.
 
-Writing to our store
---------------------
+## Writing to our store
 
 Writing to our store is just a matter of importing it and executing `$store = 'new value'`. Let's use it in our `Todos` component.
 
@@ -231,7 +226,7 @@ Writing to our store is just a matter of importing it and executing `$store = 'n
           todos = todos.filter(t => t.id !== todo.id)
           todosStatus.focus()             // give focus to status heading
           $alert = `Todo '${todo.name}' has been deleted`
-        }  
+        }
 
 4.  Update the `updateTodo()` function to this:
 
@@ -269,8 +264,7 @@ We could do the same within any component or `.js` file.
 
 **Note**: outside of Svelte components you cannot use the `$store` syntax. That's because the Svelte compiler won't touch anything outside of Svelte components. In that case you'll have to rely on the `store.subscribe()` and `store.set()` methods.
 
-Improving our Alert component
------------------------------
+## Improving our Alert component
 
 It's a bit annoying having to click on the alert to get rid of it. It would be better if the notification just disappeared after a couple of seconds.
 
@@ -318,8 +312,7 @@ Finally, with the `onDestroy()` lifecycle function, we make sure to call the `cl
 
 We also added an SVG icon above the alert paragraph, to make it look a bit nicer. Try it out again, and you should see the changes.
 
-Making our Alert component accessible
--------------------------------------
+## Making our Alert component accessible
 
 Our `Alert` component is working fine, but it's not very friendly to assistive technologies. The problem is elements that are dynamically added and removed from the page. While visually evident to users who can see the page, they may not be so obvious to users of assistive technologies, like screen readers. To handle those situations, we can take advantage of [ARIA live regions](/en-US/docs/Web/Accessibility/ARIA/ARIA_Live_Regions), which provide a way to programmatically expose dynamic content changes so that they can be detected and announced by assistive technologies.
 
@@ -335,8 +328,7 @@ In general, testing your applications using screen readers is a good idea, not o
 
 To learn more about detecting and fixing accessibility issues check out our [Handling common accessibility problems](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Accessibility) article.
 
-Using the store contract to persist our todos
----------------------------------------------
+## Using the store contract to persist our todos
 
 Our little app lets us manage our todos quite easily, but is rather useless if we always get the same list of hardcoded todos when we reload it. To make it truly useful, we have to find out how to persist our todos.
 
@@ -460,8 +452,8 @@ Our To-do list app is not particularly complex, so we won't move all our modific
 
 So, to implement a custom store that saves its content to web storage, we will need a writable store that:
 
--   Initially reads the value from web storage, and if it's not present, initializes it with a default value.
--   Whenever the value is modified, updates the store itself and also the data in local storage.
+- Initially reads the value from web storage, and if it's not present, initializes it with a default value.
+- Whenever the value is modified, updates the store itself and also the data in local storage.
 
 Moreover, because web storage only supports saving string values, we will have to convert from object to string when saving, and vice versa when we are loading the value from local storage.
 
@@ -494,11 +486,11 @@ Moreover, because web storage only supports saving string values, we will have t
           }
         }
 
-    -   Our `localStore` will be a function that when executed initially reads its content from web storage, and returns an object with three methods: `subscribe()`, `set()`, and `update()`.
-    -   When we create a new `localStore`, we'll have to specify the key of the web storage and an initial value. We then check if the value exists in web storage and, if not, we create it.
-    -   We use the `localStorage.getItem(key)` and `localStorage.setItem(key, value)` methods to read and write information to web storage, and the `toString()` and `toObj()` (which uses `JSON.parse()`) helper functions to convert the values.
-    -   Next, we convert the string content received from the web storage to an object, and save that object in our store.
-    -   Finally, every time we update the contents of the store, we also update the web storage, with the value converted to a string.
+    - Our `localStore` will be a function that when executed initially reads its content from web storage, and returns an object with three methods: `subscribe()`, `set()`, and `update()`.
+    - When we create a new `localStore`, we'll have to specify the key of the web storage and an initial value. We then check if the value exists in web storage and, if not, we create it.
+    - We use the `localStorage.getItem(key)` and `localStorage.setItem(key, value)` methods to read and write information to web storage, and the `toString()` and `toObj()` (which uses `JSON.parse()`) helper functions to convert the values.
+    - Next, we convert the string content received from the web storage to an object, and save that object in our store.
+    - Finally, every time we update the contents of the store, we also update the web storage, with the value converted to a string.
 
     Notice that we only had to redefine the `set()` method, adding the operation to save the value to web storage. The rest of the code is mostly initializing and converting stuff.
 
@@ -536,14 +528,13 @@ Moreover, because web storage only supports saving string values, we will have t
 
 5.  Go ahead and try your app again. Create a few todos and then close the browser. You may even stop the Svelte server and restart it. Upon revisiting the URL, your todos will still be there.
 
-6.  You can also inspect it in the DevTools console. In the web console, enter the command `localStorage.getItem('mdn-svelte-todo')`. Make some changes to your app, like pressing the *Uncheck All* button, and check the web storage content once more. You will get something like this:
+6.  You can also inspect it in the DevTools console. In the web console, enter the command `localStorage.getItem('mdn-svelte-todo')`. Make some changes to your app, like pressing the _Uncheck All_ button, and check the web storage content once more. You will get something like this:
 
     ![todo app with web console view alongside it, showing that when a todo is changed in the app, the corresponding entry is changed in web storage](03-persisting-todos-to-local-storage.png)
 
 Svelte stores provide a very simple and lightweight, but extremely powerful, way to handle complex app state from a global data store in a reactive way. And because Svelte compiles our code, it can provide the [`$store` auto-subscription syntax](https://svelte.dev/docs#4_Prefix_stores_with_%24_to_access_their_values) that allows us to work with stores in the same way as local variables. Because stores has a minimal API, it's very simple to create our custom stores to abstract away the inner workings of the store itself.
 
-Bonus track: Transitions
-------------------------
+## Bonus track: Transitions
 
 Let's change the subject now, and do something fun and different — let's add an animation to our alerts. Svelte provides a whole module to define [transitions](https://svelte.dev/tutorial/transition) and [animations](https://svelte.dev/tutorial/animate) so we can make our user interfaces more appealing.
 
@@ -575,8 +566,7 @@ Let's give our `Alert` component a fly `transition`. We'll open the `Alert.svelt
 
 This is just the tip of the iceberg. Svelte has lots of options for dealing with animations and transitions. Svelte also supports specifying different transitions to apply when the element is added or removed from the DOM with the `in:fn`/`out:fn` directives, and it also allows you to define your [custom CSS](https://svelte.dev/tutorial/custom-css-transitions) and [JavaScript](https://svelte.dev/tutorial/custom-js-transitions) transitions. It also has several easing functions to specify the rate of change over time. Have a look at the [ease visualizer](https://svelte.dev/examples#easing) to explore the various ease functions available.
 
-The code so far
----------------
+## The code so far
 
 ### Git
 
@@ -596,62 +586,60 @@ To see the current state of the code in a REPL, visit:
 
 <https://svelte.dev/repl/378dd79e0dfe4486a8f10823f3813190?version=3.23.2>
 
-Summary
--------
+## Summary
 
 In this article we added two new features: an `Alert` component and persisting `todos` to web storage.
 
--   This allowed us to showcase some advanced Svelte techniques. We developed the `Alert` component to show how to implement cross-component state management using stores. We also saw how to auto-subscribe to stores to seamlessly integrate them with the Svelte reactivity system.
--   Then we saw how to implement our own store from scratch, and also how to extend Svelte's writable store to persist data to web storage.
--   At the end we had a look at using the Svelte `transition` directive to implement animations on DOM elements.
+- This allowed us to showcase some advanced Svelte techniques. We developed the `Alert` component to show how to implement cross-component state management using stores. We also saw how to auto-subscribe to stores to seamlessly integrate them with the Svelte reactivity system.
+- Then we saw how to implement our own store from scratch, and also how to extend Svelte's writable store to persist data to web storage.
+- At the end we had a look at using the Svelte `transition` directive to implement animations on DOM elements.
 
 In the next article we will learn how add TypeScript support to our Svelte application. To take advantage of all its features, we will also port our entire application to TypeScript.
 
 {{PreviousMenuNext("Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks/Svelte\_reactivity\_lifecycle\_accessibility","Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks/Svelte\_TypeScript", "Learn/Tools\_and\_testing/Client-side\_JavaScript\_frameworks")}}
 
-In this module
---------------
+## In this module
 
--   [Introduction to client-side frameworks](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Introduction)
--   [Framework main features](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Main_features)
--   React
-    -   [Getting started with React](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_getting_started)
-    -   [Beginning our React todo list](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_todo_list_beginning)
-    -   [Componentizing our React app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_components)
-    -   [React interactivity: Events and state](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_interactivity_events_state)
-    -   [React interactivity: Editing, filtering, conditional rendering](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_interactivity_filtering_conditional_rendering)
-    -   [Accessibility in React](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_accessibility)
-    -   [React resources](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_resources)
--   Ember
-    -   [Getting started with Ember](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_getting_started)
-    -   [Ember app structure and componentization](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_structure_componentization)
-    -   [Ember interactivity: Events, classes and state](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_interactivity_events_state)
-    -   [Ember Interactivity: Footer functionality, conditional rendering](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_conditional_footer)
-    -   [Routing in Ember](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_routing)
-    -   [Ember resources and troubleshooting](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_resources)
--   Vue
-    -   [Getting started with Vue](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_getting_started)
-    -   [Creating our first Vue component](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_first_component)
-    -   [Rendering a list of Vue components](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_rendering_lists)
-    -   [Adding a new todo form: Vue events, methods, and models](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_methods_events_models)
-    -   [Styling Vue components with CSS](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_styling)
-    -   [Using Vue computed properties](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_computed_properties)
-    -   [Vue conditional rendering: editing existing todos](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_conditional_rendering)
-    -   [Focus management with Vue refs](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_refs_focus_management)
-    -   [Vue resources](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_resources)
--   Svelte
-    -   [Getting started with Svelte](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_getting_started)
-    -   [Starting our Svelte Todo list app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_Todo_list_beginning)
-    -   [Dynamic behavior in Svelte: working with variables and props](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_variables_props)
-    -   [Componentizing our Svelte app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_components)
-    -   [Advanced Svelte: Reactivity, lifecycle, accessibility](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_reactivity_lifecycle_accessibility)
-    -   [Working with Svelte stores](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_stores)
-    -   [TypeScript support in Svelte](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_TypeScript)
-    -   [Deployment and next steps](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_deployment_next)
--   Angular
-    -   [Getting started with Angular](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_getting_started)
-    -   [Beginning our Angular todo list app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_todo_list_beginning)
-    -   [Styling our Angular app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_styling)
-    -   [Creating an item component](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_item_component)
-    -   [Filtering our to-do items](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_filtering)
-    -   [Building Angular applications and further resources](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_building)
+- [Introduction to client-side frameworks](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Introduction)
+- [Framework main features](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Main_features)
+- React
+  - [Getting started with React](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_getting_started)
+  - [Beginning our React todo list](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_todo_list_beginning)
+  - [Componentizing our React app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_components)
+  - [React interactivity: Events and state](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_interactivity_events_state)
+  - [React interactivity: Editing, filtering, conditional rendering](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_interactivity_filtering_conditional_rendering)
+  - [Accessibility in React](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_accessibility)
+  - [React resources](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_resources)
+- Ember
+  - [Getting started with Ember](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_getting_started)
+  - [Ember app structure and componentization](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_structure_componentization)
+  - [Ember interactivity: Events, classes and state](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_interactivity_events_state)
+  - [Ember Interactivity: Footer functionality, conditional rendering](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_conditional_footer)
+  - [Routing in Ember](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_routing)
+  - [Ember resources and troubleshooting](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_resources)
+- Vue
+  - [Getting started with Vue](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_getting_started)
+  - [Creating our first Vue component](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_first_component)
+  - [Rendering a list of Vue components](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_rendering_lists)
+  - [Adding a new todo form: Vue events, methods, and models](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_methods_events_models)
+  - [Styling Vue components with CSS](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_styling)
+  - [Using Vue computed properties](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_computed_properties)
+  - [Vue conditional rendering: editing existing todos](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_conditional_rendering)
+  - [Focus management with Vue refs](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_refs_focus_management)
+  - [Vue resources](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_resources)
+- Svelte
+  - [Getting started with Svelte](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_getting_started)
+  - [Starting our Svelte Todo list app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_Todo_list_beginning)
+  - [Dynamic behavior in Svelte: working with variables and props](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_variables_props)
+  - [Componentizing our Svelte app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_components)
+  - [Advanced Svelte: Reactivity, lifecycle, accessibility](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_reactivity_lifecycle_accessibility)
+  - [Working with Svelte stores](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_stores)
+  - [TypeScript support in Svelte](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_TypeScript)
+  - [Deployment and next steps](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_deployment_next)
+- Angular
+  - [Getting started with Angular](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_getting_started)
+  - [Beginning our Angular todo list app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_todo_list_beginning)
+  - [Styling our Angular app](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_styling)
+  - [Creating an item component](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_item_component)
+  - [Filtering our to-do items](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_filtering)
+  - [Building Angular applications and further resources](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_building)

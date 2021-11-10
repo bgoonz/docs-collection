@@ -1,9 +1,8 @@
---- title: Update Book form slug: Learn/Server-side/Express\_Nodejs/forms/Update\_Book\_form tags: - Express - Forms - Node - part 6 - server-side ---
+--- title: Update Book form slug: Learn/Server-side/Express_Nodejs/forms/Update_Book_form tags: - Express - Forms - Node - part 6 - server-side ---
 
 This final subarticle shows how to define a page to update `Book` objects. Form handling when updating a book is much like that for creating a book, except that you must populate the form in the `GET` route with values from the database.
 
-<span class="highlight-span">Controller—get route</span>
---------------------------------------------------------
+## <span class="highlight-span">Controller—get route</span>
 
 Open **/controllers/bookController.js**. Find the exported `book_update_get()` controller method and replace it with the following code.
 
@@ -46,12 +45,11 @@ The controller gets the id of the `Book` to be updated from the URL parameter (`
 
 When the operations complete it checks for any errors in the find operation, and also whether any books were found.
 
-**Note:** Not finding any book results is **not an error** for a search — but it is for this application because we know there must be a matching book record! The code above compares for (`results==null`) in the callback, but it could equally well have daisy chained the method [orFail()](https://mongoosejs.com/docs/api.html#query_Query-orFail) to the query. 
+**Note:** Not finding any book results is **not an error** for a search — but it is for this application because we know there must be a matching book record! The code above compares for (`results==null`) in the callback, but it could equally well have daisy chained the method [orFail()](https://mongoosejs.com/docs/api.html#query_Query-orFail) to the query.
 
-We then mark the currently selected genres as checked and then render the **book\_form.pug** view, passing variables for `title`, book, all `authors`, and all `genres`.
+We then mark the currently selected genres as checked and then render the **book_form.pug** view, passing variables for `title`, book, all `authors`, and all `genres`.
 
-<span class="highlight-span">Controller—post route</span>
----------------------------------------------------------
+## <span class="highlight-span">Controller—post route</span>
 
 Find the exported `book_update_post()` controller method, and replace it with the following code.
 
@@ -129,10 +127,9 @@ Find the exported `book_update_post()` controller method, and replace it with th
 
 This is very similar to the post route used when creating a Book. First we validate and sanitize the book data from the form and use it to create a new `Book` object (setting its `_id` value to the id of the object to update). If there are errors when we validate the data then we re-render the form, additionally displaying the data entered by the user, the errors, and lists of genres and authors. If there are no errors then we call `Book.findByIdAndUpdate()` to update the `Book` document, and then redirect to its detail page.
 
-<span class="highlight-span">View</span>
-----------------------------------------
+## <span class="highlight-span">View</span>
 
-Open **/views/book\_form.pug** and update the section where the author form control is set to have the conditional code shown below.
+Open **/views/book_form.pug** and update the section where the author form control is set to have the conditional code shown below.
 
         div.form-group
           label(for='author') Author:
@@ -151,12 +148,11 @@ Open **/views/book\_form.pug** and update the section where the author form cont
               else
                 option(value=author._id) #{author.name}
 
-**Note**: This code change is required so that the book\_form can be used for both creating and updating book objects (without this, there is an error on the `GET` route when creating a form).
+**Note**: This code change is required so that the book_form can be used for both creating and updating book objects (without this, there is an error on the `GET` route when creating a form).
 
-<span class="highlight-span">Add an update button</span>
---------------------------------------------------------
+## <span class="highlight-span">Add an update button</span>
 
-Open the **book\_detail.pug** view and make sure there are links for both deleting and updating books at the bottom of the page, as shown below.
+Open the **book_detail.pug** view and make sure there are links for both deleting and updating books at the bottom of the page, as shown below.
 
       hr
       p
@@ -164,20 +160,18 @@ Open the **book\_detail.pug** view and make sure there are links for both deleti
       p
         a(href=book.url+'/update') Update Book
 
-You should now be able to update books from the *Book detail* page.
+You should now be able to update books from the _Book detail_ page.
 
-<span class="highlight-span">What does it look like?</span>
------------------------------------------------------------
+## <span class="highlight-span">What does it look like?</span>
 
-Run the application, open your browser to <a href="http://localhost:3000/" class="external external-icon">http://localhost:3000/</a>, select the *All books* link, then select a particular book. Finally select the *Update Book* link.
+Run the application, open your browser to <a href="http://localhost:3000/" class="external external-icon">http://localhost:3000/</a>, select the _All books_ link, then select a particular book. Finally select the _Update Book_ link.
 
-The form should look just like the *Create book* page, only with a title of 'Update book', and pre-populated with record values.
+The form should look just like the _Create book_ page, only with a title of 'Update book', and pre-populated with record values.
 
 ![](locallibary_express_book_update_noerrors.png)
 
 **Note:** The other pages for updating objects can be implemented in much the same way. We've left that as a challenge.
 
-Next steps
-----------
+## Next steps
 
--   Return to [Express Tutorial Part 6: Working with forms](/en-US/docs/Learn/Server-side/Express_Nodejs/forms).
+- Return to [Express Tutorial Part 6: Working with forms](/en-US/docs/Learn/Server-side/Express_Nodejs/forms).

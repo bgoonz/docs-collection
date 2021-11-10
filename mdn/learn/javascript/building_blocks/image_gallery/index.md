@@ -1,4 +1,4 @@
---- title: Image gallery slug: Learn/JavaScript/Building\_blocks/Image\_gallery tags: - Assessment - Beginner - CodingScripting - Conditionals - Event Handler - JavaScript - Learn - Loops - events - l10n:priority ---
+--- title: Image gallery slug: Learn/JavaScript/Building_blocks/Image_gallery tags: - Assessment - Beginner - CodingScripting - Conditionals - Event Handler - JavaScript - Learn - Loops - events - l10n:priority ---
 
 {{LearnSidebar}}
 
@@ -8,8 +8,7 @@ Now that we've looked at the fundamental building blocks of JavaScript, we'll te
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Before attempting this assessment you should have already worked through all the articles in this module.</td></tr><tr class="even"><td>Objective:</td><td>To test comprehension of JavaScript loops, functions, conditionals, and events.</td></tr></tbody></table>
 
-Starting point
---------------
+## Starting point
 
 To get this assessment started, you should go and [grab the ZIP](https://github.com/mdn/learning-area/blob/master/javascript/building-blocks/gallery/gallery-start.zip?raw=true) file for the example, unzip it somewhere on your computer, and do the exercise locally to begin with.
 
@@ -17,8 +16,7 @@ Alternatively, you could use a site like <a href="https://jsbin.com/" class="ex
 
 **Note**: If you get stuck, then ask us for help — see the {{anch("Assessment or further help")}} section at the bottom of this page.
 
-Project brief
--------------
+## Project brief
 
 You have been provided with some HTML, CSS and image assets and a few lines of JavaScript code; you need to write the necessary JavaScript to turn this into a working program. The HTML body looks like this:
 
@@ -40,19 +38,18 @@ The example looks like this:
 
 The most interesting parts of the example's CSS file:
 
--   It absolutely positions the three elements inside the `full-img <div>` — the `<img>` in which the full-sized image is displayed, an empty `<div>` that is sized to be the same size as the `<img>` and put right over the top of it (this is used to apply a darkening effect to the image via a semi-transparent background color), and a `<button>` that is used to control the darkening effect.
--   It sets the width of any images inside the `thumb-bar <div>` (so-called "thumbnail" images) to 20%, and floats them to the left so they sit next to one another on a line.
+- It absolutely positions the three elements inside the `full-img <div>` — the `<img>` in which the full-sized image is displayed, an empty `<div>` that is sized to be the same size as the `<img>` and put right over the top of it (this is used to apply a darkening effect to the image via a semi-transparent background color), and a `<button>` that is used to control the darkening effect.
+- It sets the width of any images inside the `thumb-bar <div>` (so-called "thumbnail" images) to 20%, and floats them to the left so they sit next to one another on a line.
 
 Your JavaScript needs to:
 
--   Loop through all the images, and for each one insert an `<img>` element inside the `thumb-bar <div>` that embeds that image in the page.
--   Attach an `onclick` handler to each `<img>` inside the `thumb-bar <div>` so that when they are clicked, the corresponding image is displayed in the `displayed-img <img>` element.
--   Attach an `onclick` handler to the `<button>` so that when it is clicked, a darken effect is applied to the full-size image. When it is clicked again, the darken effect is removed again.
+- Loop through all the images, and for each one insert an `<img>` element inside the `thumb-bar <div>` that embeds that image in the page.
+- Attach an `onclick` handler to each `<img>` inside the `thumb-bar <div>` so that when they are clicked, the corresponding image is displayed in the `displayed-img <img>` element.
+- Attach an `onclick` handler to the `<button>` so that when it is clicked, a darken effect is applied to the full-size image. When it is clicked again, the darken effect is removed again.
 
 To give you more of an idea, have a look at the [finished example](https://mdn.github.io/learning-area/javascript/building-blocks/gallery/) (no peeking at the source code!)
 
-Steps to complete
------------------
+## Steps to complete
 
 The following sections describe what you need to do.
 
@@ -85,32 +82,29 @@ The following lines provide a basis for achieving the changes stipulated in poin
     btn.textContent = xxx;
     overlay.style.backgroundColor = xxx;
 
-Hints and tips
---------------
+## Hints and tips
 
--   You don't need to edit the HTML or CSS in any way.
+- You don't need to edit the HTML or CSS in any way.
 
-Assessment or further help
---------------------------
+## Assessment or further help
 
 If you would like your work assessed, or are stuck and want to ask for help:
 
 1.  Put your work into an online shareable editor such as [CodePen](https://codepen.io/), [jsFiddle](https://jsfiddle.net/), or [Glitch](https://glitch.com/).
 2.  Write a post asking for assessment and/or help at the [MDN Discourse forum Learning category](https://discourse.mozilla.org/c/mdn/learn). Your post should include:
-    -   A descriptive title such as "Assessment wanted for Image gallery".
-    -   Details of what you have already tried, and what you would like us to do, e.g. if you are stuck and need help, or want an assessment.
-    -   A link to the example you want assessed or need help with, in an online shareable editor (as mentioned in step 1 above). This is a good practice to get into — it's very hard to help someone with a coding problem if you can't see their code.
-    -   A link to the actual task or assessment page, so we can find the question you want help with.
+    - A descriptive title such as "Assessment wanted for Image gallery".
+    - Details of what you have already tried, and what you would like us to do, e.g. if you are stuck and need help, or want an assessment.
+    - A link to the example you want assessed or need help with, in an online shareable editor (as mentioned in step 1 above). This is a good practice to get into — it's very hard to help someone with a coding problem if you can't see their code.
+    - A link to the actual task or assessment page, so we can find the question you want help with.
 
 {{PreviousMenu("Learn/JavaScript/Building\_blocks/Events", "Learn/JavaScript/Building\_blocks")}}
 
-In this module
---------------
+## In this module
 
--   [Making decisions in your code — conditionals](/en-US/docs/Learn/JavaScript/Building_blocks/conditionals)
--   [Looping code](/en-US/docs/Learn/JavaScript/Building_blocks/Looping_code)
--   [Functions — reusable blocks of code](/en-US/docs/Learn/JavaScript/Building_blocks/Functions)
--   [Build your own function](/en-US/docs/Learn/JavaScript/Building_blocks/Build_your_own_function)
--   [Function return values](/en-US/docs/Learn/JavaScript/Building_blocks/Return_values)
--   [Introduction to events](/en-US/docs/Learn/JavaScript/Building_blocks/Events)
--   **Image gallery**
+- [Making decisions in your code — conditionals](/en-US/docs/Learn/JavaScript/Building_blocks/conditionals)
+- [Looping code](/en-US/docs/Learn/JavaScript/Building_blocks/Looping_code)
+- [Functions — reusable blocks of code](/en-US/docs/Learn/JavaScript/Building_blocks/Functions)
+- [Build your own function](/en-US/docs/Learn/JavaScript/Building_blocks/Build_your_own_function)
+- [Function return values](/en-US/docs/Learn/JavaScript/Building_blocks/Return_values)
+- [Introduction to events](/en-US/docs/Learn/JavaScript/Building_blocks/Events)
+- **Image gallery**

@@ -1,4 +1,4 @@
---- title: Debugging CSS slug: Learn/CSS/Building\_blocks/Debugging\_CSS tags: - Beginner - CSS - DOM - Debugging - DevTools - Learn - source ---
+--- title: Debugging CSS slug: Learn/CSS/Building_blocks/Debugging_CSS tags: - Beginner - CSS - DOM - Debugging - DevTools - Learn - source ---
 
 {{LearnSidebar}}{{PreviousMenuNext("Learn/CSS/Building\_blocks/Styling\_tables", "Learn/CSS/Building\_blocks/Organizing", "Learn/CSS/Building\_blocks")}}
 
@@ -6,8 +6,7 @@ Sometimes when writing CSS you will encounter an issue where your CSS doesn't se
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, <a href="/en-US/docs/Learn/Getting_started_with_the_web/Installing_basic_software">basic software installed</a>, basic knowledge of <a href="/en-US/docs/Learn/Getting_started_with_the_web/Dealing_with_files">working with files</a>, HTML basics (study <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML">Introduction to HTML</a>), and an idea of how CSS works (study <a href="/en-US/docs/Learn/CSS/First_steps">CSS first steps</a>.)</td></tr><tr class="even"><td>Objective:</td><td>To learn the basics of what browser DevTools are, and how to do simple inspection and editing of CSS.</td></tr></tbody></table>
 
-How to access browser DevTools
-------------------------------
+## How to access browser DevTools
 
 The article [What are browser developer tools](/en-US/docs/Learn/Common_questions/What_are_browser_developer_tools) is an up-to-date guide explaining how to access the tools in various browsers and platforms. While you may choose to mostly develop in a particular browser, and therefore will become most familiar with the tools included in that browser, it is worth knowing how to access them in other browsers. This will help if you are seeing different rendering between multiple browsers.
 
@@ -15,8 +14,7 @@ You will also find that browsers have chosen to focus on different areas when cr
 
 In this lesson we will look at some useful features of the Firefox DevTools for working with CSS. In order to do so I'll be using [an example file](https://mdn.github.io/css-examples/learn/inspecting/inspecting.html). Load this up in a new tab if you want to follow along, and open up your DevTools as described in the article linked above.
 
-The DOM versus view source
---------------------------
+## The DOM versus view source
 
 Something that can trip up newcomers to DevTools is the difference between what you see when you [view the source](/en-US/docs/Tools/View_source) of a webpage, or look at the HTML file you put on the server, and what you can see in the [HTML Pane](/en-US/docs/Tools/Page_Inspector/UI_Tour#html_pane) of the DevTools. While it looks roughly similar to what you can see via View Source there are some differences.
 
@@ -24,10 +22,9 @@ In the rendered DOM the browser may have corrected some badly-written HTML for y
 
 View Source, in comparison, is the HTML source code as stored on the server. The [HTML tree](/en-US/docs/Tools/Page_Inspector/How_to/Examine_and_edit_HTML#html_tree) in your DevTools shows exactly what the browser is rendering at any given time, so it gives you an insight into what is really going on.
 
-Inspecting the applied CSS
---------------------------
+## Inspecting the applied CSS
 
-Select an element on your page, either by right/ctrl-clicking on it and selecting *Inspect*, or selecting it from the HTML tree on the left of the DevTools display. Try selecting the element with the class of `box1`; this is the first element on the page with a bordered box drawn around it.
+Select an element on your page, either by right/ctrl-clicking on it and selecting _Inspect_, or selecting it from the HTML tree on the left of the DevTools display. Try selecting the element with the class of `box1`; this is the first element on the page with a bordered box drawn around it.
 
 ![The example page for this tutorial with DevTools open.](inspecting1.png)
 
@@ -45,8 +42,7 @@ The following video provides some useful tips on debugging CSS using the Firefox
 
 {{EmbedYouTube("O3DAm82vIvU")}}
 
-Editing values
---------------
+## Editing values
 
 In addition to turning properties on and off, you can edit their values. Perhaps you want to see if another color looks better, or wish to tweak the size of something? DevTools can save you a lot of time editing a stylesheet and reloading the page.
 
@@ -54,8 +50,7 @@ In addition to turning properties on and off, you can edit their values. Perhaps
 
 ![DevTools Styles Panel with a color picker open.](inspecting2-color-picker.png)
 
-Adding a new property
----------------------
+## Adding a new property
 
 You can add properties using the DevTools. Perhaps you have realised that you don't want your box to inherit the `<body>` element's font size, and want to set its own specific size? You can try this out in DevTools before adding it to your CSS file.
 
@@ -65,8 +60,7 @@ You can add properties using the DevTools. Perhaps you have realised that you do
 
 **Note**: There are other useful features in the Rules view too, for example declarations with invalid values are crossed out. You can find out more at [Examine and edit CSS](/en-US/docs/Tools/Page_Inspector/How_to/Examine_and_edit_CSS).
 
-Understanding the box model
----------------------------
+## Understanding the box model
 
 In previous lessons we have discussed [the Box Model](/en-US/docs/Learn/CSS/Building_blocks/The_box_model), and the fact that we have an alternate box model that changes how the size of elements are calculated based on the size you give them, plus the padding and borders. DevTools can really help you to understand how the size of an element is being calculated.
 
@@ -82,8 +76,7 @@ The element with a class of `box2` is using `border-box`, so here the padding an
 
 **Note**: Find out more in [Examining and Inspecting the Box Model](/en-US/docs/Tools/Page_Inspector/How_to/Examine_and_edit_the_box_model).
 
-Solving specificity issues
---------------------------
+## Solving specificity issues
 
 Sometimes during development, but in particular when you need to edit the CSS on an existing site, you will find yourself having a hard time getting some CSS to apply. No matter what you do, the element just doesn't seem to take the CSS. What is generally happening here is that a more specific selector is overriding your changes, and here DevTools will really help you out.
 
@@ -106,13 +99,11 @@ As you will recall from the lesson on [cascade and inheritance](/en-US/docs/Lear
 
 ![Selecting an em and looking at DevTools to see what is over-riding the color.](inspecting5-specificity.png)
 
-Find out more about the Firefox DevTools
-----------------------------------------
+## Find out more about the Firefox DevTools
 
 There is a lot of information about the Firefox DevTools here on MDN. Take a look at the main [DevTools section](/en-US/docs/Tools), and for more detail on the things we have briefly covered in this lesson see [The How To Guides](/en-US/docs/Tools/Page_Inspector#how_to).
 
-Debugging problems in CSS
--------------------------
+## Debugging problems in CSS
 
 DevTools can be a great help when solving CSS problems, so when you find yourself in a situation where CSS isn't behaving as you expect, how should you go about solving it? The following steps should help.
 
@@ -124,8 +115,8 @@ Any coding problem can be frustrating, especially CSS problems because you often
 
 Browsers expect your CSS and HTML to be correctly written, however browsers are also very forgiving and will try their best to display your webpages even if you have errors in the markup or stylesheet. If you have mistakes in your code the browser needs to make a guess at what you meant, and it might make a different decision to what you had in mind. In addition, two different browsers might cope with the problem in two different ways. A good first step, therefore, is to run your HTML and CSS through a validator, to pick up and fix any errors.
 
--   [CSS Validator](https://jigsaw.w3.org/css-validator/)
--   [HTML validator](https://validator.w3.org/)
+- [CSS Validator](https://jigsaw.w3.org/css-validator/)
+- [HTML validator](https://validator.w3.org/)
 
 ### Are the property and value supported by the browser you are testing in?
 
@@ -148,7 +139,7 @@ A reduced test case is a code example that demonstrates the problem in the simpl
 To create a reduced test case:
 
 1.  If your markup is dynamically generated — for example via a CMS — make a static version of the output that shows the problem. A code sharing site like [CodePen](https://codepen.io/) is useful for hosting reduced test cases, as then they are accessible online and you can easily share them with colleagues. You could start by doing View Source on the page and copying the HTML into CodePen, then grab any relevant CSS and JavaScript and include it too. After that, you can check whether the issue is still evident.
-2.  If removing the JavaScript does not make the issue go away, don't include the JavaScript. If removing the JavaScript *does* make the issue go away, then remove as much JavaScript as you can, leaving in whatever causes the issue.
+2.  If removing the JavaScript does not make the issue go away, don't include the JavaScript. If removing the JavaScript _does_ make the issue go away, then remove as much JavaScript as you can, leaving in whatever causes the issue.
 3.  Remove any HTML that does not contribute to the issue. Remove components or even main elements of the layout. Again, try to get down to the smallest amount of code that still shows the issue.
 4.  Remove any CSS that doesn't impact the issue.
 
@@ -162,15 +153,14 @@ As you become more experienced with CSS, you will find that you get faster at fi
 
 {{PreviousMenuNext("Learn/CSS/Building\_blocks/Styling\_tables", "Learn/CSS/Building\_blocks/Organizing", "Learn/CSS/Building\_blocks")}}
 
-In this module
---------------
+## In this module
 
 1.  [Cascade and inheritance](/en-US/docs/Learn/CSS/Building_blocks/Cascade_and_inheritance)
 2.  [CSS selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors)
-    -   [Type, class, and ID selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Type_Class_and_ID_Selectors)
-    -   [Attribute selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Attribute_selectors)
-    -   [Pseudo-classes and pseudo-elements](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Pseudo-classes_and_pseudo-elements)
-    -   [Combinators](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Combinators)
+    - [Type, class, and ID selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Type_Class_and_ID_Selectors)
+    - [Attribute selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Attribute_selectors)
+    - [Pseudo-classes and pseudo-elements](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Pseudo-classes_and_pseudo-elements)
+    - [Combinators](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Combinators)
 3.  [The box model](/en-US/docs/Learn/CSS/Building_blocks/The_box_model)
 4.  [Backgrounds and borders](/en-US/docs/Learn/CSS/Building_blocks/Backgrounds_and_borders)
 5.  [Handling different text directions](/en-US/docs/Learn/CSS/Building_blocks/Handling_different_text_directions)

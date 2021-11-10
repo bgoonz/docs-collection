@@ -1,9 +1,8 @@
---- title: How do I use GitHub Pages? slug: Learn/Common\_questions/Using\_Github\_pages tags: - Beginner - GitHub - Guide - Web - gh-pages - git - publish ---
+--- title: How do I use GitHub Pages? slug: Learn/Common_questions/Using_Github_pages tags: - Beginner - GitHub - Guide - Web - gh-pages - git - publish ---
 
 [GitHub](https://github.com/) is a "social coding" site. It allows you to upload code repositories for storage in the [Git](https://git-scm.com/) **version control system.** You can then collaborate on code projects, and the system is open-source by default, meaning that anyone in the world can find your GitHub code, use it, learn from it, and improve on it. You can do that with other people's code too! This article provides a basic guide to publishing content using Github's gh-pages feature.
 
-Publishing content
-------------------
+## Publishing content
 
 GitHub is a very important and useful community to get involved in, and Git/GitHub is a very popular [version control system](https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control) — most tech companies now use it in their workflow. GitHub has a very useful feature called [GitHub Pages](https://pages.github.com/), which allows you to publish website code live on the Web.
 
@@ -37,24 +36,24 @@ The best way to upload your code to Github is via the command line — this is a
 
 <span id="command-line">Every operating system comes with a command line tool:</span>
 
--   **Windows**: **Command Prompt** can be accessed by pressing the Windows key, typing *Command Prompt*, and choosing it from the list that appears. Note that Windows has its own command conventions differing from Linux and OS X, so the commands below may vary on your machine.
--   **OS X**: **Terminal** can be found in *Applications &gt; Utilities*.
--   **Linux**: Usually you can pull up a terminal with *Ctrl + Alt + T*. If that doesn't work, look for **Terminal** in an app bar or menu.
+- **Windows**: **Command Prompt** can be accessed by pressing the Windows key, typing _Command Prompt_, and choosing it from the list that appears. Note that Windows has its own command conventions differing from Linux and OS X, so the commands below may vary on your machine.
+- **OS X**: **Terminal** can be found in _Applications &gt; Utilities_.
+- **Linux**: Usually you can pull up a terminal with _Ctrl + Alt + T_. If that doesn't work, look for **Terminal** in an app bar or menu.
 
 This may seem a bit scary at first, but don't worry — you'll soon get the hang of the basics. You tell the computer to do something in the terminal by typing in a command and hitting Enter, as seen above.
 
 ### Creating a repo for your code
 
-1.  Next, you need to create a new repo for your files to go in. Click Plus (+) in the top right of the GitHub homepage, then choose *New Repository*.
-2.  On this page, in the *Repository name* box, enter a name for your code repository, for example *my-repository*.
+1.  Next, you need to create a new repo for your files to go in. Click Plus (+) in the top right of the GitHub homepage, then choose _New Repository_.
+2.  On this page, in the _Repository name_ box, enter a name for your code repository, for example _my-repository_.
 3.  Also fill in a description to say what your repository is going to contain. Your screen should look like this:  
     ![](create-new-repo.png)
-4.  Click *Create repository*; this should bring you to the following page:   
+4.  Click _Create repository_; this should bring you to the following page:   
     ![](github-repo.png)
 
 ### Uploading your files to GitHub
 
-1.  On the current page, you are interested in the section *…or push an existing repository from the command line*. You should see two lines of code listed in this section. Copy the whole of the first line, paste it into the command line, and press Enter. The command should look something like this:
+1.  On the current page, you are interested in the section _…or push an existing repository from the command line_. You should see two lines of code listed in this section. Copy the whole of the first line, paste it into the command line, and press Enter. The command should look something like this:
 
         git remote add origin https://github.com/chrisdavidmills/my-repository.git
 
@@ -63,11 +62,11 @@ This may seem a bit scary at first, but don't worry — you'll soon get the hang
         git add --all
         git commit -m 'adding my files to my repository'
 
-3.  Finally, push the code up to GitHub by going to the GitHub web page you're on and entering into the terminal the second of the two commands we saw the *…or push an existing repository from the command line* section:
+3.  Finally, push the code up to GitHub by going to the GitHub web page you're on and entering into the terminal the second of the two commands we saw the _…or push an existing repository from the command line_ section:
 
         git push -u origin main
 
-4.  Now you need to turn GitHub pages on for your repository. To do this, from the homepage of your repository choose *Settings*, then select *Pages* from the sidebar on the left. Underneath *Source*, choose the "main" branch. The page should refresh.
+4.  Now you need to turn GitHub pages on for your repository. To do this, from the homepage of your repository choose _Settings_, then select _Pages_ from the sidebar on the left. Underneath *Source*, choose the "main" branch. The page should refresh.
 5.  Go to the GitHub Pages section again, and you should see a line of the form "Your site is ready to be published at https://xxxxxx."
 6.  If you click on this URL, you should go to a live version of your example, provided the home page is called `index.html` — it goes to this entry point by default. If your site's entry point is called something else, for example `myPage.html`, you'll need to go to `https://xxxxxx/myPage.html`.
 
@@ -79,6 +78,6 @@ If you want to make more changes to your test site and upload those to GitHub, y
     git commit -m 'another commit'
     git push
 
-You can replace *another commit* with a more suitable message to describe what change you just made.
+You can replace _another commit_ with a more suitable message to describe what change you just made.
 
 We have barely scratched the surface of Git. To learn more, check out our [Git and GitHub](/en-US/docs/Learn/Tools_and_testing/GitHub) page.

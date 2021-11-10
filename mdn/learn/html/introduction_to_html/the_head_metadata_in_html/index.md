@@ -1,4 +1,4 @@
---- title: What’s in the head? Metadata in HTML slug: Learn/HTML/Introduction\_to\_HTML/The\_head\_metadata\_in\_HTML tags: - Beginner - CodingScripting - Guide - HTML - Meta - favicon - head - lang - metadata ---
+--- title: What’s in the head? Metadata in HTML slug: Learn/HTML/Introduction_to_HTML/The_head_metadata_in_HTML tags: - Beginner - CodingScripting - Guide - HTML - Meta - favicon - head - lang - metadata ---
 
 {{LearnSidebar}}
 
@@ -8,8 +8,7 @@ The {{glossary("Head", "head")}} of an HTML document is the part that is not dis
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic HTML familiarity, as covered in <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML/Getting_started">Getting started with HTML</a>.</td></tr><tr class="even"><td>Objective:</td><td>To learn about the HTML head, its purpose, the most important items it can contain, and what effect it can have on the HTML document.</td></tr></tbody></table>
 
-What is the HTML head?
-----------------------
+## What is the HTML head?
 
 Let's revisit the simple [HTML document we covered in the previous article](/en-US/docs/Learn/HTML/Introduction_to_HTML/Getting_started#anatomy_of_an_html_document):
 
@@ -33,13 +32,12 @@ The HTML head is the contents of the {{htmlelement("head")}} element — unlike 
 
 In larger pages however, the head can get quite full. Try going to some of your favorite websites and use the [developer tools](/en-US/docs/Learn/Common_questions/What_are_browser_developer_tools) to check out their head contents. Our aim here is not to show you how to use everything that can possibly be put in the head, but rather to teach you how to use the major elements that you'll want to include in the head, and give you some familiarity. Let's get started.
 
-Adding a title
---------------
+## Adding a title
 
 We've already seen the {{htmlelement("title")}} element in action — this can be used to add a title to the document. This however can get confused with the {{htmlelement("h1")}} element, which is used to add a top level heading to your body content — this is also sometimes referred to as the page title. But they are different things!
 
--   The {{htmlelement("h1")}} element appears on the page when loaded in the browser — generally this should be used once per page, to mark up the title of your page content (the story title, or news headline, or whatever is appropriate to your usage.)
--   The {{htmlelement("title")}} element is metadata that represents the title of the overall HTML document (not the document's content.)
+- The {{htmlelement("h1")}} element appears on the page when loaded in the browser — generally this should be used once per page, to mark up the title of your page content (the story title, or news headline, or whatever is appropriate to your usage.)
+- The {{htmlelement("title")}} element is metadata that represents the title of the overall HTML document (not the document's content.)
 
 ### Active learning: Inspecting a simple example
 
@@ -48,18 +46,17 @@ We've already seen the {{htmlelement("title")}} element in action — this can b
     2.  Press the "Raw" button on the GitHub page, which causes the raw code to appear (possibly in a new browser tab). Next, choose your browser's *File &gt; Save Page As...* menu and choose a sensible place to save the file.
 2.  Now open the file in your browser. You should see something like this:
 
-    ![A simple web page with the title set to &lt;title&gt; element, and the &lt;h1&gt; set to &lt;h1&gt; element.](title-example.png)It should now be completely obvious where the `<h1>` content appears, and where the `<title>` content appears!
+    ![A simple web page with the title set to <title> element, and the <h1> set to <h1> element.](title-example.png)It should now be completely obvious where the `<h1>` content appears, and where the `<title>` content appears!
 
 3.  You should also try opening the code up in your code editor, editing the contents of these elements, then refreshing the page in your browser. Have some fun with it.
 
-The `<title>` element contents are also used in other ways. For example, if you try bookmarking the page (*Bookmarks &gt; Bookmark This Page* or the star icon in the URL bar in Firefox), you will see the `<title>` contents filled in as the suggested bookmark name.
+The `<title>` element contents are also used in other ways. For example, if you try bookmarking the page (_Bookmarks &gt; Bookmark This Page_ or the star icon in the URL bar in Firefox), you will see the `<title>` contents filled in as the suggested bookmark name.
 
-![A webpage being bookmarked in firefox; the bookmark name has been automatically filled in with the contents of the &lt;title&gt; element ](bookmark-example.png)
+![A webpage being bookmarked in firefox; the bookmark name has been automatically filled in with the contents of the <title> element ](bookmark-example.png)
 
 The `<title>` contents are also used in search results, as you'll see below.
 
-Metadata: the &lt;meta&gt; element
-----------------------------------
+## Metadata: the &lt;meta&gt; element
 
 Metadata is data that describes data, and HTML has an "official" way of adding metadata to a document — the {{htmlelement("meta")}} element. Of course, the other stuff we are talking about in this article could also be thought of as metadata too. There are a lot of different types of `<meta>` elements that can be included in your page's &lt;head&gt;, but we won't try to explain them all at this stage, as it would just get too confusing. Instead, we'll explain a few things that you might commonly see, just to give you an idea.
 
@@ -87,8 +84,8 @@ To try this out, revisit the simple HTML template you obtained in the previous s
 
 Many `<meta>` elements include `name` and `content` attributes:
 
--   `name` specifies the type of meta element it is; what type of information it contains.
--   `content` specifies the actual meta content.
+- `name` specifies the type of meta element it is; what type of information it contains.
+- `content` specifies the actual meta content.
 
 Two such meta elements that are useful to include on your page define the author of the page, and provide a concise description of the page. Let's look at an example:
 
@@ -106,7 +103,7 @@ Specifying a description that includes keywords relating to the content of your 
 The description is also used on search engine result pages. Let's go through an exercise to explore this
 
 1.  Go to the [front page of The Mozilla Developer Network](/en-US/).
-2.  View the page's source (right-click on the page, choose *View Page Source* from the context menu.)
+2.  View the page's source (right-click on the page, choose _View Page Source_ from the context menu.)
 3.  Find the description meta tag. It will look something like this (although it may change over time):
 
         <meta name="description" content="The MDN Web Docs site
@@ -120,7 +117,7 @@ The description is also used on search engine result pages. Let's go through an 
 
 **Note:** In Google, you will see some relevant subpages of MDN Web Docs listed below the main homepage link — these are called sitelinks, and are configurable in [Google's webmaster tools](https://www.google.com/webmasters/tools/) — a way to make your site's search results better in the Google search engine.
 
-**Note:** Many `<meta>` features just aren't used any more. For example, the keyword `<meta>` element (`<meta name="keywords" content="fill, in, your, keywords,       here">`) — which is supposed to provide keywords for search engines to determine relevance of that page for different search terms — is ignored by search engines, because spammers were just filling the keyword list with hundreds of keywords, biasing results.
+**Note:** Many `<meta>` features just aren't used any more. For example, the keyword `<meta>` element (`<meta name="keywords" content="fill, in, your, keywords, here">`) — which is supposed to provide keywords for search engines to determine relevance of that page for different search terms — is ignored by search engines, because spammers were just filling the keyword list with hundreds of keywords, biasing results.
 
 ### Other types of metadata
 
@@ -142,8 +139,7 @@ Twitter also has its own similar proprietary metadata called [Twitter Cards](htt
 
     <meta name="twitter:title" content="Mozilla Developer Network">
 
-Adding custom icons to your site
---------------------------------
+## Adding custom icons to your site
 
 To further enrich your site design, you can add references to custom icons in your metadata, and these will be displayed in certain contexts. The most commonly used of these is the **favicon** (short for "favorites icon", referring to its use in the "favorites" or "bookmarks" lists in browsers).
 
@@ -179,20 +175,19 @@ Don't worry too much about implementing all these types of icon right now — th
 
 **Note:** If your site uses a Content Security Policy (CSP) to enhance its security, the policy applies to the favicon. If you encounter problems with the favicon not loading, verify that the {{HTTPHeader("Content-Security-Policy")}} header's [`img-src` directive](/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/img-src) is not preventing access to it.
 
-Applying CSS and JavaScript to HTML
------------------------------------
+## Applying CSS and JavaScript to HTML
 
 Just about all websites you'll use in the modern day will employ {{glossary("CSS")}} to make them look cool, and {{glossary("JavaScript")}} to power interactive functionality, such as video players, maps, games, and more. These are most commonly applied to a web page using the {{htmlelement("link")}} element and the {{htmlelement("script")}} element, respectively.
 
--   The {{htmlelement("link")}} element should always go inside the head of your document. This takes two attributes, `rel="stylesheet"`, which indicates that it is the document's stylesheet, and `href`, which contains the path to the stylesheet file:
+- The {{htmlelement("link")}} element should always go inside the head of your document. This takes two attributes, `rel="stylesheet"`, which indicates that it is the document's stylesheet, and `href`, which contains the path to the stylesheet file:
 
-        <link rel="stylesheet" href="my-css-file.css">
+      <link rel="stylesheet" href="my-css-file.css">
 
--   The {{htmlelement("script")}} element should also go into the head, and should include a `src` attribute containing the path to the JavaScript you want to load, and `defer`, which basically instructs the browser to load the JavaScript after the page has finished parsing the HTML. This is useful as it makes sure that the HTML is all loaded before the JavaScript runs, so that you don't get errors resulting from JavaScript trying to access an HTML element that doesn't exist on the page yet. There are actually a number of ways to handle loading JavaScript on your page, but this is the most foolproof one to use for modern browsers (for others, read [Script loading strategies](/en-US/docs/Learn/JavaScript/First_steps/What_is_JavaScript#script_loading_strategies)). 
+- The {{htmlelement("script")}} element should also go into the head, and should include a `src` attribute containing the path to the JavaScript you want to load, and `defer`, which basically instructs the browser to load the JavaScript after the page has finished parsing the HTML. This is useful as it makes sure that the HTML is all loaded before the JavaScript runs, so that you don't get errors resulting from JavaScript trying to access an HTML element that doesn't exist on the page yet. There are actually a number of ways to handle loading JavaScript on your page, but this is the most foolproof one to use for modern browsers (for others, read [Script loading strategies](/en-US/docs/Learn/JavaScript/First_steps/What_is_JavaScript#script_loading_strategies)).
 
-        <script src="my-js-file.js" defer></script>
+      <script src="my-js-file.js" defer></script>
 
-    **Note**: The `<script>` element may look like an empty element, but it's not, and so needs a closing tag. Instead of pointing to an external script file, you can also choose to put your script inside the `<script>` element.
+  **Note**: The `<script>` element may look like an empty element, but it's not, and so needs a closing tag. Instead of pointing to an external script file, you can also choose to put your script inside the `<script>` element.
 
 ### Active learning: applying CSS and JavaScript to a page
 
@@ -204,13 +199,12 @@ If done correctly, when you save your HTML and refresh your browser you should b
 
 ![Example showing a page with CSS and JavaScript applied to it. The CSS has made the page go green, whereas the JavaScript has added a dynamic list to the page.](js-and-css.png)
 
--   The JavaScript has added an empty list to the page. Now when you click anywhere outside the list, a dialog box will pop up asking you to enter some text for a new list item. When you press the OK button, a new list item will be added to the list containing the text. When you click on an existing list item, a dialog box will pop up allowing you to change the item's text.
--   The CSS has caused the background to go green, and the text to become bigger. It has also styled some of the content that the JavaScript has added to the page (the red bar with the black border is the styling the CSS has added to the JS-generated list.)
+- The JavaScript has added an empty list to the page. Now when you click anywhere outside the list, a dialog box will pop up asking you to enter some text for a new list item. When you press the OK button, a new list item will be added to the list containing the text. When you click on an existing list item, a dialog box will pop up allowing you to change the item's text.
+- The CSS has caused the background to go green, and the text to become bigger. It has also styled some of the content that the JavaScript has added to the page (the red bar with the black border is the styling the CSS has added to the JS-generated list.)
 
 **Note:** If you get stuck in this exercise and can't get the CSS/JS to apply, try checking out our [css-and-js.html](https://github.com/mdn/learning-area/blob/master/html/introduction-to-html/the-html-head/css-and-js.html) example page.
 
-Setting the primary language of the document
---------------------------------------------
+## Setting the primary language of the document
 
 Finally, it's worth mentioning that you can (and really should) set the language of your page. This can be done by adding the [lang attribute](/en-US/docs/Web/HTML/Global_attributes/lang) to the opening HTML tag (as seen in the [meta-example.html](https://github.com/mdn/learning-area/blob/master/html/introduction-to-html/the-html-head/meta-example.html) and shown below.)
 
@@ -224,22 +218,20 @@ You can also set subsections of your document to be recognized as different lang
 
 These codes are defined by the [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1) standard. You can find more about them in [Language tags in HTML and XML](https://www.w3.org/International/articles/language-tags/).
 
-Summary
--------
+## Summary
 
 That marks the end of our quickfire tour of the HTML head — there's a lot more you can do in here, but an exhaustive tour would be boring and confusing at this stage, and we just wanted to give you an idea of the most common things you'll find in there for now! In the next article we'll be looking at HTML text fundamentals.
 
 {{PreviousMenuNext("Learn/HTML/Introduction\_to\_HTML/Getting\_started", "Learn/HTML/Introduction\_to\_HTML/HTML\_text\_fundamentals", "Learn/HTML/Introduction\_to\_HTML")}}
 
-In this module
---------------
+## In this module
 
--   [Getting started with HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML/Getting_started)
--   [What’s in the head? Metadata in HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML/The_head_metadata_in_HTML)
--   [HTML text fundamentals](/en-US/docs/Learn/HTML/Introduction_to_HTML/HTML_text_fundamentals)
--   [Creating hyperlinks](/en-US/docs/Learn/HTML/Introduction_to_HTML/Creating_hyperlinks)
--   [Advanced text formatting](/en-US/docs/Learn/HTML/Introduction_to_HTML/Advanced_text_formatting)
--   [Document and website structure](/en-US/docs/Learn/HTML/Introduction_to_HTML/Document_and_website_structure)
--   [Debugging HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML/Debugging_HTML)
--   [Marking up a letter](/en-US/docs/Learn/HTML/Introduction_to_HTML/Marking_up_a_letter)
--   [Structuring a page of content](/en-US/docs/Learn/HTML/Introduction_to_HTML/Structuring_a_page_of_content)
+- [Getting started with HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML/Getting_started)
+- [What’s in the head? Metadata in HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML/The_head_metadata_in_HTML)
+- [HTML text fundamentals](/en-US/docs/Learn/HTML/Introduction_to_HTML/HTML_text_fundamentals)
+- [Creating hyperlinks](/en-US/docs/Learn/HTML/Introduction_to_HTML/Creating_hyperlinks)
+- [Advanced text formatting](/en-US/docs/Learn/HTML/Introduction_to_HTML/Advanced_text_formatting)
+- [Document and website structure](/en-US/docs/Learn/HTML/Introduction_to_HTML/Document_and_website_structure)
+- [Debugging HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML/Debugging_HTML)
+- [Marking up a letter](/en-US/docs/Learn/HTML/Introduction_to_HTML/Marking_up_a_letter)
+- [Structuring a page of content](/en-US/docs/Learn/HTML/Introduction_to_HTML/Structuring_a_page_of_content)

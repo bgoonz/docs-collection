@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Principles</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Principles</h1>
+    </header>
+    <p>
+      The CSS styleguide enables us to create a consistent user experience
+      across GitHub, manage CSS bloat, and make our CSS easier to maintain.
+      These principles should serve as guidelines for how we write and use CSS.
+    </p>
+    <h2 id="styleguide-driven-design-and-development">
+      Styleguide driven design and development
+    </h2>
+    <p>
+      Every time new CSS is added it increases our CSS bloat, CSS maintenance,
+      and can add to inconsistencies in the user experience of our site. If we
+      follow a practice of designing with styles in the styleguide first and try
+      to implement our designs with only styles in the style guide first, we
+      reduce the risk of deviating away from these styles.
+    </p>
+    <p><em>If new styles are needed:</em></p>
+    <ul>
+      <li>
+        Use global variables where appropriate, such as spacing, typography, and
+        color variables.
+      </li>
+      <li>
+        Write styles in a way that can be folded back into the global style
+        guide should it become a common pattern, i.e. following our principles
+        for naming conventions, components, objects, and utilities as listed
+        below.
+      </li>
+    </ul>
+    <h2 id="obvious-and-transparent">Obvious and transparent</h2>
+    <p>
+      Many designers and developers will edit and add to our CSS. Write CSS in a
+      way that make it obvious and transparent what the CSS does, and support
+      with comments wherever needed.
+    </p>
+    <p><strong>Class names:</strong></p>
+    <ul>
+      <li>
+        Use class names that make it easy to understand what styles are being
+        applied.
+      </li>
+      <li>
+        Keep naming conventions consistent so that it’s easier to internalize
+        and understand class names. For components follow the
+        <a href="#bem-style-naming-and-structure">BEM-style syntax</a> described
+        below.
+      </li>
+      <li>
+        Don’t use class names that suggest the styles do one thing, but instead
+        have hidden properties.
+      </li>
+      <li>
+        Use presentational or functional class names and avoid tying class names
+        for global styles to as specific page or feature.
+      </li>
+    </ul>
+    <pre class="scss"><code>// Do
+.bg-white {
+  background-color: #fff;
+}
+
+.box {
+  border-radius: 3px;
+  border: 1px solid #ddd;
+}
+
+// Don&#39;t
+.bg-white {
+  color: #111;
+  background-color: #fff;
+  border: #ccc;
+}
+
+.teams-side-panel {
+  width: 330px;
+  border-radius: 3px;
+  border: 1px solid #ddd;
+}</code></pre>
+    <p><strong>Sass:</strong></p>
+    <ul>
+      <li>
+        Choose verbose over clever. A little duplication is worthwhile if it
+        adds clarity.
+      </li>
+      <li>
+        Don’t prioritize being DRY if it means it’s hard to read and understand,
+        creates dependencies, or hides what the code is really doing.
+      </li>
+      <li>
+        Avoid overusing pre-processor features that make the code less
+        approachable. Keep it CSS’y and limit the use of Sass features like
+        nesting, variables, functions. For more detail on this check out our
+        <a href="/principles/scss">Sass guidelines and lint rules</a>.
+      </li>
+    </ul>
+    <h2 id="components">Components</h2>
+    <p>
+      Components make it easier to mark up a set of elements that are commonly
+      grouped together with similar visual styles. Their base styles are shared
+      and variants are added with modifier classes, so usually components are
+      comprised of multiple classes. Most importantly, components should be
+      highly reusable across the site, rather than built for specific pages or
+      features. To achieve this:
+    </p>
+    <ul>
+      <li>
+        <strong>Separate structure and skin:</strong> This means to define
+        repeating visual features (like background and border styles) as
+        separate “skins” that you can mix-and-match with your various components
+        to achieve a large amount of visual variety without much code.
+      </li>
+      <li>
+        <strong>Separate container and content:</strong> Essentially, this means
+        “rarely use location-dependent styles”. A component should look the same
+        no matter where you put it.
+      </li>
+    </ul>
+    <pre class="scss"><code>// structure
+.flash {...}
+
+// skin
+.flash-error {...}</code></pre>
+    <h2 id="objects">Objects</h2>
+    <p>
+      Objects help us with common layout patterns but aren’t concerned with
+      thematic styles. Examples include the table object, the grid, and the
+      media object. Objects essentially provide some scaffolding for layouts and
+      should be able to be used with other objects, components, and utilities.
+    </p>
+    <p>Example:</p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode html"
+      ><code class="sourceCode html"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">&lt;div</span><span class="ot"> class=</span><span class="st">&quot;TableObject&quot;</span><span class="kw">&gt;</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="kw">&lt;div</span><span class="ot"> class=</span><span class="st">&quot;TableObject-item TableObject-item--primary&quot;</span><span class="kw">&gt;</span></a>
+<a class="sourceLine" id="cb3-3" title="3">    <span class="kw">&lt;input</span></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="ot">      class=</span><span class="st">&quot;input-block&quot;</span></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="ot">      type=</span><span class="st">&quot;text&quot;</span></a>
+<a class="sourceLine" id="cb3-6" title="6"><span class="ot">      placeholder=</span><span class="st">&quot;Long flexible input form&quot;</span></a>
+<a class="sourceLine" id="cb3-7" title="7">    <span class="kw">/&gt;</span></a>
+<a class="sourceLine" id="cb3-8" title="8">  <span class="kw">&lt;/div&gt;</span></a>
+<a class="sourceLine" id="cb3-9" title="9">  <span class="kw">&lt;div</span><span class="ot"> class=</span><span class="st">&quot;TableObject-item&quot;</span><span class="kw">&gt;</span></a>
+<a class="sourceLine" id="cb3-10" title="10">    <span class="kw">&lt;button</span><span class="ot"> class=</span><span class="st">&quot;btn ml-3&quot;</span><span class="ot"> type=</span><span class="st">&quot;button&quot;</span><span class="kw">&gt;</span>Button<span class="kw">&lt;/button&gt;</span></a>
+<a class="sourceLine" id="cb3-11" title="11">  <span class="kw">&lt;/div&gt;</span></a>
+<a class="sourceLine" id="cb3-12" title="12"><span class="kw">&lt;/div&gt;</span></a></code></pre>
+    </div>
+    <h2 id="bem-style-naming-and-structure">BEM-style naming and structure</h2>
+    <p>
+      Components and objects should follow the
+      <a
+        href="http://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax/"
+        >Block Element Modifier</a
+      >
+      (BEM) model in terms of structure. We’ve chosen to use a modified form of
+      BEM syntax using
+      <a href="https://en.wikipedia.org/wiki/Uppercase">uppercase</a> for the
+      block name, hyphens and lowercase for elements, and double-hyphens and
+      lowercase for modifiers. When a block class requires two words use
+      <a href="https://en.wikipedia.org/wiki/PascalCase">Pascal case</a>, for
+      example <code>ProgressBar</code>. When an element or modifier class
+      requires two words use
+      <a href="https://en.wikipedia.org/wiki/camelCase">camel case</a>, for
+      example <code>[Component]-closeButton</code> or
+      <code>[Component]--extraLarge</code>.
+    </p>
+    <ul>
+      <li>
+        <strong>Block</strong>: A block includes all of the base styles you want
+        shared across every variation of a component. Minimal thematic styling
+        should be applied to blocks, particularly when variations of a component
+        include visual variations. Apply additional styles with modifers rather
+        than overriding base styles.
+      </li>
+      <li>
+        <strong>Element</strong>: An element is part of a component. Elements
+        should work together with other elements and can have modifiers. Element
+        styles should not override block styles - this often results in applying
+        more styles directly to elements rather than having styles flow down
+        from the parent level.
+      </li>
+      <li>
+        <strong>Modifier</strong>: A modifier is a variation that can be applied
+        to the base component or to an element within the component. Modifiers
+        shouldn’t override block styles, they should add onto them.
+      </li>
+    </ul>
+    <pre class="scss"><code>// block
+.Box {...}
+
+// elements
+.Box-header {...}
+.Box-body {...}
+.Box-footer {...}
+.Box-closeButton {...}
+
+// modifiers
+.Box--blue {...}
+.Box--large {...}
+.Box--extraLarge {...}</code></pre>
+    <h2 id="property-order">Property order</h2>
+    <p>
+      For base styles, components, and objects, follow the following property
+      order.
+    </p>
+    <pre class="scss"><code>.element {
+  // 1. Positioning
+  // 2. Box model (display, float, width, etc)
+  // 3. Typography (font, line-height, text-*)
+  // 4. Visuals (background, border, opacity)
+  // 5. Misc (CSS3 properties)
+}</code></pre>
+    <h2 id="utilities">Utilities</h2>
+    <p>
+      Utilities provide the building blocks for layout and handle a range common
+      use cases that help us avoid writing custom styles. When we need to add
+      some margin or padding, rather than adding a new selector specific to that
+      use case, we can use utilities. This helps us reduce the number of unique
+      property-value pairs, and helps us keep more consistent styles across the
+      site.
+    </p>
+    <ul>
+      <li>
+        Utilities should do one job well and one job only, are immutable, and on
+        occasion are an acceptable approach to overriding component styles.
+      </li>
+      <li>
+        Utility class-names should be transparent and clearly describe the job
+        they do.
+      </li>
+    </ul>
+    <p>Examples:</p>
+    <pre class="scss"><code>.text-white {
+  color: #fff !important;
+}
+
+.bg-gray-light {
+  background-color: #ddd !important;
+}
+
+.mr-1 {
+  margin-right: $spacer !important;
+}
+
+.d-inline-block {
+  display: inline-block !important;
+}
+
+.rounded {
+  border-radius: 3px !important;
+}</code></pre>
+    <h2 id="feature-specific-sass">Feature-specific Sass</h2>
+    <p>
+      It’s inevitable that we’ll need to write some custom styles for new
+      features on occasion. This should only be done when implementing the
+      design cannot be achieved with utility or component styles. Follow these
+      guidelines when writing custom Sass:
+    </p>
+    <ul>
+      <li>Don’t override global component and utility styles.</li>
+      <li>
+        Name-space to the feature at the beginning of the classname and follow
+        with the element description.
+      </li>
+      <li>
+        Write custom styles in a way that may be folded back into the styleguide
+        should the pattern become useful across the site, i.e. follow BEM
+        structure for building components.
+      </li>
+    </ul>
+    <pre class="scss"><code>// Do
+// Custom background for Git Merge ad
+.git-merge-box {
+  padding: $spacer-6;
+  background-color: #222;
+  border-radius: 3px;
+}
+
+// Don&#39;t
+.git-merge-box {
+  .boxed-group {
+    padding: 48px;
+    background-color: #222;
+  }
+}</code></pre>
+    <h2 id="inline-styles">Inline styles</h2>
+    <p>
+      Inline styles are performant and deal with one off use cases that don’t
+      need to live in CSS. Sometimes it will make more sense to add an inline
+      style than write a new line of CSS that will live on in our codebase
+      longer than the markup will.
+    </p>
+    <p>
+      The most common use case is for applying widths and heights to images.
+      Other use cases might be to apply a custom width to a div to work with
+      it’s content.
+    </p>
+    <div class="sourceCode" id="cb8">
+      <pre
+        class="sourceCode html"
+      ><code class="sourceCode html"><a class="sourceLine" id="cb8-1" title="1"><span class="co">&lt;!-- Image width and height --&gt;</span></a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="kw">&lt;img</span><span class="ot"> width=</span><span class="st">&quot;20&quot;</span><span class="ot"> height=</span><span class="st">&quot;20&quot;</span><span class="ot"> src=</span><span class="st">&quot;https://github.com/github.png&quot;</span> <span class="kw">/&gt;</span></a>
+<a class="sourceLine" id="cb8-3" title="3"></a>
+<a class="sourceLine" id="cb8-4" title="4"><span class="co">&lt;!-- Custom width for a div that is not a repeated pattern --&gt;</span></a>
+<a class="sourceLine" id="cb8-5" title="5"><span class="kw">&lt;div</span><span class="ot"> class=</span><span class="st">&quot;d-table-cell py-3 pr-3&quot;</span><span class="ot"> style=</span><span class="st">&quot;width: 72px&quot;</span><span class="kw">&gt;&lt;/div&gt;</span></a></code></pre>
+    </div>
+    <h2 id="further-reading">Further reading</h2>
+    <p>
+      There’s a lot happening in the world of front-end web development! To help
+      you understand our principles better, we’ve put together a list articles
+      that reflect our thinking and influenced our decisions.
+    </p>
+    <p>
+      <strong
+        ><a
+          href="http://nicolasgallagher.com/about-html-semantics-front-end-architecture/"
+          >About HTML semantics and front-end architecture</a
+        ></strong
+      ><br />
+      This article contains a collection of thoughts on HTML semantics,
+      components and approaches to front-end architecture, class naming
+      patterns, and HTTP compression. Many of the concepts covered here have
+      been adopted as best practices in modern front-end development. This is a
+      must read!
+    </p>
+    <p>
+      <strong
+        ><a
+          href="https://medium.com/@stowball/bemantic-dry-like-you-mean-it-133ea3843d98#.snpgwck6f"
+          >BEMantic: DRY Like You Mean It</a
+        ></strong
+      ><br />
+      A case for taking an object oriented approach to writing CSS using Sass
+      and BEM.
+    </p>
+    <p>
+      <strong
+        ><a
+          href="http://www.stubbornella.org/content/2010/06/25/the-media-object-saves-hundreds-of-lines-of-code/"
+          >The media object saves hundreds of lines of code</a
+        ></strong
+      ><br />
+      The media object—a block with an image on the left and content on the
+      right—is an extremely common pattern on web pages. This article explores
+      ways to write a flexible and versatile media object, and is a great
+      example of how an object oriented CSS approach can help you write more
+      reusable code.
+    </p>
+    <p>
+      <strong
+        ><a href="https://github.com/stubbornella/oocss/wiki"
+          >OOCSS wiki</a
+        ></strong
+      ><br />
+      The Object Oriented CSS framework is a collection of code that’s built
+      using the OOCSS approach. The OOCSS approach is a way of writing CSS
+      that’s fast, maintainable, and standards-based. This framework can help
+      you get started.
+    </p>
+    <p>
+      <strong
+        ><a href="http://csswizardry.com/2016/05/the-importance-of-important/"
+          >The Importance of !important: Forcing Immutability in CSS</a
+        ></strong
+      ><br />
+      This article is a case for using the <code>!important</code> flag in CSS,
+      and describes the best ways to use it.
+    </p>
+    <p>
+      <strong
+        ><a href="http://csswizardry.com/2014/10/the-specificity-graph/"
+          >The Specificity Graph</a
+        ></strong
+      ><br />
+      This is a guide to organizing your project’s CSS selectors by specificity.
+      Using the specificity graph, you can plot the health of a project’s CSS
+      and identify areas with higher-than-ideal specificity.
+    </p>
+    <p>
+      <strong><a href="http://cssguidelin.es/">CSS Guidelines</a></strong
+      ><br />
+      High-level advice and guidelines for writing sane, manageable, scalable
+      CSS.
+    </p>
+    <p>
+      <strong><a href="http://wtfhtmlcss.com/">WTF, HTML and CSS?</a></strong
+      ><br />
+      A curated list of commonly frustrating HTML and CSS quandaries, miscues,
+      and dilemmas.
+    </p>
+    <p>
+      <strong
+        ><a href="https://philipwalton.github.io/solved-by-flexbox/"
+          >Solved by flexbox</a
+        ></strong
+      ><br />
+      A showcase of problems once hard or impossible to solve with CSS alone,
+      now made trivially easy with Flexbox.
+    </p>
+  </body>
+</html>

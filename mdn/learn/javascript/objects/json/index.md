@@ -8,14 +8,13 @@ JavaScript Object Notation (JSON) is a standard text-based format for representi
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, a basic understanding of HTML and CSS, familiarity with JavaScript basics (see <a href="/en-US/docs/Learn/JavaScript/First_steps">First steps</a> and <a href="/en-US/docs/Learn/JavaScript/Building_blocks">Building blocks</a>) and OOJS basics (see <a href="/en-US/docs/Learn/JavaScript/Objects/Basics">Introduction to objects</a>).</td></tr><tr class="even"><td>Objective:</td><td>To understand how to work with data stored in JSON, and create your own JSON strings.</td></tr></tbody></table>
 
-No, really, what is JSON?
--------------------------
+## No, really, what is JSON?
 
 {{glossary("JSON")}} is a text-based data format following JavaScript object syntax, which was popularized by [Douglas Crockford](https://en.wikipedia.org/wiki/Douglas_Crockford). Even though it closely resembles JavaScript object literal syntax, it can be used independently from JavaScript, and many programming environments feature the ability to read (parse) and generate JSON.
 
 JSON exists as a string — useful when you want to transmit data across a network. It needs to be converted to a native JavaScript object when you want to access the data. This is not a big issue —  JavaScript provides a global [JSON](/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON) object that has methods available for converting between the two.
 
-**Note**: Converting a string to a native object is called *deserialization*, while converting a native object to a string so it can be transmitted across the network is called *serialization*.
+**Note**: Converting a string to a native object is called _deserialization_, while converting a native object to a string so it can be transmitted across the network is called _serialization_.
 
 A JSON string can be stored in its own file, which is basically just a text file with an extension of `.json`, and a {{glossary("MIME type")}} of `application/json`.
 
@@ -113,14 +112,13 @@ The above is perfectly valid JSON. You'd just have to access array items (in its
 
 ### Other notes
 
--   JSON is purely a string with a specified data format — it contains only properties, no methods.
--   JSON requires double quotes to be used around strings and property names. Single quotes are not valid other than surrounding the entire JSON string.
--   Even a single misplaced comma or colon can cause a JSON file to go wrong, and not work. You should be careful to validate any data you are attempting to use (although computer-generated JSON is less likely to include errors, as long as the generator program is working correctly). You can validate JSON using an application like [JSONLint](https://jsonlint.com/).
--   JSON can actually take the form of any data type that is valid for inclusion inside JSON, not just arrays or objects. So for example, a single string or number would be valid JSON.
--   Unlike in JavaScript code in which object properties may be unquoted, in JSON only quoted strings may be used as properties.
+- JSON is purely a string with a specified data format — it contains only properties, no methods.
+- JSON requires double quotes to be used around strings and property names. Single quotes are not valid other than surrounding the entire JSON string.
+- Even a single misplaced comma or colon can cause a JSON file to go wrong, and not work. You should be careful to validate any data you are attempting to use (although computer-generated JSON is less likely to include errors, as long as the generator program is working correctly). You can validate JSON using an application like [JSONLint](https://jsonlint.com/).
+- JSON can actually take the form of any data type that is valid for inclusion inside JSON, not just arrays or objects. So for example, a single string or number would be valid JSON.
+- Unlike in JavaScript code in which object properties may be unquoted, in JSON only quoted strings may be used as properties.
 
-Active learning: Working through a JSON example
------------------------------------------------
+## Active learning: Working through a JSON example
 
 So, let's work through an example to show how we could make use of some JSON formatted data on a website.
 
@@ -163,8 +161,8 @@ To obtain the JSON, we use an API called {{domxref("XMLHttpRequest")}} (often ca
 
     This takes at least two parameters — there are other optional parameters available. We only need the two mandatory ones for this simple example:
 
-    -   The HTTP method to use when making the network request. In this case `GET` is fine, as we are just retrieving some simple data.
-    -   The URL to make the request to — this is the URL of the JSON file that we stored earlier.
+    - The HTTP method to use when making the network request. In this case `GET` is fine, as we are just retrieving some simple data.
+    - The URL to make the request to — this is the URL of the JSON file that we stored earlier.
 
 4.  Next, add the following two lines — here we are setting the `responseType` to JSON, so that XHR knows that the server will be returning JSON, and that this should be converted behind the scenes into a JavaScript object. Then we send the request with the `send()` method:
 
@@ -251,8 +249,7 @@ Next, we use a [for loop](/en-US/docs/Learn/JavaScript/Building_blocks/Looping_c
 
 **Note**: If you are having trouble following the dot/bracket notation we are using to access the JavaScript object, it can help to have the [superheroes.json](https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json) file open in another tab or your text editor, and refer to it as you look at our JavaScript. You should also refer back to our [JavaScript object basics](/en-US/docs/Learn/JavaScript/Objects/Basics) article for more information on dot and bracket notation.
 
-Converting between objects and text
------------------------------------
+## Converting between objects and text
 
 The above example was simple in terms of accessing the JavaScript object, because we set the XHR request to convert the JSON response directly into a JavaScript object using:
 
@@ -260,8 +257,8 @@ The above example was simple in terms of accessing the JavaScript object, becaus
 
 But sometimes we aren't so lucky — sometimes we receive a raw JSON string, and we need to convert it to an object ourselves. And when we want to send a JavaScript object across the network, we need to convert it to JSON (a string) before sending. Luckily, these two problems are so common in web development that a built-in [JSON](/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON) object is available in browsers, which contains the following two methods:
 
--   `parse()`: Accepts a JSON string as a parameter, and returns the corresponding JavaScript object.
--   `stringify()`: Accepts an object as a parameter, and returns the equivalent JSON string.
+- `parse()`: Accepts a JSON string as a parameter, and returns the corresponding JavaScript object.
+- `stringify()`: Accepts an object as a parameter, and returns the equivalent JSON string.
 
 You can see the first one in action in our [heroes-finished-json-parse.html](https://mdn.github.io/learning-area/javascript/oojs/json/heroes-finished-json-parse.html) example (see the [source code](https://github.com/mdn/learning-area/blob/master/javascript/oojs/json/heroes-finished-json-parse.html)) — this does exactly the same thing as the example we built up earlier, except that we set the XHR to return the raw JSON text, then used `parse()` to convert it to an actual JavaScript object. The key snippet of code is here:
 
@@ -285,34 +282,30 @@ As you might guess, `stringify()` works the opposite way. Try entering the follo
 
 Here we're creating a JavaScript object, then checking what it contains, then converting it to a JSON string using `stringify()` — saving the return value in a new variable — then checking it again.
 
-Test your skills!
------------------
+## Test your skills!
 
 You've reached the end of this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: JSON](/en-US/docs/Learn/JavaScript/Objects/Test_your_skills:_JSON).
 
-Summary
--------
+## Summary
 
 In this article, we've given you a simple guide to using JSON in your programs, including how to create and parse JSON, and how to access data locked inside it. In the next article, we'll begin looking at object-oriented JavaScript.
 
-See also
---------
+## See also
 
--   [JSON reference page](/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON)
--   [XMLHttpRequest object reference page](/en-US/docs/Web/API/XMLHttpRequest)
--   [Using XMLHttpRequest](/en-US/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest)
--   [HTTP request methods](/en-US/docs/Web/HTTP/Methods)
--   [Official JSON web site with link to ECMA standard](https://json.org)
+- [JSON reference page](/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON)
+- [XMLHttpRequest object reference page](/en-US/docs/Web/API/XMLHttpRequest)
+- [Using XMLHttpRequest](/en-US/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest)
+- [HTTP request methods](/en-US/docs/Web/HTTP/Methods)
+- [Official JSON web site with link to ECMA standard](https://json.org)
 
 {{PreviousMenuNext("Learn/JavaScript/Objects/Inheritance", "Learn/JavaScript/Objects/Object\_building\_practice", "Learn/JavaScript/Objects")}}
 
-In this module
---------------
+## In this module
 
--   [Object basics](/en-US/docs/Learn/JavaScript/Objects/Basics)
--   [Object-oriented JavaScript for beginners](/en-US/docs/Learn/JavaScript/Objects/Object-oriented_JS)
--   [Object prototypes](/en-US/docs/Learn/JavaScript/Objects/Object_prototypes)
--   [Inheritance in JavaScript](/en-US/docs/Learn/JavaScript/Objects/Inheritance)
--   [Working with JSON data](/en-US/docs/Learn/JavaScript/Objects/JSON)
--   [Object building practice](/en-US/docs/Learn/JavaScript/Objects/Object_building_practice)
--   [Adding features to our bouncing balls demo](/en-US/docs/Learn/JavaScript/Objects/Adding_bouncing_balls_features)
+- [Object basics](/en-US/docs/Learn/JavaScript/Objects/Basics)
+- [Object-oriented JavaScript for beginners](/en-US/docs/Learn/JavaScript/Objects/Object-oriented_JS)
+- [Object prototypes](/en-US/docs/Learn/JavaScript/Objects/Object_prototypes)
+- [Inheritance in JavaScript](/en-US/docs/Learn/JavaScript/Objects/Inheritance)
+- [Working with JSON data](/en-US/docs/Learn/JavaScript/Objects/JSON)
+- [Object building practice](/en-US/docs/Learn/JavaScript/Objects/Object_building_practice)
+- [Adding features to our bouncing balls demo](/en-US/docs/Learn/JavaScript/Objects/Adding_bouncing_balls_features)

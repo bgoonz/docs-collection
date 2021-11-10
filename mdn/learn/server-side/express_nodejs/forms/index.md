@@ -1,4 +1,4 @@
---- title: "Express Tutorial Part 6: Working with forms" slug: Learn/Server-side/Express\_Nodejs/forms tags: - Beginner - CodingScripting - Express - Forms - HTML forms - Learn - Node - server-side ---
+--- title: "Express Tutorial Part 6: Working with forms" slug: Learn/Server-side/Express_Nodejs/forms tags: - Beginner - CodingScripting - Express - Forms - HTML forms - Learn - Node - server-side ---
 
 {{LearnSidebar}}
 
@@ -8,14 +8,13 @@ In this tutorial we'll show you how to work with HTML Forms in Express using Pug
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Complete all previous tutorial topics, including <a href="/en-US/docs/Learn/Server-side/Express_Nodejs/Displaying_data">Express Tutorial Part 5: Displaying library data</a></td></tr><tr class="even"><td>Objective:</td><td>To understand how to write forms to get data from users, and update the database with this data.</td></tr></tbody></table>
 
-Overview
---------
+## Overview
 
 An [HTML Form](/en-US/docs/Learn/Forms) is a group of one or more fields/widgets on a web page that can be used to collect information from users for submission to a server. Forms are a flexible mechanism for collecting user input because there are suitable form inputs available for entering many different types of data—text boxes, checkboxes, radio buttons, date pickers, etc. Forms are also a relatively secure way of sharing data with the server, as they allow us to send data in `POST` requests with cross-site request forgery protection.
 
 Working with forms can be complicated! Developers need to write HTML for the form, validate and properly sanitize entered data on the server (and possibly also in the browser), repost the form with error messages to inform users of any invalid fields, handle the data when it has successfully been submitted, and finally respond to the user in some way to indicate success.
 
-In this tutorial, we're going to show you how the above operations may be performed in *Express*. Along the way, we'll extend the *LocalLibrary* website to allow users to create, edit and delete items from the library.
+In this tutorial, we're going to show you how the above operations may be performed in _Express_. Along the way, we'll extend the _LocalLibrary_ website to allow users to create, edit and delete items from the library.
 
 **Note:** We haven't looked at how to restrict particular routes to authenticated or authorized users, so at this point, any user will be able to make changes to the database.
 
@@ -33,14 +32,14 @@ The form is defined in HTML as a collection of elements inside `<form>...</form>
         <input type="submit" value="OK">
     </form>
 
-While here we have included just one (text) field for entering the team name, a form *may* contain any number of other input elements and their associated labels. The field's `type` attribute defines what sort of widget will be displayed. The `name` and `id` of the field are used to identify the field in JavaScript/CSS/HTML, while `value` defines the initial value for the field when it is first displayed. The matching team label is specified using the `label` tag (see "Enter name" above), with a `for` field containing the `id` value of the associated `input`.
+While here we have included just one (text) field for entering the team name, a form _may_ contain any number of other input elements and their associated labels. The field's `type` attribute defines what sort of widget will be displayed. The `name` and `id` of the field are used to identify the field in JavaScript/CSS/HTML, while `value` defines the initial value for the field when it is first displayed. The matching team label is specified using the `label` tag (see "Enter name" above), with a `for` field containing the `id` value of the associated `input`.
 
 The `submit` input will be displayed as a button (by default)—this can be pressed by the user to upload the data contained by the other input elements to the server (in this case, just the `team_name`). The form attributes define the HTTP `method` used to send the data and the destination of the data on the server (`action`):
 
--   `action`: The resource/URL where data is to be sent for processing when the form is submitted. If this is not set (or set to an empty string), then the form will be submitted back to the current page URL.
--   `method`: The HTTP method used to send the data: `POST` or `GET`.
-    -   The `POST` method should always be used if the data is going to result in a change to the server's database, because this can be made more resistant to cross-site forgery request attacks.
-    -   The `GET` method should only be used for forms that don't change user data (e.g. a search form). It is recommended for when you want to be able to bookmark or share the URL.
+- `action`: The resource/URL where data is to be sent for processing when the form is submitted. If this is not set (or set to an empty string), then the form will be submitted back to the current page URL.
+- `method`: The HTTP method used to send the data: `POST` or `GET`.
+  - The `POST` method should always be used if the data is going to result in a change to the server's database, because this can be made more resistant to cross-site forgery request attacks.
+  - The `GET` method should only be used for forms that don't change user data (e.g. a search form). It is recommended for when you want to be able to bookmark or share the URL.
 
 ### Form handling process
 
@@ -51,7 +50,7 @@ A process flowchart for processing form requests is shown below, starting with a
 As shown in the diagram above, the main things that form handling code needs to do are:
 
 1.  Display the default form the first time it is requested by the user.
-    -   The form may contain blank fields (e.g. if you're creating a new record), or it may be pre-populated with initial values (e.g. if you are changing a record, or have useful default initial values).
+    - The form may contain blank fields (e.g. if you're creating a new record), or it may be pre-populated with initial values (e.g. if you are changing a record, or have useful default initial values).
 2.  Receive data submitted by the user, usually in an HTTP `POST` request.
 3.  Validate and sanitize the data.
 4.  If any data is invalid, re-display the form—this time with any user populated values and error messages for the problem fields.
@@ -66,8 +65,8 @@ Express itself doesn't provide any specific support for form handling operations
 
 Before the data from a form is stored it must be validated and sanitized:
 
--   Validation checks that entered values are appropriate for each field (are in the right range, format, etc.) and that values have been supplied for all required fields.
--   Sanitization removes/replaces characters in the data that might potentially be used to send malicious content to the server.
+- Validation checks that entered values are appropriate for each field (are in the right range, format, etc.) and that values have been supplied for all required fields.
+- Sanitization removes/replaces characters in the data that might potentially be used to send malicious content to the server.
 
 For this tutorial, we'll be using the popular [express-validator](https://www.npmjs.com/package/express-validator) module to perform both validation and sanitization of our form data.
 
@@ -79,7 +78,7 @@ Install the module by running the following command in the root of the project.
 
 #### Using express-validator
 
-**Note:** The [express-validator](https://express-validator.github.io/docs/#basic-guide) guide on Github provides a good overview of the API. We recommend you read that to get an idea of all its capabilities (including using [schema validation](https://express-validator.github.io/docs/schema-validation.html) and [creating custom validators](https://express-validator.github.io/docs/custom-validators-sanitizers.html)). Below we cover just a subset that is useful for the *LocalLibrary*.
+**Note:** The [express-validator](https://express-validator.github.io/docs/#basic-guide) guide on Github provides a good overview of the API. We recommend you read that to get an idea of all its capabilities (including using [schema validation](https://express-validator.github.io/docs/schema-validation.html) and [creating custom validators](https://express-validator.github.io/docs/custom-validators-sanitizers.html)). Below we cover just a subset that is useful for the _LocalLibrary_.
 
 To use the validator in our controllers, we specify the particular functions we want to import from the [express-validator](https://www.npmjs.com/package/express-validator) module, as shown below:
 
@@ -89,53 +88,53 @@ There are many functions available, allowing you to check and sanitize data from
 
 The functions are defined as below:
 
--   `body([fields, message])`: Specifies a set of fields in the request body (a `POST` parameter) to validate and/or sanitise along with an optional error message that can be displayed if it fails the tests. The validation and sanitise criteria are daisy-chained to the `body()` method.  
-      
-    For example, the line below first defines that we're checking the "name" field and that a validation error will set an error message "Empty name". We then call the sanitization method `trim()` to remove whitespace from the start and end of the string, and then `isLength()` to check the resulting string isn't empty. Finally, we call `escape()` to remove HTML characters from the variable that might be used in JavaScript cross-site scripting attacks.
+- `body([fields, message])`: Specifies a set of fields in the request body (a `POST` parameter) to validate and/or sanitise along with an optional error message that can be displayed if it fails the tests. The validation and sanitise criteria are daisy-chained to the `body()` method.
 
-        body('name', 'Empty name').trim().isLength({ min: 1 }).escape(), 
+  For example, the line below first defines that we're checking the "name" field and that a validation error will set an error message "Empty name". We then call the sanitization method `trim()` to remove whitespace from the start and end of the string, and then `isLength()` to check the resulting string isn't empty. Finally, we call `escape()` to remove HTML characters from the variable that might be used in JavaScript cross-site scripting attacks.
 
-    This test checks that the age field is a valid date and uses `optional()` to specify that null and empty strings will not fail validation.
+      body('name', 'Empty name').trim().isLength({ min: 1 }).escape(),
 
-        body('age', 'Invalid age').optional({ checkFalsy: true }).isISO8601().toDate(),
+  This test checks that the age field is a valid date and uses `optional()` to specify that null and empty strings will not fail validation.
 
-    You can also daisy chain different validators, and add messages that are displayed if the preceding validators are true.
+      body('age', 'Invalid age').optional({ checkFalsy: true }).isISO8601().toDate(),
 
-        body('name').trim().isLength({ min: 1 }).withMessage('Name empty.')
-            .isAlpha().withMessage('Name must be alphabet letters.'),
+  You can also daisy chain different validators, and add messages that are displayed if the preceding validators are true.
 
--   `validationResult(req)`: Runs the validation, making errors available in the form of a `validation` result object. This is invoked in a separate callback, as shown below:
+      body('name').trim().isLength({ min: 1 }).withMessage('Name empty.')
+          .isAlpha().withMessage('Name must be alphabet letters.'),
 
-        (req, res, next) => {
-            // Extract the validation errors from a request.
-            const errors = validationResult(req);
+- `validationResult(req)`: Runs the validation, making errors available in the form of a `validation` result object. This is invoked in a separate callback, as shown below:
 
-            if (!errors.isEmpty()) {
-                // There are errors. Render form again with sanitized values/errors messages.
-                // Error messages can be returned in an array using `errors.array()`.
-                }
-            else {
-                // Data from form is valid.
-            }
-        }
+      (req, res, next) => {
+          // Extract the validation errors from a request.
+          const errors = validationResult(req);
 
-    We use the validation result's `isEmpty()` method to check if there were errors, and its `array()` method to get the set of error messages. See the [Validation Result API](https://express-validator.github.io/docs/validation-result-api.html) for more information.
+          if (!errors.isEmpty()) {
+              // There are errors. Render form again with sanitized values/errors messages.
+              // Error messages can be returned in an array using `errors.array()`.
+              }
+          else {
+              // Data from form is valid.
+          }
+      }
+
+  We use the validation result's `isEmpty()` method to check if there were errors, and its `array()` method to get the set of error messages. See the [Validation Result API](https://express-validator.github.io/docs/validation-result-api.html) for more information.
 
 The validation and sanitization chains are middleware that should be passed to the Express route handler (we do this indirectly, via the controller). When the middleware runs, each validator/sanitizer is run in the order specified.
 
-We'll cover some real examples when we implement the *LocalLibrary* forms below.
+We'll cover some real examples when we implement the _LocalLibrary_ forms below.
 
 ### Form design
 
-Many of the models in the library are related/dependent—for example, a `Book` *requires* an `Author`, and *may* also have one or more `Genres`. This raises the question of how we should handle the case where a user wishes to:
+Many of the models in the library are related/dependent—for example, a `Book` _requires_ an `Author`, and _may_ also have one or more `Genres`. This raises the question of how we should handle the case where a user wishes to:
 
--   Create an object when its related objects do not yet exist (for example, a book where the author object hasn't been defined).
--   Delete an object that is still being used by another object (so for example, deleting a `Genre` that is still being used by a `Book`).
+- Create an object when its related objects do not yet exist (for example, a book where the author object hasn't been defined).
+- Delete an object that is still being used by another object (so for example, deleting a `Genre` that is still being used by a `Book`).
 
 For this project we will simplify the implementation by stating that a form can only:
 
--   Create an object using objects that already exist (so users will have to create any required `Author` and `Genre` instances before attempting to create any `Book` objects).
--   Delete an object if it is not referenced by other objects (so for example, you won't be able to delete a `Book` until all associated `BookInstance` objects have been deleted).
+- Create an object using objects that already exist (so users will have to create any required `Author` and `Genre` instances before attempting to create any `Book` objects).
+- Delete an object if it is not referenced by other objects (so for example, you won't be able to delete a `Book` until all associated `BookInstance` objects have been deleted).
 
 **Note:** A more "robust" implementation might allow you to create the dependent objects when creating a new object, and delete any object at any time (for example, by deleting dependent objects, or by removing references to the deleted object from the database).
 
@@ -151,8 +150,7 @@ We have already created the routes for all our model's create pages in **/routes
     // POST request for creating Genre.
     router.post('/genre/create', genre_controller.genre_create_post);
 
-Express forms subarticles
--------------------------
+## Express forms subarticles
 
 The following sub articles will take us through the process of adding the required forms to our example application. You need to read and work through each one in turn, before moving on to the next one.
 
@@ -163,51 +161,47 @@ The following sub articles will take us through the process of adding the requir
 5.  [Delete Author form](/en-US/docs/Learn/Server-side/Express_Nodejs/forms/Delete_author_form) — Defining a page to delete `Author` objects.
 6.  [Update Book form](/en-US/docs/Learn/Server-side/Express_Nodejs/forms/Update_Book_form) — Defining page to update `Book` objects.
 
-Challenge yourself
-------------------
+## Challenge yourself
 
-Implement the delete pages for the `Book`, `BookInstance`, and `Genre` models, linking them from the associated detail pages in the same way as our *Author delete* page. The pages should follow the same design approach:
+Implement the delete pages for the `Book`, `BookInstance`, and `Genre` models, linking them from the associated detail pages in the same way as our _Author delete_ page. The pages should follow the same design approach:
 
--   If there are references to the object from other objects, then these other objects should be displayed along with a note that this record can't be deleted until the listed objects have been deleted.
--   If there are no other references to the object then the view should prompt to delete it. If the user presses the **Delete** button, the record should then be deleted.
-
-A few tips:
-
--   Deleting a `Genre` is just like deleting an `Author` as both objects are dependencies of `Book` (so in both cases you can delete the object only when the associated books are deleted).
--   Deleting a `Book` is also similar, but you need to check that there are no associated `BookInstances`.
--   Deleting a `BookInstance` is the easiest of all because there are no dependent objects. In this case, you can just find the associated record and delete it.
-
-Implement the update pages for the `BookInstance`, `Author`, and `Genre` models, linking them from the associated detail pages in the same way as our *Book update* page.
+- If there are references to the object from other objects, then these other objects should be displayed along with a note that this record can't be deleted until the listed objects have been deleted.
+- If there are no other references to the object then the view should prompt to delete it. If the user presses the **Delete** button, the record should then be deleted.
 
 A few tips:
 
--   The *Book update page* we just implemented is the hardest! The same patterns can be used for the update pages for the other objects.
--   The `Author` date of death and date of birth fields and the `BookInstance` due\_date field are the wrong format to input into the date input field on the form (it requires data in form "YYYY-MM-DD"). The easiest way to get around this is to define a new virtual property for the dates that formats the dates appropriately, and then use this field in the associated view templates.
--   If you get stuck, there are examples of the update pages in [the example here](https://github.com/mdn/express-locallibrary-tutorial).
+- Deleting a `Genre` is just like deleting an `Author` as both objects are dependencies of `Book` (so in both cases you can delete the object only when the associated books are deleted).
+- Deleting a `Book` is also similar, but you need to check that there are no associated `BookInstances`.
+- Deleting a `BookInstance` is the easiest of all because there are no dependent objects. In this case, you can just find the associated record and delete it.
 
-Summary
--------
+Implement the update pages for the `BookInstance`, `Author`, and `Genre` models, linking them from the associated detail pages in the same way as our _Book update_ page.
 
-*Express*, node, and third-party packages on NPM provide everything you need to add forms to your website. In this article, you've learned how to create forms using *Pug*, validate and sanitize input using *express-validator*, and add, delete, and modify records in the database.
+A few tips:
+
+- The _Book update page_ we just implemented is the hardest! The same patterns can be used for the update pages for the other objects.
+- The `Author` date of death and date of birth fields and the `BookInstance` due_date field are the wrong format to input into the date input field on the form (it requires data in form "YYYY-MM-DD"). The easiest way to get around this is to define a new virtual property for the dates that formats the dates appropriately, and then use this field in the associated view templates.
+- If you get stuck, there are examples of the update pages in [the example here](https://github.com/mdn/express-locallibrary-tutorial).
+
+## Summary
+
+_Express_, node, and third-party packages on NPM provide everything you need to add forms to your website. In this article, you've learned how to create forms using _Pug_, validate and sanitize input using _express-validator_, and add, delete, and modify records in the database.
 
 You should now understand how to add basic forms and form-handling code to your own node websites!
 
-See also
---------
+## See also
 
--   [express-validator](https://www.npmjs.com/package/express-validator) (npm docs).
+- [express-validator](https://www.npmjs.com/package/express-validator) (npm docs).
 
 {{PreviousMenuNext("Learn/Server-side/Express\_Nodejs/Displaying\_data", "Learn/Server-side/Express\_Nodejs/deployment", "Learn/Server-side/Express\_Nodejs")}}
 
-In this module
---------------
+## In this module
 
--   [Express/Node introduction](/en-US/docs/Learn/Server-side/Express_Nodejs/Introduction)
--   [Setting up a Node (Express) development environment](/en-US/docs/Learn/Server-side/Express_Nodejs/development_environment)
--   [Express Tutorial: The Local Library website](/en-US/docs/Learn/Server-side/Express_Nodejs/Tutorial_local_library_website)
--   [Express Tutorial Part 2: Creating a skeleton website](/en-US/docs/Learn/Server-side/Express_Nodejs/skeleton_website)
--   [Express Tutorial Part 3: Using a Database (with Mongoose)](/en-US/docs/Learn/Server-side/Express_Nodejs/mongoose)
--   [Express Tutorial Part 4: Routes and controllers](/en-US/docs/Learn/Server-side/Express_Nodejs/routes)
--   [Express Tutorial Part 5: Displaying library data](/en-US/docs/Learn/Server-side/Express_Nodejs/Displaying_data)
--   [Express Tutorial Part 6: Working with forms](/en-US/docs/Learn/Server-side/Express_Nodejs/forms)
--   [Express Tutorial Part 7: Deploying to production](/en-US/docs/Learn/Server-side/Express_Nodejs/deployment)
+- [Express/Node introduction](/en-US/docs/Learn/Server-side/Express_Nodejs/Introduction)
+- [Setting up a Node (Express) development environment](/en-US/docs/Learn/Server-side/Express_Nodejs/development_environment)
+- [Express Tutorial: The Local Library website](/en-US/docs/Learn/Server-side/Express_Nodejs/Tutorial_local_library_website)
+- [Express Tutorial Part 2: Creating a skeleton website](/en-US/docs/Learn/Server-side/Express_Nodejs/skeleton_website)
+- [Express Tutorial Part 3: Using a Database (with Mongoose)](/en-US/docs/Learn/Server-side/Express_Nodejs/mongoose)
+- [Express Tutorial Part 4: Routes and controllers](/en-US/docs/Learn/Server-side/Express_Nodejs/routes)
+- [Express Tutorial Part 5: Displaying library data](/en-US/docs/Learn/Server-side/Express_Nodejs/Displaying_data)
+- [Express Tutorial Part 6: Working with forms](/en-US/docs/Learn/Server-side/Express_Nodejs/forms)
+- [Express Tutorial Part 7: Deploying to production](/en-US/docs/Learn/Server-side/Express_Nodejs/deployment)

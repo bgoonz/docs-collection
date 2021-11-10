@@ -1,4 +1,4 @@
---- title: Advanced form styling slug: Learn/Forms/Advanced\_form\_styling tags: - Advanced - CSS - Example - Forms - Guide - HTML - Web ---
+--- title: Advanced form styling slug: Learn/Forms/Advanced_form_styling tags: - Advanced - CSS - Example - Forms - Guide - HTML - Web ---
 
 {{LearnSidebar}}
 
@@ -12,22 +12,21 @@ To recap what we said in the previous article, we have:
 
 **The bad**: Some elements are more difficult to style, requiring more complex CSS or some more specific tricks:
 
--   Checkboxes and radio buttons
--   `<input type="search">`
+- Checkboxes and radio buttons
+- `<input type="search">`
 
 **The ugly**: Some elements can't be styled thoroughly using CSS. These include:
 
--   Elements involved in creating dropdown widgets, including {{HTMLElement("select")}}, {{HTMLElement("option")}}, {{HTMLElement("optgroup")}} and {{HTMLElement("datalist")}}.
--   `<input type="color">`
--   Date-related controls such as `<input type="datetime-local">`
--   `<input type="range">`
--   `<input type="file">`
--   {{HTMLElement("progress")}} and {{HTMLElement("meter")}}
+- Elements involved in creating dropdown widgets, including {{HTMLElement("select")}}, {{HTMLElement("option")}}, {{HTMLElement("optgroup")}} and {{HTMLElement("datalist")}}.
+- `<input type="color">`
+- Date-related controls such as `<input type="datetime-local">`
+- `<input type="range">`
+- `<input type="file">`
+- {{HTMLElement("progress")}} and {{HTMLElement("meter")}}
 
 Let's first talk about the `appearance` property, which is pretty useful for making all of the above more stylable.
 
-appearance: controlling OS-level styling
-----------------------------------------
+## appearance: controlling OS-level styling
 
 In the previous article we said that historically, styling of web form controls was largely taken from the underlying operating system, which is part of the problem with customizing the look of these controls.
 
@@ -79,7 +78,7 @@ In most cases, the effect is to remove the stylized border, which makes CSS styl
 
 ### Taming search boxes
 
-`<input type="search">` is basically just a text input, so why is `appearance: none;` useful here? The answer is that in Chromium-based browsers on macOS, search boxes have some styling restrictions — you can't adjust their `height` or `font-size` freely, for example. This is because non-macOS [Chrome browsers no longer use the WebKit rendering engine](https://www.wired.com/2013/04/blink/), which enabled Aqua appearance by default for certain form controls. With Aqua enabled, some form controls are not [scalable](https://webkit.org/blog/28/buttons/). 
+`<input type="search">` is basically just a text input, so why is `appearance: none;` useful here? The answer is that in Chromium-based browsers on macOS, search boxes have some styling restrictions — you can't adjust their `height` or `font-size` freely, for example. This is because non-macOS [Chrome browsers no longer use the WebKit rendering engine](https://www.wired.com/2013/04/blink/), which enabled Aqua appearance by default for certain form controls. With Aqua enabled, some form controls are not [scalable](https://webkit.org/blog/28/buttons/).
 
 This can be fixed using our friend `appearance: none;`, which disables the default Aqua appearance:
 
@@ -96,7 +95,7 @@ Interestingly, setting border/background on the search field also fixes this pro
 
 {{EmbedGHLiveSample("learning-area/html/forms/styling-examples/styled-search.html", '100%', 200)}}
 
-**Note**: You may have noticed that in the search field, the "x" delete icon disappears when the input loses focus in Edge and Chrome, but stays put in Safari. To remove via CSS, you can use `input[type="search"]::-webkit-search-cancel-button { display: none;       }`. However, this seems to get rid of the icon *with* focus too, with no apparent way to get it back.
+**Note**: You may have noticed that in the search field, the "x" delete icon disappears when the input loses focus in Edge and Chrome, but stays put in Safari. To remove via CSS, you can use `input[type="search"]::-webkit-search-cancel-button { display: none; }`. However, this seems to get rid of the icon _with_ focus too, with no apparent way to get it back.
 
 ### Styling checkboxes and radio buttons
 
@@ -191,8 +190,8 @@ We can use the {{cssxref(":checked")}} and {{cssxref(":disabled")}} pseudo-class
 
 You'll find more out about such pseudo-classes and more in the [next article](/en-US/docs/Learn/Forms/UI_pseudo-classes); the above ones do the following:
 
--   `:checked` — the checkbox (or radio button) is in a checked state — the user has clicked/activated it.
--   `:disabled` — the checkbox (or radio button) is in a disabled state — it cannot be interacted with.
+- `:checked` — the checkbox (or radio button) is in a checked state — the user has clicked/activated it.
+- `:disabled` — the checkbox (or radio button) is in a disabled state — it cannot be interacted with.
 
 You can see the live result:
 
@@ -200,15 +199,14 @@ You can see the live result:
 
 We've also created a couple of other examples to give you more ideas:
 
--   [Styled radio buttons](https://mdn.github.io/learning-area/html/forms/styling-examples/radios-styled.html): Custom radio button styling.
--   [Toggle switch example](https://mdn.github.io/learning-area/html/forms/toggle-switch-example/): A checkbox styled to look like a toggle switch.
+- [Styled radio buttons](https://mdn.github.io/learning-area/html/forms/styling-examples/radios-styled.html): Custom radio button styling.
+- [Toggle switch example](https://mdn.github.io/learning-area/html/forms/toggle-switch-example/): A checkbox styled to look like a toggle switch.
 
 If you view these checkboxes in a browser that doesn't support {{cssxref("appearance")}}, your custom design will be lost, but they will still look like checkboxes and be usable.
 
 **Note**: While Internet Explorer doesn't support any version of `appearance`, the `input[type=checkbox]::-ms-check` enables the targeting of checkboxes in IE only. This technique works for radio buttons too, despite the name `-ms-check`.
 
-What can be done about the "ugly" elements?
--------------------------------------------
+## What can be done about the "ugly" elements?
 
 Now let's turn our attention to the "ugly" controls — the ones that are really hard to thoroughly  style. In short, these are drop-down boxes, complex control types like `color` and `datetime-local`, and feedback—oriented controls like {{HTMLElement("progress")}} and {{HTMLElement("meter")}}.
 
@@ -429,30 +427,27 @@ You can see the result of the above CSS styling in the below live example (see a
 
 It is easier to just create your own custom solution for these features, if you want to be able to control the styling, or use a third party solution such as [progressbar.js](https://kimmobrunfeldt.github.io/progressbar.js/#examples).
 
-The road to nicer forms: useful libraries and polyfills
--------------------------------------------------------
+## The road to nicer forms: useful libraries and polyfills
 
 As we've mentioned above a few times, if you want to gain full control over the "ugly" control types, you have no choice but to rely on JavaScript. In the article [How to build custom form controls](/en-US/docs/Learn/Forms/How_to_build_custom_form_controls) you will see how to do it on your own, but there are some very useful libraries out there that can help you:
 
--   [Uni-form](https://sprawsm.com/uni-form/) is a framework that standardizes form markup, styling it with CSS. It also offers a few additional features when used with jQuery, but that's optional.
--   [Formalize](https://formalize.me/) is an extension to common JavaScript frameworks (such as jQuery, Dojo, YUI, etc.) that helps to normalize and customize your forms.
--   [Niceforms](https://www.emblematiq.com/lab/niceforms/) is a standalone JavaScript method that provides complete customization of web forms. You can use some of the built in themes, or create your own.
+- [Uni-form](https://sprawsm.com/uni-form/) is a framework that standardizes form markup, styling it with CSS. It also offers a few additional features when used with jQuery, but that's optional.
+- [Formalize](https://formalize.me/) is an extension to common JavaScript frameworks (such as jQuery, Dojo, YUI, etc.) that helps to normalize and customize your forms.
+- [Niceforms](https://www.emblematiq.com/lab/niceforms/) is a standalone JavaScript method that provides complete customization of web forms. You can use some of the built in themes, or create your own.
 
 The following libraries aren't just about forms, but they have very interesting features for dealing with HTML forms:
 
--   [jQuery UI](https://jqueryui.com/) offers customizable widgets such as date pickers (with special attention given to accessibility).
--   [Twitter Bootstrap](https://twitter.github.com/bootstrap/base-css.html#forms) can help normalize your forms.
--   [WebShim](https://afarkas.github.io/webshim/demos/) is a huge tool that can help you deal with browser HTML5 support. The web forms part can be really helpful.
+- [jQuery UI](https://jqueryui.com/) offers customizable widgets such as date pickers (with special attention given to accessibility).
+- [Twitter Bootstrap](https://twitter.github.com/bootstrap/base-css.html#forms) can help normalize your forms.
+- [WebShim](https://afarkas.github.io/webshim/demos/) is a huge tool that can help you deal with browser HTML5 support. The web forms part can be really helpful.
 
 Remember that CSS and JavaScript can have side effects. So if you choose to use one of those libraries, you should always have robust fallback HTML in case the script fails. There are many reasons why scripts may fail, especially in the mobile world, and you need to design your Web site or app to handle these cases as well as possible.
 
-Test your skills!
------------------
+## Test your skills!
 
 You've reached the end of this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: Advanced styling](/en-US/docs/Learn/Forms/Test_your_skills:_Advanced_styling). Bear in mind that some questions in this assessment series assume knowledge of the [next article](/en-US/docs/Learn/Forms/UI_pseudo-classes) too, so you might want to work through that article first before attempting it.
 
-Summary
--------
+## Summary
 
 While there are still difficulties using CSS with HTML forms, there are ways to get around many of the problems. There are no clean, universal solutions, but modern browsers offer new possibilities. For now, the best solution is to learn more about the way the different browsers support CSS when applied to HTML form controls.
 
@@ -460,22 +455,21 @@ In the next article of this module, we will explore the different [UI pseudo-cla
 
 {{PreviousMenuNext("Learn/Forms/Styling\_web\_forms", "Learn/Forms/UI\_pseudo-classes", "Learn/Forms")}}
 
-In this module
---------------
+## In this module
 
--   [Your first form](/en-US/docs/Learn/Forms/Your_first_form)
--   [How to structure a web form](/en-US/docs/Learn/Forms/How_to_structure_a_web_form)
--   [Basic native form controls](/en-US/docs/Learn/Forms/Basic_native_form_controls)
--   [The HTML5 input types](/en-US/docs/Learn/Forms/HTML5_input_types)
--   [Other form controls](/en-US/docs/Learn/Forms/Other_form_controls)
--   [Styling web forms](/en-US/docs/Learn/Forms/Styling_web_forms)
--   [Advanced form styling](/en-US/docs/Learn/Forms/Advanced_form_styling)
--   [UI pseudo-classes](/en-US/docs/Learn/Forms/UI_pseudo-classes)
--   [Client-side form validation](/en-US/docs/Learn/Forms/Form_validation)
--   [Sending form data](/en-US/docs/Learn/Forms/Sending_and_retrieving_form_data)
+- [Your first form](/en-US/docs/Learn/Forms/Your_first_form)
+- [How to structure a web form](/en-US/docs/Learn/Forms/How_to_structure_a_web_form)
+- [Basic native form controls](/en-US/docs/Learn/Forms/Basic_native_form_controls)
+- [The HTML5 input types](/en-US/docs/Learn/Forms/HTML5_input_types)
+- [Other form controls](/en-US/docs/Learn/Forms/Other_form_controls)
+- [Styling web forms](/en-US/docs/Learn/Forms/Styling_web_forms)
+- [Advanced form styling](/en-US/docs/Learn/Forms/Advanced_form_styling)
+- [UI pseudo-classes](/en-US/docs/Learn/Forms/UI_pseudo-classes)
+- [Client-side form validation](/en-US/docs/Learn/Forms/Form_validation)
+- [Sending form data](/en-US/docs/Learn/Forms/Sending_and_retrieving_form_data)
 
 ### Advanced Topics
 
--   [How to build custom form controls](/en-US/docs/Learn/Forms/How_to_build_custom_form_controls)
--   [Sending forms through JavaScript](/en-US/docs/Learn/Forms/Sending_forms_through_JavaScript)
--   [Property compatibility table for form widgets](/en-US/docs/Learn/Forms/Property_compatibility_table_for_form_controls)
+- [How to build custom form controls](/en-US/docs/Learn/Forms/How_to_build_custom_form_controls)
+- [Sending forms through JavaScript](/en-US/docs/Learn/Forms/Sending_forms_through_JavaScript)
+- [Property compatibility table for form widgets](/en-US/docs/Learn/Forms/Property_compatibility_table_for_form_controls)

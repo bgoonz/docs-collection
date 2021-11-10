@@ -1,4 +1,4 @@
---- title: "Express Tutorial Part 4: Routes and controllers" slug: Learn/Server-side/Express\_Nodejs/routes tags: - Beginner - CodingScripting - Express - Express routes - Learn - Routes - nodejs - server-side ---
+--- title: "Express Tutorial Part 4: Routes and controllers" slug: Learn/Server-side/Express_Nodejs/routes tags: - Beginner - CodingScripting - Express - Express routes - Learn - Routes - nodejs - server-side ---
 
 {{LearnSidebar}}
 
@@ -8,18 +8,17 @@ In this tutorial we'll set up routes (URL handling code) with "dummy" handler fu
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Read the <a href="/en-US/docs/Learn/Server-side/Express_Nodejs/Introduction">Express/Node introduction</a>. Complete previous tutorial topics (including <a href="/en-US/docs/Learn/Server-side/Express_Nodejs/mongoose">Express Tutorial Part 3: Using a Database (with Mongoose)</a>).</td></tr><tr class="even"><td>Objective:</td><td>To understand how to create simple routes. To set up all our URL endpoints.</td></tr></tbody></table>
 
-Overview
---------
+## Overview
 
-In the [last tutorial article](/en-US/docs/Learn/Server-side/Express_Nodejs/mongoose) we defined *Mongoose* models to interact with the database, and used a (standalone) script to create some initial library records. We can now write the code to present that information to users. The first thing we need to do is determine what information we want to be able to display in our pages, and then define appropriate URLs for returning those resources. Then we're going to need to create the routes (URL handlers) and views (templates) to display those pages.
+In the [last tutorial article](/en-US/docs/Learn/Server-side/Express_Nodejs/mongoose) we defined _Mongoose_ models to interact with the database, and used a (standalone) script to create some initial library records. We can now write the code to present that information to users. The first thing we need to do is determine what information we want to be able to display in our pages, and then define appropriate URLs for returning those resources. Then we're going to need to create the routes (URL handlers) and views (templates) to display those pages.
 
 The diagram below is provided as a reminder of the main flow of data and things that need to be implemented when handling an HTTP request/response. In addition to the views and routes the diagram shows "controllers" — functions that separate out the code to route requests from the code that actually processes requests.
 
 As we've already created the models, the main things we'll need to create are:
 
--   "Routes" to forward the supported requests (and any information encoded in request URLs) to the appropriate controller functions.
--   Controller functions to get the requested data from the models, create an HTML page displaying the data, and return it to the user to view in the browser.
--   Views (templates) used by the controllers to render the data.
+- "Routes" to forward the supported requests (and any information encoded in request URLs) to the appropriate controller functions.
+- Controller functions to get the requested data from the models, create an HTML page displaying the data, and return it to the user to view in the browser.
+- Views (templates) used by the controllers to render the data.
 
 ![](mvc_express.png)
 
@@ -27,20 +26,19 @@ Ultimately we might have pages to show lists and detail information for books, g
 
 The first section below provides a brief "primer" on how to use the Express [Router](https://expressjs.com/en/4x/api.html#router) middleware. We'll then use that knowledge in the following sections when we set up the LocalLibrary routes.
 
-Routes primer
--------------
+## Routes primer
 
 A route is a section of Express code that associates an HTTP verb (`GET`, `POST`, `PUT`, `DELETE`, etc.), a URL path/pattern, and a function that is called to handle that pattern.
 
 There are several ways to create routes. For this tutorial we're going to use the `express.Router` middleware as it allows us to group the route handlers for a particular part of a site together and access them using a common route-prefix. We'll keep all our library-related routes in a "catalog" module, and, if we add routes for handling user accounts or other functions, we can keep them grouped separately.
 
-**Note:** We discussed Express application routes briefly in our [Express Introduction &gt; Creating route handlers](/en-US/docs/Learn/Server-side/Express_Nodejs/Introduction#creating_route_handlers). Other than providing better support for modularization (as discussed in the first subsection below), using *Router* is very similar to defining routes directly on the *Express application object*.
+**Note:** We discussed Express application routes briefly in our [Express Introduction &gt; Creating route handlers](/en-US/docs/Learn/Server-side/Express_Nodejs/Introduction#creating_route_handlers). Other than providing better support for modularization (as discussed in the first subsection below), using _Router_ is very similar to defining routes directly on the _Express application object_.
 
 The rest of this section provides an overview of how the `Router` can be used to define the routes.
 
 ### Defining and using separate route modules
 
-The code below provides a concrete example of how we can create a route module and then use it in an *Express* application.
+The code below provides a concrete example of how we can create a route module and then use it in an _Express_ application.
 
 First we create routes for a wiki in a module named **wiki.js**. The code first imports the Express application object, uses it to get a `Router` object and then adds a couple of routes to it using the `get()` method. Last of all the module exports the `Router` object.
 
@@ -63,7 +61,7 @@ First we create routes for a wiki in a module named **wiki.js**. The code first 
 
 **Note:** Above we are defining our route handler callbacks directly in the router functions. In the LocalLibrary we'll define these callbacks in a separate controller module.
 
-To use the router module in our main app file we first `require()` the route module (**wiki.js**). We then call `use()` on the *Express* application to add the Router to the middleware handling path, specifying a URL path of 'wiki'.
+To use the router module in our main app file we first `require()` the route module (**wiki.js**). We then call `use()` on the _Express_ application to add the Router to the middleware handling path, specifying a URL path of 'wiki'.
 
     var wiki = require('./wiki.js');
     // ...
@@ -79,7 +77,7 @@ Our module above defines a couple of typical route functions. The "about" route 
       res.send('About this wiki');
     })
 
-The callback takes three arguments (usually named as shown: `req`, `res`, `next`), that will contain the HTTP Request object, HTTP response, and the *next* function in the middleware chain.
+The callback takes three arguments (usually named as shown: `req`, `res`, `next`), that will contain the HTTP Request object, HTTP response, and the _next_ function in the middleware chain.
 
 **Note:** Router functions are [Express middleware](/en-US/docs/Learn/Server-side/Express_Nodejs/Introduction#using_middleware), which means that they must either complete (respond to) the request or call the `next` function in the chain. In the case above we complete the request using `send()`, so the `next` argument is not used (and we choose not to specify it).
 
@@ -91,7 +89,7 @@ The callback function here calls `send()` on the response to return the string "
 
 The example routes above use the `Router.get()` method to respond to HTTP GET requests with a certain path.
 
-The `Router` also provides route methods for all the other HTTP verbs, that are mostly used in exactly the same way: `post()`, `put()`, `delete()`, `options()`, `trace()`, `copy()`, `lock()`, `mkcol()`, `move()`, `purge()`, `propfind()`, `proppatch()`, `unlock()`, `report()`, `mkactivity()`, `checkout()`, `merge()`, `m-``search()`, `notify()`, `subscribe()`, `unsubscribe()`, `patch()`, `search()`, and `connect()`.
+The `Router` also provides route methods for all the other HTTP verbs, that are mostly used in exactly the same way: `post()`, `put()`, `delete()`, `options()`, `trace()`, `copy()`, `lock()`, `mkcol()`, `move()`, `purge()`, `propfind()`, `proppatch()`, `unlock()`, `report()`, `mkactivity()`, `checkout()`, `merge()`, ` m-``search() `, `notify()`, `subscribe()`, `unsubscribe()`, `patch()`, `search()`, and `connect()`.
 
 For example, the code below behaves just like the previous `/about` route, but only responds to HTTP POST requests.
 
@@ -103,12 +101,12 @@ For example, the code below behaves just like the previous `/about` route, but o
 
 The route paths define the endpoints at which requests can be made. The examples we've seen so far have just been strings, and are used exactly as written: '/', '/about', '/book', '/any-random.path'.
 
-Route paths can also be string patterns. String patterns use a form of regular expression syntax to define *patterns* of endpoints that will be matched. The syntax is listed below (note that the hyphen (`-`) and the dot (`.`) are interpreted literally by string-based paths):
+Route paths can also be string patterns. String patterns use a form of regular expression syntax to define _patterns_ of endpoints that will be matched. The syntax is listed below (note that the hyphen (`-`) and the dot (`.`) are interpreted literally by string-based paths):
 
--   `?` : The endpoint must have 0 or 1 of the preceding character (or group), e.g. a route path of `'/ab?cd'` will match endpoints `acd` or `abcd`.
--   `+` : The endpoint must have 1 or more of the preceding character (or group), e.g. a route path of `'/ab+cd'` will match endpoints `abcd`, `abbcd`, `abbbcd`, and so on.
--   `*` : The endpoint may have an arbitrary string where the `*` character is placed. E.g. a route path of `'/ab*cd'` will match endpoints `abcd`, `abXcd`, `abSOMErandomTEXTcd`, and so on.
--   `()` : Grouping match on a set of characters to perform another operation on, e.g. `'/ab(cd)?e'` will perform a `?`-match on the group `(cd)`—it will match `abe` and `abcde`.
+- `?` : The endpoint must have 0 or 1 of the preceding character (or group), e.g. a route path of `'/ab?cd'` will match endpoints `acd` or `abcd`.
+- `+` : The endpoint must have 1 or more of the preceding character (or group), e.g. a route path of `'/ab+cd'` will match endpoints `abcd`, `abbcd`, `abbbcd`, and so on.
+- `*` : The endpoint may have an arbitrary string where the `*` character is placed. E.g. a route path of `'/ab*cd'` will match endpoints `abcd`, `abXcd`, `abSOMErandomTEXTcd`, and so on.
+- `()` : Grouping match on a set of characters to perform another operation on, e.g. `'/ab(cd)?e'` will perform a `?`-match on the group `(cd)`—it will match `abe` and `abcde`.
 
 The route paths can also be JavaScript [regular expressions](/en-US/docs/Web/JavaScript/Guide/Regular_Expressions). For example, the route path below will match `catfish` and `dogfish`, but not `catflap`, `catfishhead`, and so on. Note that the path for a regular expression uses regular expression syntax (it is not a quoted string as in the previous cases).
 
@@ -120,7 +118,7 @@ The route paths can also be JavaScript [regular expressions](/en-US/docs/Web/Jav
 
 ### Route parameters
 
-Route parameters are *named URL segments* used to capture values at specific positions in the URL. The named segments are prefixed with a colon and then the name (e.g. `/:your_parameter_name/`. The captured values are stored in the `req.params` object using the parameter names as keys (e.g. `req.params.your_parameter_name`).
+Route parameters are _named URL segments_ used to capture values at specific positions in the URL. The named segments are prefixed with a colon and then the name (e.g. `/:your_parameter_name/`. The captured values are stored in the `req.params` object using the parameter names as keys (e.g. `req.params.your_parameter_name`).
 
 So for example, consider a URL encoded to contain information about users and books: `http://localhost:3000/users/34/books/8989`. We can extract this information as shown below, with the `userId` and `bookId` path parameters:
 
@@ -132,21 +130,20 @@ So for example, consider a URL encoded to contain information about users and bo
 
 The names of route parameters must be made up of “word characters” (A-Z, a-z, 0-9, and \_).
 
-**Note:** The URL */book/create* will be matched by a route like `/book/:bookId` (which will extract a "bookId" value of '`create`'). The first route that matches an incoming URL will be used, so if you want to process `/book/create` URLs separately, their route handler must be defined before your `/book/:bookId` route.
+**Note:** The URL _/book/create_ will be matched by a route like `/book/:bookId` (which will extract a "bookId" value of '`create`'). The first route that matches an incoming URL will be used, so if you want to process `/book/create` URLs separately, their route handler must be defined before your `/book/:bookId` route.
 
 That's all you need to get started with routes - if needed you can find more information in the Express docs: [Basic routing](https://expressjs.com/en/starter/basic-routing.html) and [Routing guide](https://expressjs.com/en/guide/routing.html). The following sections show how we'll set up our routes and controllers for the LocalLibrary.
 
-Routes needed for the LocalLibrary
-----------------------------------
+## Routes needed for the LocalLibrary
 
-The URLs that we're ultimately going to need for our pages are listed below, where *object* is replaced by the name of each of our models (book, bookinstance, genre, author), *objects* is the plural of object, and *id* is the unique instance field (`_id`) that is given to each Mongoose model instance by default.
+The URLs that we're ultimately going to need for our pages are listed below, where _object_ is replaced by the name of each of our models (book, bookinstance, genre, author), _objects_ is the plural of object, and _id_ is the unique instance field (`_id`) that is given to each Mongoose model instance by default.
 
--   `catalog/` — The home/index page.
--   `catalog/<objects>/` — The list of all books, bookinstances, genres, or authors (e.g. /`catalog/books/`, /`catalog/genres/`, etc.)
--   `catalog/<object>/<id>` — The detail page for a specific book, bookinstance, genre, or author with the given `_id` field value (e.g. `/catalog/book/584493c1f4887f06c0e67d37)`.
--   `catalog/<object>/create` — The form to create a new book, bookinstance, genre, or author (e.g. `/catalog/book/create)`.
--   `catalog/<object>/<id>/update` — The form to update a specific book, bookinstance, genre, or author with the given `_id` field value (e.g. `/catalog/book/584493c1f4887f06c0e67d37/update)`.
--   `catalog/<object>/<id>/delete` — The form to delete a specific book, bookinstance, genre, author with the given `_id` field value (e.g. `/catalog/book/584493c1f4887f06c0e67d37/delete)`.
+- `catalog/` — The home/index page.
+- `catalog/<objects>/` — The list of all books, bookinstances, genres, or authors (e.g. /`catalog/books/`, /`catalog/genres/`, etc.)
+- `catalog/<object>/<id>` — The detail page for a specific book, bookinstance, genre, or author with the given `_id` field value (e.g. `/catalog/book/584493c1f4887f06c0e67d37)`.
+- `catalog/<object>/create` — The form to create a new book, bookinstance, genre, or author (e.g. `/catalog/book/create)`.
+- `catalog/<object>/<id>/update` — The form to update a specific book, bookinstance, genre, or author with the given `_id` field value (e.g. `/catalog/book/584493c1f4887f06c0e67d37/update)`.
+- `catalog/<object>/<id>/delete` — The form to delete a specific book, bookinstance, genre, author with the given `_id` field value (e.g. `/catalog/book/584493c1f4887f06c0e67d37/delete)`.
 
 The first home page and list pages don't encode any additional information. While the results returned will depend on the model type and the content in the database, the queries run to get the information will always be the same (similarly the code run for object creation will always be similar).
 
@@ -156,8 +153,7 @@ By contrast the other URLs are used to act on a specific document/model instance
 
 Next we create our route handler callback functions and route code for all the above URLs.
 
-Create the route-handler callback functions
--------------------------------------------
+## Create the route-handler callback functions
 
 Before we define our routes, we'll first create all the dummy/skeleton callback functions that they will invoke. The callbacks will be stored in separate "controller" modules for Books, BookInstances, Genres, and Authors (you can use any file/module structure, but this seems an appropriate granularity for this project).
 
@@ -218,7 +214,7 @@ Open the **/controllers/authorController.js** file and type in the following cod
 
 The module first requires the model that we'll later be using to access and update our data. It then exports functions for each of the URLs we wish to handle (the create, update and delete operations use forms, and hence also have additional methods for handling form post requests — we'll discuss those methods in the "forms article" later on).
 
-All the functions have the standard form of an *Express middleware function*, with arguments for the request and response. We could also include the `next` function to be called if the method does not complete the request cycle, but in all these cases it does, so we've omitted it. The methods return a string indicating that the associated page has not yet been created. If a controller function is expected to receive path parameters, these are output in the message string (see `req.params.id` above).
+All the functions have the standard form of an _Express middleware function_, with arguments for the request and response. We could also include the `next` function to be called if the method does not complete the request cycle, but in all these cases it does, so we've omitted it. The methods return a string indicating that the associated page has not yet been created. If a controller function is expected to receive path parameters, these are output in the message string (see `req.params.id` above).
 
 #### BookInstance controller
 
@@ -362,12 +358,11 @@ Open the **/controllers/bookController.js** file and copy in the following code.
         res.send('NOT IMPLEMENTED: Book update POST');
     };
 
-Create the catalog route module
--------------------------------
+## Create the catalog route module
 
-Next we create *routes* for all the URLs [needed by the LocalLibrary website](#local_libary_routes), which will call the controller functions we defined in the previous section.
+Next we create _routes_ for all the URLs [needed by the LocalLibrary website](#local_libary_routes), which will call the controller functions we defined in the previous section.
 
-The skeleton already has a **./routes** folder containing routes for the *index* and *users*. Create another route file — **catalog.js** — inside this folder, as shown.
+The skeleton already has a **./routes** folder containing routes for the _index_ and _users_. Create another route file — **catalog.js** — inside this folder, as shown.
 
     /express-locallibrary-tutorial //the project root
       /routes
@@ -538,57 +533,54 @@ That's it. We should now have routes and skeleton functions enabled for all the 
 
 To test the routes, first start the website using your usual approach
 
--   The default method
+- The default method
 
-        // Windows
-        SET DEBUG=express-locallibrary-tutorial:* & npm start
+      // Windows
+      SET DEBUG=express-locallibrary-tutorial:* & npm start
 
-        // macOS or Linux
-        DEBUG=express-locallibrary-tutorial:* npm start
+      // macOS or Linux
+      DEBUG=express-locallibrary-tutorial:* npm start
 
--   If you previously set up [nodemon](/en-US/docs/Learn/Server-side/Express_Nodejs/skeleton_website), you can instead use:
+- If you previously set up [nodemon](/en-US/docs/Learn/Server-side/Express_Nodejs/skeleton_website), you can instead use:
 
-        // Windows
-        SET DEBUG=express-locallibrary-tutorial:* & npm run devstart
+      // Windows
+      SET DEBUG=express-locallibrary-tutorial:* & npm run devstart
 
-        // macOS or Linux
-        DEBUG=express-locallibrary-tutorial:* npm run devstart
+      // macOS or Linux
+      DEBUG=express-locallibrary-tutorial:* npm run devstart
 
 Then navigate to a number of LocalLibrary URLs, and verify that you don't get an error page (HTTP 404). A small set of URLs are listed below for your convenience:
 
--   <http://localhost:3000/>
--   <http://localhost:3000/catalog>
--   <http://localhost:3000/catalog/books>
--   <http://localhost:3000/catalog/bookinstances/>
--   <http://localhost:3000/catalog/authors/>
--   <http://localhost:3000/catalog/genres/>
--   [http://localhost:3000/catalog/book/5846437593935e2f8c2aa226](http://localhost:3000/catalog/book/5846437593935e2f8c2aa226/)
--   <http://localhost:3000/catalog/book/create>
+- <http://localhost:3000/>
+- <http://localhost:3000/catalog>
+- <http://localhost:3000/catalog/books>
+- <http://localhost:3000/catalog/bookinstances/>
+- <http://localhost:3000/catalog/authors/>
+- <http://localhost:3000/catalog/genres/>
+- [http://localhost:3000/catalog/book/5846437593935e2f8c2aa226](http://localhost:3000/catalog/book/5846437593935e2f8c2aa226/)
+- <http://localhost:3000/catalog/book/create>
 
-Summary
--------
+## Summary
 
 We've now created all the routes for our site, along with dummy controller functions that we can populate with a full implementation in later articles. Along the way we've learned a lot of fundamental information about Express routes, and some approaches for structuring our routes and controllers.
 
 In our next article we'll create a proper welcome page for the site, using views (templates) and information stored in our models.
 
-See also
---------
+## See also
 
--   [Basic routing](https://expressjs.com/en/starter/basic-routing.html) (Express docs)
--   [Routing guide](https://expressjs.com/en/guide/routing.html) (Express docs)
+- [Basic routing](https://expressjs.com/en/starter/basic-routing.html) (Express docs)
+- [Routing guide](https://expressjs.com/en/guide/routing.html) (Express docs)
 
 {{PreviousMenuNext("Learn/Server-side/Express\_Nodejs/mongoose", "Learn/Server-side/Express\_Nodejs/Displaying\_data", "Learn/Server-side/Express\_Nodejs")}}
 
-In this module
---------------
+## In this module
 
--   [Express/Node introduction](/en-US/docs/Learn/Server-side/Express_Nodejs/Introduction)
--   [Setting up a Node (Express) development environment](/en-US/docs/Learn/Server-side/Express_Nodejs/development_environment)
--   [Express Tutorial: The Local Library website](/en-US/docs/Learn/Server-side/Express_Nodejs/Tutorial_local_library_website)
--   [Express Tutorial Part 2: Creating a skeleton website](/en-US/docs/Learn/Server-side/Express_Nodejs/skeleton_website)
--   [Express Tutorial Part 3: Using a Database (with Mongoose)](/en-US/docs/Learn/Server-side/Express_Nodejs/mongoose)
--   [Express Tutorial Part 4: Routes and controllers](/en-US/docs/Learn/Server-side/Express_Nodejs/routes)
--   [Express Tutorial Part 5: Displaying library data](/en-US/docs/Learn/Server-side/Express_Nodejs/Displaying_data)
--   [Express Tutorial Part 6: Working with forms](/en-US/docs/Learn/Server-side/Express_Nodejs/forms)
--   [Express Tutorial Part 7: Deploying to production](/en-US/docs/Learn/Server-side/Express_Nodejs/deployment)
+- [Express/Node introduction](/en-US/docs/Learn/Server-side/Express_Nodejs/Introduction)
+- [Setting up a Node (Express) development environment](/en-US/docs/Learn/Server-side/Express_Nodejs/development_environment)
+- [Express Tutorial: The Local Library website](/en-US/docs/Learn/Server-side/Express_Nodejs/Tutorial_local_library_website)
+- [Express Tutorial Part 2: Creating a skeleton website](/en-US/docs/Learn/Server-side/Express_Nodejs/skeleton_website)
+- [Express Tutorial Part 3: Using a Database (with Mongoose)](/en-US/docs/Learn/Server-side/Express_Nodejs/mongoose)
+- [Express Tutorial Part 4: Routes and controllers](/en-US/docs/Learn/Server-side/Express_Nodejs/routes)
+- [Express Tutorial Part 5: Displaying library data](/en-US/docs/Learn/Server-side/Express_Nodejs/Displaying_data)
+- [Express Tutorial Part 6: Working with forms](/en-US/docs/Learn/Server-side/Express_Nodejs/forms)
+- [Express Tutorial Part 7: Deploying to production](/en-US/docs/Learn/Server-side/Express_Nodejs/deployment)

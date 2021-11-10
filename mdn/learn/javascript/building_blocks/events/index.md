@@ -1,4 +1,4 @@
---- title: Introduction to events slug: Learn/JavaScript/Building\_blocks/Events tags: - Article - Beginner - CodingScripting - Event Handler - Guide - JavaScript - Learn - events - l10n:priority ---
+--- title: Introduction to events slug: Learn/JavaScript/Building_blocks/Events tags: - Article - Beginner - CodingScripting - Event Handler - Guide - JavaScript - Learn - events - l10n:priority ---
 
 {{LearnSidebar}}
 
@@ -8,8 +8,7 @@ Events are actions or occurrences that happen in the system you are programming,
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, a basic understanding of HTML and CSS, <a href="/en-US/docs/Learn/JavaScript/First_steps">JavaScript first steps</a>.</td></tr><tr class="even"><td>Objective:</td><td>To understand the fundamental theory of events, how they work in browsers, and how events may differ in different programming environments.</td></tr></tbody></table>
 
-A series of fortunate events
-----------------------------
+## A series of fortunate events
 
 As mentioned above, **events** are actions or occurrences that happen in the system you are programming — the system produces (or "fires") a signal of some kind when an event occurs, and provides a mechanism by which an action can be automatically taken (that is, some code running) when the event occurs. For example, in an airport, when the runway is clear for take off, a signal is communicated to the pilot. As a result, the plane can safely takeoff.
 
@@ -17,13 +16,13 @@ As mentioned above, **events** are actions or occurrences that happen in the sys
 
 In the case of the Web, events are fired inside the browser window, and tend to be attached to a specific item that resides in it — this might be a single element, set of elements, the HTML document loaded in the current tab, or the entire browser window. There are many different types of events that can occur. For example:
 
--   The user selects a certain element or hovers the cursor over a certain element.
--   The user chooses a key on the keyboard.
--   The user resizes or closes the browser window.
--   A web page finishes loading.
--   A form is submitted.
--   A video is played, paused, or finishes.
--   An error occurs.
+- The user selects a certain element or hovers the cursor over a certain element.
+- The user chooses a key on the keyboard.
+- The user resizes or closes the browser window.
+- A web page finishes loading.
+- A form is submitted.
+- A video is played, paused, or finishes.
+- An error occurs.
 
 You can gather from this (and from glancing at the MDN [Event reference](/en-US/docs/Web/Events)) that there are **a lot** of events that can be responded to.
 
@@ -72,8 +71,7 @@ You can also use JavaScript to build cross-browser add-ons — browser functiona
 
 You don't need to understand anything about other such environments at this stage in your learning; we just wanted to make it clear that events can differ in different programming environments.
 
-Ways of using web events
-------------------------
+## Ways of using web events
 
 There are a number of ways to add event listener code to web pages so it runs when the associated event fires. In this section, we review the various mechanisms and discuss which ones you should use.
 
@@ -105,10 +103,10 @@ There are many different event handler properties available. Let's experiment.
 
 First, make a local copy of [random-color-eventhandlerproperty.html](https://github.com/mdn/learning-area/blob/master/javascript/building-blocks/events/random-color-eventhandlerproperty.html), and open it in your browser. It's just a copy of the simple random color example we've played with already. Now try changing `btn.onclick` to the following different values in turn, and observing the results in the example:
 
--   `btn.onfocus` and `btn.onblur` — The color changes when the button is focused and unfocused; try pressing the tab to focus on the button and press the tab again to focus away from the button. These are often used to display information about filling in form fields when they are focused, or displaying an error message if a form field is filled with an incorrect value.
--   `btn.ondblclick` — The color changes only when the button is double-clicked.
--   `window.onkeydown`, `window.onkeyup` — The color changes when a key is pressed on the keyboard. The `keydown` and `keyup` refer to just the key down and key up parts of the keystroke, respectively. Note: It doesn't work if you try to register this event handler on the button itself — we've had to register it on the [window](/en-US/docs/Web/API/Window) object, which represents the entire browser window.
--   `btn.onmouseover` and `btn.onmouseout` — The color changes when the mouse pointer hovers over the button, or when the pointer moves off the button, respectively.
+- `btn.onfocus` and `btn.onblur` — The color changes when the button is focused and unfocused; try pressing the tab to focus on the button and press the tab again to focus away from the button. These are often used to display information about filling in form fields when they are focused, or displaying an error message if a form field is filled with an incorrect value.
+- `btn.ondblclick` — The color changes only when the button is double-clicked.
+- `window.onkeydown`, `window.onkeyup` — The color changes when a key is pressed on the keyboard. The `keydown` and `keyup` refer to just the key down and key up parts of the keystroke, respectively. Note: It doesn't work if you try to register this event handler on the button itself — we've had to register it on the [window](/en-US/docs/Web/API/Window) object, which represents the entire browser window.
+- `btn.onmouseover` and `btn.onmouseout` — The color changes when the mouse pointer hovers over the button, or when the pointer moves off the button, respectively.
 
 Some events are general and available nearly anywhere (e.g. an `onclick` handler can be registered on nearly any element), whereas some are more specific and only useful in certain situations (e.g. it makes sense to use [onplay](/en-US/docs/Web/API/GlobalEventHandlers/onplay) only on specific elements, such as {{htmlelement("video")}}).
 
@@ -213,8 +211,8 @@ Of the three mechanisms, you shouldn't use the HTML event handler attributes —
 
 The other two are relatively interchangeable, at least for simple uses:
 
--   Event handler properties have less power and options, but better cross-browser compatibility (being supported as far back as Internet Explorer 8). You should probably start with these as you begin learning.
--   DOM Level 2 Events (`addEventListener()`, etc.) are more powerful, but can also become complex and are less well supported (supported as far back as Internet Explorer 9). You should also experiment with these, and try to use them where possible.
+- Event handler properties have less power and options, but better cross-browser compatibility (being supported as far back as Internet Explorer 8). You should probably start with these as you begin learning.
+- DOM Level 2 Events (`addEventListener()`, etc.) are more powerful, but can also become complex and are less well supported (supported as far back as Internet Explorer 9). You should also experiment with these, and try to use them where possible.
 
 The main advantages of the third mechanism are that you can remove event handler code if needed, using `removeEventListener()`, and you can add multiple listeners of the same type to elements if required. For example, you can call `addEventListener('click', function() { ... })` on an element multiple times, with different functions specified in the second argument. This is impossible with event handler properties because any subsequent attempts to set a property will overwrite earlier ones, e.g.:
 
@@ -226,8 +224,7 @@ The main advantages of the third mechanism are that you can remove event handler
 
 If you are called on to support browsers older than Internet Explorer 8, you may run into difficulties, as such ancient browsers use different event models from newer browsers. But never fear, most JavaScript libraries (for example `jQuery`) have built-in functions that abstract away cross-browser differences. Don't worry about this too much at this stage in your learning journey.
 
-Other event concepts
---------------------
+## Other event concepts
 
 In this section, we briefly cover some advanced concepts that are relevant to events. It is not important to understand these concepts fully at this point, but they might serve to explain some code patterns you'll likely come across.
 
@@ -469,7 +466,7 @@ We then add a couple more `onclick` event handlers — the first one to the `<di
       video.play();
     };
 
-But there's a problem — currently, when you select the video it starts to play, but it causes the `<div>` to be hidden at the same time. This is because the video is inside the `<div>` — it is part of it — so selecting the video actually runs *both* the above event handlers.
+But there's a problem — currently, when you select the video it starts to play, but it causes the `<div>` to be hidden at the same time. This is because the video is inside the `<div>` — it is part of it — so selecting the video actually runs _both_ the above event handlers.
 
 #### Bubbling and capturing explained
 
@@ -477,23 +474,23 @@ When an event is fired on an element that has parent elements (in this case, the
 
 In the **capturing** phase:
 
--   The browser checks to see if the element's outer-most ancestor ({{htmlelement("html")}}) has an `onclick` event handler registered on it for the capturing phase, and runs it if so.
--   Then it moves on to the next element inside `<html>` and does the same thing, then the next one, and so on until it reaches the direct parent of the element that was actually selected.
+- The browser checks to see if the element's outer-most ancestor ({{htmlelement("html")}}) has an `onclick` event handler registered on it for the capturing phase, and runs it if so.
+- Then it moves on to the next element inside `<html>` and does the same thing, then the next one, and so on until it reaches the direct parent of the element that was actually selected.
 
 In the **target** phase:
 
--   The browser checks to see if the {{domxref("Event.target", "target")}} property has an event handler for the `click` event registered on it, and runs it if so.
--   Then, if {{domxref("Event.bubbles", "bubbles")}} is `true`, it propagates the event to the direct parent of the selected element, then the next one, and so on until it reaches the `<html>` element. Otherwise, if {{domxref("Event.bubbles", "bubbles")}} is `false`, it doesn’t propagate the event to any ancestors of the target.
+- The browser checks to see if the {{domxref("Event.target", "target")}} property has an event handler for the `click` event registered on it, and runs it if so.
+- Then, if {{domxref("Event.bubbles", "bubbles")}} is `true`, it propagates the event to the direct parent of the selected element, then the next one, and so on until it reaches the `<html>` element. Otherwise, if {{domxref("Event.bubbles", "bubbles")}} is `false`, it doesn’t propagate the event to any ancestors of the target.
 
 In the **bubbling** phase, the exact opposite of the **capturing** phase occurs:
 
--   The browser checks to see if the direct parent of the element selected has an `onclick` event handler registered on it for the bubbling phase, and runs it if so.
--   Then it moves on to the next immediate ancestor element and does the same thing, then the next one, and so on until it reaches the `<html>` element.
+- The browser checks to see if the direct parent of the element selected has an `onclick` event handler registered on it for the bubbling phase, and runs it if so.
+- Then it moves on to the next immediate ancestor element and does the same thing, then the next one, and so on until it reaches the `<html>` element.
 
 In modern browsers, by default, all event handlers are registered for the bubbling phase. So in our current example, when you select the video, the event bubbles from the `<video>` element outwards to the `<html>` element. Along the way:
 
--   It finds the `video.onclick...` handler and runs it, so the video first starts playing.
--   It then finds the `videoBox.onclick...` handler and runs it, so the video is hidden as well.
+- It finds the `video.onclick...` handler and runs it, so the video first starts playing.
+- It then finds the `videoBox.onclick...` handler and runs it, so the video is hidden as well.
 
 #### Note
 
@@ -539,7 +536,7 @@ The following example demonstrates the behavior described above. Hover over the 
         background: #fdd;
     }
 
-    /* 
+    /*
      * source 1: https://dom.spec.whatwg.org/#dom-event-eventphase
      * source 2: https://stackoverflow.com/a/4616720/15266715
     */
@@ -603,13 +600,11 @@ A good example is a series of list items — if you want each one to pop up a me
 
 This concept is explained further on David Walsh's blog, with multiple examples — see [How JavaScript Event Delegation Works](https://davidwalsh.name/event-delegate).
 
-Test your skills!
------------------
+## Test your skills!
 
 You've reached the end of this article, but can you remember the most important information? To verify you've retained this information before you move on — see [Test your skills: Events](/en-US/docs/Learn/JavaScript/Building_blocks/Test_your_skills:_Events).
 
-Conclusion
-----------
+## Conclusion
 
 You should now know all you need to know about web events at this early stage. As mentioned, events are not really part of the core JavaScript — they are defined in browser Web APIs.
 
@@ -617,23 +612,21 @@ Also, it is important to understand that the different contexts in which JavaScr
 
 If there is anything you didn't understand, feel free to read through the article again, or [contact us](https://discourse.mozilla.org/c/mdn/learn) to ask for help.
 
-See also
---------
+## See also
 
--   [domevents.dev](https://domevents.dev/) — a very useful interactive playground app that enables learning about the behavior of the DOM Event system through exploration.
--   [Event reference](/en-US/docs/Web/Events)
--   [Event order](https://www.quirksmode.org/js/events_order.html) (discussion of capturing and bubbling) — an excellently detailed piece by Peter-Paul Koch.
--   [Event accessing](https://www.quirksmode.org/js/events_access.html) (discussion of the event object) — another excellently detailed piece by Peter-Paul Koch.
+- [domevents.dev](https://domevents.dev/) — a very useful interactive playground app that enables learning about the behavior of the DOM Event system through exploration.
+- [Event reference](/en-US/docs/Web/Events)
+- [Event order](https://www.quirksmode.org/js/events_order.html) (discussion of capturing and bubbling) — an excellently detailed piece by Peter-Paul Koch.
+- [Event accessing](https://www.quirksmode.org/js/events_access.html) (discussion of the event object) — another excellently detailed piece by Peter-Paul Koch.
 
 {{PreviousMenuNext("Learn/JavaScript/Building\_blocks/Return\_values","Learn/JavaScript/Building\_blocks/Image\_gallery", "Learn/JavaScript/Building\_blocks")}}
 
-In this module
---------------
+## In this module
 
--   [Making decisions in your code — conditionals](/en-US/docs/Learn/JavaScript/Building_blocks/conditionals)
--   [Looping code](/en-US/docs/Learn/JavaScript/Building_blocks/Looping_code)
--   [Functions — reusable blocks of code](/en-US/docs/Learn/JavaScript/Building_blocks/Functions)
--   [Build your own function](/en-US/docs/Learn/JavaScript/Building_blocks/Build_your_own_function)
--   [Function return values](/en-US/docs/Learn/JavaScript/Building_blocks/Return_values)
--   **Introduction to events**
--   [Image gallery](/en-US/docs/Learn/JavaScript/Building_blocks/Image_gallery)
+- [Making decisions in your code — conditionals](/en-US/docs/Learn/JavaScript/Building_blocks/conditionals)
+- [Looping code](/en-US/docs/Learn/JavaScript/Building_blocks/Looping_code)
+- [Functions — reusable blocks of code](/en-US/docs/Learn/JavaScript/Building_blocks/Functions)
+- [Build your own function](/en-US/docs/Learn/JavaScript/Building_blocks/Build_your_own_function)
+- [Function return values](/en-US/docs/Learn/JavaScript/Building_blocks/Return_values)
+- **Introduction to events**
+- [Image gallery](/en-US/docs/Learn/JavaScript/Building_blocks/Image_gallery)

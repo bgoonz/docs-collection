@@ -1,4 +1,4 @@
---- title: Tips for authoring fast-loading HTML pages slug: Learn/HTML/Howto/Author\_fast-loading\_HTML\_pages tags: - Advanced - Guide - HTML - NeedsUpdate - Performance - Web - Web Performance ---
+--- title: Tips for authoring fast-loading HTML pages slug: Learn/HTML/Howto/Author_fast-loading_HTML_pages tags: - Advanced - Guide - HTML - NeedsUpdate - Performance - Web - Web Performance ---
 
 These tips are based on common knowledge and experimentation.
 
@@ -6,8 +6,7 @@ An optimized web page not only provides for a more responsive site for your visi
 
 Optimizing page load performance is not just for content which will be viewed by narrowband dial-up or mobile device visitors. It is just as important for broadband content and can lead to dramatic improvements even for your visitors with the fastest connections.
 
-Tips
-----
+## Tips
 
 ### Reduce page weight
 
@@ -33,7 +32,7 @@ A CDN is a geographically distributed network of servers that work together to s
 
 Further reading:
 
--   [Understanding CDNs](https://www.incapsula.com/cdn-guide/what-is-cdn-how-it-works.html)
+- [Understanding CDNs](https://www.incapsula.com/cdn-guide/what-is-cdn-how-it-works.html)
 
 ### Reduce domain lookups
 
@@ -72,7 +71,7 @@ Use of modern CSS reduces the amount of markup, can reduce the need for (spacer)
 
 Using valid markup has other advantages. First, browsers will have no need to perform error-correction when parsing the HTML (this is aside from the philosophical issue of whether to allow format variation in user input and then programmatically "correct" or normalize it; or whether, instead, to enforce a strict, no-tolerance input format).
 
-Moreover, valid markup allows for the free use of other tools which can *pre-process* your web pages. For example, [HTML Tidy](http://tidy.sourceforge.net/) can remove whitespace and optional ending tags; however, it will refuse to run on a page with serious markup errors.
+Moreover, valid markup allows for the free use of other tools which can _pre-process_ your web pages. For example, [HTML Tidy](http://tidy.sourceforge.net/) can remove whitespace and optional ending tags; however, it will refuse to run on a page with serious markup errors.
 
 ### Chunk your content
 
@@ -136,14 +135,13 @@ Note, however, that many of the tips listed in this article are common-sense tec
 
 ### Use async and defer, if possible
 
-Make the JavaScript scripts such that they are compatible with both the [async](/en-US/docs/Web/HTML/Element/script#attributes) and the [defer](/en-US/docs/Web/HTML/Element/script#attributes) attributes, and use [async](/en-US/docs/Web/HTML/Element/script#attributes) whenever possible, especially if you have multiple script elements.  
-  
+Make the JavaScript scripts such that they are compatible with both the [async](/en-US/docs/Web/HTML/Element/script#attributes) and the [defer](/en-US/docs/Web/HTML/Element/script#attributes) attributes, and use [async](/en-US/docs/Web/HTML/Element/script#attributes) whenever possible, especially if you have multiple script elements.
+
 With that, the page can stop rendering while JavaScript is still loading. Otherwise, the browser will not render anything that is after the script elements that do not have these attributes.
 
 Note: Even though these attributes do help a lot the first time a page is loaded, you should use them but not assume they will work in all browsers. If you already follow all JavaScript best practices, there is no need to change your code.
 
-Example page structure
-----------------------
+## Example page structure
 
 · `{{htmlelement('html')}}`
 
@@ -162,10 +160,9 @@ Any scripts which will be used to perform interactivity. Interaction scripts typ
 Minimize the number of files for performance while keeping unrelated JavaScript in separate files for maintenance.  
 If any images are used for rollover effects, you should preload them here after the page content has downloaded.
 
-See also
---------
+## See also
 
--   Book: ["Speed Up Your Site" by Andy King](http://www.websiteoptimization.com/)
--   The excellent and very complete [Best Practices for Speeding Up Your Web Site](https://developer.yahoo.com/performance/rules.html) (Yahoo!)
--   Tools for analyzing and optimizing performance: [Google PageSpeed Tools](https://developers.google.com/speed/pagespeed/)
--   [Paint Flashing Tool](/en-US/docs/Tools/Paint_Flashing_Tool)
+- Book: ["Speed Up Your Site" by Andy King](http://www.websiteoptimization.com/)
+- The excellent and very complete [Best Practices for Speeding Up Your Web Site](https://developer.yahoo.com/performance/rules.html) (Yahoo!)
+- Tools for analyzing and optimizing performance: [Google PageSpeed Tools](https://developers.google.com/speed/pagespeed/)
+- [Paint Flashing Tool](/en-US/docs/Tools/Paint_Flashing_Tool)

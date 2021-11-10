@@ -1,4 +1,4 @@
---- title: Basic math in JavaScript — numbers and operators slug: Learn/JavaScript/First\_steps/Math tags: - Article - Beginner - CodingScripting - Guide - JavaScript - Learn - Math - Operators - augmented - increment - l10n:priority - maths - modulo ---
+--- title: Basic math in JavaScript — numbers and operators slug: Learn/JavaScript/First_steps/Math tags: - Article - Beginner - CodingScripting - Guide - JavaScript - Learn - Math - Operators - augmented - increment - l10n:priority - maths - modulo ---
 
 {{LearnSidebar}}
 
@@ -8,8 +8,7 @@ At this point in the course we discuss math in JavaScript — how we can use {{G
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, a basic understanding of HTML and CSS, an understanding of what JavaScript is.</td></tr><tr class="even"><td>Objective:</td><td>To gain familiarity with the basics of math in JavaScript.</td></tr></tbody></table>
 
-Everybody loves math
---------------------
+## Everybody loves math
 
 Okay, maybe not. Some of us like math, some of us have hated math ever since we had to learn multiplication tables and long division in school, and some of us sit somewhere in between the two. But none of us can deny that math is a fundamental part of life that we can't get very far without. This is especially true when we are learning to program JavaScript (or any other language for that matter) — so much of what we do relies on processing numerical data, calculating new values, and so on, that you won't be surprised to learn that JavaScript has a full-featured set of math functions available.
 
@@ -19,15 +18,15 @@ This article discusses only the basic parts that you need to know now.
 
 In programming, even the humble decimal number system that we all know so well is more complicated than you might think. We use different terms to describe different types of decimal numbers, for example:
 
--   **Integers** are whole numbers, e.g. 10, 400, or -5.
--   **Floating point numbers** (floats) have decimal points and decimal places, for example 12.5, and 56.7786543.
--   **Doubles** are a specific type of floating point number that have greater precision than standard floating point numbers (meaning that they are accurate to a greater number of decimal places).
+- **Integers** are whole numbers, e.g. 10, 400, or -5.
+- **Floating point numbers** (floats) have decimal points and decimal places, for example 12.5, and 56.7786543.
+- **Doubles** are a specific type of floating point number that have greater precision than standard floating point numbers (meaning that they are accurate to a greater number of decimal places).
 
 We even have different types of number systems! Decimal is base 10 (meaning it uses 0–9 in each column), but we also have things like:
 
--   **Binary** — The lowest level language of computers; 0s and 1s.
--   **Octal** — Base 8, uses 0–7 in each column.
--   **Hexadecimal** — Base 16, uses 0–9 and then a–f in each column. You may have encountered these numbers before when setting [colors in CSS](/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#hexadecimal_values).
+- **Binary** — The lowest level language of computers; 0s and 1s.
+- **Octal** — Base 8, uses 0–7 in each column.
+- **Hexadecimal** — Base 16, uses 0–9 and then a–f in each column. You may have encountered these numbers before when setting [colors in CSS](/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#hexadecimal_values).
 
 **Before you start to get worried about your brain melting, stop right there!** For a start, we are just going to stick to decimal numbers throughout this course; you'll rarely come across a need to start thinking about other types, if ever.
 
@@ -82,8 +81,7 @@ To fix the calculation, you can do this:
 
     Number(myNumber) + 3;
 
-Arithmetic operators
---------------------
+## Arithmetic operators
 
 Arithmetic operators are the basic operators that we use to do sums in JavaScript:
 
@@ -123,11 +121,11 @@ Let's look at the last example from above, assuming that `num2` holds the value 
 
     num2 + num1 / 8 + 2;
 
-As a human being, you may read this as *"50 plus 10 equals 60"*, then *"8 plus 2 equals 10"*, and finally *"60 divided by 10 equals 6"*.
+As a human being, you may read this as _"50 plus 10 equals 60"_, then _"8 plus 2 equals 10"_, and finally _"60 divided by 10 equals 6"_.
 
-But the browser does *"10 divided by 8 equals 1.25"*, then *"50 plus 1.25 plus 2 equals 53.25"*.
+But the browser does _"10 divided by 8 equals 1.25"_, then _"50 plus 1.25 plus 2 equals 53.25"_.
 
-This is because of **operator precedence** — some operators are applied before others when calculating the result of a calculation (referred to as an *expression*, in programming).  Operator precedence in JavaScript is the same as is taught in math classes in school — Multiply and divide are always done first, then add and subtract (the calculation is always evaluated from left to right).
+This is because of **operator precedence** — some operators are applied before others when calculating the result of a calculation (referred to as an _expression_, in programming).  Operator precedence in JavaScript is the same as is taught in math classes in school — Multiply and divide are always done first, then add and subtract (the calculation is always evaluated from left to right).
 
 If you want to override operator precedence, you can put parentheses round the parts that you want to be explicitly dealt with first. So to get a result of 6, we could do this:
 
@@ -137,8 +135,7 @@ Try it and see.
 
 **Note**: A full list of all JavaScript operators and their precedence can be found in [Expressions and operators](/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators#operator_precedence).
 
-Increment and decrement operators
----------------------------------
+## Increment and decrement operators
 
 Sometimes you'll want to repeatedly add or subtract one to or from a numeric variable value. This can be conveniently done using the increment (`++`) and decrement (`--`) operators. We used `++` in our "Guess the number" game back in our [first splash into JavaScript](/en-US/docs/Learn/JavaScript/First_steps/A_first_splash) article, when we added 1 to our `guessCount` variable to keep track of how many guesses the user has left after each turn.
 
@@ -155,7 +152,7 @@ So, you can only increment an existing variable. Try this:
     let num1 = 4;
     num1++;
 
-Okay, strangeness number 2! When you do this, you'll see a value of 4 returned — this is because the browser returns the current value, *then* increments the variable. You can see that it's been incremented if you return the variable value again:
+Okay, strangeness number 2! When you do this, you'll see a value of 4 returned — this is because the browser returns the current value, _then_ increments the variable. You can see that it's been incremented if you return the variable value again:
 
     num1;
 
@@ -165,10 +162,9 @@ The same is true of `--` : try the following
     num2--;
     num2;
 
-**Note**: You can make the browser do it the other way round — increment/decrement the variable *then* return the value — by putting the operator at the start of the variable instead of the end. Try the above examples again, but this time use `++num1` and `--num2`.
+**Note**: You can make the browser do it the other way round — increment/decrement the variable _then_ return the value — by putting the operator at the start of the variable instead of the end. Try the above examples again, but this time use `++num1` and `--num2`.
 
-Assignment operators
---------------------
+## Assignment operators
 
 Assignment operators are operators that assign a value to a variable. We have already used the most basic one, `=`, loads of times — it assigns the variable on the left the value stated on the right:
 
@@ -190,8 +186,7 @@ Note that you can quite happily use other variables on the right hand side of ea
 
 **Note**: There are lots of [other assignment operators available](/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators#assignment_operators), but these are the basic ones you should learn now.
 
-Active learning: sizing a canvas box
-------------------------------------
+## Active learning: sizing a canvas box
 
 In this exercise, you will manipulate some numbers and operators to change the size of a box. The box is drawn using a browser API called the {{domxref("Canvas API", "", "", "true")}}. There is no need to worry about how this works — just concentrate on the math for now. The width and height of the box (in pixels) are defined by the variables `x` and `y`, which are initially both given a value of 50.
 
@@ -201,17 +196,16 @@ In this exercise, you will manipulate some numbers and operators to change the 
 
 In the editable code box above, there are two lines marked with a comment that we'd like you to update to make the box grow/shrink to certain sizes, using certain operators and/or values in each case. Let's try the following:
 
--   Change the line that calculates x so the box is still 50px wide, but the 50 is calculated using the numbers 43 and 7 and an arithmetic operator.
--   Change the line that calculates y so the box is 75px high, but the 75 is calculated using the numbers 25 and 3 and an arithmetic operator.
--   Change the line that calculates x so the box is 250px wide, but the 250 is calculated using two numbers and the remainder (modulo) operator.
--   Change the line that calculates y so the box is 150px high, but the 150 is calculated using three numbers and the subtraction and division operators.
--   Change the line that calculates x so the box is 200px wide, but the 200 is calculated using the number 4 and an assignment operator.
--   Change the line that calculates y so the box is 200px high, but the 200 is calculated using the numbers 50 and 3, the multiplication operator, and the addition assignment operator.
+- Change the line that calculates x so the box is still 50px wide, but the 50 is calculated using the numbers 43 and 7 and an arithmetic operator.
+- Change the line that calculates y so the box is 75px high, but the 75 is calculated using the numbers 25 and 3 and an arithmetic operator.
+- Change the line that calculates x so the box is 250px wide, but the 250 is calculated using two numbers and the remainder (modulo) operator.
+- Change the line that calculates y so the box is 150px high, but the 150 is calculated using three numbers and the subtraction and division operators.
+- Change the line that calculates x so the box is 200px wide, but the 200 is calculated using the number 4 and an assignment operator.
+- Change the line that calculates y so the box is 200px high, but the 200 is calculated using the numbers 50 and 3, the multiplication operator, and the addition assignment operator.
 
 Don't worry if you totally mess the code up. You can always press the Reset button to get things working again. After you've answered all the above questions correctly, feel free to play with the code some more or create your own challenges.
 
-Comparison operators
---------------------
+## Comparison operators
 
 Sometimes we will want to run true/false tests, then act accordingly depending on the result of that test — to do this we use **comparison operators**.
 
@@ -275,10 +269,10 @@ Tests whether the left value is greater than or equal to the right one.
 
 If you try entering some of these values in a console, you'll see that they all return `true`/`false` values — those booleans we mentioned in the last article. These are very useful, as they allow us to make decisions in our code, and they are used every time we want to make a choice of some kind. For example, booleans can be used to:
 
--   Display the correct text label on a button depending on whether a feature is turned on or off
--   Display a game over message if a game is over or a victory message if the game has been won
--   Display the correct seasonal greeting depending what holiday season it is
--   Zoom a map in or out depending on what zoom level is selected
+- Display the correct text label on a button depending on whether a feature is turned on or off
+- Display a game over message if a game is over or a victory message if the game has been won
+- Display the correct seasonal greeting depending what holiday season it is
+- Zoom a map in or out depending on what zoom level is selected
 
 We'll look at how to code such logic when we look at conditional statements in a future article. For now, let's look at a quick example:
 
@@ -308,13 +302,11 @@ You can see the equality operator being used just inside the `updateBtn()` funct
 
 **Note**: Such a control that swaps between two states is generally referred to as a **toggle**. It toggles between one state and another — light on, light off, etc.
 
-Test your skills!
------------------
+## Test your skills!
 
 You've reached the end of this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: Math](/en-US/docs/Learn/JavaScript/First_steps/Test_your_skills:_Math).
 
-Summary
--------
+## Summary
 
 In this article we have covered the fundamental information you need to know about numbers in JavaScript, for now. You'll see numbers used again and again, all the way through your JavaScript learning, so it's a good idea to get this out of the way now. If you are one of those people that doesn't enjoy math, you can take comfort in the fact that this chapter was pretty short.
 
@@ -324,15 +316,14 @@ In the next article, we'll explore text and how JavaScript allows us to manipul
 
 {{PreviousMenuNext("Learn/JavaScript/First\_steps/Variables", "Learn/JavaScript/First\_steps/Strings", "Learn/JavaScript/First\_steps")}}
 
-In this module
---------------
+## In this module
 
--   [What is JavaScript?](/en-US/docs/Learn/JavaScript/First_steps/What_is_JavaScript)
--   [A first splash into JavaScript](/en-US/docs/Learn/JavaScript/First_steps/A_first_splash)
--   [What went wrong? Troubleshooting JavaScript](/en-US/docs/Learn/JavaScript/First_steps/What_went_wrong)
--   [Storing the information you need — Variables](/en-US/docs/Learn/JavaScript/First_steps/Variables)
--   [Basic math in JavaScript — numbers and operators](/en-US/docs/Learn/JavaScript/First_steps/Math)
--   [Handling text — strings in JavaScript](/en-US/docs/Learn/JavaScript/First_steps/Strings)
--   [Useful string methods](/en-US/docs/Learn/JavaScript/First_steps/Useful_string_methods)
--   [Arrays](/en-US/docs/Learn/JavaScript/First_steps/Arrays)
--   [Assessment: Silly story generator](/en-US/docs/Learn/JavaScript/First_steps/Silly_story_generator)
+- [What is JavaScript?](/en-US/docs/Learn/JavaScript/First_steps/What_is_JavaScript)
+- [A first splash into JavaScript](/en-US/docs/Learn/JavaScript/First_steps/A_first_splash)
+- [What went wrong? Troubleshooting JavaScript](/en-US/docs/Learn/JavaScript/First_steps/What_went_wrong)
+- [Storing the information you need — Variables](/en-US/docs/Learn/JavaScript/First_steps/Variables)
+- [Basic math in JavaScript — numbers and operators](/en-US/docs/Learn/JavaScript/First_steps/Math)
+- [Handling text — strings in JavaScript](/en-US/docs/Learn/JavaScript/First_steps/Strings)
+- [Useful string methods](/en-US/docs/Learn/JavaScript/First_steps/Useful_string_methods)
+- [Arrays](/en-US/docs/Learn/JavaScript/First_steps/Arrays)
+- [Assessment: Silly story generator](/en-US/docs/Learn/JavaScript/First_steps/Silly_story_generator)

@@ -1,4 +1,4 @@
---- title: Silly story generator slug: Learn/JavaScript/First\_steps/Silly\_story\_generator tags: - Arrays - Assessment - Beginner - CodingScripting - JavaScript - Learn - Numbers - Operators - Variables - l10n:priority - strings ---
+--- title: Silly story generator slug: Learn/JavaScript/First_steps/Silly_story_generator tags: - Arrays - Assessment - Beginner - CodingScripting - JavaScript - Learn - Numbers - Operators - Variables - l10n:priority - strings ---
 
 {{LearnSidebar}}
 
@@ -8,27 +8,25 @@ In this assessment you'll be tasked with taking some of the knowledge you've pic
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Before attempting this assessment you should have already worked through all the articles in this module.</td></tr><tr class="even"><td>Objective:</td><td>To test comprehension of JavaScript fundamentals, such as variables, numbers, operators, strings, and arrays.</td></tr></tbody></table>
 
-Starting point
---------------
+## Starting point
 
 To get this assessment started, you should:
 
--   Go and [grab the HTML file](https://github.com/mdn/learning-area/blob/master/javascript/introduction-to-js-1/assessment-start/index.html) for the example, save a local copy of it as `index.html` in a new directory somewhere on your computer, and do the assessment locally to begin with. This also has the CSS to style the example contained within it.
--   Go to the [page containing the raw text](https://github.com/mdn/learning-area/blob/master/javascript/introduction-to-js-1/assessment-start/raw-text.txt) and keep this open in a separate browser tab somewhere. You'll need it later.
+- Go and [grab the HTML file](https://github.com/mdn/learning-area/blob/master/javascript/introduction-to-js-1/assessment-start/index.html) for the example, save a local copy of it as `index.html` in a new directory somewhere on your computer, and do the assessment locally to begin with. This also has the CSS to style the example contained within it.
+- Go to the [page containing the raw text](https://github.com/mdn/learning-area/blob/master/javascript/introduction-to-js-1/assessment-start/raw-text.txt) and keep this open in a separate browser tab somewhere. You'll need it later.
 
 Alternatively, you could use a site like <a href="https://jsbin.com/" class="external external-icon">JSBin</a> or <a href="https://glitch.com/" class="external external-icon">Glitch</a> to do your assessment. You could paste the HTML, CSS and JavaScript into one of these online editors. If the online editor you are using doesn't have a separate JavaScript panel, feel free to put it inline in a `<script>` element inside the HTML page.
 
 **Note**: If you get stuck, then ask us for help — see the {{anch("Assessment or further help")}} section at the bottom of this page.
 
-Project brief
--------------
+## Project brief
 
 You have been provided with some raw HTML/CSS and a few text strings and JavaScript functions; you need to write the necessary JavaScript to turn this into a working program, which does the following:
 
--   Generates a silly story when the "Generate random story" button is pressed.
--   Replaces the default name "Bob" in the story with a custom name, only if a custom name is entered into the "Enter custom name" text field before the generate button is pressed.
--   Converts the default US weight and temperature quantities and units in the story into UK equivalents if the UK radio button is checked before the generate button is pressed.
--   Will generate another random silly story if you press the button again (and again...)
+- Generates a silly story when the "Generate random story" button is pressed.
+- Replaces the default name "Bob" in the story with a custom name, only if a custom name is entered into the "Enter custom name" text field before the generate button is pressed.
+- Converts the default US weight and temperature quantities and units in the story into UK equivalents if the UK radio button is checked before the generate button is pressed.
+- Will generate another random silly story if you press the button again (and again...)
 
 The following screenshot shows an example of what the finished program should output:
 
@@ -36,8 +34,7 @@ The following screenshot shows an example of what the finished program should ou
 
 To give you more of an idea, [have a look at the finished example](https://mdn.github.io/learning-area/javascript/introduction-to-js-1/assessment-finished/) (no peeking at the source code!)
 
-Steps to complete
------------------
+## Steps to complete
 
 The following sections describe what you need to do.
 
@@ -59,8 +56,8 @@ Placing the event handler and incomplete function:
 
 1.  Now return to the raw text file.
 2.  Copy the code found underneath the heading "3. EVENT LISTENER AND PARTIAL FUNCTION DEFINITION" and paste it into the bottom of your `main.js` file. This:
-    -   Adds a click event listener to the `randomize` variable so that when the button it represents is clicked, the `result()` function is run.
-    -   Adds a partially-completed `result()` function definition to your code. For the remainder of the assessment, you'll be filling in lines inside this function to complete it and make it work properly.
+    - Adds a click event listener to the `randomize` variable so that when the button it represents is clicked, the `result()` function is run.
+    - Adds a partially-completed `result()` function definition to your code. For the remainder of the assessment, you'll be filling in lines inside this function to complete it and make it work properly.
 
 Completing the `result()` function:
 
@@ -75,40 +72,37 @@ Completing the `result()` function:
     4.  Just under the two variable definitions, add two more string replacement lines that replace '94 fahrenheit' with the contents of the `temperature` variable, and '300 pounds' with the contents of the `weight` variable.
 6.  Finally, in the second-to-last line of the function, make the `textContent` property of the `story` variable (which references the paragraph) equal to `newStory`.
 
-Hints and tips
---------------
+## Hints and tips
 
--   You don't need to edit the HTML in any way, except to apply the JavaScript to your HTML.
--   If you are unsure whether the JavaScript is applied to your HTML properly, try removing everything else from the JavaScript file temporarily, adding in a simple bit of JavaScript that you know will create an obvious effect, then saving and refreshing. The following for example turns the background of the {{htmlelement("html")}} element red — so the entire browser window should go red if the JavaScript is applied properly:
+- You don't need to edit the HTML in any way, except to apply the JavaScript to your HTML.
+- If you are unsure whether the JavaScript is applied to your HTML properly, try removing everything else from the JavaScript file temporarily, adding in a simple bit of JavaScript that you know will create an obvious effect, then saving and refreshing. The following for example turns the background of the {{htmlelement("html")}} element red — so the entire browser window should go red if the JavaScript is applied properly:
 
-        document.querySelector('html').style.backgroundColor = 'red';
+      document.querySelector('html').style.backgroundColor = 'red';
 
--   `Math.round()` is a built-in JavaScript method that rounds the result of a calculation to the nearest whole number.
--   There are three instances of strings that need to be replaced. You may repeat the `replace()` method multiple times, or you can use regular expressions. For instance, `let text = 'I am the biggest lover, I love my love';       text.replace(/love/g,'like');` will replace all instances of 'love' to 'like'. Remember, Strings are immutable!
+- `Math.round()` is a built-in JavaScript method that rounds the result of a calculation to the nearest whole number.
+- There are three instances of strings that need to be replaced. You may repeat the `replace()` method multiple times, or you can use regular expressions. For instance, `let text = 'I am the biggest lover, I love my love'; text.replace(/love/g,'like');` will replace all instances of 'love' to 'like'. Remember, Strings are immutable!
 
-Assessment or further help
---------------------------
+## Assessment or further help
 
 If you would like your work assessed, or are stuck and want to ask for help:
 
 1.  Put your work into an online shareable editor such as [CodePen](https://codepen.io/), [jsFiddle](https://jsfiddle.net/), or [Glitch](https://glitch.com/).
 2.  Write a post asking for assessment and/or help at the [MDN Discourse forum Learning category](https://discourse.mozilla.org/c/mdn/learn). Your post should include:
-    -   A descriptive title such as "Assessment wanted for Silly story generator".
-    -   Details of what you have already tried, and what you would like us to do, e.g. if you are stuck and need help, or want an assessment.
-    -   A link to the example you want assessed or need help with, in an online shareable editor (as mentioned in step 1 above). This is a good practice to get into — it's very hard to help someone with a coding problem if you can't see their code.
-    -   A link to the actual task or assessment page, so we can find the question you want help with.
+    - A descriptive title such as "Assessment wanted for Silly story generator".
+    - Details of what you have already tried, and what you would like us to do, e.g. if you are stuck and need help, or want an assessment.
+    - A link to the example you want assessed or need help with, in an online shareable editor (as mentioned in step 1 above). This is a good practice to get into — it's very hard to help someone with a coding problem if you can't see their code.
+    - A link to the actual task or assessment page, so we can find the question you want help with.
 
 {{PreviousMenu("Learn/JavaScript/First\_steps/Arrays", "Learn/JavaScript/First\_steps")}}
 
-In this module
---------------
+## In this module
 
--   [What is JavaScript?](/en-US/docs/Learn/JavaScript/First_steps/What_is_JavaScript)
--   [A first splash into JavaScript](/en-US/docs/Learn/JavaScript/First_steps/A_first_splash)
--   [What went wrong? Troubleshooting JavaScript](/en-US/docs/Learn/JavaScript/First_steps/What_went_wrong)
--   [Storing the information you need — Variables](/en-US/docs/Learn/JavaScript/First_steps/Variables)
--   [Basic math in JavaScript — numbers and operators](/en-US/docs/Learn/JavaScript/First_steps/Math)
--   [Handling text — strings in JavaScript](/en-US/docs/Learn/JavaScript/First_steps/Strings)
--   [Useful string methods](/en-US/docs/Learn/JavaScript/First_steps/Useful_string_methods)
--   [Arrays](/en-US/docs/Learn/JavaScript/First_steps/Arrays)
--   [Assessment: Silly story generator](/en-US/docs/Learn/JavaScript/First_steps/Silly_story_generator)
+- [What is JavaScript?](/en-US/docs/Learn/JavaScript/First_steps/What_is_JavaScript)
+- [A first splash into JavaScript](/en-US/docs/Learn/JavaScript/First_steps/A_first_splash)
+- [What went wrong? Troubleshooting JavaScript](/en-US/docs/Learn/JavaScript/First_steps/What_went_wrong)
+- [Storing the information you need — Variables](/en-US/docs/Learn/JavaScript/First_steps/Variables)
+- [Basic math in JavaScript — numbers and operators](/en-US/docs/Learn/JavaScript/First_steps/Math)
+- [Handling text — strings in JavaScript](/en-US/docs/Learn/JavaScript/First_steps/Strings)
+- [Useful string methods](/en-US/docs/Learn/JavaScript/First_steps/Useful_string_methods)
+- [Arrays](/en-US/docs/Learn/JavaScript/First_steps/Arrays)
+- [Assessment: Silly story generator](/en-US/docs/Learn/JavaScript/First_steps/Silly_story_generator)

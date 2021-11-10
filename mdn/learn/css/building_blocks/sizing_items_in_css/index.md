@@ -1,4 +1,4 @@
---- title: Sizing items in CSS slug: Learn/CSS/Building\_blocks/Sizing\_items\_in\_CSS tags: - Beginner - CSS - Intrinsic size - Learn - max size - min size - percentage - sizing - viewport units ---
+--- title: Sizing items in CSS slug: Learn/CSS/Building_blocks/Sizing_items_in_CSS tags: - Beginner - CSS - Intrinsic size - Learn - max size - min size - percentage - sizing - viewport units ---
 
 {{LearnSidebar}}{{PreviousMenuNext("Learn/CSS/Building\_blocks/Values\_and\_units", "Learn/CSS/Building\_blocks/Images\_media\_form\_elements", "Learn/CSS/Building\_blocks")}}
 
@@ -6,10 +6,9 @@ In the various lessons so far, you have come across a number of ways to size ite
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, <a href="/en-US/docs/Learn/Getting_started_with_the_web/Installing_basic_software">basic software installed</a>, basic knowledge of <a href="/en-US/docs/Learn/Getting_started_with_the_web/Dealing_with_files">working with files</a>, HTML basics (study <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML">Introduction to HTML</a>), and an idea of how CSS works (study <a href="/en-US/docs/Learn/CSS/First_steps">CSS first steps</a>.)</td></tr><tr class="even"><td>Objective:</td><td>To understand the different ways we can size things in CSS.</td></tr></tbody></table>
 
-The natural or intrinsic size of things
----------------------------------------
+## The natural or intrinsic size of things
 
-HTML Elements have a natural size, set before they are affected by any CSS. A straightforward example is an image. An image file contains sizing information, described as its **intrinsic size**. This size is determined by the image *itself*, not by any formatting we happen to apply.
+HTML Elements have a natural size, set before they are affected by any CSS. A straightforward example is an image. An image file contains sizing information, described as its **intrinsic size**. This size is determined by the image _itself_, not by any formatting we happen to apply.
 
 If you place an image on a page and do not change its height or width, either by using attributes on the `<img>` tag or else by CSS, it will be displayed using that intrinsic size. We have given the image in the example below a border so that you can see the extent of its size as defined in its file.
 
@@ -21,8 +20,7 @@ An empty {{htmlelement("div")}}, on the other hand, has no size of its own. If y
 
 In the example above, try adding some text inside the empty element. The border now contains that text because the height of the element is defined by the content. Therefore the size of this `<div>` in the block dimension comes from the size of the content. Again, this is the intrinsic size of the element — its size is defined by its content.
 
-Setting a specific size
------------------------
+## Setting a specific size
 
 We can, of course, give elements in our design a specific size. When a size is given to an element (the content of which then needs to fit into that size) we refer to it as an **extrinsic size**. Take our `<div>` from the example above — we can give it specific {{cssxref("width")}} and {{cssxref("height")}} values, and it will now have that size no matter what content is placed into it. As we discovered in [our previous lesson on overflow](/en-US/docs/Learn/CSS/Building_blocks/Overflowing_content), a set height can cause content to overflow if there is more content than the element has space to fit inside it.
 
@@ -32,7 +30,7 @@ Due to this problem of overflow, fixing the height of elements with lengths or p
 
 ### Using percentages
 
-In many ways, percentages act like length units, and as we [discussed in the lesson on values and units](/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#percentages), they can often be used interchangeably with lengths. When using a percentage you need to be aware what it is a percentage *of*. In the case of a box inside another container, if you give the child box a percentage width it will be a percentage of the width of the parent container.
+In many ways, percentages act like length units, and as we [discussed in the lesson on values and units](/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#percentages), they can often be used interchangeably with lengths. When using a percentage you need to be aware what it is a percentage _of_. In the case of a box inside another container, if you give the child box a percentage width it will be a percentage of the width of the parent container.
 
 {{EmbedGHLiveSample("css-examples/learn/sizing/percent-width.html", '100%', 600)}}
 
@@ -48,10 +46,9 @@ You might expect for example the percentage top and bottom margins to be a perce
 
 When you use margin and padding set in percentages, the value is calculated from the **inline size** of the containing block — therefore the width when working in a horizontal language. In our example, all of the margins and padding are 10% of the width. This means you can have equal-sized margins and padding all around the box. This is a fact worth remembering if you do use percentages in this way.
 
-min- and max- sizes
--------------------
+## min- and max- sizes
 
-In addition to giving things a fixed size, we can ask CSS to give an element a minimum or a maximum size. If you have a box that might contain a variable amount of content, and you always want it to be *at least* a certain height, you could set the {{cssxref("min-height")}} property on it. The box will always be at least this height, but will then grow taller if there is more content than the box has space for at its minimum height.
+In addition to giving things a fixed size, we can ask CSS to give an element a minimum or a maximum size. If you have a box that might contain a variable amount of content, and you always want it to be _at least_ a certain height, you could set the {{cssxref("min-height")}} property on it. The box will always be at least this height, but will then grow taller if there is more content than the box has space for at its minimum height.
 
 In the example below you can see two boxes, both with a defined `min-height` of 150 pixels. The box on the left is 150 pixels tall; the box on the right has content that needs more room, and so it has grown taller than 150 pixels.
 
@@ -69,12 +66,11 @@ In the example below, we have used the same image three times. The first image h
 
 {{EmbedGHLiveSample("css-examples/learn/sizing/max-width.html", '100%', 800)}}
 
-This technique is used to make images *responsive*, so that when viewed on a smaller device they scale down appropriately. You should, however, not use this technique to load really large images and then scale them down in the browser. Images should be appropriately sized to be no larger than they need to be for the largest size they are displayed in the design. Downloading overly large images will cause your site to become slow, and it can cost users more money if they are on a metered connection.
+This technique is used to make images _responsive_, so that when viewed on a smaller device they scale down appropriately. You should, however, not use this technique to load really large images and then scale them down in the browser. Images should be appropriately sized to be no larger than they need to be for the largest size they are displayed in the design. Downloading overly large images will cause your site to become slow, and it can cost users more money if they are on a metered connection.
 
 **Note**: Find out more about [responsive image techniques](/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images).
 
-Viewport units
---------------
+## Viewport units
 
 The viewport — which is the visible area of your page in the browser you are using to view a site — also has a size. In CSS we have units which relate to the size of the viewport — the `vw` unit for viewport width, and `vh` for viewport height. Using these units you can size something relative to the viewport of the user.
 
@@ -86,27 +82,24 @@ The viewport — which is the visible area of your page in the browser you are u
 
 Sizing things according to the viewport can be useful in your designs. For example, if you want a full-page hero section to show before the rest of your content, making that part of your page 100vh high will push the rest of the content below the viewport, meaning that it will only appear once the document is scrolled.
 
-Test your skills!
------------------
+## Test your skills!
 
 We have covered a lot in this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: Sizing](/en-US/docs/Learn/CSS/Building_blocks/Sizing_tasks).
 
-Summary
--------
+## Summary
 
 This lesson has given you a rundown of some key issues that you might run into when sizing things on the web. When you move onto [CSS Layout](/en-US/docs/Learn/CSS/CSS_layout), sizing will become very important in mastering the different layout methods, so it is worth understanding the concepts here before moving on.
 
 {{PreviousMenuNext("Learn/CSS/Building\_blocks/Values\_and\_units", "Learn/CSS/Building\_blocks/Images\_media\_form\_elements", "Learn/CSS/Building\_blocks")}}
 
-In this module
---------------
+## In this module
 
 1.  [Cascade and inheritance](/en-US/docs/Learn/CSS/Building_blocks/Cascade_and_inheritance)
 2.  [CSS selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors)
-    -   [Type, class, and ID selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Type_Class_and_ID_Selectors)
-    -   [Attribute selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Attribute_selectors)
-    -   [Pseudo-classes and pseudo-elements](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Pseudo-classes_and_pseudo-elements)
-    -   [Combinators](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Combinators)
+    - [Type, class, and ID selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Type_Class_and_ID_Selectors)
+    - [Attribute selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Attribute_selectors)
+    - [Pseudo-classes and pseudo-elements](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Pseudo-classes_and_pseudo-elements)
+    - [Combinators](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Combinators)
 3.  [The box model](/en-US/docs/Learn/CSS/Building_blocks/The_box_model)
 4.  [Backgrounds and borders](/en-US/docs/Learn/CSS/Building_blocks/Backgrounds_and_borders)
 5.  [Handling different text directions](/en-US/docs/Learn/CSS/Building_blocks/Handling_different_text_directions)

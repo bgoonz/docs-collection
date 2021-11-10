@@ -1,6 +1,6 @@
---- title: Introduction to automated testing slug: Learn/Tools\_and\_testing/Cross\_browser\_testing/Automated\_testing tags: - Article - Automation - Beginner - CodingScripting - Learn - Sauce Labs - Testing - Tools - Web Stack - cross browser ---
+--- title: Introduction to automated testing slug: Learn/Tools_and_testing/Cross_browser_testing/Automated_testing tags: - Article - Automation - Beginner - CodingScripting - Learn - Sauce Labs - Testing - Tools - Web Stack - cross browser ---
 
- {{LearnSidebar}}
+{{LearnSidebar}}
 
 {{PreviousMenuNext("Learn/Tools\_and\_testing/Cross\_browser\_testing/Feature\_detection", "Learn/Tools\_and\_testing/Cross\_browser\_testing/Your\_own\_automation\_environment", "Learn/Tools\_and\_testing/Cross\_browser\_testing")}}
 
@@ -8,8 +8,7 @@ Manually running tests on several browsers and devices, several times per day, c
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Familiarity with the core <a href="/en-US/docs/Learn/HTML">HTML</a>, <a href="/en-US/docs/Learn/CSS">CSS</a>, and <a href="/en-US/docs/Learn/JavaScript">JavaScript</a> languages; an idea of the high level <a href="/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Introduction">principles of cross-browser testing</a>.</td></tr><tr class="even"><td>Objective:</td><td>To provide an understanding of what automated testing entails, how it can make your life easier, and how to make use of some of the commercial products that make things easier.</td></tr></tbody></table>
 
-Automation makes things easy
-----------------------------
+## Automation makes things easy
 
 Throughout this module we have detailed loads of different ways in which you can test your websites and apps, and explained the sort of scope your cross-browser testing efforts should have in terms of what browsers to test, accessibility considerations, and more. Sounds like a lot of work, doesn't it?
 
@@ -22,8 +21,7 @@ We will look at how to set up your own Selenium-based testing system in the next
 
 **Note**: the above two categories are not mutually exclusive. It is possible to set up a task runner to access a service like Sauce Labs, or LambdaTest via an API, run cross browser tests, and return results. We will look at this below as well.
 
-Using a task runner to automate testing tools
----------------------------------------------
+## Using a task runner to automate testing tools
 
 As we said above, you can drastically speed up common tasks such as linting and minifying code by using a task runner to run everything you need to run automatically at a certain point in your build process. For example, this could be every time you save a file, or at some other point. Inside this section we'll look at how to automate task running with Node and Gulp, a beginner-friendly option.
 
@@ -109,9 +107,9 @@ Let's look at setting up Gulp and using it to automate some testing tools.
 
 To add some real tasks to Gulp, we need to think about what we want to do. A reasonable set of basic functionalities to run on our project is as follows:
 
--   html-tidy, css-lint, and js-hint to lint and report/fix common HTML/CSS/JS errors (see [gulp-htmltidy](https://www.npmjs.com/package/gulp-htmltidy/), [gulp-csslint](https://www.npmjs.com/package/gulp-csslint/), [gulp-jshint](https://www.npmjs.com/package/gulp-jshint/)).
--   Autoprefixer to scan our CSS and add vendor prefixes only where needed (see [gulp-autoprefixer](https://www.npmjs.com/package/gulp-autoprefixer/)).
--   babel to transpile any new JavaScript syntax features to traditional syntax that works in older browsers (see [gulp-babel](https://www.npmjs.com/package/gulp-babel/)).
+- html-tidy, css-lint, and js-hint to lint and report/fix common HTML/CSS/JS errors (see [gulp-htmltidy](https://www.npmjs.com/package/gulp-htmltidy/), [gulp-csslint](https://www.npmjs.com/package/gulp-csslint/), [gulp-jshint](https://www.npmjs.com/package/gulp-jshint/)).
+- Autoprefixer to scan our CSS and add vendor prefixes only where needed (see [gulp-autoprefixer](https://www.npmjs.com/package/gulp-autoprefixer/)).
+- babel to transpile any new JavaScript syntax features to traditional syntax that works in older browsers (see [gulp-babel](https://www.npmjs.com/package/gulp-babel/)).
 
 See the links above for full instructions on the different gulp packages we are using.
 
@@ -263,11 +261,10 @@ There's a lot more you can do with Gulp. The [Gulp plugin directory](https://gul
 
 There are many other task runners available. We certainly aren't trying to say that Gulp is the best solution out there, but it works for us and it is fairly accessible to beginners. You could also try using other solutions:
 
--   Grunt works in a very similar way to Gulp, except that it relies on tasks specified in a config file, rather than using written JavaScript. See [Getting started with Grunt for more details.](https://gruntjs.com/getting-started)
--   You can also run tasks directly using npm scripts located inside your `package.json` file, without needing to install any kind of extra task runner system. This works on the premise that things like Gulp plugins are basically wrappers around command line tools. So, if you can work out how to run the tools using the command line, you can then run them using npm scripts. It is a bit trickier to work with, but can be rewarding for those who are strong with their command line skills. [Why npm scripts?](https://css-tricks.com/why-npm-scripts/) provides a good introduction with a good deal of further information.
+- Grunt works in a very similar way to Gulp, except that it relies on tasks specified in a config file, rather than using written JavaScript. See [Getting started with Grunt for more details.](https://gruntjs.com/getting-started)
+- You can also run tasks directly using npm scripts located inside your `package.json` file, without needing to install any kind of extra task runner system. This works on the premise that things like Gulp plugins are basically wrappers around command line tools. So, if you can work out how to run the tools using the command line, you can then run them using npm scripts. It is a bit trickier to work with, but can be rewarding for those who are strong with their command line skills. [Why npm scripts?](https://css-tricks.com/why-npm-scripts/) provides a good introduction with a good deal of further information.
 
-Using commercial testing services to speed up browser testing
--------------------------------------------------------------
+## Using commercial testing services to speed up browser testing
 
 Now let's look at commercial third-party browser testing services and what they can do for us.
 
@@ -313,18 +310,18 @@ Let's get started with a Sauce Labs Trial.
 
 #### The basics: Manual tests
 
-The [Sauce Labs dashboard](https://saucelabs.com/beta/dashboard/manual) has a lot of options available on it. For now, make sure you are on the *Manual Tests* tab.
+The [Sauce Labs dashboard](https://saucelabs.com/beta/dashboard/manual) has a lot of options available on it. For now, make sure you are on the _Manual Tests_ tab.
 
-1.  Click *Start a new manual session*.
+1.  Click _Start a new manual session_.
 2.  In the next screen, type in the URL of a page you want to test (use <https://mdn.github.io/learning-area/javascript/building-blocks/events/show-video-box-fixed.html>, for example), then choose a browser/OS combination you want to test by using the different buttons and lists. There is a lot of choice, as you'll see!![](sauce-manual-session.png)
 3.  When you click Start session, a loading screen will then appear, which spins up a virtual machine running the combination you chose.
 4.  When loading has finished, you can then start to remotely test the web site running in the chosen browser.![](sauce-test-running.png)
 5.  From here you can see the layout as it would look in the browser you are testing, move the mouse around and try clicking buttons, etc. The top menu allows you to:
-    -   Stop the session
-    -   Give someone else a URL so they can observe the test remotely.
-    -   Copy text/notes to a remote clipboard.
-    -   Take a screenshot.
-    -   Test in full screen mode.
+    - Stop the session
+    - Give someone else a URL so they can observe the test remotely.
+    - Copy text/notes to a remote clipboard.
+    - Take a screenshot.
+    - Test in full screen mode.
 
 Once you stop the session, you'll return to the Manual Tests tab, where you'll see an entry for each of the previous manual sessions you started. Clicking on one of these entries shows more data for the session. In here you can download any screenshots you took, watch a video of the session, view data logs, and more.
 
@@ -391,8 +388,8 @@ Let's get started with a BrowserStack Trial.
 
 1.  Create a [BrowserStack trial account](https://www.browserstack.com/users/sign_up).
 2.  Sign in. This should happen automatically after you verify your e-mail address.
-3.  When you first sign in, you should be on the Live testing page; if not, click the *Live* link in the top nav menu.
-4.  If you are on Firefox or Chrome, you'll be prompted to Install a browser extension in a dialog titled "Enable Local Testing" — click the *Install* button to proceed. On other browsers you'll still be able to use some of the features (generally via Flash), but you might not get the full experience.
+3.  When you first sign in, you should be on the Live testing page; if not, click the _Live_ link in the top nav menu.
+4.  If you are on Firefox or Chrome, you'll be prompted to Install a browser extension in a dialog titled "Enable Local Testing" — click the _Install_ button to proceed. On other browsers you'll still be able to use some of the features (generally via Flash), but you might not get the full experience.
 
 #### The basics: Manual tests
 
@@ -414,26 +411,26 @@ You'll also see a menu that allows you to control the session.
 
 The features here are as follows:
 
--   *Switch* — Change to another platform/device/browser combination.
--   Orientation (looks like a Reload icon) — Switch orientation between portrait and landscape.
--   Fit to screen (looks like a full screen icon) — Fill the testing areas as much as possible with the device.
--   Capture a bug (looks like a camera) — Takes a screenshot, then allows you to annotate and save it.
--   Issue tracker (looks like a deck of cards) — View previously captured bugs/screenshots.
--   Settings (cog icon) — Allows you to alter general settings for the session.
--   Help (question mark) — Accesses help/support functions.
--   *Devtools* — Allows you to use your browser's devtools to directly debug or manipulate the page being shown in the test browser. This currently only works when testing the Safari browser on iOS devices.
--   *Device info* — Displays information about the testing device.
--   *Features* — Shows you what features the current configuration supports, e.g. copy to clipboard, gesture support, etc.
--   *Stop* — Ends the session.
+- _Switch_ — Change to another platform/device/browser combination.
+- Orientation (looks like a Reload icon) — Switch orientation between portrait and landscape.
+- Fit to screen (looks like a full screen icon) — Fill the testing areas as much as possible with the device.
+- Capture a bug (looks like a camera) — Takes a screenshot, then allows you to annotate and save it.
+- Issue tracker (looks like a deck of cards) — View previously captured bugs/screenshots.
+- Settings (cog icon) — Allows you to alter general settings for the session.
+- Help (question mark) — Accesses help/support functions.
+- _Devtools_ — Allows you to use your browser's devtools to directly debug or manipulate the page being shown in the test browser. This currently only works when testing the Safari browser on iOS devices.
+- _Device info_ — Displays information about the testing device.
+- _Features_ — Shows you what features the current configuration supports, e.g. copy to clipboard, gesture support, etc.
+- _Stop_ — Ends the session.
 
 **Note**: This is already very useful, and way more convenient than having to set up all these emulators and virtual machines by yourself.
 
 #### Other basic features
 
-If you go back to the main BrowserStack page, you'll find a couple of other useful basic features under the *More* menu option:
+If you go back to the main BrowserStack page, you'll find a couple of other useful basic features under the _More_ menu option:
 
--   *Responsive*: Enter a URL and press *Generate*, and BrowserStack will load that URL on multiple devices with different viewport sizes. Within each device you can further adjust settings like monitor size, to get a good idea of how your site's layout works across different form factors.
--   *Screenshots*: Enter a URL, choose the browsers/devices/platforms you are interested in, then press *Generate screenshots* — BrowserStack will take screenshots of your site in all those different browsers then make them available to you to view and download.
+- _Responsive_: Enter a URL and press _Generate_, and BrowserStack will load that URL on multiple devices with different viewport sizes. Within each device you can further adjust settings like monitor size, to get a good idea of how your site's layout works across different form factors.
+- _Screenshots_: Enter a URL, choose the browsers/devices/platforms you are interested in, then press _Generate screenshots_ — BrowserStack will take screenshots of your site in all those different browsers then make them available to you to view and download.
 
 #### Advanced: The BrowserStack API
 
@@ -611,16 +608,16 @@ The [TestingBot dashboard](https://saucelabs.com/beta/dashboard/manual) lists th
 1.  Enter the URL of the page you want to test.
 2.  Choose the browser/OS combination you want to test by selecting the combination in the grid.  
     ![](screen_shot_2019-04-19_at_14.55.33.png)
-3.  When you click *Start Browser*, a loading screen will then appear, which spins up a virtual machine running the combination you chose.
+3.  When you click _Start Browser_, a loading screen will then appear, which spins up a virtual machine running the combination you chose.
 4.  When loading has finished, you can then start to remotely test the web site running in the chosen browser.
 5.  From here you can see the layout as it would look in the browser you are testing, move the mouse around and try clicking buttons, etc. The side menu allows you to:
-    -   Stop the session
-    -   Change the screen resolution
-    -   Copy text/notes to a remote clipboard
-    -   Take, edit, and download screenshots
-    -   Test in full screen mode.
+    - Stop the session
+    - Change the screen resolution
+    - Copy text/notes to a remote clipboard
+    - Take, edit, and download screenshots
+    - Test in full screen mode.
 
-Once you stop the session, you'll return to the *Live Web Testing* page, where you'll see an entry for each of the previous manual sessions you started. Clicking on one of these entries shows more data for the session. Here you can download any screenshots you took, watch a video of the test, and view logs for the session.
+Once you stop the session, you'll return to the _Live Web Testing_ page, where you'll see an entry for each of the previous manual sessions you started. Clicking on one of these entries shows more data for the session. Here you can download any screenshots you took, watch a video of the test, and view logs for the session.
 
 #### Advanced: The TestingBot API
 
@@ -657,8 +654,7 @@ Below is an example on how to interact with the TestingBot API with the NodeJS c
 
 We'll cover actually running automated TestingBot tests in the next article.
 
-Summary
--------
+## Summary
 
 This was quite a ride, but I'm sure you can start to see the benefits of using automation tools to do some of the heavy lifting in terms of testing.
 
@@ -666,14 +662,13 @@ In the next article, we'll look at setting up our own local automation system us
 
 {{PreviousMenuNext("Learn/Tools\_and\_testing/Cross\_browser\_testing/Feature\_detection", "Learn/Tools\_and\_testing/Cross\_browser\_testing/Your\_own\_automation\_environment", "Learn/Tools\_and\_testing/Cross\_browser\_testing")}}
 
-In this module
---------------
+## In this module
 
--   [Introduction to cross browser testing](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Introduction)
--   [Strategies for carrying out testing](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Testing_strategies)
--   [Handling common HTML and CSS problems](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/HTML_and_CSS)
--   [Handling common JavaScript problems](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/JavaScript)
--   [Handling common accessibility problems](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Accessibility)
--   [Implementing feature detection](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Feature_detection)
--   [Introduction to automated testing](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Automated_testing)
--   [Setting up your own test automation environment](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Your_own_automation_environment)
+- [Introduction to cross browser testing](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Introduction)
+- [Strategies for carrying out testing](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Testing_strategies)
+- [Handling common HTML and CSS problems](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/HTML_and_CSS)
+- [Handling common JavaScript problems](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/JavaScript)
+- [Handling common accessibility problems](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Accessibility)
+- [Implementing feature detection](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Feature_detection)
+- [Introduction to automated testing](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Automated_testing)
+- [Setting up your own test automation environment](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Your_own_automation_environment)

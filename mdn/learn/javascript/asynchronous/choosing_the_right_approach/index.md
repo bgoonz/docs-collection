@@ -1,4 +1,4 @@
---- title: Choosing the right approach slug: Learn/JavaScript/Asynchronous/Choosing\_the\_right\_approach tags: - Beginner - Intervals - JavaScript - Learn - Optimize - Promises - async - asynchronous - await - requestAnimationFrame - setInterval - setTimeout - timeouts ---
+--- title: Choosing the right approach slug: Learn/JavaScript/Asynchronous/Choosing_the_right_approach tags: - Beginner - Intervals - JavaScript - Learn - Optimize - Promises - async - asynchronous - await - requestAnimationFrame - setInterval - setTimeout - timeouts ---
 
 {{LearnSidebar}}
 
@@ -8,8 +8,7 @@ To finish this module off, we'll provide a brief discussion of the different cod
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, a reasonable understanding of JavaScript fundamentals.</td></tr><tr class="even"><td>Objective:</td><td>To be able to make a sound choice of when to use different asynchronous programming techniques.</td></tr></tbody></table>
 
-Asynchronous callbacks
-----------------------
+## Asynchronous callbacks
 
 Generally found in old-style APIs, involves a function being passed into another function as a parameter, which is then invoked when an asynchronous operation has been completed, so that the callback can in turn do something with the result. This is the precursor to promises; it's not as efficient or flexible. Use only when necessary.
 
@@ -43,11 +42,11 @@ An example that loads a resource via the [`XMLHttpRequest` API](/en-US/docs/Web/
 
 ### Pitfalls
 
--   Nested callbacks can be cumbersome and hard to read (i.e. "callback hell").
--   Failure callbacks need to be called once for each level of nesting, whereas with promises you can just use a single `.catch()` block to handle the errors for the entire chain.
--   Async callbacks just aren't very graceful.
--   Promise callbacks are always called in the strict order they are placed in the event queue; async callbacks aren't.
--   Async callbacks lose full control of how the function will be executed when passed to a third-party library.
+- Nested callbacks can be cumbersome and hard to read (i.e. "callback hell").
+- Failure callbacks need to be called once for each level of nesting, whereas with promises you can just use a single `.catch()` block to handle the errors for the entire chain.
+- Async callbacks just aren't very graceful.
+- Promise callbacks are always called in the strict order they are placed in the event queue; async callbacks aren't.
+- Async callbacks lose full control of how the function will be executed when passed to a third-party library.
 
 ### Browser compatibility
 
@@ -55,10 +54,9 @@ Really good general support, although the exact support for callbacks in APIs de
 
 ### Further information
 
--   [Introducing asynchronous JavaScript](/en-US/docs/Learn/JavaScript/Asynchronous/Introducing), in particular [Async callbacks](/en-US/docs/Learn/JavaScript/Asynchronous/Introducing#async_callbacks)
+- [Introducing asynchronous JavaScript](/en-US/docs/Learn/JavaScript/Asynchronous/Introducing), in particular [Async callbacks](/en-US/docs/Learn/JavaScript/Asynchronous/Introducing#async_callbacks)
 
-setTimeout()
-------------
+## setTimeout()
 
 `setTimeout()` is a method that allows you to run a function after an arbitrary amount of time has passed.
 
@@ -102,8 +100,8 @@ You can use recursive `setTimeout()` calls to run a function repeatedly in a sim
 
 There is a difference between recursive `setTimeout()` and `setInterval()`:
 
--   Recursive `setTimeout()` guarantees at least the specified amount of time (100ms in this example) will elapse between the executions; the code will run and then wait 100 milliseconds before it runs again. The interval will be the same regardless of how long the code takes to run.
--   With `setInterval()`, the interval we choose *includes* the time taken to execute the code we want to run in. Let's say that the code takes 40 milliseconds to run — the interval then ends up being only 60 milliseconds.
+- Recursive `setTimeout()` guarantees at least the specified amount of time (100ms in this example) will elapse between the executions; the code will run and then wait 100 milliseconds before it runs again. The interval will be the same regardless of how long the code takes to run.
+- With `setInterval()`, the interval we choose _includes_ the time taken to execute the code we want to run in. Let's say that the code takes 40 milliseconds to run — the interval then ends up being only 60 milliseconds.
 
 When your code has the potential to take longer to run than the time interval you’ve assigned, it’s better to use recursive `setTimeout()` — this will keep the time interval constant between executions regardless of how long the code takes to execute, and you won't get errors.
 
@@ -113,11 +111,10 @@ When your code has the potential to take longer to run than the time interval yo
 
 ### Further information
 
--   [Cooperative asynchronous JavaScript: Timeouts and intervals](/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals), in particular [setTimeout()](/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals#settimeout())
--   [setTimeout() reference](/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout)
+- [Cooperative asynchronous JavaScript: Timeouts and intervals](/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals), in particular [setTimeout()](</en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals#settimeout()>)
+- [setTimeout() reference](/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout)
 
-setInterval()
--------------
+## setInterval()
 
 `setInterval()` is a method that allows you to run a function repeatedly with a set interval of time between each execution. Not as efficient as `requestAnimationFrame()`, but allows you to choose a running rate/frame rate.
 
@@ -153,7 +150,7 @@ The following function creates a new `Date()` object, extracts a time string out
 
 ### Pitfalls
 
--   The frame rate isn't optimized for the system the animation is running on, and can be somewhat inefficient. Unless you need to choose a specific (slower) framerate, it is generally better to use `requestAnimationFrame()`.
+- The frame rate isn't optimized for the system the animation is running on, and can be somewhat inefficient. Unless you need to choose a specific (slower) framerate, it is generally better to use `requestAnimationFrame()`.
 
 ### Browser compatibility
 
@@ -161,11 +158,10 @@ The following function creates a new `Date()` object, extracts a time string out
 
 ### Further information
 
--   [Cooperative asynchronous JavaScript: Timeouts and intervals](/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals), in particular [setInterval()](/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setInterval)
--   [setInterval() reference](/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setInterval)
+- [Cooperative asynchronous JavaScript: Timeouts and intervals](/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals), in particular [setInterval()](/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setInterval)
+- [setInterval() reference](/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setInterval)
 
-requestAnimationFrame()
------------------------
+## requestAnimationFrame()
 
 `requestAnimationFrame()` is a method that allows you to run a function repeatedly, and efficiently, at the best framerate available given the current browser/system. You should, if at all possible, use this instead of `setInterval()`/recursive `setTimeout()`, unless you need a specific framerate.
 
@@ -216,7 +212,7 @@ A simple animated spinner; you can find this [example live on GitHub](https://md
 
 ### Pitfalls
 
--   You can't choose a specific framerate with `requestAnimationFrame()`. If you need to run your animation at a slower framerate, you'll need to use `setInterval()` or recursive `setTimeout()`.
+- You can't choose a specific framerate with `requestAnimationFrame()`. If you need to run your animation at a slower framerate, you'll need to use `setInterval()` or recursive `setTimeout()`.
 
 ### Browser compatibility
 
@@ -224,11 +220,10 @@ A simple animated spinner; you can find this [example live on GitHub](https://md
 
 ### Further information
 
--   [Cooperative asynchronous JavaScript: Timeouts and intervals](/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals), in particular [requestAnimationFrame()](/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals#requestanimationframe())
--   [requestAnimationFrame() reference](/en-US/docs/Web/API/window/requestAnimationFrame)
+- [Cooperative asynchronous JavaScript: Timeouts and intervals](/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals), in particular [requestAnimationFrame()](</en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals#requestanimationframe()>)
+- [requestAnimationFrame() reference](/en-US/docs/Web/API/window/requestAnimationFrame)
 
-Promises
---------
+## Promises
 
 [Promises](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) are a JavaScript feature that allows you to run asynchronous operations and wait until it is definitely complete before running another operation based on its result. Promises are the backbone of modern asynchronous JavaScript.
 
@@ -318,12 +313,11 @@ That covers a lot of the basics. For a much more complete treatment, see the exc
 
 ### Further information
 
--   [Graceful asynchronous programming with Promises](/en-US/docs/Learn/JavaScript/Asynchronous/Promises)
--   [Using promises](/en-US/docs/Web/JavaScript/Guide/Using_promises)
--   [Promise reference](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+- [Graceful asynchronous programming with Promises](/en-US/docs/Learn/JavaScript/Asynchronous/Promises)
+- [Using promises](/en-US/docs/Web/JavaScript/Guide/Using_promises)
+- [Promise reference](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
-Promise.all()
--------------
+## Promise.all()
 
 A JavaScript feature that allows you to wait for multiple promises to complete before then running a further operation based on the results of all the other promises.
 
@@ -393,7 +387,7 @@ The following example fetches several resources from the server, and uses `Promi
 
 ### Pitfalls
 
--   If a `Promise.all()` rejects, then one or more of the promises you are feeding into it inside its array parameter must be rejecting, or might not be returning promises at all. You need to check each one to see what they returned. 
+- If a `Promise.all()` rejects, then one or more of the promises you are feeding into it inside its array parameter must be rejecting, or might not be returning promises at all. You need to check each one to see what they returned.
 
 ### Browser compatibility
 
@@ -401,11 +395,10 @@ The following example fetches several resources from the server, and uses `Promi
 
 ### Further information
 
--   [Running code in response to multiple promises fulfilling](/en-US/docs/Learn/JavaScript/Asynchronous/Promises#running_code_in_response_to_multiple_promises_fulfilling)
--   [Promise.all() reference](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all)
+- [Running code in response to multiple promises fulfilling](/en-US/docs/Learn/JavaScript/Asynchronous/Promises#running_code_in_response_to_multiple_promises_fulfilling)
+- [Promise.all() reference](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all)
 
-Async/await
------------
+## Async/await
 
 Syntactic sugar built on top of promises that allows you to run asynchronous operations using syntax that's more like writing synchronous callback code.
 
@@ -445,8 +438,8 @@ The following example is a refactor of the simple promise example we saw earlier
 
 ### Pitfalls
 
--   You can't use the `await` operator inside a non-`async` function, or in the top level context of your code. This can sometimes result in an extra function wrapper needing to be created, which can be slightly frustrating in some circumstances. But it is worth it most of the time.
--   Browser support for async/await is not as good as that for promises. If you want to use async/await but are concerned about older browser support, you could consider using the [BabelJS](https://babeljs.io/) library — this allows you to write your applications using the latest JavaScript and let Babel figure out what changes if any are needed for your user’s browsers.
+- You can't use the `await` operator inside a non-`async` function, or in the top level context of your code. This can sometimes result in an extra function wrapper needing to be created, which can be slightly frustrating in some circumstances. But it is worth it most of the time.
+- Browser support for async/await is not as good as that for promises. If you want to use async/await but are concerned about older browser support, you could consider using the [BabelJS](https://babeljs.io/) library — this allows you to write your applications using the latest JavaScript and let Babel figure out what changes if any are needed for your user’s browsers.
 
 ### Browser compatibility
 
@@ -454,18 +447,17 @@ The following example is a refactor of the simple promise example we saw earlier
 
 ### Further information
 
--   [Making asynchronous programming easier with async and await](/en-US/docs/Learn/JavaScript/Asynchronous/Async_await)
--   [Async function reference](/en-US/docs/Web/JavaScript/Reference/Statements/async_function)
--   [Await operator reference](/en-US/docs/Web/JavaScript/Reference/Operators/await)
+- [Making asynchronous programming easier with async and await](/en-US/docs/Learn/JavaScript/Asynchronous/Async_await)
+- [Async function reference](/en-US/docs/Web/JavaScript/Reference/Statements/async_function)
+- [Await operator reference](/en-US/docs/Web/JavaScript/Reference/Operators/await)
 
 {{PreviousMenu("Learn/JavaScript/Asynchronous/Async\_await", "Learn/JavaScript/Asynchronous")}}
 
-In this module
---------------
+## In this module
 
--   [General asynchronous programming concepts](/en-US/docs/Learn/JavaScript/Asynchronous/Concepts)
--   [Introducing asynchronous JavaScript](/en-US/docs/Learn/JavaScript/Asynchronous/Introducing)
--   [Cooperative asynchronous JavaScript: Timeouts and intervals](/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals)
--   [Graceful asynchronous programming with Promises](/en-US/docs/Learn/JavaScript/Asynchronous/Promises)
--   [Making asynchronous programming easier with async and await](/en-US/docs/Learn/JavaScript/Asynchronous/Async_await)
--   [Choosing the right approach](/en-US/docs/Learn/JavaScript/Asynchronous/Choosing_the_right_approach)
+- [General asynchronous programming concepts](/en-US/docs/Learn/JavaScript/Asynchronous/Concepts)
+- [Introducing asynchronous JavaScript](/en-US/docs/Learn/JavaScript/Asynchronous/Introducing)
+- [Cooperative asynchronous JavaScript: Timeouts and intervals](/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals)
+- [Graceful asynchronous programming with Promises](/en-US/docs/Learn/JavaScript/Asynchronous/Promises)
+- [Making asynchronous programming easier with async and await](/en-US/docs/Learn/JavaScript/Asynchronous/Async_await)
+- [Choosing the right approach](/en-US/docs/Learn/JavaScript/Asynchronous/Choosing_the_right_approach)

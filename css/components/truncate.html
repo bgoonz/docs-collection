@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Truncate</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Truncate</h1>
+    </header>
+    <p>
+      When text reaches lengths larger than existing container, shorten with
+      ellipses.
+    </p>
+    <h2 id="truncate">Truncate</h2>
+    <p>
+      Adding the <code>.Truncate</code> class and wrapping the inner text with
+      <code>.Truncate-text</code> will truncate the text.
+      <code>.Truncate-text</code> must be a direct decendent of
+      <code>.Truncate</code>.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="Box p-2" style="resize: horizontal;overflow:
+        scroll;"&gt; &lt;span class="Truncate"&gt; &lt;span
+        class="Truncate-text"&gt;branch-name-that-is-really-long&lt;/span&gt;
+        &lt;/span&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <h2 id="truncate-multiple-items">Truncate multiple items</h2>
+    <p>
+      You can add multiple <code>.Truncate-text</code> items in the same row and
+      they will truncate evenly. If you want to make one of the items the
+      primary text that doesn’t truncate first, add the class
+      <code>.Truncate-text--primary</code> class.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="Box p-2" style="resize: horizontal;overflow:
+        scroll;"&gt; &lt;span class="Truncate"&gt; &lt;span
+        class="Truncate-text"&gt;really-long-repository-owner-name&lt;/span&gt;
+        &lt;span class="Truncate-text Truncate-text--primary text-bold"&gt;
+        &lt;span class="text-normal"&gt;/&lt;/span&gt;
+        really-long-repository-name &lt;/span&gt; &lt;/span&gt;
+        &lt;/div&gt;</code
+      >
+    </p>
+    <p>
+      <code>.Truncate-text--primary</code> doesn’t need to be the last item in
+      the list or only have one instance. Consider this breadcrumb example where
+      we want to highlight the Repository name and the Issue title. The rest of
+      the breadcrumb will truncate and leave the name and title untruncated
+      until we run out of space.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="Box p-2" style="resize: horizontal;overflow:
+        scroll;"&gt; &lt;ol class="Truncate"&gt; &lt;li
+        class="Truncate-text"&gt;primer&lt;/li&gt; &lt;li class="Truncate-text
+        Truncate-text--primary"&gt;/ css&lt;/li&gt; &lt;li
+        class="Truncate-text"&gt;/ Issues&lt;/li&gt; &lt;li
+        class="Truncate-text"&gt;/ #123 —&lt;/li&gt; &lt;li class="Truncate-text
+        Truncate-text--primary"&gt; Visual bug on primer.style found in lists
+        &lt;/li&gt; &lt;/ol&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <h2 id="expand-on-hover-or-focus">Expand on hover or focus</h2>
+    <p>
+      When there are multiple items in a list, you can add the
+      <code>.Truncate-text--expandable</code> class to the
+      <code>.Truncate-text</code> items and they will grow when
+      <code>:hover</code> or <code>:focus</code> state is applied to them.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="Box p-2" style="resize: horizontal;overflow:
+        scroll;"&gt; &lt;span class="Truncate"&gt; &lt;a href="#"
+        class="Truncate-text Truncate-text--expandable"
+        &gt;really-long-repository-owner-name&lt;/a &gt; &lt;a href="#"
+        class="Truncate-text Truncate-text--expandable"
+        &gt;really-long-repository-owner-name&lt;/a &gt; &lt;a href="#"
+        class="Truncate-text Truncate-text--expandable"
+        &gt;really-long-repository-owner-name&lt;/a &gt; &lt;a href="#"
+        class="Truncate-text Truncate-text--expandable"
+        &gt;really-long-repository-owner-name&lt;/a &gt; &lt;/span&gt;
+        &lt;/div&gt;</code
+      >
+    </p>
+    <h2 id="custom-max-widths">Custom max widths</h2>
+    <p>
+      It is recommended to use <code>max-width</code> as an inline style when
+      you would like to have control over how far something can grow, even when
+      there’s enough space available.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="Box p-2" style="resize: horizontal;overflow:
+        scroll;"&gt; &lt;div class="Truncate"&gt; &lt;span class="Truncate-text
+        Truncate-text--expandable" style="max-width: 300px;"
+        &gt;branch-name-that-is-really-long-branch-name-that-is-really-long-branch-name-that-is-really-long&lt;/span
+        &gt; &lt;/div&gt; &lt;br /&gt; &lt;div class="Truncate"&gt; &lt;span
+        class="Truncate-text Truncate-text--expandable" style="max-width:
+        200px;"
+        &gt;branch-name-that-is-really-long-branch-name-that-is-really-long-branch-name-that-is-really-long&lt;/span
+        &gt; &lt;/div&gt; &lt;br /&gt; &lt;div class="Truncate"&gt; &lt;span
+        class="Truncate-text Truncate-text--expandable" style="max-width:
+        100px;"
+        &gt;branch-name-that-is-really-long-branch-name-that-is-really-long-branch-name-that-is-really-long&lt;/span
+        &gt; &lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+  </body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Header</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Header</h1>
+    </header>
+    <p>
+      Use the Header component to create a header that has all of its items
+      aligned vertically with consistent horizontal spacing.
+    </p>
+    <h2 id="header">Header</h2>
+    <p>
+      The <code>.Header</code> class is the wrapping class that aligns all the
+      items properly and gives the header its dark background. Each direct child
+      of the <code>.Header</code> component is expected to be a
+      <code>.Header-item</code> component. The component utilizes flexbox CSS to
+      align all these items properly and applies spacing scale margin.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="Header"&gt; &lt;div class="Header-item"&gt;
+        &lt;a href="#" class="Header-link f4 d-flex flex-items-center"&gt;
+        &lt;!-- &lt;%= octicon "mark-github", class: "mr-2", height: 32 %&gt;
+        --&gt; &lt;svg height="32" class="octicon octicon-mark-github mr-2"
+        viewBox="0 0 16 16" version="1.1" width="32" aria-hidden="true" &gt;
+        &lt;path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53
+        5.47 7.59.4.07.55-.17.55-.38
+        0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01
+        1.08.58 1.23.82.72 1.21 1.87.87
+        2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
+        0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18
+        1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16
+        1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65
+        3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013
+        8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z" &gt;&lt;/path&gt; &lt;/svg&gt;
+        &lt;span&gt;GitHub&lt;/span&gt; &lt;/a&gt; &lt;/div&gt; &lt;div
+        class="Header-item"&gt; &lt;input type="search" class="form-control
+        Header-input" /&gt; &lt;/div&gt; &lt;div class="Header-item
+        Header-item--full"&gt;Menu&lt;/div&gt; &lt;div class="Header-item
+        mr-0"&gt; &lt;img class="avatar" height="20" alt="@octocat"
+        src="https://github.com/octocat.png" width="20" /&gt; &lt;/div&gt;
+        &lt;/div&gt;</code
+      >
+    </p>
+    <h2 id="header-item">Header-item</h2>
+    <p>
+      All items directly under the <code>.Header</code> component should be a
+      <code>.Header-item</code> component. Inside these components can be
+      anything (text, forms, images…), and the
+      <code>.Header-item</code> component will make sure these elements
+      vertically align with each other.
+    </p>
+    <p>
+      <code>.Header-item</code> elements have a built-in margin that will need
+      to be overridden with the <code>mr-0</code> utility class for the last
+      element in the container. We relied on the utility classes here instead of
+      <code>:last-child</code> because the last child isn’t always the item
+      visible. On responsive pages, there’s a mobile menu that gets presented to
+      the user at smaller breakpoints.
+    </p>
+    ```html live
+    <div class="Header">
+      <!-- Text item -->
+      <div class="Header-item">Text item</div>
+      <!-- Form item  -->
+      <div class="Header-item">
+        <pre><code>&lt;input class=&quot;form-control Header-input&quot; type=&quot;text&quot; /&gt;</code></pre>
+      </div>
+      <!-- Image item  -->
+      <div class="Header-item">
+        <pre><code>&lt;img
+  class=&quot;avatar&quot;
+  height=&quot;20&quot;
+  alt=&quot;@octocat&quot;
+  src=&quot;https://github.com/octocat.png&quot;
+  width=&quot;20&quot;
+/&gt;</code></pre>
+      </div>
+    </div>
+    <p>```</p>
+    <h3 id="header-itemfull">Header-item–full</h3>
+    <p>
+      The <code>.Header-item</code> element has a modifier class,
+      <code>.Header-item--full</code>, that stretches it to fill the available
+      space and push any remaining items to the right.
+    </p>
+    ```html live
+    <div class="Header">
+      <div class="Header-item">Item 1</div>
+      <!-- Full item stretches across -->
+      <div class="Header-item Header-item--full border">Item 2</div>
+      <div class="Header-item mr-0">Item 3</div>
+    </div>
+    <p>```</p>
+    <h2 id="header-link">Header-link</h2>
+    <p>
+      Add the <code>.Header-link</code> class to any anchor tags in the header
+      to give them consistent styling and hover opacity. This class makes the
+      links white, bold and 70% fade on hover.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="Header"&gt; &lt;div class="Header-item"&gt;
+        &lt;a href="#" class="Header-link"&gt;About&lt;/a&gt; &lt;/div&gt;
+        &lt;div class="Header-item"&gt; &lt;a href="#"
+        class="Header-link"&gt;Releases&lt;/a&gt; &lt;/div&gt; &lt;div
+        class="Header-item"&gt; &lt;a href="#"
+        class="Header-link"&gt;Team&lt;/a&gt; &lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+  </body>
+</html>

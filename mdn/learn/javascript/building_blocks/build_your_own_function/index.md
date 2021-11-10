@@ -1,4 +1,4 @@
---- title: Build your own function slug: Learn/JavaScript/Building\_blocks/Build\_your\_own\_function tags: - Article - Beginner - CodingScripting - Functions - Guide - JavaScript - Learn - Tutorial - build - invoke - l10n:priority - parameters ---
+--- title: Build your own function slug: Learn/JavaScript/Building_blocks/Build_your_own_function tags: - Article - Beginner - CodingScripting - Functions - Guide - JavaScript - Learn - Tutorial - build - invoke - l10n:priority - parameters ---
 
 {{LearnSidebar}}
 
@@ -8,8 +8,7 @@ With most of the essential theory dealt with in the previous article, this artic
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, a basic understanding of HTML and CSS, <a href="/en-US/docs/Learn/JavaScript/First_steps">JavaScript first steps</a>, <a href="/en-US/docs/Learn/JavaScript/Building_blocks/Functions">Functions — reusable blocks of code</a>.</td></tr><tr class="even"><td>Objective:</td><td>To provide some practice in building a custom function, and explain a few more useful associated details.</td></tr></tbody></table>
 
-Active learning: Let's build a function
----------------------------------------
+## Active learning: Let's build a function
 
 The custom function we are going to build will be called `displayMessage()`. It will display a custom message box on a web page and will act as a customized replacement for a browser's built-in [alert()](/en-US/docs/Web/API/Window/alert) function. We've seen this before, but let's just refresh our memories. Type the following in your browser's JavaScript console, on any page you like:
 
@@ -21,8 +20,7 @@ The `alert` function is limited: you can alter the message, but you can't easily
 
 **Note**: This example should work in all modern browsers fine, but the styling might look a bit funny in slightly older browsers. We'd recommend you doing this exercise in a modern browser like Firefox, Opera, or Chrome.
 
-The basic function
-------------------
+## The basic function
 
 To begin with, let's put together a basic function.
 
@@ -100,8 +98,7 @@ Basically, this whole block of code is generating a block of HTML that looks lik
 
 That was a lot of code to work through — don't worry too much if you don't remember exactly how every bit of it works right now! The main part we want to focus on here is the function's structure and usage, but we wanted to show something interesting for this example.
 
-Calling the function
---------------------
+## Calling the function
 
 You've now got your function definition written into your `<script>` element just fine, but it will do nothing as it stands.
 
@@ -138,8 +135,7 @@ and saving and reloading, you'll see that the message box appears without the bu
 
 If you tried the last experiment, make sure to undo the last change before carrying on.
 
-Improving the function with parameters
---------------------------------------
+## Improving the function with parameters
 
 As it stands, the function is still not very useful — we don't want to just show the same default message every time. Let's improve our function by adding some parameters, allowing us to call it with some different options.
 
@@ -223,25 +219,22 @@ On to the next parameter. This one is going to involve slightly more work — we
 
 **Note**: If you have trouble getting the example to work, feel free to check your code against the [finished version on GitHub](https://github.com/mdn/learning-area/blob/master/javascript/building-blocks/functions/function-stage-4.html) ([see it running live](https://mdn.github.io/learning-area/javascript/building-blocks/functions/function-stage-4.html) also), or ask us for help.
 
-Test your skills!
------------------
+## Test your skills!
 
 You've reached the end of this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: Functions](/en-US/docs/Learn/JavaScript/Building_blocks/Test_your_skills:_Functions). These tests require skills that are covered in the next article, so you might want to read those first before trying it.
 
-Conclusion
-----------
+## Conclusion
 
 Congratulations on reaching the end! This article took you through the entire process of building up a practical custom function, which with a bit more work could be transplanted into a real project. In the next article we'll wrap up functions by explaining another essential related concept — return values.
 
 {{PreviousMenuNext("Learn/JavaScript/Building\_blocks/Functions","Learn/JavaScript/Building\_blocks/Return\_values", "Learn/JavaScript/Building\_blocks")}}
 
-In this module
---------------
+## In this module
 
--   [Making decisions in your code — conditionals](/en-US/docs/Learn/JavaScript/Building_blocks/conditionals)
--   [Looping code](/en-US/docs/Learn/JavaScript/Building_blocks/Looping_code)
--   [Functions — reusable blocks of code](/en-US/docs/Learn/JavaScript/Building_blocks/Functions)
--   **Build your own function**
--   [Function return values](/en-US/docs/Learn/JavaScript/Building_blocks/Return_values)
--   [Introduction to events](/en-US/docs/Learn/JavaScript/Building_blocks/Events)
--   [Image gallery](/en-US/docs/Learn/JavaScript/Building_blocks/Image_gallery)
+- [Making decisions in your code — conditionals](/en-US/docs/Learn/JavaScript/Building_blocks/conditionals)
+- [Looping code](/en-US/docs/Learn/JavaScript/Building_blocks/Looping_code)
+- [Functions — reusable blocks of code](/en-US/docs/Learn/JavaScript/Building_blocks/Functions)
+- **Build your own function**
+- [Function return values](/en-US/docs/Learn/JavaScript/Building_blocks/Return_values)
+- [Introduction to events](/en-US/docs/Learn/JavaScript/Building_blocks/Events)
+- [Image gallery](/en-US/docs/Learn/JavaScript/Building_blocks/Image_gallery)

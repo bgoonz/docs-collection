@@ -1,4 +1,4 @@
---- title: How CSS is structured slug: Learn/CSS/First\_steps/How\_CSS\_is\_structured tags: - Beginner - CSS - HTML - Learn - Selectors - Structure - comments - properties - shorthand - values - whitespace ---
+--- title: How CSS is structured slug: Learn/CSS/First_steps/How_CSS_is_structured tags: - Beginner - CSS - HTML - Learn - Selectors - Structure - comments - properties - shorthand - values - whitespace ---
 
 {{LearnSidebar}}
 
@@ -8,8 +8,7 @@ Now that you are beginning to understand the purpose and use of CSS, let's exami
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, <a href="/en-US/docs/Learn/Getting_started_with_the_web/Installing_basic_software">basic software installed</a>, basic knowledge of <a href="/en-US/docs/Learn/Getting_started_with_the_web/Dealing_with_files">working with files</a>, HTML basics (study <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML">Introduction to HTML</a>), and an idea of <a href="/en-US/docs/Learn/CSS/First_steps/How_CSS_works">How CSS works</a>.</td></tr><tr class="even"><td>Objective:</td><td>To learn CSS's fundamental syntax structures in detail.</td></tr></tbody></table>
 
-Applying CSS to HTML
---------------------
+## Applying CSS to HTML
 
 First, let's examine three methods of applying CSS to a document: with an external stylesheet, with an internal stylesheet, and with inline styles.
 
@@ -108,8 +107,7 @@ Inline styles are CSS declarations that affect a single HTML element, contained 
 
 There are a few circumstances where inline styles are more common. You might have to resort to using inline styles if your working environment is very restrictive. For example, perhaps your CMS only allows you to edit the HTML body. You may also see a lot of inline styles in HTML email to achieve compatibility with as many email clients as possible.
 
-Playing with the CSS in this article
-------------------------------------
+## Playing with the CSS in this article
 
 For the exercise that follows, create a folder on your computer. You can name the folder whatever you want. Inside the folder, copy the text below to create two files:
 
@@ -145,8 +143,7 @@ As an alternative, you can also use the interactive editor below.
 
 Read on and have fun!
 
-Selectors
----------
+## Selectors
 
 A selector targets HTML to apply styles to content. We have already discovered a variety of selectors in the [Getting started with CSS](/en-US/docs/Learn/CSS/First_steps/Getting_started) tutorial. If CSS is not applying to content as expected, your selector may not match the way you think it should match.
 
@@ -199,23 +196,22 @@ The rules of specificity and the cascade can seem complicated at first. These ru
 
 For now, remember that specificity exists. Sometimes, CSS might not apply as you expected because something else in the stylesheet has more specificity. Recognizing that more than one rule could apply to an element is the first step in fixing these kinds of issues.
 
-Properties and values
----------------------
+## Properties and values
 
 At its most basic level, CSS consists of two components:
 
--   **Properties**: These are human-readable identifiers that indicate which stylistic features you want to modify. For example, {{cssxref("font-size")}}, {{cssxref("width")}}, {{cssxref("background-color")}}.
--   **Values**: Each property is assigned a value. This value indicates how to style the property.
+- **Properties**: These are human-readable identifiers that indicate which stylistic features you want to modify. For example, {{cssxref("font-size")}}, {{cssxref("width")}}, {{cssxref("background-color")}}.
+- **Values**: Each property is assigned a value. This value indicates how to style the property.
 
 The example below highlights a single property and value. The property name is `color` and the value is `blue`.
 
 ![A declaration highlighted in the CSS](declaration.png)
 
-When a property is paired with a value, this pairing is called a *CSS declaration*. CSS declarations are found within *CSS Declaration Blocks*. In the example below, highlighting identifies the CSS declaration block.
+When a property is paired with a value, this pairing is called a _CSS declaration_. CSS declarations are found within _CSS Declaration Blocks_. In the example below, highlighting identifies the CSS declaration block.
 
 ![A highlighted declaration block](declaration-block.png)
 
-Finally, CSS declaration blocks are paired with *selectors* to produce *CSS rulesets* (or *CSS rules*). The example below contains two rules: one for the `h1` selector and one for the `p` selector. The colored highlighting identifies the `h1` rule.
+Finally, CSS declaration blocks are paired with _selectors_ to produce _CSS rulesets_ (or _CSS rules_). The example below contains two rules: one for the `h1` selector and one for the `p` selector. The colored highlighting identifies the `h1` rule.
 
 ![The rule for h1 highlighted](rules.png)
 
@@ -225,13 +221,13 @@ Setting CSS properties to specific values is the primary way of defining layout 
 
 **Look up different values of properties listed below. Write CSS rules that apply styling to different HTML elements:**
 
--   **{{cssxref("font-size")}}**
--   **{{cssxref("width")}}**
--   **{{cssxref("background-color")}}**
--   **{{cssxref("color")}}**
--   **{{cssxref("border")}}**
+- **{{cssxref("font-size")}}**
+- **{{cssxref("width")}}**
+- **{{cssxref("background-color")}}**
+- **{{cssxref("color")}}**
+- **{{cssxref("border")}}**
 
-**Important**: If a property is unknown, or if a value is not valid for a given property, the declaration is processed as *invalid*. It is completely ignored by the browser's CSS engine.
+**Important**: If a property is unknown, or if a value is not valid for a given property, the declaration is processed as _invalid_. It is completely ignored by the browser's CSS engine.
 
 **Important**: In CSS (and other web standards), it has been agreed that US spelling is the standard where there is language variation or uncertainty. For example, `colour` should be spelled `color`, as `colour` will not work.
 
@@ -276,12 +272,11 @@ The output from the above code looks like this:
 
 **Look up different values of properties listed below. Write CSS rules that apply styling to different HTML elements:**
 
--   **{{cssxref("transform")}}**
--   **{{cssxref("background-image")}}, in particular gradient values**
--   **{{cssxref("color")}}, in particular rgb/rgba/hsl/hsla values**
+- **{{cssxref("transform")}}**
+- **{{cssxref("background-image")}}, in particular gradient values**
+- **{{cssxref("color")}}, in particular rgb/rgba/hsl/hsla values**
 
-@rules
-------
+## @rules
 
 CSS [@rules](/en-US/docs/Web/CSS/At-rule) (pronounced "at-rules") provide instruction for what CSS should perform or how it should behave. Some @rules are simple with just a keyword and a value. For example, `@import` imports a stylesheet into another CSS stylesheet:
 
@@ -305,8 +300,7 @@ You will encounter other @rules throughout these tutorials.
 
 **See if you can add a media query that changes styles based on the viewport width. Change the width of your browser window to see the result.**
 
-Shorthands
-----------
+## Shorthands
 
 Some properties like {{cssxref("font")}}, {{cssxref("background")}}, {{cssxref("padding")}}, {{cssxref("border")}}, and {{cssxref("margin")}} are called **shorthand properties.** This is because shorthand properties set several values in a single line.
 
@@ -343,8 +337,7 @@ Later in the course, you will encounter many other examples of shorthand propert
 
 **Warning**: One less obvious aspect of using CSS shorthand is how omitted values reset. A value not specified in CSS shorthand reverts to its initial value. This means an omission in CSS shorthand can **override previously set values**.
 
-Comments
---------
+## Comments
 
 As with any coding work, it is best practice to write comments along with CSS. This helps you to remember how the code works as you come back later for fixes or enhancement. It also helps others understand the code.
 
@@ -397,8 +390,7 @@ CSS comments begin with `/*` and end with `*/`. In the example below, comments m
 
 **Add comments to your CSS.**
 
-White space
------------
+## White space
 
 White space means actual spaces, tabs and new lines. Just as browsers ignore white space in HTML, browsers ignore white space inside CSS. The value of white space is how it can improve readability.
 
@@ -461,21 +453,19 @@ But these declarations are invalid:
     margin: 0auto;
     padding- left: 10px;
 
-Do you see the spacing errors? First, `0auto` is not recognized as a valid value for the `margin` property. The entry `0auto` is meant to be two separate values: `0` and `auto`. Second, the browser does not recognize `padding-` as a valid property. The correct property name (`padding-left`) is separated by an errant space.  
-  
+Do you see the spacing errors? First, `0auto` is not recognized as a valid value for the `margin` property. The entry `0auto` is meant to be two separate values: `0` and `auto`. Second, the browser does not recognize `padding-` as a valid property. The correct property name (`padding-left`) is separated by an errant space.
+
 You should always make sure to separate distinct values from one another by at least one space. Keep property names and property values together as single unbroken strings.
 
 **To find out how spacing can break CSS, try playing with spacing inside your test CSS.**
 
-What's next?
-------------
+## What's next?
 
 It's useful to understand how the browser uses HTML and CSS to display a webpage. The next article, [How CSS works](/en-US/docs/Learn/CSS/First_steps/How_CSS_works), explains the process.
 
 {{PreviousMenuNext("Learn/CSS/First\_steps/Getting\_started", "Learn/CSS/First\_steps/How\_CSS\_works", "Learn/CSS/First\_steps")}}
 
-In this module
---------------
+## In this module
 
 1.  [What is CSS?](/en-US/docs/Learn/CSS/First_steps/What_is_CSS)
 2.  [Getting started with CSS](/en-US/docs/Learn/CSS/First_steps/Getting_started)

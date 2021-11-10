@@ -1,4 +1,4 @@
---- title: Looping code slug: Learn/JavaScript/Building\_blocks/Looping\_code tags: - Article - Beginner - CodingScripting - DO - Guide - JavaScript - Learn - Loop - break - continue - for - l10n:priority - while ---
+--- title: Looping code slug: Learn/JavaScript/Building_blocks/Looping_code tags: - Article - Beginner - CodingScripting - DO - Guide - JavaScript - Learn - Loop - break - continue - for - l10n:priority - while ---
 
 {{LearnSidebar}}
 
@@ -8,21 +8,19 @@ Programming languages are very useful for rapidly completing repetitive tasks, f
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, a basic understanding of HTML and CSS, <a href="/en-US/docs/Learn/JavaScript/First_steps">JavaScript first steps</a>.</td></tr><tr class="even"><td>Objective:</td><td>To understand how to use loops in JavaScript.</td></tr></tbody></table>
 
-Keep me in the loop
--------------------
+## Keep me in the loop
 
-Loops, loops, loops. As well as being associated with [popular breakfast cereals](https://en.wikipedia.org/wiki/Froot_Loops), [roller coasters](https://en.wikipedia.org/wiki/Vertical_loop), and [musical production](https://en.wikipedia.org/wiki/Loop_(music)), they are also a critical concept in programming. Programming loops are all to do with doing the same thing over and over again, which is termed **iteration** in programming speak.
+Loops, loops, loops. As well as being associated with [popular breakfast cereals](https://en.wikipedia.org/wiki/Froot_Loops), [roller coasters](https://en.wikipedia.org/wiki/Vertical_loop), and [musical production](<https://en.wikipedia.org/wiki/Loop_(music)>), they are also a critical concept in programming. Programming loops are all to do with doing the same thing over and over again, which is termed **iteration** in programming speak.
 
 Let's consider the case of a farmer who is making sure he has enough food to feed his family for the week. He might use the following loop to achieve this:
 
-  
 ![](loop_js-02-farm.png)
 
 A loop usually has one or more of the following features:
 
--    A **counter**, which is initialized with a certain value — this is the starting point of the loop ("Start: I have no food", above).
--   A **condition**, which is a true/false test to determine whether the loop continues to run, or stops — usually when the counter reaches a certain value. This is illustrated by "Have I got enough food?" above. Let's say he needs 10 portions of food to feed his family.
--   An **iterator**, which generally increments the counter by a small amount on each successive loop until the condition is no longer `true`. We haven't explicitly illustrated this above, but we could think about the farmer being able to collect say 2 portions of food per hour. After each hour, the amount of food he has collected is incremented by two, and he checks whether he has enough food. If he has reached 10 portions (the point where the condition is no longer true, so the loop exits), he can stop collecting and go home.
+- A **counter**, which is initialized with a certain value — this is the starting point of the loop ("Start: I have no food", above).
+- A **condition**, which is a true/false test to determine whether the loop continues to run, or stops — usually when the counter reaches a certain value. This is illustrated by "Have I got enough food?" above. Let's say he needs 10 portions of food to feed his family.
+- An **iterator**, which generally increments the counter by a small amount on each successive loop until the condition is no longer `true`. We haven't explicitly illustrated this above, but we could think about the farmer being able to collect say 2 portions of food per hour. After each hour, the amount of food he has collected is incremented by two, and he checks whether he has enough food. If he has reached 10 portions (the point where the condition is no longer true, so the loop exits), he can stop collecting and go home.
 
 In {{glossary("pseudocode")}}, this would look something like the following:
 
@@ -44,7 +42,7 @@ At this point, you probably understand the high-level concepts behind loops, but
 
 Often, the code will be slightly different on each successive iteration of the loop, which means that you can complete a whole load of tasks that are similar but slightly different; if you've got a lot of different calculations to do, you want to do each different one, not the same one over and over again!
 
-Let's look at an example to perfectly illustrate why loops are such a good thing. Let's say we wanted to draw 100 random circles on a {{htmlelement("canvas")}} element (press the *Update* button to run the example again and again to see different random sets):
+Let's look at an example to perfectly illustrate why loops are such a good thing. Let's say we wanted to draw 100 random circles on a {{htmlelement("canvas")}} element (press the _Update_ button to run the example again and again to see different random sets):
 
 ###### Hidden code
 
@@ -124,8 +122,8 @@ You don't have to understand all the code for now, but let's look at the part of
       ctx.fill();
     }
 
--   `random(x)`, defined earlier in the code, returns a whole number between `0` and `x-1`.
--   `WIDTH` and `HEIGHT` are the width and height of the inner browser window. 
+- `random(x)`, defined earlier in the code, returns a whole number between `0` and `x-1`.
+- `WIDTH` and `HEIGHT` are the width and height of the inner browser window.
 
 You should get the basic idea — we are using a loop to run 100 iterations of this code, each one of which draws a circle in a random position on the page. The amount of code needed would be the same whether we were drawing 100 circles, 1000, or 10,000. Only one number has to change.
 
@@ -138,8 +136,7 @@ If we weren't using a loop here, we'd have to repeat the following code for ever
 
 This would get very boring and difficult to maintain very quickly. Loops really are the best.
 
-The standard for loop
----------------------
+## The standard for loop
 
 Let's start exploring some specific loop constructs. The first, which you'll use most of the time, is the [for](/en-US/docs/Web/JavaScript/Reference/Statements/for) loop. This has the following syntax:
 
@@ -210,8 +207,8 @@ This shows a loop is used to iterate over the items in an array and do something
 1.  The counter variable (sometimes known as an initializer or an iteration variable), `i`, starts at `0` (`let i = 0`).
 2.  The loop has been told to run until `i` is no longer smaller than the length of the `cats` array. This is important — the condition is the condition under which the loop will still run. So in this case, while `i < cats.length` is still true, the loop will still run.
 3.  Inside the loop, we concatenate the current loop item (`cats[i]` , which is `cats[whatever i is at the time]`) along with a comma and space, onto the end of the `info` variable. So:
-    1.  During the first run, `i = 0`, therefore `cats[0] + ', '` (which is equal to `Bill, `) will be concatenated onto `info`.
-    2.  During the second run, `i = 1`, so `cats[1] + ', '` (which is equal to `Jeff, `) will be concatenated onto `info`.
+    1.  During the first run, `i = 0`, therefore `cats[0] + ', '` (which is equal to `Bill, `) will be concatenated onto `info`.
+    2.  During the second run, `i = 1`, so `cats[1] + ', '` (which is equal to `Jeff, `) will be concatenated onto `info`.
     3.  And so on. After each time the loop has run, 1 will be added to `i` (`i++`), then the process will start again.
 4.  When `i` becomes equal to `cats.length` (in this case, 5), the loop will stop, and the browser will move on to the next bit of code below the loop.
 
@@ -237,8 +234,7 @@ Ideally, we want to change the concatenation on the final loop iteration so that
 
 **Important**: With for — as with all loops — you must make sure that the initializer is incremented or, depending on the case, decremented, so that it eventually reaches the point where the condition is not true. If not, the loop will go on forever, and either the browser will force it to stop, or it will crash. This is called an **infinite loop**.
 
-Exiting loops with break
-------------------------
+## Exiting loops with break
 
 If you want to exit a loop before all the iterations have been completed, you can use the [break](/en-US/docs/Web/JavaScript/Reference/Statements/break) statement. We already met this in the previous article when we looked at [switch statements](/en-US/docs/Learn/JavaScript/Building_blocks/conditionals#switch_statements) — when a case is met in a switch statement that matches the input expression, the `break` statement immediately exits the switch statement and moves on to the code after it.
 
@@ -330,8 +326,7 @@ Now on to the JavaScript:
 
 Note: You can view the [full source code on GitHub](https://github.com/mdn/learning-area/blob/master/javascript/building-blocks/loops/contact-search.html) too (also [see it running live](https://mdn.github.io/learning-area/javascript/building-blocks/loops/contact-search.html)).
 
-Skipping iterations with continue
----------------------------------
+## Skipping iterations with continue
 
 The [continue](/en-US/docs/Web/JavaScript/Reference/Statements/continue) statement works in a similar manner to `break`, but instead of breaking out of the loop entirely, it skips to the next iteration of the loop. Let's look at another example that takes a number as an input, and returns only the numbers that are squares of integers (whole numbers).
 
@@ -402,8 +397,7 @@ Here's the output:
 
 **Note**: You can view the [full source code on GitHub](https://github.com/mdn/learning-area/blob/master/javascript/building-blocks/loops/integer-squares.html) too (also [see it running live](https://mdn.github.io/learning-area/javascript/building-blocks/loops/integer-squares.html)).
 
-while and do ... while
-----------------------
+## while and do ... while
 
 `for` is not the only type of loop available in JavaScript. There are actually many others and, while you don't need to understand all of these now, it is worth having a look at the structure of a couple of others so that you can recognize the same features at work in a slightly different way.
 
@@ -467,21 +461,20 @@ Let's rewrite our cat listing example again to use a `do...while` loop:
 
 **Important**: With while and do...while — as with all loops — you must make sure that the initializer is incremented or, depending on the case, decremented, so the condition eventually becomes false. If not, the loop will go on forever, and either the browser will force it to stop, or it will crash. This is called an **infinite loop**.
 
-Active learning: Launch countdown!
-----------------------------------
+## Active learning: Launch countdown!
 
 In this exercise, we want you to print out a simple launch countdown to the output box, from 10 down to Blastoff. Specifically, we want you to:
 
--   Loop from 10 down to 0. We've provided you with an initializer — `let i = 10;`.
--   For each iteration, create a new paragraph and append it to the output `<div>`, which we've selected using `const output = document.querySelector('.output');`. In comments, we've provided you with three code lines that need to be used somewhere inside the loop:
-    -   `const para = document.createElement('p');` — creates a new paragraph.
-    -   `output.appendChild(para);` — appends the paragraph to the output `<div>`.
-    -   `para.textContent =` — makes the text inside the paragraph equal to whatever you put on the right-hand side, after the equals sign.
--   Different iteration numbers require different text to be put in the paragraph for that iteration (you'll need a conditional statement and multiple `para.textContent =` lines):
-    -   If the number is 10, print "Countdown 10" to the paragraph.
-    -   If the number is 0, print "Blast off!" to the paragraph.
-    -   For any other number, print just the number to the paragraph.
--   Remember to include an iterator! However, in this example we are counting down after each iteration, not up, so you **don't** want `i++` — how do you iterate downwards?
+- Loop from 10 down to 0. We've provided you with an initializer — `let i = 10;`.
+- For each iteration, create a new paragraph and append it to the output `<div>`, which we've selected using `const output = document.querySelector('.output');`. In comments, we've provided you with three code lines that need to be used somewhere inside the loop:
+  - `const para = document.createElement('p');` — creates a new paragraph.
+  - `output.appendChild(para);` — appends the paragraph to the output `<div>`.
+  - `para.textContent =` — makes the text inside the paragraph equal to whatever you put on the right-hand side, after the equals sign.
+- Different iteration numbers require different text to be put in the paragraph for that iteration (you'll need a conditional statement and multiple `para.textContent =` lines):
+  - If the number is 10, print "Countdown 10" to the paragraph.
+  - If the number is 0, print "Blast off!" to the paragraph.
+  - For any other number, print just the number to the paragraph.
+- Remember to include an iterator! However, in this example we are counting down after each iteration, not up, so you **don't** want `i++` — how do you iterate downwards?
 
 **Note**: If you start typing the loop (for example (while(i&gt;=0)), the browser might stuck because you have not yet entered the end condition. So be careful with this. You can start writing your code in a comment to deal with this issue and remove the comment after you finish.
 
@@ -611,23 +604,22 @@ If you make a mistake, you can always reset the example with the "Reset" button.
 
 {{ EmbedLiveSample('Active\_learning', '100%', 880, "", "", "hide-codepen-jsfiddle") }}
 
-Active learning: Filling in a guest list
-----------------------------------------
+## Active learning: Filling in a guest list
 
 In this exercise, we want you to take a list of names stored in an array and put them into a guest list. But it's not quite that easy — we don't want to let Phil and Lola in because they are greedy and rude, and always eat all the food! We have two lists, one for guests to admit, and one for guests to refuse.
 
 Specifically, we want you to:
 
--   Write a loop that will iterate from 0 to the length of the `people` array. You'll need to start with an initializer of  `let i = 0;`, but what condition do you need?
--   During each loop iteration, check if the current array item is equal to "Phil" or "Lola" using a conditional statement:
-    -   If it is, concatenate the array item to the end of the `refused` paragraph's `textContent`, followed by a comma and a space.
-    -   If it isn't, concatenate the array item to the end of the `admitted` paragraph's `textContent`, followed by a comma and a space.
+- Write a loop that will iterate from 0 to the length of the `people` array. You'll need to start with an initializer of  `let i = 0;`, but what condition do you need?
+- During each loop iteration, check if the current array item is equal to "Phil" or "Lola" using a conditional statement:
+  - If it is, concatenate the array item to the end of the `refused` paragraph's `textContent`, followed by a comma and a space.
+  - If it isn't, concatenate the array item to the end of the `admitted` paragraph's `textContent`, followed by a comma and a space.
 
 We've already provided you with:
 
--   `let i = 0;` — Your initializer.
--   `refused.textContent +=` — the beginnings of a line that will concatenate something on to the end of `refused.textContent`.
--   `admitted.textContent +=` — the beginnings of a line that will concatenate something on to the end of `admitted.textContent`.
+- `let i = 0;` — Your initializer.
+- `refused.textContent +=` — the beginnings of a line that will concatenate something on to the end of `refused.textContent`.
+- `admitted.textContent +=` — the beginnings of a line that will concatenate something on to the end of `admitted.textContent`.
 
 Extra bonus question — after completing the above tasks successfully, you will be left with two lists of names, separated by commas, but they will be untidy — there will be a comma at the end of each one. Can you work out how to write lines that slice the last comma off in each case, and add a full stop to the end? Have a look at the [Useful string methods](/en-US/docs/Learn/JavaScript/First_steps/Useful_string_methods) article for help.
 
@@ -762,8 +754,7 @@ If you make a mistake, you can always reset the example with the "Reset" button.
 
 {{ EmbedLiveSample('Active\_learning\_2', '100%', 680, "", "", "hide-codepen-jsfiddle") }}
 
-Which loop type should you use?
--------------------------------
+## Which loop type should you use?
 
 For basic uses, `for`, `while`, and `do...while` loops are largely interchangeable. They can all be used to solve the same problems, and which one you use will largely depend on your personal preference — which one you find easiest to remember or most intuitive. Let's have a look at them again.
 
@@ -795,36 +786,32 @@ We would recommend `for`, at least to begin with, as it is probably the easiest 
 
 **Note**: There are other loop types/features too, which are useful in advanced/specialized situations and beyond the scope of this article. If you want to go further with your loop learning, read our advanced [Loops and iteration guide](/en-US/docs/Web/JavaScript/Guide/Loops_and_iteration).
 
-Test your skills!
------------------
+## Test your skills!
 
 You've reached the end of this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: Loops](/en-US/docs/Learn/JavaScript/Building_blocks/Test_your_skills:_Loops).
 
-Conclusion
-----------
+## Conclusion
 
 This article has revealed to you the basic concepts behind, and different options available when looping code in JavaScript. You should now be clear on why loops are a good mechanism for dealing with repetitive code and are raring to use them in your own examples!
 
 If there is anything you didn't understand, feel free to read through the article again, or [contact us](/en-US/docs/Learn#contact_us) to ask for help.
 
-See also
---------
+## See also
 
--   [Loops and iteration in detail](/en-US/docs/Web/JavaScript/Guide/Loops_and_iteration)
--   [for statement reference](/en-US/docs/Web/JavaScript/Reference/Statements/for)
--   [while](/en-US/docs/Web/JavaScript/Reference/Statements/while) and [do...while](/en-US/docs/Web/JavaScript/Reference/Statements/do...while) references
--   [break](/en-US/docs/Web/JavaScript/Reference/Statements/break) and [continue](/en-US/docs/Web/JavaScript/Reference/Statements/continue) references
--   [What’s the Best Way to Write a JavaScript For Loop?](https://www.impressivewebs.com/javascript-for-loop/) — some advanced loop best practices
+- [Loops and iteration in detail](/en-US/docs/Web/JavaScript/Guide/Loops_and_iteration)
+- [for statement reference](/en-US/docs/Web/JavaScript/Reference/Statements/for)
+- [while](/en-US/docs/Web/JavaScript/Reference/Statements/while) and [do...while](/en-US/docs/Web/JavaScript/Reference/Statements/do...while) references
+- [break](/en-US/docs/Web/JavaScript/Reference/Statements/break) and [continue](/en-US/docs/Web/JavaScript/Reference/Statements/continue) references
+- [What’s the Best Way to Write a JavaScript For Loop?](https://www.impressivewebs.com/javascript-for-loop/) — some advanced loop best practices
 
 {{PreviousMenuNext("Learn/JavaScript/Building\_blocks/conditionals","Learn/JavaScript/Building\_blocks/Functions", "Learn/JavaScript/Building\_blocks")}}
 
-In this module
---------------
+## In this module
 
--   [Making decisions in your code — conditionals](/en-US/docs/Learn/JavaScript/Building_blocks/conditionals)
--   **Looping code**
--   [Functions — reusable blocks of code](/en-US/docs/Learn/JavaScript/Building_blocks/Functions)
--   [Build your own function](/en-US/docs/Learn/JavaScript/Building_blocks/Build_your_own_function)
--   [Function return values](/en-US/docs/Learn/JavaScript/Building_blocks/Return_values)
--   [Introduction to events](/en-US/docs/Learn/JavaScript/Building_blocks/Events)
--   [Image gallery](/en-US/docs/Learn/JavaScript/Building_blocks/Image_gallery)
+- [Making decisions in your code — conditionals](/en-US/docs/Learn/JavaScript/Building_blocks/conditionals)
+- **Looping code**
+- [Functions — reusable blocks of code](/en-US/docs/Learn/JavaScript/Building_blocks/Functions)
+- [Build your own function](/en-US/docs/Learn/JavaScript/Building_blocks/Build_your_own_function)
+- [Function return values](/en-US/docs/Learn/JavaScript/Building_blocks/Return_values)
+- [Introduction to events](/en-US/docs/Learn/JavaScript/Building_blocks/Events)
+- [Image gallery](/en-US/docs/Learn/JavaScript/Building_blocks/Image_gallery)

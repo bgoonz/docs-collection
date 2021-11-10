@@ -1,4 +1,4 @@
---- title: Functions — reusable blocks of code slug: Learn/JavaScript/Building\_blocks/Functions tags: - API - Article - Beginner - Browser - CodingScripting - Custom - Functions - Guide - JavaScript - Learn - Method - anonymous - invoke - l10n:priority - parameters ---
+--- title: Functions — reusable blocks of code slug: Learn/JavaScript/Building_blocks/Functions tags: - API - Article - Beginner - Browser - CodingScripting - Custom - Functions - Guide - JavaScript - Learn - Method - anonymous - invoke - l10n:priority - parameters ---
 
 {{LearnSidebar}}
 
@@ -8,15 +8,13 @@ Another essential concept in coding is **functions**, which allow you to store a
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, a basic understanding of HTML and CSS, <a href="/en-US/docs/Learn/JavaScript/First_steps">JavaScript first steps</a>.</td></tr><tr class="even"><td>Objective:</td><td>To understand the fundamental concepts behind JavaScript functions.</td></tr></tbody></table>
 
-Where do I find functions?
---------------------------
+## Where do I find functions?
 
 In JavaScript, you'll find functions everywhere. In fact, we've been using functions all the way through the course so far; we've just not been talking about them very much. Now is the time, however, for us to start talking about functions explicitly, and really exploring their syntax.
 
 Pretty much anytime you make use of a JavaScript structure that features a pair of parentheses — `()` — and you're **not** using a common built-in language structure like a [for loop](/en-US/docs/Learn/JavaScript/Building_blocks/Looping_code#the_standard_for_loop), [while or do...while loop](/en-US/docs/Learn/JavaScript/Building_blocks/Looping_code#while_and_do_..._while), or [if...else statement](/en-US/docs/Learn/JavaScript/Building_blocks/conditionals#if_..._else_statements), you are making use of a function.
 
-Built-in browser functions
---------------------------
+## Built-in browser functions
 
 We've made use of functions built in to the browser a lot in this course. Every time we manipulated a text string, for example:
 
@@ -50,8 +48,7 @@ The JavaScript language has many built-in functions to allow you to do useful th
 
 Bear in mind that some built-in browser functions are not part of the core JavaScript language — some are defined as part of browser APIs, which build on top of the default language to provide even more functionality (refer to [this early section of our course](/en-US/docs/Learn/JavaScript/First_steps/What_is_JavaScript#so_what_can_it_really_do) for more descriptions). We'll look at using browser APIs in more detail in a later module.
 
-Functions versus methods
-------------------------
+## Functions versus methods
 
 Programmers call **functions** that are part of objects **methods**. You don't need to learn about the inner workings of structured JavaScript objects yet — you can wait until our later module that will teach you all about the inner workings of objects, and how to create your own. For now, we just wanted to clear up any possible confusion of method versus function — you are likely to meet both terms as you look at the available related resources across the Web.
 
@@ -81,8 +78,7 @@ rather than having to write all that code out again every time we want to repeat
 
 We needed this function because the browser's built-in [Math.random()](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random) function only generates a random decimal number between 0 and 1. We wanted a random whole number between 0 and a specified number.
 
-Invoking functions
-------------------
+## Invoking functions
 
 You are probably clear on this by now, but just in case ... to actually use a function after it has been defined, you've got to run — or invoke — it. This is done by including the name of the function in the code somewhere, followed by parentheses.
 
@@ -93,10 +89,9 @@ You are probably clear on this by now, but just in case ... to actually use a fu
     myFunction();
     // calls the function once
 
-This form of creating a function is also known as *function declaration*. It is always hoisted, so you can call function above function definition and it will work fine.
+This form of creating a function is also known as _function declaration_. It is always hoisted, so you can call function above function definition and it will work fine.
 
-Anonymous functions
--------------------
+## Anonymous functions
 
 You may see functions defined and invoked in slightly different ways. So far we have just created a function like so:
 
@@ -126,7 +121,7 @@ You can also assign an anonymous function to be the value of a variable, for exa
       alert('hello');
     }
 
-This form of creating a function is also known as *function expression*. Unlike function declaration, function expressions are not hoisted.
+This form of creating a function is also known as _function expression_. Unlike function declaration, function expressions are not hoisted.
 
 This function could now be invoked using:
 
@@ -155,8 +150,7 @@ You will mainly use anonymous functions to just run a load of code in response t
       // inside here as I want
     }
 
-Function parameters
--------------------
+## Function parameters
 
 Some functions require **parameters** to be specified when you are invoking them — these are values that need to be included inside the function parentheses, which it needs to do its job properly.
 
@@ -183,8 +177,7 @@ It should also be noted that sometimes parameters are optional — you don't hav
 
 If no parameter is included to specify a joining/delimiting character, a comma is used by default.
 
-Function scope and conflicts
-----------------------------
+## Function scope and conflicts
 
 Let's talk a bit about {{glossary("scope")}} — a very important concept when dealing with functions. When you create a function, the variables and other things defined inside the function are inside their own separate **scope**, meaning that they are locked away in their own separate compartments, unreachable from code outside the functions.
 
@@ -213,7 +206,7 @@ For example, say you have an HTML file that is calling in two external JavaScrip
       alert('Our company is called ' + name + '.');
     }
 
-Both functions you want to call are called `greeting()`, but you can only ever access the `first.js` file's `greeting()` function (the second one is ignored). In addition, attempting to declare the `name` variable a second time with the `let` keyword in the `second.js` file results in an error. 
+Both functions you want to call are called `greeting()`, but you can only ever access the `first.js` file's `greeting()` function (the second one is ignored). In addition, attempting to declare the `name` variable a second time with the `let` keyword in the `second.js` file results in an error.
 
 **Note**: You can see this example [running live on GitHub](https://mdn.github.io/learning-area/javascript/building-blocks/functions/conflict.html) (see also the [source code](https://github.com/mdn/learning-area/tree/master/javascript/building-blocks/functions)).
 
@@ -299,7 +292,7 @@ Let's look at a real example to demonstrate scoping.
         a();
         b();
 
-    This time the `a()` and `b()` calls will throw that annoying [ReferenceError: *variable name* is not defined](/en-US/docs/Web/JavaScript/Reference/Errors/Not_defined) error into the console — this is because the `output()` calls and the variables they are trying to print are not in the same function scopes — the variables are effectively invisible to those function calls.
+    This time the `a()` and `b()` calls will throw that annoying [ReferenceError: _variable name_ is not defined](/en-US/docs/Web/JavaScript/Reference/Errors/Not_defined) error into the console — this is because the `output()` calls and the variables they are trying to print are not in the same function scopes — the variables are effectively invisible to those function calls.
 
 **Note**: The same scoping rules do not apply to loop (e.g. `for() { ... }`) and conditional blocks (e.g. `if() { ... }`) — they look very similar, but they are not the same thing! Take care not to get these confused.
 
@@ -351,32 +344,28 @@ Just make sure that the values being used inside the function are properly in sc
       console.log(value);
     }
 
-Test your skills!
------------------
+## Test your skills!
 
 You've reached the end of this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: Functions](/en-US/docs/Learn/JavaScript/Building_blocks/Test_your_skills:_Functions). These tests require skills that are covered in the next two articles, so you might want to read those first before trying it.
 
-Conclusion
-----------
+## Conclusion
 
 This article has explored the fundamental concepts behind functions, paving the way for the next one in which we get practical and take you through the steps to building up your own custom function.
 
-See also
---------
+## See also
 
--   [Functions detailed guide](/en-US/docs/Web/JavaScript/Guide/Functions) — covers some advanced features not included here.
--   [Functions reference](/en-US/docs/Web/JavaScript/Reference/Functions)
--   [Default parameters](/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters), [Arrow functions](/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions) — advanced concept references
+- [Functions detailed guide](/en-US/docs/Web/JavaScript/Guide/Functions) — covers some advanced features not included here.
+- [Functions reference](/en-US/docs/Web/JavaScript/Reference/Functions)
+- [Default parameters](/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters), [Arrow functions](/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions) — advanced concept references
 
 {{PreviousMenuNext("Learn/JavaScript/Building\_blocks/Looping\_code","Learn/JavaScript/Building\_blocks/Build\_your\_own\_function", "Learn/JavaScript/Building\_blocks")}}
 
-In this module
---------------
+## In this module
 
--   [Making decisions in your code — conditionals](/en-US/docs/Learn/JavaScript/Building_blocks/conditionals)
--   [Looping code](/en-US/docs/Learn/JavaScript/Building_blocks/Looping_code)
--   **Functions — reusable blocks of code**
--   [Build your own function](/en-US/docs/Learn/JavaScript/Building_blocks/Build_your_own_function)
--   [Function return values](/en-US/docs/Learn/JavaScript/Building_blocks/Return_values)
--   [Introduction to events](/en-US/docs/Learn/JavaScript/Building_blocks/Events)
--   [Image gallery](/en-US/docs/Learn/JavaScript/Building_blocks/Image_gallery)
+- [Making decisions in your code — conditionals](/en-US/docs/Learn/JavaScript/Building_blocks/conditionals)
+- [Looping code](/en-US/docs/Learn/JavaScript/Building_blocks/Looping_code)
+- **Functions — reusable blocks of code**
+- [Build your own function](/en-US/docs/Learn/JavaScript/Building_blocks/Build_your_own_function)
+- [Function return values](/en-US/docs/Learn/JavaScript/Building_blocks/Return_values)
+- [Introduction to events](/en-US/docs/Learn/JavaScript/Building_blocks/Events)
+- [Image gallery](/en-US/docs/Learn/JavaScript/Building_blocks/Image_gallery)
